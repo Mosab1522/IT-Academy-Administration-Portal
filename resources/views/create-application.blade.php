@@ -25,8 +25,15 @@
             <!-- parent -->
             <select name="academy_id" class="combo-a" data-nextcombo=".combo-b">
                 <option value="" disabled selected hidden>Akadémia</option>
+                @php
+                $academy = \App\Models\Academy::all();
+                @endphp
+                @foreach (\App\Models\Academy::all() as $academ)
+                <option value="{{ $academ->id }}" >{{ ucwords($academ->name) }}</option>
+                @endforeach
+                {{-- <option value="" disabled selected hidden>Akadémia</option>
                 <option value="1" data-id="1" data-option="-1">Cisco</option>
-                <option value="2" data-id="2" data-option="-1">Adobe</option>
+                <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
 
             </select>
 
