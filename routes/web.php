@@ -4,6 +4,7 @@ use App\Http\Controllers\AkademieController;
 use App\Http\Controllers\PrihlaskyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\TypkurzuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,10 @@ Route::post('/create',[PrihlaskyController::class,'store']);
 
 Route::get('/admin',[AkademieController::class,'create']); 
 Route::post('/admin/create',[AkademieController::class,'store']); 
+
+
+Route::get('/admin/kurz',[TypkurzuController::class,'create']); 
+Route::post('/admin/kurz/create',[TypkurzuController::class,'store']); 
 
 Route::get('/dashboard', function () {
     return view('dashboard');
