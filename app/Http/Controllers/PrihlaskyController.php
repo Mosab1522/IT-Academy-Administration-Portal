@@ -18,7 +18,7 @@ class PrihlaskyController extends Controller
         $attributes = request()->validate([
             'meno' => ['required', 'max:255'],
             'priezvisko' => ['required', 'max:255'],
-        'email' => ['required','email','max:255'/*,Rule::unique('prihlaskies','email')*/],
+        'email' => ['required','email','max:255',Rule::unique('prihlaskies','email')],
             'akademia_id' => ['required','integer'],
             'typkurzu_id' => ['required','integer'],
             'dni' => ['required','integer'],
