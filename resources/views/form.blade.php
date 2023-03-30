@@ -7,7 +7,7 @@
 </head>
 
 <x-setting heading="Prihlásiť sa na kurz">
-    <form action="#" method="post">
+    <form action="/create" method="post">
         @csrf
         <x-form.input name="meno" />
         <x-form.input name="priezvisko" />
@@ -23,7 +23,7 @@
             <x-form.label name="akadémia" />
 
             <!-- parent -->
-            <select class="combo-a" data-nextcombo=".combo-b">
+            <select name="akademia_id" class="combo-a" data-nextcombo=".combo-b">
                 <option value="" disabled selected hidden>Akadémia</option>
                 <option value="1" data-id="1" data-option="-1">Cisco</option>
                 <option value="2" data-id="2" data-option="-1">Adobe</option>
@@ -33,7 +33,7 @@
             <x-form.field>
                 <x-form.label name="typ kurzu" />
                 <!-- child -->
-                <select  class="combo-b" data-nextcombo=".combo-c" disabled>
+                <select name="typkurzu_id"  class="combo-b" data-nextcombo=".combo-c" disabled>
                     <option></option>
                     <option value="" disabled selected hidden>Typ kurzu</option>
                     <option value="1" data-id="1" data-option="1">Lahky</option>
@@ -47,7 +47,7 @@
 
             <x-form.label name="dni výučby" />
 
-            <select class="combo-c" data-nextcombo=".combo-d" disabled>
+            <select name="dni" class="combo-c" data-nextcombo=".combo-d" disabled>
                 <option></option>
                 <option value="" disabled selected hidden>Dni výučby</option>
                 <option value="1" data-id="1" data-option="1">Týždeň</option>
@@ -65,15 +65,15 @@
 
               <x-form.label name="čas výučby" />
 
-              <select class="combo-d" disabled>
+              <select name="cas" class="combo-d" disabled>
                 <option></option>
                 <option value="" disabled selected hidden>Čas výučby</option>
                 <option value="1" data-id="1" data-option="1">Ranný</option>
                 <option value="2" data-id="2" data-option="1">Poobedný</option>
                 <option value="3" data-id="3" data-option="1">Nezáleží</option>
                 <option value="1" data-id="1" data-option="2">Ranný</option>
-                <option value="1" data-id="1" data-option="3">Ranný (Týždeň/Víkend/)</option>
-                <option value="2" data-id="2" data-option="3">Poobedný (Týždeň)</option>
+                <option value="4" data-id="1" data-option="3">Ranný (Týždeň/Víkend)</option>
+                <option value="5" data-id="2" data-option="3">Poobedný (Týždeň)</option>
                 <option value="3" data-id="3" data-option="3">Nezáleží</option>
                 <option value="1" data-id="1" data-option="4">Ranný</option>
               </select>
