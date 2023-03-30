@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Akademie extends Model
+class Typkurzu extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded=[];
 
-    public function typkurzov()
+    public function akademia()
     {
-        return $this->hasMany(Typkurzu::class,'akademies_id');
+        return $this->belongsTo(Akademie::class, 'akademies_id');
     }
 }
