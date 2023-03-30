@@ -7,10 +7,10 @@
 </head>
 
 <x-setting heading="Prihlásiť sa na kurz">
-    <form action="/create" method="post">
+    <form action="/" method="post">
         @csrf
-        <x-form.input name="meno" />
-        <x-form.input name="priezvisko" />
+        <x-form.input name="name" />
+        <x-form.input name="lastname" />
         <x-form.input name="email" />
         {{--
         <x-form.input name="thumbnail" type="file" /> --}}
@@ -23,7 +23,7 @@
             <x-form.label name="akadémia" />
 
             <!-- parent -->
-            <select name="akademia_id" class="combo-a" data-nextcombo=".combo-b">
+            <select name="academy_id" class="combo-a" data-nextcombo=".combo-b">
                 <option value="" disabled selected hidden>Akadémia</option>
                 <option value="1" data-id="1" data-option="-1">Cisco</option>
                 <option value="2" data-id="2" data-option="-1">Adobe</option>
@@ -33,7 +33,7 @@
             <x-form.field>
                 <x-form.label name="typ kurzu" />
                 <!-- child -->
-                <select name="typkurzu_id"  class="combo-b" data-nextcombo=".combo-c" disabled>
+                <select name="coursetype_id"  class="combo-b" data-nextcombo=".combo-c" disabled>
                     <option></option>
                     <option value="" disabled selected hidden>Typ kurzu</option>
                     <option value="1" data-id="1" data-option="1">Lahky</option>
@@ -47,7 +47,7 @@
 
             <x-form.label name="dni výučby" />
 
-            <select name="dni" class="combo-c" data-nextcombo=".combo-d" disabled>
+            <select name="days" class="combo-c" data-nextcombo=".combo-d" disabled>
                 <option></option>
                 <option value="" disabled selected hidden>Dni výučby</option>
                 <option value="1" data-id="1" data-option="1">Týždeň</option>
@@ -65,7 +65,7 @@
 
               <x-form.label name="čas výučby" />
 
-              <select name="cas" class="combo-d" disabled>
+              <select name="time" class="combo-d" disabled>
                 <option></option>
                 <option value="" disabled selected hidden>Čas výučby</option>
                 <option value="1" data-id="1" data-option="1">Ranný</option>

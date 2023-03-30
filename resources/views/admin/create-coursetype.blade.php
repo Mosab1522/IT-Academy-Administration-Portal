@@ -7,18 +7,18 @@
 </head>
 
 <x-setting heading="Vytvoriť akadémiu">
-    <form action="/admin/kurz/create" method="post">
+    <form action="/admin/coursetype" method="post">
         @csrf
-        <x-form.input name="nazov" />
+        <x-form.input name="name" />
         
         <x-form.field>
-        <x-form.label name="akademia" />
-         <select name="akademies_id" id="akademia_id">
+        <x-form.label name="academy" />
+         <select name="academy_id" id="academy_id">
                 @php
-                $akademie = \App\Models\Akademie::all();
+                $academy = \App\Models\Academy::all();
                 @endphp
-                @foreach (\App\Models\Akademie::all() as $akademia)
-                <option value="{{ $akademia->id }}" >{{ ucwords($akademia->nazov) }}</option>
+                @foreach (\App\Models\Academy::all() as $academ)
+                <option value="{{ $academ->id }}" >{{ ucwords($academ->name) }}</option>
                 @endforeach
 
             </select>

@@ -7,9 +7,9 @@
 </head>
 
 <x-setting heading="Vytvoriť akadémiu">
-    <form action="/admin/create" method="post">
+    <form action="/admin/academy" method="post">
         @csrf
-        <x-form.input name="nazov" />
+        <x-form.input name="name" />
        
         <x-form.button>
             Odoslať

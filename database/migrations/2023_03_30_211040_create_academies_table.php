@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('typkurzus', function (Blueprint $table) {
+        Schema::create('academies', function (Blueprint $table) {
             $table->id();
-            $table->string('nazov')->unique();
-            $table->foreignId('akademies_id');
-            $table->integer('min');
-            $table->integer('max');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('typkurzus');
+        Schema::dropIfExists('academies');
     }
 };

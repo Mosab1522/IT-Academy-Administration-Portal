@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\AkademieController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\PrihlaskyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
@@ -18,16 +21,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',[PrihlaskyController::class,'create']); 
-Route::post('/create',[PrihlaskyController::class,'store']); 
+Route::get('/',[ApplicationController::class,'create']); 
+Route::post('/',[ApplicationController::class,'store']); 
 
+Route::get('/admin/academy',[AcademyController::class,'create']); 
+Route::post('/admin/academy',[AcademyController::class,'store']); 
 
-Route::get('/admin',[AkademieController::class,'create']); 
-Route::post('/admin/create',[AkademieController::class,'store']); 
+Route::get('/admin/coursetype',[CourseTypeController::class,'create']); 
+Route::post('/admin/coursetype',[CourseTypeController::class,'store']); 
 
-
-Route::get('/admin/kurz',[TypkurzuController::class,'create']); 
-Route::post('/admin/kurz/create',[TypkurzuController::class,'store']); 
 
 Route::get('/dashboard', function () {
     return view('dashboard');

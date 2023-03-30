@@ -11,26 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prihlaskies', function (Blueprint $table) {
+        Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->string('meno');
-            $table->string('priezvisko');
+            $table->string('name');
+            $table->string('lastname');
             $table->string('email')->unique();
-            $table->integer('akademia_id');
-            $table->integer('typkurzu_id');
-            $table->integer('dni');
-            $table->integer('cas');
+            $table->foreignId('academy_id')->constrained();
+            $table->foreignId('coursetype_id')->constrained('course_types');
+            $table->integer('days');
+            $table->integer('time');
             $table->timestamps();
             $table->boolean('verified')->nullable();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('prihlaskies');
+        Schema::dropIfExists('applications');
     }
 };
