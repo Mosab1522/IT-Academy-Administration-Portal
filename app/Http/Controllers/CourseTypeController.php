@@ -17,7 +17,7 @@ class CourseTypeController extends Controller
             'name' => ['required', 'max:255',Rule::unique('course_types','name')],
             'academy_id' => ['required', 'integer', Rule::exists('academies','id')],
             'min' => ['required','integer','lte:max'],
-            'max' => ['required','integer'],
+            'max' => ['required','integer','gte:min'],
         ]);
 
         CourseType::create($attributes);
