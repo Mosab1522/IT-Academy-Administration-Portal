@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('lastname');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->foreignId('academy_id')->constrained();
             $table->foreignId('coursetype_id')->constrained('course_types');
             $table->integer('days');
