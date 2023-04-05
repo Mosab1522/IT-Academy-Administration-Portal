@@ -8,14 +8,23 @@ use Illuminate\Validation\Rule;
 
 class AcademyController extends Controller
 {
-    public function create(){
+    public function index()
+    {   
+        return view('admin.index', [
+            'academies' => Academy::with('coursetypes')->get()
+        ]);
+    }
+
+    public function create()
+    {
         return view('admin.create-academy');
     }
 
-    public function store(){
+    public function store()
+    {
 
         $attributes = request()->validate([
-            'name' => ['required', 'max:255',Rule::unique('academies', 'name')]
+            'name' => ['required', 'max:255', Rule::unique('academies', 'name')]
         ]);
 
         Academy::create($attributes);
