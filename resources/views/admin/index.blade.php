@@ -18,6 +18,14 @@
                                             </div>
                                         </td>
 
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ $academy->coursetypes->count()}}
+                                                </div>
+                                            </div>
+                                        </td>
+
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="/admin/posts/{{ $academy->id }}/edit" class="text-blue-500 hover:text-blue-600">Edit</a>
                                         </td>
