@@ -1,5 +1,5 @@
 <x-layout/>
-<x-setting heading="Vytvoriť akadémiu">
+<x-setting heading="Vytvoriť typ kurzu">
     <form action="/admin/coursetype" method="post">
         @csrf
         <x-form.input name="name" />

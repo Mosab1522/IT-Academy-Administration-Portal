@@ -19,10 +19,10 @@
                         </ul>
                 </li>
                 <li>
-                    <a href="/admin/academy/create" class="{{request()->is('admin/academy') ? 'text-blue-500' : ''}}">New Academy</a>
+                    <a href="/admin/academy/create" class="{{request()->is('admin/academy/create') ? 'text-blue-500' : ''}}">New Academy</a>
                 </li>
                 <li>
-                    <a href="/admin/coursetype/create" class="{{request()->is('admin/coursetype') ? 'text-blue-500' : ''}}">New Course Type</a>
+                    <a href="/admin/coursetype/create" class="{{request()->is('admin/coursetype/create') ? 'text-blue-500' : ''}}">New Course Type</a>
                 </li>
             </ul>
         </aside> 

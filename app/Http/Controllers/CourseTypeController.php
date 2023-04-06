@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 class CourseTypeController extends Controller
 {
     public function create(){
-        return view('admin.create-coursetype');
+        return view('admin.coursetype-create');
     }
 
     public function store(){

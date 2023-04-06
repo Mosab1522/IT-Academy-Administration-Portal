@@ -9,15 +9,20 @@ use Illuminate\Validation\Rule;
 class AcademyController extends Controller
 {
     public function index()
-    {   
-        return view('admin.index', [
+    {
+        return view('admin.academy-index', [
             'academies' => Academy::with('coursetypes')->get()
         ]);
     }
 
+    public function show(Academy $academy,)
+    {
+        return view('admin.academy-show', ['academy' => $academy]);
+    }
+
     public function create()
     {
-        return view('admin.create-academy');
+        return view('admin.academy-create');
     }
 
     public function store()
