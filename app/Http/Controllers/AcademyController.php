@@ -10,19 +10,19 @@ class AcademyController extends Controller
 {
     public function index()
     {
-        return view('admin.academy-index', [
+        return view('admin.academies-index', [
             'academies' => Academy::with('coursetypes')->get()
         ]);
     }
 
     public function show(Academy $academy,)
     {
-        return view('admin.academy-show', ['academy' => $academy]);
+        return view('admin.academies-show', ['academy' => $academy]);
     }
 
     public function create()
     {
-        return view('admin.academy-create');
+        return view('admin.academies-create');
     }
 
     public function store()

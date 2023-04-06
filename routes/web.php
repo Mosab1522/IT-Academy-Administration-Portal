@@ -24,14 +24,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[ApplicationController::class,'create']); 
 Route::post('/',[ApplicationController::class,'store']); 
 
-Route::get('admin/academy',[AcademyController::class,'index']);Route::get('admin/academy/create',[AcademyController::class,'create']); 
-Route::get('admin/academy/{academy:id}', [AcademyController::class, 'show']);
+Route::get('admin/academies',[AcademyController::class,'index']);
+Route::get('admin/academies/create',[AcademyController::class,'create']); 
+Route::get('admin/academies/{academy:id}', [AcademyController::class, 'show']);
+Route::post('admin/academies/create',[AcademyController::class,'store']); 
 
-
-Route::post('admin/academy/create',[AcademyController::class,'store']); 
-
-Route::get('admin/coursetype/create',[CourseTypeController::class,'create']); 
-Route::post('admin/coursetype/create',[CourseTypeController::class,'store']); 
+Route::get('admin/coursetypes',[CourseTypeController::class,'index']);
+Route::get('admin/coursetypes/create',[CourseTypeController::class,'create']); 
+Route::post('admin/coursetypes/create',[CourseTypeController::class,'store']); 
 
 
 

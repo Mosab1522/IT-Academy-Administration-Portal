@@ -8,10 +8,13 @@
             <h4 class="font-semibold mb-4"><a href="/">Links</a></h4>
             <ul>
                 <li>
-                    <a href="/admin/academy" class="{{request()->is('admin/academy') ? 'text-blue-500' : ''}}">Dashboard</a>
+                    <a href="/admin/academies" class="{{request()->is('admin/academies') ? 'text-blue-500' : ''}}">Dashboard</a>
                         <ul class="ml-4 text-sm">
                             <li>
-                                <a href="/admin/academy" class="{{request()->is('admin/academy') ? 'text-blue-500' : ''}}">- Akadémie</a>
+                                <a href="/admin/academies" class="{{request()->is('admin/academies') ? 'text-blue-500' : ''}}">- Akadémie</a>
+                            </li>
+                            <li>
+                                <a href="/admin/coursetypes" class="{{request()->is('admin/coursetypes') ? 'text-blue-500' : ''}}">- Typy kurzov</a>
                             </li>
                             <li>
                                 <a href="/admin/students" class="{{request()->is('admin/students') ? 'text-blue-500' : ''}}">- Študenti</a>
@@ -19,10 +22,10 @@
                         </ul>
                 </li>
                 <li>
-                    <a href="/admin/academy/create" class="{{request()->is('admin/academy/create') ? 'text-blue-500' : ''}}">New Academy</a>
+                    <a href="/admin/academies/create" class="{{request()->is('admin/academies/create') ? 'text-blue-500' : ''}}">New Academy</a>
                 </li>
                 <li>
-                    <a href="/admin/coursetype/create" class="{{request()->is('admin/coursetype/create') ? 'text-blue-500' : ''}}">New Course Type</a>
+                    <a href="/admin/coursetypes/create" class="{{request()->is('admin/coursetypes/create') ? 'text-blue-500' : ''}}">New Course Type</a>
                 </li>
             </ul>
         </aside> 

@@ -8,8 +8,14 @@ use Illuminate\Validation\Rule;
 
 class CourseTypeController extends Controller
 {
+    public function index()
+    {
+        return view('admin.coursetypes-index', [
+            'coursetypes' => CourseType::with('academy')->get()
+        ]);
+    }
     public function create(){
-        return view('admin.coursetype-create');
+        return view('admin.coursetypes-create');
     }
 
     public function store(){
