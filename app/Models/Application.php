@@ -9,10 +9,18 @@ class Application extends Model
 {
     use HasFactory;
 
-    protected $guarded=[
-        // 'id',
-        // 'verified',
-        // 'created_at',
-        // 'updated_at'
-    ];
+    protected $guarded = [];
+
+    public function academy()
+    {
+        return $this->belongsTo(Academy::class);
+    }
+    public function coursetype()
+    {
+        return $this->belongsTo(CourseType::class);
+    }
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }

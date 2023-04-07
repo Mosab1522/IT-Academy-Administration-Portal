@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('lastname');
-            $table->string('email');
+            $table->foreignId('student_id')->constrained();
             $table->foreignId('academy_id')->constrained();
             $table->foreignId('coursetype_id')->constrained('course_types');
             $table->integer('days');

@@ -1,7 +1,7 @@
 <x-layout/>
 
 <x-setting heading="Vytvoriť akadémiu">
-    <form action="/admin/academy" method="post">
+    <form action="/admin/academies/create" method="post">
         @csrf
         <x-form.input name="name" />
        
