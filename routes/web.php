@@ -7,6 +7,7 @@ use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\PrihlaskyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TypkurzuController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,9 @@ Route::post('admin/academies/create',[AcademyController::class,'store']);
 Route::get('admin/coursetypes',[CourseTypeController::class,'index']);
 Route::get('admin/coursetypes/create',[CourseTypeController::class,'create']); 
 Route::post('admin/coursetypes/create',[CourseTypeController::class,'store']); 
+
+Route::get('admin/students',[StudentController::class,'index']);
+
 
 
 
