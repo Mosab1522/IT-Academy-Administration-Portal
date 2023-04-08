@@ -4,32 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Academy;
 use App\Models\Application;
+use App\Models\CourseType;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class ApplicationController extends Controller
 {
-    // public function index()
-    // {
-    //     $applications = Application::with(['academy', 'coursetype', 'student'])
-    //     ->orderBy('created_at', 'desc')
-    //     ->get()
-    //     ->groupBy(['academy.name', 'coursetype.name'])
-    //     ;
-
-    // return view('admin.applications-index', compact('applications'));
-    //     // return view('admin.applications-index', [
-    //     //      'applications' => Application::with(['academy','coursetype','student'])->get()->sortBy(['academy_id','coursetype_id'])->groupBy(['academy.name','coursetype.name'])
-    //     //     // 'academies' => Academy::with(['coursetypes','applications'])->get()
-    //     // ]);
-    // }
 
     public function index(Request $request)
     {
-        $applications = Application::with(['academy', 'coursetype', 'student']);
+        $sort_by = $request->input('sort_by');
     
+        $lastApplications = Application::select(DB::raw('MAX(created_at) as last_created_at, coursetype_id'))
+            ->groupBy('coursetype_id')
+            ->pluck('last_created_at', 'coursetype_id');
+    
+        $types = CourseType::orderBy('name')->pluck('name', 'id');
+    
+        $types=$this->sort($sort_by,$types,$lastApplications);
+    
+        $applications = Application::with(['academy', 'coursetype', 'student'])
+            ->orderByDesc('created_at')
+            ->get()
+            ->groupBy(['coursetype.name', 'academy.name']);
+    
+        return view('admin.applications-index', compact('applications', 'lastApplications', 'types'));
+    }
+
+    public function filter(Request $request)
+    {
+        $applications = Application::with(['academy', 'coursetype', 'student']);
+
         // spracovanie filtrov
         if ($request->filled('filterBy')) {
             $filters = $request->input('filterBy');
@@ -38,17 +46,17 @@ class ApplicationController extends Controller
                 $applications->where($filter[0], $filter[1]);
             }
         }
-    
+
         // zoradenie
         if ($request->filled('orderBy')) {
             $orderBy = $request->input('orderBy');
             $orderDirection = $request->input('orderDirection');
             $applications->orderBy($orderBy, $orderDirection);
         }
-    
+
         // získanie prihlášok
         $applications = $applications->get();
-    
+
         return view('admin.applications-index', [
             'applications' => $applications
         ]);
@@ -121,5 +129,33 @@ class ApplicationController extends Controller
         ]);
 
         return back();
+    }
+    protected function sort($sort_by,$types,$lastApplications){
+        switch ($sort_by) {
+            case 'oldest':
+                $types = $types->sortBy(function ($name, $id) use ($lastApplications) {
+                    return $lastApplications[$id] ?? null;
+                });
+                return $types;
+                break;
+            case 'most_applicants':
+                $types = $types->sortByDesc(function ($name, $id) use ($lastApplications) {
+                    return count(Application::where('coursetype_id', $id)->get());
+                });
+                return $types;
+                break;
+            case 'less_applicants':
+                $types = $types->sortBy(function ($name, $id) use ($lastApplications) {
+                    return count(Application::where('coursetype_id', $id)->get());
+                });
+                return $types;
+                break;
+            default:
+                $types = $types->sortByDesc(function ($name, $id) use ($lastApplications) {
+                    return $lastApplications[$id] ?? null;
+                });
+                return $types;
+                break;
+        }
     }
 }
