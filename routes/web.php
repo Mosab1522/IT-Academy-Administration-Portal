@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('admin/applications',[ApplicationController::class,'index']);
 Route::get('/',[ApplicationController::class,'create']); 
 Route::post('/',[ApplicationController::class,'store']); 
 
@@ -35,6 +36,8 @@ Route::get('admin/coursetypes/create',[CourseTypeController::class,'create']);
 Route::post('admin/coursetypes/create',[CourseTypeController::class,'store']); 
 
 Route::get('admin/students',[StudentController::class,'index']);
+
+
 
 
 

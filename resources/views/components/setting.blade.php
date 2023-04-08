@@ -19,6 +19,9 @@
                             <li>
                                 <a href="/admin/students" class="{{request()->is('admin/students') ? 'text-blue-500' : ''}}">- Študenti</a>
                             </li>
+                            <li>
+                                <a href="/admin/applications" class="{{request()->is('admin/applications') ? 'text-blue-500' : ''}}">- Prihlášky</a>
+                            </li>
                         </ul>
                 </li>
                 <li>

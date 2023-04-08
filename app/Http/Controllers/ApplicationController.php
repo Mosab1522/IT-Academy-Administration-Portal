@@ -10,6 +10,15 @@ use Illuminate\Validation\Validator;
 
 class ApplicationController extends Controller
 {
+    public function index()
+    {
+        return view('admin.applications-index', [
+            // 'applications' => Application::with('academy','coursetype','student')->get()->groupBy('coursetype_id')->groupBy('academy_id')
+            'applications' => Application::with('academy','coursetype','student')->get()->sortBy(['academy_id','coursetype_id'])->groupBy(['academy.name','coursetype.name'])
+           
+            // $videoLinksRecord = VideoLinks::with('category')->get()->sortBy('video_category_id')->groupBy('category.name');
+        ]);
+    }
     public function create()
     {
         return view('create-application');
