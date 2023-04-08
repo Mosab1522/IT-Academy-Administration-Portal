@@ -11,7 +11,7 @@ class CourseTypeController extends Controller
     public function index()
     {
         return view('admin.coursetypes-index', [
-            'coursetypes' => CourseType::with('academy')->get()
+            'coursetypes' => CourseType::with(['academy','applications'])->get()
         ]);
     }
     public function create(){

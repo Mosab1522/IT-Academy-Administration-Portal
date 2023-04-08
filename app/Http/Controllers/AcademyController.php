@@ -11,7 +11,7 @@ class AcademyController extends Controller
     public function index()
     {
         return view('admin.academies-index', [
-            'academies' => Academy::with('coursetypes')->get()
+            'academies' => Academy::with(['coursetypes','applications'])->get()
         ]);
     }
 

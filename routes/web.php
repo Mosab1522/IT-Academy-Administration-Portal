@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('admin/applications',[ApplicationController::class,'index']);
+Route::get('admin/applications',[ApplicationController::class,'index'])->name('admin.applications.index');
 Route::get('/',[ApplicationController::class,'create']); 
 Route::post('/',[ApplicationController::class,'store']); 
 
