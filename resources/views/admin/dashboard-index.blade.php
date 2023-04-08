@@ -19,7 +19,7 @@
                 </div>
                 <x-form.button type="submit">Zmeniť zoradenie</x-form.button>
             </form>
-            <a class="" href="applications/filter">Filtrovať</a>
+            
         </div>
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 align-middle inline-block min-w-full
@@ -30,12 +30,13 @@
                 $format = 'Y-m-d H:i:s';
                 $input = $lastApplications[$id];
                 // $date = strtotime($input);
+                \Carbon\Carbon::setLocale('sk');
                 $result = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $input)->diffForHumans();
                 @endphp
-                <div class="text-sm w-full flex mt-2 mb-2">
-                    <p class="flex-none w-48">Kurz: {{ $name }}</p>
-                    <p class="flex-1">Posledná prihláška vytvorená: {{$result}}</p>
-                    @foreach ($applications[$name] as $academy => $apps) <p class="flex-none">Akadémia: {{$academy}}</p>
+                
+                    @foreach ($applications[$name] as $academy => $apps) <div class="text-sm w-full flex mt-2 mb-2">
+                    
+                    <p class="flex-none text-sm font-medium text-gray-900 w-28">Kurz: {{ $name }}</p><p class="flex-1 font-light text-gray-500">Akadémia: {{$academy}}</p><p class="flex-none font-light text-gray-500">Posledná prihláška vytvorená: {{$result}}</p>
                 </div>
                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
