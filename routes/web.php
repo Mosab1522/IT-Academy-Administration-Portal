@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\AkademieController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CourseTypeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PrihlaskyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
@@ -22,7 +23,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('admin/dashboard',[DashboardController::class,'index'])->name('admin.dashboard.index');
+
 Route::get('admin/applications',[ApplicationController::class,'index'])->name('admin.applications.index');
+
 Route::get('/',[ApplicationController::class,'create']); 
 Route::post('/',[ApplicationController::class,'store']); 
 

@@ -8,7 +8,7 @@
             <h4 class="font-semibold mb-4"><a href="/">Links</a></h4>
             <ul>
                 <li>
-                    <a href="/admin/academies" class="{{request()->is('admin/academies') ? 'text-blue-500' : ''}}">Dashboard</a>
+                    <a href="/admin/dashboard" class="{{request()->is('admin/dashboard') ? 'text-blue-500' : ''}}">Dashboard</a>
                         <ul class="ml-4 text-sm">
                             <li>
                                 <a href="/admin/academies" class="{{request()->is('admin/academies') ? 'text-blue-500' : ''}}">- Akadémie</a>
