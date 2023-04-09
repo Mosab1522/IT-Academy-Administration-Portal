@@ -5,7 +5,7 @@
     </h1>
     <div class="flex">
          <aside class="w-48 flex-shrink-0">
-            <h4 class="font-semibold mb-4"><a href="/">Links</a></h4>
+            <h4 class="font-semibold mb-4"><a href="/" class="{{request()->is('/') ? 'text-blue-500' : ''}}">Links</a></h4>
             <ul>
                 <li>
                     <a href="/admin/dashboard" class="{{request()->is('admin/dashboard') ? 'text-blue-500' : ''}}">Dashboard</a>

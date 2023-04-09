@@ -12,11 +12,13 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $sort_by = $request->input('sort_by');
-    
+        
+        $lastApplications =null;
+        if(Application::all()->count()>0){
         $lastApplications = Application::select(DB::raw('MAX(created_at) as last_created_at, coursetype_id'))
             ->groupBy('coursetype_id')
             ->pluck('last_created_at', 'coursetype_id');
-    
+         }
         $types = CourseType::orderBy('name')->pluck('name', 'id');
     
         $types=$this->sort($sort_by,$types,$lastApplications);

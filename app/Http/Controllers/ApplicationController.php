@@ -16,15 +16,17 @@ class ApplicationController extends Controller
 
     public function index(Request $request)
     {
+        //   dd($request);
         $applications = Application::with(['academy', 'coursetype', 'student']);
 
         // spracovanie filtrov
-        if ($request->filled('filterBy')) {
-            $filters = $request->input('filterBy');
-            foreach ($filters as $filter) {
-                $filter = explode('|', $filter);
-                $applications->where($filter[0], $filter[1]);
-            }
+        if ($request->filled('academy_id')&&$request->filled('coursetype_id')) {
+            $filter = $request->input('coursetype_id');
+          $applications->where('coursetype_id', $filter);
+        }
+        else if ($request->filled('academy_id')) {
+            $filter = $request->input('academy_id');
+          $applications->where('academy_id', $filter);
         }
 
         // zoradenie
@@ -40,6 +42,10 @@ class ApplicationController extends Controller
         return view('admin.applications-index', [
             'applications' => $applications
         ]);
+    }
+    
+    public function create(){
+        return view('applications-create');
     }
 
     public function store()
