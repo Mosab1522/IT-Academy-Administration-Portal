@@ -9,6 +9,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
 class ApplicationController extends Controller
@@ -50,21 +51,23 @@ class ApplicationController extends Controller
 
     public function store()
     {
+
         $email['email'] = request()->email;
         $rule = array('email' => ['required', 'email', 'max:255', Rule::unique('students', 'email')]);
         $validation = Validator($email, $rule);
 
 
         if ($validation->fails()) {
+            
             $rule1 = Rule::exists('students', 'name')->where('email', request()->email);
             $rule2 = Rule::exists('students', 'lastname')->where('email', request()->email);
 
             $student = Student::firstWhere('email', $email['email']);
-            $rule = array('id' => 'unique:applications,id,NULL,id,id,' . $student['id'] . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id);
-            $value['id'] = $student['id'];
+            $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . $student['id'] . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id);
+            $value['student_id'] = $student['id'];
             $validation = Validator($value, $rule);
             if ($validation->fails()) {
-                dd($validation);
+                throw ValidationException::withMessages(['email' => 'Takáto prihláška už existuje']);
             } else {
                 $attributes = request()->validate([
                     'name' => ['required', 'max:255', $rule1],
