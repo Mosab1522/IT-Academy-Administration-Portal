@@ -16,9 +16,9 @@
                 <div class="px-6">
                     <x-form.label name="Smer zoradenia" /> <select class="form-control" id="orderDirection"
                         name="orderDirection">
-                        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršieho
+                        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
                         </option>
-                        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšieho
+                        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
                         </option>
                     </select>
                 </div>

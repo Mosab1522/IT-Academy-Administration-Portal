@@ -1,7 +1,6 @@
 @props(['heading'])
 <div class="flex">
     <div class="w-48 pl-6 pt-4 ">
-        <h4 class="mb-4 font-semibold " title="pre študentov, kurzy ,akadémie a inštruktorov.">Dorobiť hlavičku tabuľkám</h4>
         <h4 class="my-4 font-semibold " title="Do prehľadu / typu kurzu">Pridať študenta - tlačidlo</h4>
         <h4 class="my-4 font-semibold " title="Študentovi">Pridať prihlášku - tlačidlo</h4>
         <h4 class="my-4 font-semibold " title="pre prihlášky, študentov, kurzy ,akadémie a inštruktorov.">Vyhľadávanie</h4>
