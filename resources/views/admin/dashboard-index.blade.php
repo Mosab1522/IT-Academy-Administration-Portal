@@ -7,18 +7,19 @@
                 @csrf
                 <div class="flex">
 
-                    <label for="sort_by">Zoradiť podľa:</label>
-                    <select name="sort_by" id="sort_by" class="form-control">
+                    <x-form.label  name="Zoradiť od:" />
+                   
+                    <select name="sort_by" id="sort_by" class="mx-4">
                         <option value="latest" {{ request()->get('sort_by') == 'latest' ? 'selected' : '' }}>Najnovšie
                         </option>
                         <option value="oldest" {{ request()->get('sort_by') == 'oldest' ? 'selected' : '' }}>Najstaršie
                         </option>
                         <option value="most_applicants" {{ request('sort_by')=='most_applicants' ? 'selected' : '' }}>
-                            Most applicants</option>
+                            Najviac prihlásených</option>
                         <option value="less_applicants" {{ request('sort_by')=='less_applicants' ? 'selected' : '' }}>
-                            Less applicants</option>
+                            Najmenej prihlásených</option>
                     </select>
-
+                    
                 </div>
                 <x-form.button type="submit">Zmeniť zoradenie</x-form.button>
             </form>
@@ -42,7 +43,7 @@
 
                 @foreach ($applications[$name] as $academy => $apps) <div class="text-sm w-full flex mt-2 mb-2">
 
-                    <p class="flex-none text-sm font-medium text-gray-900 w-28">Kurz: {{ $name }}</p>
+                    <p class="flex-none text-sm font-medium text-gray-900 w-32">Kurz: {{ $name }}</p>
                     <p class="flex-1 font-light text-gray-500">Akadémia: {{$academy}}</p>
                     <p class="flex-none font-light text-gray-500">Posledná prihláška vytvorená: {{$result}}</p>
                 </div>

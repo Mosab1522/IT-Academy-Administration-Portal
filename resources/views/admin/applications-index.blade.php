@@ -2,6 +2,7 @@
 <x-setting heading="Prihlášky">
     <div class="flex flex-col">
         <form method="get" action="{{ route('admin.applications.index') }}">
+            @csrf
             <div class="flex">
                 <div class="">
                     <x-form.label name="Zoradiť podľa" />
@@ -15,9 +16,9 @@
                 <div class="px-6">
                     <x-form.label name="Smer zoradenia" /> <select class="form-control" id="orderDirection"
                         name="orderDirection">
-                        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Vzostupne
+                        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršieho
                         </option>
-                        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Zostupne
+                        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšieho
                         </option>
                     </select>
                 </div>
