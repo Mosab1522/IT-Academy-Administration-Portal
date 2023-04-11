@@ -47,7 +47,9 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    <a href="">Vytvoriť prihlášku</a>
+                                                    <a
+                                                href={{route('applications', ['student_id' =>$student->id])}}"
+                                                >Vytvoriť prihlášku</a>
                                                 </div>
                                             </div>
                                         </td>
