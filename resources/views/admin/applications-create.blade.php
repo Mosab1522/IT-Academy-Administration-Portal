@@ -1,5 +1,7 @@
 <x-layout/>
-
+@php
+session()->forget('student_id');
+@endphp
 <x-setting heading="Prihlásiť sa na kurz">
     <form action="/" method="post">
         @csrf

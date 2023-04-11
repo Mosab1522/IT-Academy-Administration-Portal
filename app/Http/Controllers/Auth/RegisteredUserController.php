@@ -30,13 +30,15 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
+    {   
+        $instructor_id = session('instructor_id');
+        session()->forget('instructor_id');
         $request->validate([
             'nickname' => ['required', 'string', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $instructor_id = session('instructor_id');
+        
         $user = User::create([
             'nickname' => $request->nickname,
             'user_id' => $instructor_id,

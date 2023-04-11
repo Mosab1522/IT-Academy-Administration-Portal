@@ -1,3 +1,8 @@
+@if(session('instructor_id'))
+@php
+session()->forget('instructor_id');
+@endphp
+@endif
 <x-layout />
 <x-setting heading="Akadémie">
     <div class="flex flex-col">
