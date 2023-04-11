@@ -7,9 +7,9 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="text-sm">
                                 <tr>
-                                    <td class="px-6 py-1">Názov</td>
+                                    <td class="px-6 py-1">Meno a priezvisko</td>
+                                    <td class="px-6 py-2">Email</td>
                                     <td class="px-6 py-2">Počet typov kurzov</td>
-                                    <td></td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -20,12 +20,19 @@
                                             <div class="flex items-center">
                                                 <div class="text-sm font-medium text-gray-900">
                                                     <a href="/admin/academies/{{ $instructor->id }}"> 
-                                                         {{$instructor->name }}
+                                                         {{$instructor->name }}{{$instructor->lastname}}
                                                     </a>
                                                 </div>
                                             </div>
                                         </td>
 
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ $instructor->email}}
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="text-sm font-medium text-gray-900">

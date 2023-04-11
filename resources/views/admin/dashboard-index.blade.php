@@ -7,8 +7,8 @@
                 @csrf
                 <div class="flex">
 
-                    <x-form.label  name="Zoradiť od:" />
-                   
+                    <x-form.label name="Zoradiť od:" />
+
                     <select name="sort_by" id="sort_by" class="mx-4">
                         <option value="latest" {{ request()->get('sort_by') == 'latest' ? 'selected' : '' }}>Najnovšie
                         </option>
@@ -19,7 +19,7 @@
                         <option value="less_applicants" {{ request('sort_by')=='less_applicants' ? 'selected' : '' }}>
                             Najmenej prihlásených</option>
                     </select>
-                    
+
                 </div>
                 <x-form.button type="submit">Zmeniť zoradenie</x-form.button>
             </form>
@@ -62,7 +62,11 @@
                                 <td class="px-6 py-1">Meno a priezvisko</td>
                                 <td class="px-6 py-2">Email</td>
                                 <td></td>
-                                <td></td>
+                                <td>
+                                    <a href="">
+                                        Pridať študenta
+                                    </a>
+                                </td>
                             </tr>
                         </thead>
                         @foreach ($apps as $application)
