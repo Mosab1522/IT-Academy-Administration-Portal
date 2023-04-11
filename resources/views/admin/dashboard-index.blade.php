@@ -3,7 +3,8 @@
     @if($applications->count() > 0)
     <div class="flex flex-col">
         <div class="flex">
-            <form class="flex-1" action="{{ route('admin.dashboard.index') }}" method="GET">
+            
+            <form class="flex-1" action="{{ route('admin.dashboard.index') }}" method="GET"> 
                 @csrf
                 <div class="flex">
 
@@ -24,8 +25,9 @@
                 <x-form.button type="submit">Zmeniť zoradenie</x-form.button>
             </form>
 
+
         </div>
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div id="dashboard-container" class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 align-middle inline-block min-w-full
             sm:px-6 lg:px-8">
 
@@ -47,7 +49,7 @@
                     <p class="flex-1 font-light text-gray-500">Akadémia: {{$academy}}</p>
                     <p class="flex-none font-light text-gray-500">Posledná prihláška vytvorená: {{$result}}</p>
                 </div>
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                <div  class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
 
                     <table class="min-w-full divide-y divide-gray-200" style="table-layout: fixed;">
@@ -63,9 +65,9 @@
                                 <td class="px-6 py-2">Email</td>
                                 <td></td>
                                 <td>
-                                    <a href="">
-                                        Pridať študenta
-                                    </a>
+                                    <a
+                                    href={{route('applications', ['coursetype_id' =>$id])}}"
+                                    >Pridať študenta</a>
                                 </td>
                             </tr>
                         </thead>
@@ -114,3 +116,6 @@
     @endif
 
 </x-setting>
+
+
+

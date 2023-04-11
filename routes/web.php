@@ -12,7 +12,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TypkurzuController;
+use App\Models\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 
 Route::get('admin/dashboard',[DashboardController::class,'index'])->name('admin.dashboard.index');
 

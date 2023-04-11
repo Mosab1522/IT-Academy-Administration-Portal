@@ -4,8 +4,8 @@
         {{-- <h4 class="mb-4 font-semibold " title="pre študentov, kurzy ,akadémie a inštruktorov.">Dorobiť hlavičku tabuľkám</h4> --}}
         <h4 class="my-4 font-semibold " title="pre prihlášky, študentov, kurzy ,akadémie a inštruktorov.">Vyhľadávanie</h4>
         <h4 class="my-4 font-semibold " title="pre študentov, kurzy ,akadémie a inštruktorov.">Filtrovanie dokončiť</h4>
-        <h4 class="my-4 font-semibold " title="- musí to vedieť že či existuje už daný študent a keď nie tak vytvoriť nového inak priradiť.">Vytváranie prihlášky</h4><h4 class="my-4 font-semibold " title="Do prehľadu / typu kurzu">Pridať študenta - tlačidlo</h4>
-        <h4 class="my-4 font-semibold " title="Študentovi">Pridať prihlášku - tlačidlo</h4>
+        {{-- <h4 class="my-4 font-semibold " title="- musí to vedieť že či existuje už daný študent a keď nie tak vytvoriť nového inak priradiť.">Vytváranie prihlášky</h4><h4 class="my-4 font-semibold " title="Do prehľadu / typu kurzu">Pridať študenta - tlačidlo</h4>
+        <h4 class="my-4 font-semibold " title="Študentovi">Pridať prihlášku - tlačidlo</h4> --}}
         <h4 class="my-4 font-semibold " title="-dorobiť views pre jednotlivých študentov, inštruktorov, prihlášku,typ kurzu, akadémie, .">Urobiť zobrazenia show</h4>
         {{-- <h4 class="my-4 font-semibold " title="- Niejak vymyslieť že buď vytvoríme meno heslo a pošleme mu alebo že ho musí zmeniť prípadne že by on mohol vytvoriť heslo po emaile.">Vytváranie inštruktorov</h4>
         <h4 class="my-4 font-semibold " title="">Spravovanie inštruktorov</h4> --}}

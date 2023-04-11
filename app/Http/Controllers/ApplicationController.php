@@ -6,6 +6,7 @@ use App\Models\Academy;
 use App\Models\Application;
 use App\Models\CourseType;
 use App\Models\Student;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -18,16 +19,27 @@ class ApplicationController extends Controller
     public function index(Request $request)
     {
         //   dd($request);
-        $applications = Application::with(['academy', 'coursetype', 'student']);
-
-        // spracovanie filtrov
-        if ($request->filled('academy_id')&&$request->filled('coursetype_id')) {
-            $filter = $request->input('coursetype_id');
-          $applications->where('coursetype_id', $filter);
+        if ($request->filled('search')) {
+            $applications = Application::with(['academy', 'coursetype', 'student'])
+                ->whereHas('student', function (Builder $query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->input('search') . '%')->orWhere('lastname', 'like', '%' . $request->input('search') . '%')->where('email', 'like', '%' . $request->input('search') . '%');
+                })->orWhereHas('academy', function (Builder $query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->input('search') . '%');
+                })->orWhereHas('coursetype', function (Builder $query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->input('search') . '%');
+                });
+        } else {
+            $applications = Application::with(['academy', 'coursetype', 'student']);
         }
-        else if ($request->filled('academy_id')) {
+
+        // dd($request->input('search'));
+        // spracovanie filtrov
+        if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
+            $filter = $request->input('coursetype_id');
+            $applications->where('coursetype_id', $filter);
+        } else if ($request->filled('academy_id')) {
             $filter = $request->input('academy_id');
-          $applications->where('academy_id', $filter);
+            $applications->where('academy_id', $filter);
         }
 
         // zoradenie
@@ -35,20 +47,25 @@ class ApplicationController extends Controller
             $orderBy = $request->input('orderBy');
             $orderDirection = $request->input('orderDirection');
             $applications->orderBy($orderBy, $orderDirection);
+        } else {
+            $applications->orderBy('created_at', 'desc');
         }
 
-        // získanie prihlášok
+
         $applications = $applications->get();
+
+        // získanie prihlášok
 
         return view('admin.applications-index', [
             'applications' => $applications
         ]);
     }
-    
-    public function create(){
+
+    public function create()
+    {
         return view('applications-create');
     }
-   
+
 
     public function store()
     {
@@ -58,7 +75,7 @@ class ApplicationController extends Controller
 
 
         if ($validation->fails()) {
-            
+
             $rule1 = Rule::exists('students', 'name')->where('email', request()->email);
             $rule2 = Rule::exists('students', 'lastname')->where('email', request()->email);
 
@@ -112,13 +129,13 @@ class ApplicationController extends Controller
             'days' => $attributes['days'],
             'time' => $attributes['time']
         ]);
+        session()->forget('student_id');
+        session()->forget('coursetype_id');
 
         return back();
-    } 
-    public function admincreate(){
+    }
+    public function admincreate()
+    {
         return view('admin.applications-create');
     }
-
-    
-    
 }
