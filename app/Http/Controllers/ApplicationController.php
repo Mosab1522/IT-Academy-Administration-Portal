@@ -118,5 +118,7 @@ class ApplicationController extends Controller
     public function admincreate(){
         return view('admin.applications-create');
     }
+
+    
     
 }

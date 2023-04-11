@@ -44,3 +44,53 @@ $('[data-nextcombo]').each(function(i, obj) {
     });
 });
 }();
+
+function debounce(fn, delay) {
+    let timer = null;
+    return function () {
+        let context = this;
+        let args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            fn.apply(context, args);
+        }, delay);
+    };
+}
+
+function searchStudents() {
+    let name = document.querySelector('input[name="name"]').value;
+    let lastname = document.querySelector('input[name="lastname"]').value;
+    let email = document.querySelector('input[name="email"]').value;
+    let searchResults = document.getElementById('search-results');
+
+    axios.get('/search-students', {
+        params: {
+            name: name,
+            lastname: lastname,
+            email: email
+        }
+    }).then(response => {
+        searchResults.innerHTML = '';
+        let students = response.data;
+        students.forEach(student => {
+            let option = document.createElement('div');
+            option.innerHTML = student.name + ' ' + student.lastname + ' (' + student.email + ')';
+            option.addEventListener('click', function () {
+                document.querySelector('input[name="name"]').value = student.name;
+                document.querySelector('input[name="lastname"]').value = student.lastname;
+                document.querySelector('input[name="email"]').value = student.email;
+                searchResults.innerHTML = '';
+            });
+            searchResults.appendChild(option);
+        });
+    }).catch(error => {
+        console.error(error);
+    });
+}
+
+document.querySelector('input[name="name"]').addEventListener('input', debounce(searchStudents, 10));
+document.querySelector('input[name="lastname"]').addEventListener('input', debounce(searchStudents, 10));
+document.querySelector('input[name="email"]').addEventListener('input', debounce(searchStudents, 10));
+
+
+
