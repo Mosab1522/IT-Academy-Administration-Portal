@@ -3,8 +3,10 @@
 use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\AkademieController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PrihlaskyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
@@ -41,8 +43,9 @@ Route::post('admin/coursetypes/create',[CourseTypeController::class,'store']);
 
 Route::get('admin/students',[StudentController::class,'index']);
 
-
-
+Route::get('admin/instructors',[InstructorController::class,'index']);
+Route::get('admin/instructors/create',[InstructorController::class,'create']); 
+Route::post('admin/instructors/create',[InstructorController::class,'store']); 
 
 
 
