@@ -31,6 +31,8 @@ Route::get('admin/applications',[ApplicationController::class,'index'])->name('a
 
 Route::get('/',[ApplicationController::class,'create']); 
 Route::post('/',[ApplicationController::class,'store']); 
+Route::get('admin/applications/create',[ApplicationController::class,'admincreate']); 
+
 
 Route::get('admin/academies',[AcademyController::class,'index']);
 Route::get('admin/academies/create',[AcademyController::class,'create']); 

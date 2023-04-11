@@ -36,15 +36,14 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // dd(session('instructor_id'));
-
+        $instructor_id = session('instructor_id');
         $user = User::create([
             'nickname' => $request->nickname,
-            'user_id' => session('instructor_id'),
+            'user_id' => $instructor_id,
             'password' => password_hash($request->password, PASSWORD_ARGON2ID, ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3]),
         ]);
 
-        // event(new Registered($user));
+         event(new Registered($user));
 
 
         return redirect('/');

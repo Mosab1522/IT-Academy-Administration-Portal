@@ -7,9 +7,10 @@
         <h4 class="my-4 font-semibold " title="- musí to vedieť že či existuje už daný študent a keď nie tak vytvoriť nového inak priradiť.">Vytváranie prihlášky</h4><h4 class="my-4 font-semibold " title="Do prehľadu / typu kurzu">Pridať študenta - tlačidlo</h4>
         <h4 class="my-4 font-semibold " title="Študentovi">Pridať prihlášku - tlačidlo</h4>
         <h4 class="my-4 font-semibold " title="-dorobiť views pre jednotlivých študentov, inštruktorov, prihlášku,typ kurzu, akadémie, .">Urobiť zobrazenia show</h4>
-        <h4 class="my-4 font-semibold " title="- Niejak vymyslieť že buď vytvoríme meno heslo a pošleme mu alebo že ho musí zmeniť prípadne že by on mohol vytvoriť heslo po emaile.">Vytváranie inštruktorov</h4>
-        <h4 class="my-4 font-semibold " title="">Spravovanie inštruktorov</h4>
+        {{-- <h4 class="my-4 font-semibold " title="- Niejak vymyslieť že buď vytvoríme meno heslo a pošleme mu alebo že ho musí zmeniť prípadne že by on mohol vytvoriť heslo po emaile.">Vytváranie inštruktorov</h4>
+        <h4 class="my-4 font-semibold " title="">Spravovanie inštruktorov</h4> --}}
         <h4 class="my-4 font-semibold " title="-asi notifikácia / email adminovi a ten mu to musí potvrdiť.">Reset hesla inštruktorovi</h4>
+        <h4 class="my-4 font-semibold " title="">Urobiť edit a delete</h4>
         <h4 class="my-4 font-semibold " title="- vytváranie, spravovanie, trigger,  ">Začať riešiť už normálne kurzy</h4>
         <h4 class="my-4 font-semibold " title="- treba že či tak ako vo videu to rozlíšil že admin alebo úplne iné pohľady. ">Pohľad pre inštruktora</h4>
         <h4 class="relative bottom-0 font-semibold " title="-php basics ten 7 hodinovy na laracaste, - eloquent relations na laracaste, niečo na validáciu">Kuknúť videá</h4>
@@ -73,6 +74,11 @@
                                     <a href="/admin/instructors/create"
                                         class="{{request()->is('admin/instructors/create') ? 'text-blue-500' : ''}}">- Nový
                                         inštruktor</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/applications/create"
+                                        class="{{request()->is('admin/applications/create') ? 'text-blue-500' : ''}}">- Nová
+                                        prihláška</a>
                                 </li>
                             </ul>
                         </li>

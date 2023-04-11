@@ -48,10 +48,10 @@ class ApplicationController extends Controller
     public function create(){
         return view('applications-create');
     }
+   
 
     public function store()
     {
-
         $email['email'] = request()->email;
         $rule = array('email' => ['required', 'email', 'max:255', Rule::unique('students', 'email')]);
         $validation = Validator($email, $rule);
@@ -114,6 +114,9 @@ class ApplicationController extends Controller
         ]);
 
         return back();
+    } 
+    public function admincreate(){
+        return view('admin.applications-create');
     }
     
 }
