@@ -17,8 +17,8 @@ if(request()->coursetype_id)
         @endphp
         @endif
         @unless(session('student_id'))
-        <div class="flex">
-            <div class="w-1/3">
+        <div class="flex min-w-full">
+            <div class="w-1/3 h-">
                 <x-form.input name="name" />
                 <x-form.input name="lastname" />
                 <x-form.input name="email" />
@@ -32,10 +32,15 @@ if(request()->coursetype_id)
             <label for="email">Email:</label>
             <input type="email" name="email" id="email">--}}
 
-            <div class="ml-8">
+            <div class="ml-8 w-2/3">
                 <x-form.field>      
                     <h2 class="mt-6 mb-2 uppercase font-bold text-base">Návrhy</h2>
-                    <p  class="block mb-2 uppercase font-bold text-sm cursor-pointer text-gray-700" id="search-results"></p>
+                    {{-- <p  class="block mb-2 uppercase font-bold text-sm cursor-pointer text-gray-700" id="search-results"></p> --}}
+                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table id="search-results" class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
+
+                    </table>
+                    </div>
                 </x-form.field>
             </div>
         </div>

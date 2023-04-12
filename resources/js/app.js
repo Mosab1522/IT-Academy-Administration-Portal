@@ -73,8 +73,8 @@ function searchStudents() {
         searchResults.innerHTML = '';
         let students = response.data;
         students.forEach(student => {
-            let option = document.createElement('div');
-            option.innerHTML = student.name + ' ' + student.lastname + ' (' + student.email + ')';
+            let option = document.createElement('tr');
+            option.innerHTML =  '<td px-6 py-4 whitespace-nowrap>' + student.name + '</td><td  px-6 py-4 whitespace-nowrap>' + student.lastname + '</td> <td  px-6 py-4 whitespace-nowrap>' + student.email + '</td></tr>';
             option.addEventListener('click', function () {
                 document.querySelector('input[name="name"]').value = student.name;
                 document.querySelector('input[name="lastname"]').value = student.lastname;
@@ -88,9 +88,9 @@ function searchStudents() {
     });
 }
 
-document.querySelector('input[name="name"]').addEventListener('input', debounce(searchStudents, 10));
-document.querySelector('input[name="lastname"]').addEventListener('input', debounce(searchStudents, 10));
-document.querySelector('input[name="email"]').addEventListener('input', debounce(searchStudents, 10));
+document.querySelector('input[name="name"]').addEventListener('input', debounce(searchStudents, 100));
+document.querySelector('input[name="lastname"]').addEventListener('input', debounce(searchStudents, 100));
+document.querySelector('input[name="email"]').addEventListener('input', debounce(searchStudents, 100));
 
 
 
