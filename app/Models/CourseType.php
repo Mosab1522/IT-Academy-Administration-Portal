@@ -22,6 +22,6 @@ class CourseType extends Model
 
     public function instructors()
     {
-        return $this->belongsToMany(Instructor::class,'coursetype_instructor');
+        return $this->belongsToMany(Instructor::class, 'coursetype_instructor', 'coursetype_id', 'instructor_id');
     }
 }

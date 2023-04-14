@@ -18,30 +18,32 @@ class ApplicationController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
+            $filter = $request->input('coursetype_id');
+            $applications= Application::with(['academy', 'coursetype', 'student'])->where('coursetype_id', $filter);
+        } else if ($request->filled('academy_id')) {
+            $filter = $request->input('academy_id');
+            $applications= Application::with(['academy', 'coursetype', 'student'])->where('academy_id', $filter);
+        }
+        else{
+            $applications=Application::with(['academy', 'coursetype', 'student']);
+        }
+
         //   dd($request);
         if ($request->filled('search')) {
-            $applications = Application::with(['academy', 'coursetype', 'student'])
+            $applications = $applications
                 ->whereHas('student', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%')->orWhere('lastname', 'like', '%' . $request->input('search') . '%')->where('email', 'like', '%' . $request->input('search') . '%');
+                    $query->where('name', 'like', '%' . $request->input('search') . '%')->orWhere('lastname', 'like', '%' . $request->input('search') . '%')->orWhere('email', 'like', '%' . $request->input('search') . '%');
                 })->orWhereHas('academy', function (Builder $query) use ($request) {
                     $query->where('name', 'like', '%' . $request->input('search') . '%');
                 })->orWhereHas('coursetype', function (Builder $query) use ($request) {
                     $query->where('name', 'like', '%' . $request->input('search') . '%');
                 });
-        } else {
-            $applications = Application::with(['academy', 'coursetype', 'student']);
-        }
+        } 
 
         // dd($request->input('search'));
         // spracovanie filtrov
-        if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
-            $filter = $request->input('coursetype_id');
-            $applications->where('coursetype_id', $filter);
-        } else if ($request->filled('academy_id')) {
-            $filter = $request->input('academy_id');
-            $applications->where('academy_id', $filter);
-        }
-
+        
         // zoradenie
         if ($request->filled('orderBy')) {
             $orderBy = $request->input('orderBy');

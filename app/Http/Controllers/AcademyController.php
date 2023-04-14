@@ -8,10 +8,31 @@ use Illuminate\Validation\Rule;
 
 class AcademyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+         if ($request->filled('search')) {
+            $academies = Academy::with(['coursetypes', 'applications'])->where('name', 'like', '%' . $request->input('search') . '%');
+    
+        } else {
+            $academies = Academy::with(['coursetypes', 'applications']);
+        }
+
+        // dd($request->input('search'));
+        // spracovanie filtrov
+
+        // zoradenie
+        if ($request->filled('orderBy')) {
+            $orderBy = $request->input('orderBy');
+            $orderDirection = $request->input('orderDirection');
+            $academies->orderBy($orderBy, $orderDirection);
+        } else {
+            $academies->orderBy('created_at', 'desc');
+        }
+
+        $academies = $academies->get();
+
         return view('admin.academies-index', [
-            'academies' => Academy::with(['coursetypes','applications'])->get()
+            'academies' => $academies
         ]);
     }
 

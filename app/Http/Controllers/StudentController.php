@@ -7,10 +7,30 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->filled('search')) {
+            $students = Student::with('applications')->where('name', 'like', '%' . $request->input('search') . '%')->orWhere('lastname', 'like', '%' . $request->input('search') . '%')->orWhere('email', 'like', '%' . $request->input('search') . '%');
+        } else {
+            $students = Student::with('applications');
+        }
+
+        // dd($request->input('search'));
+        // spracovanie filtrov
+
+        // zoradenie
+        if ($request->filled('orderBy')) {
+            $orderBy = $request->input('orderBy');
+            $orderDirection = $request->input('orderDirection');
+            $students->orderBy($orderBy, $orderDirection);
+        } else {
+            $students->orderBy('created_at', 'desc');
+        }
+
+        $students = $students->get();
+
         return view('admin.students-index', [
-            'students' => Student::with('applications')->get()
+            'students' => $students
         ]);
     }
 
