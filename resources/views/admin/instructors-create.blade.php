@@ -27,7 +27,7 @@
                         @endforeach
                         {{-- <option value="" disabled selected hidden>Akadémia</option>
                         <option value="1" data-id="1" data-option="-1">Cisco</option>
-                        <option value="2" data-id="2" data-option="-1">Adobe</option> 
+                        <option value="2" data-id="2" data-option="-1">Adobe</option>
                     </select>
                 </div>
                 <div class="ml-4">
@@ -40,12 +40,12 @@
                         <option value="2" data-id="2" data-option="1">Stredny</option>
                         <option value="3" data-id="3" data-option="2">Photoshop</option>
                         <option value="4" data-id="4" data-option="2">Illustrator</option>
-                    </select> 
+                    </select>
                     <select name="coursetypes_id[1]" id="coursetypes_id[1]" class="combo-b1" disabled>
                         <option value="" disabled selected hidden>Typ kurzu</option>
                         {{-- @php
                         $academy = \App\Models\CourseType::all();
-                        @endphp 
+                        @endphp
                         @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
                         <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
                             {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
@@ -60,32 +60,33 @@
             <div class="selects-pair" data-pair-id="1">
                 <select name="academy_id[]" class="academy-select" data-pair-id="1">
                     <option value="" disabled selected hidden>Akadémia</option>
-                        @php
-                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
-                        ->get();
-                        @endphp
-                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])
-                        ->get() as $academ)
-                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
-                            {{old('academy_id')==$academ->id ? 'selected' : ''}}>{{
-                            ucwords($academ->name)}}</option>
-                        @endforeach
+                    @php
+                    $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                    ->get();
+                    @endphp
+                    @foreach (\App\Models\Academy::with(['coursetypes','applications'])
+                    ->get() as $academ)
+                    <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
+                        {{old('academy_id')==$academ->id ? 'selected' : ''}}>{{
+                        ucwords($academ->name)}}</option>
+                    @endforeach
                 </select>
                 <select name="coursetype_id[]" class="coursetype-select" data-pair-id="1">
                     <option value="" disabled selected hidden>Typ kurzu</option>
-                        {{-- @php
-                        $academy = \App\Models\CourseType::all();
-                        @endphp --}}
-                        @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
-                        <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
-                            {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
-                            ucwords($type->name) }}</option>
-                        @endforeach
+                    {{-- @php
+                    $academy = \App\Models\CourseType::all();
+                    @endphp --}}
+                    @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
+                    <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
+                        {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
+                        ucwords($type->name) }}</option>
+                    @endforeach
                 </select>
-        
+                {{-- <button class="remove-selects-btn" data-pair-id="1">Remove</button> --}}
+
             </div>
         </div>
-        
+
         <button type="button" id="add-selects-btn">Add selects pair</button>
 
         {{-- <x-form.field>
@@ -107,7 +108,7 @@
                         @endforeach
                         {{-- <option value="" disabled selected hidden>Akadémia</option>
                         <option value="1" data-id="1" data-option="-1">Cisco</option>
-                        <option value="2" data-id="2" data-option="-1">Adobe</option> 
+                        <option value="2" data-id="2" data-option="-1">Adobe</option>
                     </select>
                 </div>
                 <div class="ml-4">
@@ -120,12 +121,12 @@
                         <option value="2" data-id="2" data-option="1">Stredny</option>
                         <option value="3" data-id="3" data-option="2">Photoshop</option>
                         <option value="4" data-id="4" data-option="2">Illustrator</option>
-                    </select> 
+                    </select>
                     <select name="coursetypes_id[2]" id="coursetypes_id[2]" class="combo-b2" disabled>
                         <option value="" disabled selected hidden>Typ kurzu</option>
                         {{-- @php
                         $academy = \App\Models\CourseType::all();
-                        @endphp 
+                        @endphp
                         @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
                         <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
                             {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
@@ -173,18 +174,26 @@
             coursetypeSelect.innerHTML = firstCoursetypeSelect.innerHTML;
             coursetypeSelect.value = firstCoursetypeSelect.value;
         }
+        const removeBtn = document.createElement('button');
+  removeBtn.classList.add('remove-selects-btn');
+  removeBtn.setAttribute('type', 'button');
+  removeBtn.textContent = 'Remove';
+  removeBtn.setAttribute('data-pair-id', pairsCount);
+  removeBtn.addEventListener('click', removeSelectPair);
     
         pairWrapper.appendChild(academySelect);
         pairWrapper.appendChild(coursetypeSelect);
+        pairWrapper.appendChild(removeBtn);
         selectsContainer.appendChild(pairWrapper);
     }
+
     
-    function removeSelectsPair(pairId) {
-        const pairWrapper = document.querySelector(`.selects-pair[data-pair-id="${pairId}"]`);
-        if (pairWrapper) {
-            selectsContainer.removeChild(pairWrapper);
-        }
-    }
+    
+    function removeSelectPair(event) {
+  const pairId = event.target.getAttribute('data-pair-id');
+  const selectPair = document.querySelector(`.selects-pair[data-pair-id="${pairId}"]`);
+  selectPair.remove();
+}
     
     addSelectsBtn.addEventListener('click', addSelectsPair);
     selectsContainer.addEventListener('change', event => {
@@ -200,4 +209,4 @@
     
     // Usage
     addSelectsPair(); // Create initial pair of selects
-    </script>
+</script>
