@@ -137,7 +137,7 @@ class InstructorController extends Controller
 
     public function store()
     {
-         dd(request()->all());
+        //   dd(request()->all());
 
         $attributes = request()->validate([
             'name' => ['required', 'max:255'],

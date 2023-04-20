@@ -72,7 +72,7 @@ class ApplicationController extends Controller
     public function store()
     {
         $email['email'] = request()->email;
-        $rule = array('email' => ['required', 'email', 'max:255', Rule::unique('students', 'email')]);
+        $rule = array('email' => [ Rule::unique('students', 'email')]);
         $validation = Validator($email, $rule);
 
 
@@ -91,6 +91,7 @@ class ApplicationController extends Controller
                 $attributes = request()->validate([
                     'name' => ['required', 'max:255', $rule1],
                     'lastname' => ['required', 'max:255', $rule2],
+                    'email' => ['required', 'email', 'max:255'],
                     // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
                     'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
                     'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
@@ -103,7 +104,8 @@ class ApplicationController extends Controller
             $attributes = request()->validate([
                 'name' => ['required', 'max:255'],
                 'lastname' => ['required', 'max:255'],
-                // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
+                 'email' => ['required', 'email', 'max:255'],
+                //   'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
                 'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
                 'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
                 'days' => ['required', 'integer'],
