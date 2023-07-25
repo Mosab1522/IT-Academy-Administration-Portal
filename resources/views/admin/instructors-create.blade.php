@@ -67,7 +67,7 @@
                         @endphp --}}
                         @foreach (\App\Models\Academy::with(['coursetypes', 'applications'])->get() as $academ)
                         <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{
-                            old('academy_id')==$academ->id ? 'selected' : '' }}>{{ ucwords($academ->name) }}</option>
+                            old('academy_id.0')==$academ->id ? 'selected' : '' }}>{{ ucwords($academ->name) }}</option>
                         @endforeach
 
                     </select><select name="coursetypes_id[]" id="coursetype" class="coursetype-select" data-pair-id="1">
@@ -78,7 +78,7 @@
                         @endphp --}}
                         @foreach (\App\Models\CourseType::with(['academy', 'applications'])->get() as $type)
                         <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
-                            {{ old('coursetype_id')==$type->id ? 'selected' : '' }}>{{ ucwords($type->name) }}</option>
+                            {{ old('coursetype_id.0')==$type->id ? 'selected' : '' }}>{{ ucwords($type->name) }}</option>
                         @endforeach
                     </select>
                     {{-- <button class="remove-selects-btn" data-pair-id="1">Remove</button> --}}

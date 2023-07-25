@@ -137,7 +137,7 @@ class InstructorController extends Controller
 
     public function store()
     {
-        //   dd(request()->all());
+         
 
         $attributes = request()->validate([
             'name' => ['required', 'max:255'],
@@ -147,7 +147,7 @@ class InstructorController extends Controller
             'coursetypes_id.*' => 'distinct|exists:course_types,id'
 
         ]);
-
+         
         $instructor = Instructor::create([
             'name' => $attributes['name'],
             'lastname' => $attributes['lastname'],
@@ -158,8 +158,8 @@ class InstructorController extends Controller
                 $coursetype = CourseType::find($coursetype_id);
                 $instructor->coursetypes()->save($coursetype);
             }
+           
         }
-
         session(['instructor_id' => $instructor['id']]);
 
         return redirect('/admin/login/create');

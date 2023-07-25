@@ -12,7 +12,7 @@
         <x-form.textarea name="excerpt" />
         <x-form.textarea name="body" /> --}}
 
-        <select id="genre" onchange="setValue(this.value)">
+        {{-- <select id="genre" onchange="setValue(this.value)">
             <option value="Metal">Metal</option>
             <option value="Rock">Rock</option>
           </select>
@@ -22,7 +22,7 @@
             <option value="Metal" data-option="Metal">Black Metal</option>
             <option value="Rock" data-option="Rock">Classic Rock</option>
             <option value="Rock" data-option="Rock">Hard Rock</option>
-          </select>
+          </select> --}}
 
         <x-form.field>
             <div class="flex">

@@ -6,33 +6,33 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
-$(document).ready(function() {
-    // Nastaviť default hodnoty pre selecty
+// $(document).ready(function() {
+//     // Nastaviť default hodnoty pre selecty
     
-    if (!oldInput['coursetype_id']) {
-         setSubOptions('Rock');
-      }
+//     if (!oldInput['coursetype_id']) {
+//          setSubOptions('Rock');
+//       }
          
-});
-const academySelect = document.querySelector("#genre");
-const coursetypeSelect = document.querySelector("#subgenre");
-const subOptions = coursetypeSelect.querySelectorAll("option");
+// });
+// const academySelect = document.querySelector("#genre");
+// const coursetypeSelect = document.querySelector("#subgenre");
+// const subOptions = coursetypeSelect.querySelectorAll("option");
 
-const setSubOptions = (newValue) => {
-    coursetypeSelect.innerText = null;
-    for (let i = 0; i < subOptions.length; i++) {
-        if (subOptions[i].dataset.option === newValue) {
-            coursetypeSelect.appendChild(subOptions[i].cloneNode(true));
-        }
-    }
-};
+// const setSubOptions = (newValue) => {
+//     coursetypeSelect.innerText = null;
+//     for (let i = 0; i < subOptions.length; i++) {
+//         if (subOptions[i].dataset.option === newValue) {
+//             coursetypeSelect.appendChild(subOptions[i].cloneNode(true));
+//         }
+//     }
+// };
 
-// pridaj udalost 'change' na academySelect
-academySelect.addEventListener('change', (event) => {
-    const newValue = event.target.value;
-    console.log(newValue);
-    setSubOptions(newValue);
-});
+// // pridaj udalost 'change' na academySelect
+// academySelect.addEventListener('change', (event) => {
+//     const newValue = event.target.value;
+//     console.log(newValue);
+//     setSubOptions(newValue);
+// });
 
 function jq_ChainCombo(el) {
     var selected = $(el).find(':selected').data('id');
@@ -168,7 +168,7 @@ function addSelectsPair() {
     pairWrapper.appendChild(removeBtn);
     selectsContainer.appendChild(pairWrapper);
 }
-addSelectsPair();
+
 
 
 
@@ -275,6 +275,7 @@ const coursetypeOptions = coursetype.querySelectorAll("option");
 
 $(document).ready(function() {
     // Nastaviť default hodnoty pre selecty
+   
     const academySelects = document.querySelectorAll('.academy-select');
     academySelects.forEach(function(select) {
       select.value = '';
@@ -300,6 +301,7 @@ $(document).ready(function() {
       };
       setValue(academySelect.value);
     });
+     
   
     // Vypočítať zodpovedajúce typy kurzov pre default hodnoty
 
