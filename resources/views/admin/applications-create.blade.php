@@ -67,6 +67,7 @@ if(request()->coursetype_id)
             <input name="academy_id" value="{{$coursetype->academy->id}}" hidden />
             <input name="coursetype_id" value="{{$coursetype->id}}" hidden />
             @endif
+            
             <div class="flex">
                 <div>
                     <x-form.label name="akadémia" />

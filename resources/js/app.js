@@ -6,6 +6,34 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+$(document).ready(function() {
+    // Nastaviť default hodnoty pre selecty
+    
+    if (!oldInput['coursetype_id']) {
+         setSubOptions('Rock');
+      }
+         
+});
+const academySelect = document.querySelector("#genre");
+const coursetypeSelect = document.querySelector("#subgenre");
+const subOptions = coursetypeSelect.querySelectorAll("option");
+
+const setSubOptions = (newValue) => {
+    coursetypeSelect.innerText = null;
+    for (let i = 0; i < subOptions.length; i++) {
+        if (subOptions[i].dataset.option === newValue) {
+            coursetypeSelect.appendChild(subOptions[i].cloneNode(true));
+        }
+    }
+};
+
+// pridaj udalost 'change' na academySelect
+academySelect.addEventListener('change', (event) => {
+    const newValue = event.target.value;
+    console.log(newValue);
+    setSubOptions(newValue);
+});
+
 function jq_ChainCombo(el) {
     var selected = $(el).find(':selected').data('id');
     var next_combo = $(el).data('nextcombo');
@@ -312,16 +340,6 @@ $('#selects-container').on('change', '.academy-select', function (event) {
         }
     }
 });
-
-
-   
-      
-  
-// Usage
- // Create initial pair of selects
-
-
-
 
 
 

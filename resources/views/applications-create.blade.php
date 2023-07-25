@@ -12,6 +12,18 @@
         <x-form.textarea name="excerpt" />
         <x-form.textarea name="body" /> --}}
 
+        <select id="genre" onchange="setValue(this.value)">
+            <option value="Metal">Metal</option>
+            <option value="Rock">Rock</option>
+          </select>
+          <select id="subgenre">
+            <option value="Metal" data-option="Metal">Thrash Metal</option>
+            <option value="Metal" data-option="Metal">Death Metal</option>
+            <option value="Metal" data-option="Metal">Black Metal</option>
+            <option value="Rock" data-option="Rock">Classic Rock</option>
+            <option value="Rock" data-option="Rock">Hard Rock</option>
+          </select>
+
         <x-form.field>
             <div class="flex">
                 <div>
@@ -111,3 +123,8 @@
         </x-form.button>
     </form>
 </x-setting>
+
+<script>
+ var oldInput = {!! json_encode(old()) !!};
+
+</script>
