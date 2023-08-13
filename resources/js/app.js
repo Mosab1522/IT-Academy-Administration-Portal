@@ -6,6 +6,8 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+
+
 function swith() {
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("novy");

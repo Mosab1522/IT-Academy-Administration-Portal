@@ -115,6 +115,17 @@ session()->forget('instructor_id');
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
+                                        <div class=" text-sm font-medium text-gray-900">
+                                           <img style="
+                                            width: 100px; 
+                                            height: 100px; 
+                                            object-fit: cover;
+                                            object-position: 25% 25%;"  class="rounded-xl " src="{{asset('storage/' . $instructor->photo)}}" alt="">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
                                             <a href="/admin/academies/{{ $instructor->id }}">
                                                 {{$instructor->name }}{{$instructor->lastname}}

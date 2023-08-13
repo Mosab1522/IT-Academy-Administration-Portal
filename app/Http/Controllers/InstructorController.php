@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 
 
+
 class InstructorController extends Controller
 {
 
@@ -142,20 +143,25 @@ class InstructorController extends Controller
 
 
 
-        $attributes = request()->validate([
-            'name' => ['required', 'max:255'],
-            'lastname' => ['required', 'max:255'],
-            'photo' => ['image'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
-            'sekemail' => ['email', 'nullable', 'different:email', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
-            'telephone' => [
-                'nullable',
-                'regex:/^\+421\s?\d{3}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/', Rule::unique('instructors', 'telephone')
-            ],
-            'coursetypes_id' => ['array',],
-            'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
+        $attributes = request()->validate(
+            [
+                'name' => ['required', 'max:255'],
+                'lastname' => ['required', 'max:255'],
+                'photo' => ['image'],
+                'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
+                'sekemail' => ['email', 'nullable', 'different:email', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
+                'telephone' => [
+                    'nullable',
+                    'regex:/^\+421\s?\d{3}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/', Rule::unique('instructors', 'telephone')
+                ],
+                'ulicacislo' => ['nullable', 'required_with:mestoobec,psc', 'min:3', 'max:255'],
+                'mestoobec' => ['nullable', 'required_with:ulicacislo,psc', 'min:1', 'max:255'],
+                'psc' => ['nullable', 'required_with:mestoobec,ulicacislo', 'min:6', 'max:6'],
 
-        ]);
+                'coursetypes_id' => ['array',],
+                'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
+            ]
+        );
         if (empty($attributes['telephone'])) {
             $attributes['telephone'] = NULL;
         } else {
@@ -179,7 +185,7 @@ class InstructorController extends Controller
         // {
         //     throw ValidationException::withMessages(['email' => 'Zadali ste totožné emaily.']);
         // }
-       
+
         $attributes['photo'] ??= NULL;
         //  dd($attributes);
         if ($attributes['photo']) {

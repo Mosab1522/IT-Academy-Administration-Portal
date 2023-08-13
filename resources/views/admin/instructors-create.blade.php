@@ -7,8 +7,15 @@
         <x-form.input name="lastname" />
         <x-form.input name="email" type="email"/>
         <x-form.input name="sekemail" type="email"/>
-        <x-form.input name="photo" type="file"/>
+
+        <input type="file" name="photo">
+       
         <x-form.input name="telephone" type="tel"/>
+
+
+        <x-form.input name="ulicacislo" />
+        <x-form.input name="mestoobec" />
+        <x-form.input name="psc" />
 
 
         {{-- <x-form.field>
@@ -166,6 +173,7 @@
         </x-form.button>
     </form>
 </x-setting>
+
 <script >
 //     const academy = document.querySelector("#academy");
 // const coursetype = document.querySelector("#coursetype");
@@ -200,3 +208,4 @@
 //     });
 
 </script>
+

@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('sekemail')->unique()->nullable();
             $table->string('photo')->nullable();
             $table->string('telephone')->unique()->nullable();
+            $table->tinyText('ulicacislo')->nullable();
+            $table->string('mestoobec')->nullable();
+            $table->string('psc')->nullable();
             $table->timestamps();
         });
     }
