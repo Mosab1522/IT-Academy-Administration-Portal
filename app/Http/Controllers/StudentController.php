@@ -41,10 +41,17 @@ class StudentController extends Controller
     $email = $request->get('email');
 
     $students = Student::query()
-        ->where('name', 'like', '%' . $name . '%')
-        ->where('lastname', 'like', '%' . $lastname . '%')
-        ->where('email', 'like', '%' . $email . '%')
-        ->get();
+    ->where('name', 'like', '%' . $name . '%')
+    ->where('lastname', 'like', '%' . $lastname . '%')
+    ->where(function ($query) use ($email) {
+        $query->where('email', 'like', '%' . $email . '%')
+              ->orWhere('sekemail', 'like', '%' . $email . '%');
+    })
+    ->get();
+
+// Debugging
+// dd($students); // This will help you see the retrieved students
+
 
     return response()->json($students);
 }

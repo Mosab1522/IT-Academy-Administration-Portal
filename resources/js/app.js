@@ -6,6 +6,37 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+function swith() {
+document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("novy");
+    const registerForm = document.getElementById("stary");
+    const switchFormLink = document.getElementById("switch-form");
+    const switchFormLink2 = document.getElementById("switch-form2");
+  
+    switchFormLink.addEventListener("click", function (event) {
+      event.preventDefault();
+      
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+        switchFormLink.style.color="rgb(59, 130, 246)";
+        switchFormLink2.style.color="rgb(55 65 81)";
+      
+    });
+    switchFormLink2.addEventListener("click", function (event) {
+        event.preventDefault();
+        
+        
+          loginForm.style.display = "none";
+          registerForm.style.display = "block";
+          switchFormLink2.style.color="rgb(59, 130, 246)";
+          switchFormLink.style.color="rgb(55 65 81)";
+      });
+  });
+};
+
+
+  
+  swith();
 // $(document).ready(function() {
 //     // Nastaviť default hodnoty pre selecty
     
@@ -33,6 +64,127 @@ Alpine.start();
 //     console.log(newValue);
 //     setSubOptions(newValue);
 // });
+
+function handleFavLanguageRadio() {
+    const favLanguageRadios = document.querySelectorAll('input[name="status"]');
+    const additionalOptions = document.getElementById('ucm');
+    const additionalUCM = document.getElementById('ucmkari');
+    const additionalUCM2 = document.getElementById('ucmkari2');
+    const ina = document.getElementById('ina');
+    const nu = document.getElementById('nu');
+    const iny = document.getElementById('iny');
+    const ny = document.getElementById('ny');
+  
+    favLanguageRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.value === 'student' && radio.checked) {
+          additionalOptions.style.display = 'block';
+        } else {
+          additionalOptions.style.display = 'none';
+          additionalUCM.style.display = 'none';
+          additionalUCM2.style.display = 'none';
+          ina.style.display= 'none';
+          nu.value="";
+          nu.disabled=true;
+          iny.style.display= 'none';
+        ny.disabled=true;
+        ny.value="";
+          
+        document.getElementById("ucmka").checked = false;
+         document.getElementById("inam").checked = false;
+         document.getElementById("option3").checked = false;
+         document.getElementById("option4").checked = false;
+         document.getElementById("option5").checked = false;
+         document.getElementById("option6").checked = false;
+        }
+      });
+    });
+  }
+  
+  // Call the function to handle radio button selection
+  handleFavLanguageRadio();
+
+  function handleUCMradio() {
+    const UCMradios = document.querySelectorAll('input[name="skola"]');
+    const additionalUCM = document.getElementById('ucmkari');
+    const additionalUCM2 = document.getElementById('ucmkari2');
+    const ina = document.getElementById('ina');
+    const nu = document.getElementById('nu');
+    const iny = document.getElementById('iny');
+    const ny = document.getElementById('ny');
+
+  
+    UCMradios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.value === 'ucm' && radio.checked) {
+          additionalUCM.style.display = 'block';
+          additionalUCM2.style.display = 'block';
+          ina.style.display= 'none';
+          nu.disabled=true;
+          nu.value="";
+        } else {
+          additionalUCM.style.display = 'none';
+          additionalUCM2.style.display = 'none';
+          ina.style.display= 'block';
+
+          iny.style.display= 'none';
+        ny.disabled=true;
+        ny.value="";
+          
+          nu.disabled=false;
+          document.getElementById("option3").checked = false;
+          document.getElementById("option4").checked = false;
+          document.getElementById("option5").checked = false;
+          document.getElementById("option6").checked = false;
+        }
+      });
+    });
+
+    const programradio = document.querySelectorAll('input[name="program"]');
+
+    programradio.forEach(radio => {
+        radio.addEventListener('change', () => {
+          if (radio.value === 'iny' && radio.checked) {
+            iny.style.display= 'block';
+            ny.disabled=false;
+          } else {
+            iny.style.display= 'none';
+            ny.disabled=true;
+            ny.value="";
+          }
+        });
+      });
+  }
+  
+  // Call the function to handle radio button selection
+  handleUCMradio();
+
+// function handleStatusCheckbox() {
+//     const checkboxes = document.querySelectorAll('.status-checkbox');
+//     const additionalCheckboxes = document.getElementById('additional-checkboxes');
+  
+//     checkboxes.forEach(checkbox => {
+//       checkbox.addEventListener('change', () => {
+//         if (checkbox.checked) {
+//           // Show additional checkboxes if "student" is selected
+//           if (checkbox.value === 'student') {
+//             additionalCheckboxes.style.display = 'block';
+//             $("#checkbox2").prop("checked", false);
+//           }
+//           else {
+//             $("#checkbox").prop("checked", false);
+//             additionalCheckboxes.style.display = 'none';
+//           }
+//         } else {
+//           // Hide additional checkboxes if neither "student" nor "nestudent" is selected
+//           additionalCheckboxes.style.display = 'none';
+//         }
+//       });
+//     });
+//   }
+  
+  // Call the function to handle checkbox selection
+//   handleStatusCheckbox();
 
 function jq_ChainCombo(el) {
     var selected = $(el).find(':selected').data('id');
@@ -91,6 +243,10 @@ function searchStudents() {
     let email = document.querySelector('input[name="email"]').value;
     let searchResults = document.getElementById('search-results');
 
+    if (name == '' && lastname == '' && email == '') {
+      name="/";
+
+  }
     axios.get('/search-students', {
         params: {
             name: name,
@@ -98,19 +254,97 @@ function searchStudents() {
             email: email
         }
     }).then(response => {
-        searchResults.innerHTML = '';
-        let students = response.data;
-        students.forEach(student => {
-            let option = document.createElement('tr');
-            option.innerHTML =  '<td px-6 py-4 whitespace-nowrap>' + student.name + '</td><td  px-6 py-4 whitespace-nowrap>' + student.lastname + '</td> <td  px-6 py-4 whitespace-nowrap>' + student.email + '</td></tr>';
-            option.addEventListener('click', function () {
-                document.querySelector('input[name="name"]').value = student.name;
-                document.querySelector('input[name="lastname"]').value = student.lastname;
-                document.querySelector('input[name="email"]').value = student.email;
-                searchResults.innerHTML = '';
-            });
-            searchResults.appendChild(option);
+      searchResults.innerHTML = '';
+      let students = response.data;
+      students.forEach(student => {
+          let option = document.createElement('tr');
+  
+          // První sloupec s rowspan="2"
+          let nameCell = document.createElement('td');
+          nameCell.setAttribute('rowspan', '2');
+          nameCell.className = 'px-6 py-4 whitespace-nowrap';
+          nameCell.textContent = student.name;
+          option.appendChild(nameCell);
+  
+          // Druhý sloupec s rowspan="2"
+          let lastnameCell = document.createElement('td');
+          lastnameCell.setAttribute('rowspan', '2');
+          lastnameCell.className = 'px-6 py-4 whitespace-nowrap';
+          lastnameCell.textContent = student.lastname;
+          option.appendChild(lastnameCell);
+  
+          // Třetí sloupec s rowspan="2"
+          let emailCell = document.createElement('td');
+          // emailCell.setAttribute('rowspan', '2');
+          emailCell.className = 'text-xs font-bold px-3 py-2 whitespace-nowrap';
+          emailCell.textContent = student.email;
+          option.appendChild(emailCell);
+  
+          // Čtvrtý sloupec
+          let ulica = document.createElement('td');
+          ulica.className = 'text-xs px-3 py-2 whitespace-nowrap';
+          ulica.textContent = student.ulicacislo;
+          option.appendChild(ulica);
+
+          let mesto = document.createElement('td');
+          mesto.className = 'text-xs px-3 py-2 whitespace-nowrap';
+          mesto.textContent = student.mestoobec;
+          option.appendChild(mesto);
+
+          let pscCell = document.createElement('td');
+          pscCell.className = 'text-xs px-3 py-2 whitespace-nowrap';
+          pscCell.textContent = student.psc;
+          option.appendChild(pscCell);
+  
+          // Přidání prvního řádku do tabulky
+          searchResults.appendChild(option);
+  
+          // Druhý řádek s dodatečným sloupcem
+          let suboption = document.createElement('tr');
+          let subemail = document.createElement('td');
+          subemail.className = 'text-xs font-normal text-gray-600 px-3 py-2 whitespace-nowrap';
+          subemail.textContent = student.sekemail;
+          suboption.appendChild(subemail);
+
+          let suboptionCell = document.createElement('td');
+          suboptionCell.className = 'text-xs px-3 py-2 whitespace-nowrap';
+          suboptionCell.textContent = student.status;
+          suboption.appendChild(suboptionCell);
+
+          let skola = document.createElement('td');
+          skola.className = 'text-xs px-3 py-2 whitespace-nowrap';
+          skola.textContent = student.skola;
+          suboption.appendChild(skola);
+
+          let studium = document.createElement('td');
+          studium.className = 'text-xs px-3 py-2 whitespace-nowrap';
+          studium.textContent = student.studium;
+          suboption.appendChild(studium);
+
+          let program = document.createElement('td');
+          program.className = 'text-xs px-3 py-2 whitespace-nowrap';
+          program.textContent = student.program;
+          suboption.appendChild(program);
+  
+          // Přidání druhého řádku do tabulky
+          searchResults.appendChild(suboption);
+  
+          // Události pro první řádek
+          option.setAttribute('title', student.email);
+          option.addEventListener('click', function () {
+              document.querySelector('input[name="name"]').value = student.name;
+              document.querySelector('input[name="lastname"]').value = student.lastname;
+              document.querySelector('input[name="email"]').value = student.email;
+              searchResults.innerHTML = '';
+          });
+          suboption.addEventListener('click', function () {
+            document.querySelector('input[name="name"]').value = student.name;
+            document.querySelector('input[name="lastname"]').value = student.lastname;
+            document.querySelector('input[name="email"]').value = student.email;
+            searchResults.innerHTML = '';
         });
+      });
+
     }).catch(error => {
         console.error(error);
     });
@@ -275,7 +509,9 @@ const coursetypeOptions = coursetype.querySelectorAll("option");
 
 $(document).ready(function() {
     // Nastaviť default hodnoty pre selecty
-   
+    if (oldInput['coursetype_id']) {
+        console.log(oldInput['coursetype_id'])
+         };
     const academySelects = document.querySelectorAll('.academy-select');
     academySelects.forEach(function(select) {
       select.value = '';
@@ -342,6 +578,8 @@ $('#selects-container').on('change', '.academy-select', function (event) {
         }
     }
 });
+
+
 
 
 

@@ -11,13 +11,16 @@ if(request()->coursetype_id)
 <x-setting heading="Prihlásiť sa na kurz">
     <form action="/" method="post">
         @csrf
+        <input type="hidden" name="typ" value="admin" />
         @if(request()->student_id)
         @php
         session(['student_id' => request()->student_id]);
         @endphp
         @endif
         @unless(session('student_id'))
+        
         <div class="flex min-w-full">
+            
             <div class="w-1/3 h-">
                 <x-form.input name="name" />
                 <x-form.input name="lastname" />
@@ -36,10 +39,16 @@ if(request()->coursetype_id)
                 <x-form.field>      
                     <h2 class="mt-6 mb-2 uppercase font-bold text-base">Návrhy</h2>
                     {{-- <p  class="block mb-2 uppercase font-bold text-sm cursor-pointer text-gray-700" id="search-results"></p> --}}
+                    
                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table id="search-results" class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
-
+                    <table id="" class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
+                    <tr><th class="py-2 w-20">Meno</th><th class="w-1/12">Priezvisko</th><th class="w-1/4">Email</th><th>Doplňujúce informácie</th></tr>
+                    
                     </table>
+                    <table id="search-results" class="bg-white min-w-full divide-y  divide-gray-200 text-sm font-medium text-gray-900">
+                       
+                        
+                        </table>
                     </div>
                 </x-form.field>
             </div>
@@ -67,6 +76,8 @@ if(request()->coursetype_id)
             <input name="academy_id" value="{{$coursetype->academy->id}}" hidden />
             <input name="coursetype_id" value="{{$coursetype->id}}" hidden />
             @endif
+
+            
             
             <div class="flex">
                 <div>
@@ -176,4 +187,7 @@ if(request()->coursetype_id)
             Odoslať
         </x-form.button>
     </form>
+    @php
+session()->forget('typ');
+@endphp
 </x-setting>

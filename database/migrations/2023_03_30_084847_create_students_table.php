@@ -16,6 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('lastname');
             $table->string('email')->unique();
+            $table->string('sekemail')->unique()->nullable();
+            $table->string('status');
+            $table->string('skola')->nullable();
+            $table->string('studium')->nullable();
+            $table->string('program')->nullable();
+            $table->tinyText('ulicacislo');
+            $table->string('mestoobec');
+            $table->string('psc');
             $table->timestamps();
         });
     }

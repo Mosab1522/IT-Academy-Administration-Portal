@@ -7,6 +7,8 @@ use App\Models\Instructor;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\ValidationException;
+
 
 class InstructorController extends Controller
 {
@@ -138,28 +140,42 @@ class InstructorController extends Controller
     public function store()
     {
          
-
         $attributes = request()->validate([
             'name' => ['required', 'max:255'],
             'lastname' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email')],
-            'coursetypes_id' => ['array'],
-            'coursetypes_id.*' => 'distinct|exists:course_types,id'
-
+            'photo' => ['image'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
+            'sekemail' => ['email', 'max:255','different:email' ,Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
+            'telephone' => [ 
+                'regex:/^\+421\s?\d{3}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/'],
+            'coursetypes_id' => ['array',],
+            'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
+           
         ]);
-         
+        if($attributes['email'] == $attributes['sekemail'])
+        {
+            throw ValidationException::withMessages(['email' => 'Zadali ste totožné emaily.']);
+        }
+         $attributes['photo'] = request()->file('photo')->store('photos');
         $instructor = Instructor::create([
             'name' => $attributes['name'],
             'lastname' => $attributes['lastname'],
-            'email' => $attributes['email']
+            'email' => $attributes['email'],
+            'sekemail' => $attributes['sekemail'],
+            'photo' => $attributes['photo'],
+            'telephone' => $attributes['telephone']
         ]);
         if (request()->coursetypes_id) {
             foreach (request()->coursetypes_id as $coursetype_id) {
+                if ($coursetype_id!=0)
+                {
                 $coursetype = CourseType::find($coursetype_id);
                 $instructor->coursetypes()->save($coursetype);
+                }
             }
            
         }
+        
         session(['instructor_id' => $instructor['id']]);
 
         return redirect('/admin/login/create');

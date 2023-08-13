@@ -1,11 +1,14 @@
 <x-layout />
 
 <x-setting heading="Vytvoriť akadémiu">
-    <form action="/admin/instructors/create" method="post">
+    <form action="/admin/instructors/create" method="post" enctype="multipart/form-data">
         @csrf
         <x-form.input name="name" />
         <x-form.input name="lastname" />
-        <x-form.input name="email" />
+        <x-form.input name="email" type="email"/>
+        <x-form.input name="sekemail" type="email"/>
+        <x-form.input name="photo" type="file"/>
+        <x-form.input name="telephone" type="tel"/>
 
 
         {{-- <x-form.field>

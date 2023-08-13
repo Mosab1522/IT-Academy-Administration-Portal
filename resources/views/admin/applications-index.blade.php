@@ -9,6 +9,7 @@
                 @if(request()->filled('search'))
                     <input type="hidden" name="search" value="{{request()->input('search')}}"/>
                 @endif
+                
                 <div class="flex">
                     <div class="">
                         <x-form.label name="Zoradiť podľa" />
