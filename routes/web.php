@@ -53,6 +53,7 @@ Route::post('admin/coursetypes/create', [CourseTypeController::class, 'store']);
 
 Route::get('admin/students', [StudentController::class, 'index'])->name('admin.students.index');
 Route::get('admin/students/create', [StudentController::class, 'create']);
+Route::post('admin/students/create', [StudentController::class, 'store']);
 
 Route::get('admin/instructors', [InstructorController::class, 'index'])->name('admin.instructors.index');
 Route::get('admin/instructors/create', [InstructorController::class, 'create']);

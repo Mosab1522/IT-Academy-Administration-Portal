@@ -1,7 +1,7 @@
 <x-layout />
 
 <x-setting heading="Vytvoriť študenta">
-    <form action="/admin/instructors/create" method="post" enctype="multipart/form-data">
+    <form action="/admin/students/create" method="post" enctype="multipart/form-data">
         @csrf
         <h3 class="block mt-2 mb-3 uppercase font-bold text-sm text-gray-700">Povinný údaj</h3>
         <x-form.input name="email" type="email"/>
@@ -15,7 +15,7 @@
             <input class="ml-2 mr-0.5" type="radio" id="nestudent" name="status" value="nestudent">
             <label for="nestudent">Neštudent</label>
             
-            <input class="ml-2 mr-0.5" type="radio" id="neviem" name="status" value="neviem">
+            <input class="ml-2 mr-0.5" type="radio" id="neviem" name="status" value=NULL>
             <label for="nestudent">Neviem</label>
 
         </div>
@@ -32,6 +32,7 @@
                             <input  type="radio" id="inam" name="skola" value="ina">
                             <label for="option2">Iná</label><br>
                         </div>
+                        
                     </div>
 
                     <div id="ina" style="display: none"><input
