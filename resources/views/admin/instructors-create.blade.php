@@ -1,6 +1,6 @@
 <x-layout />
 
-<x-setting heading="Vytvoriť akadémiu">
+<x-setting heading="Vytvoriť inštruktora">
     <form action="/admin/instructors/create" method="post" enctype="multipart/form-data">
         @csrf
         <x-form.input name="name" />

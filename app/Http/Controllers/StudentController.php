@@ -34,25 +34,35 @@ class StudentController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return view('admin.students-create');
+    }
+
+    public function store()
+    {
+        return view('admin.instructors-create');
+    }
+
     public function search(Request $request)
-{
-    $name = $request->get('name');
-    $lastname = $request->get('lastname');
-    $email = $request->get('email');
+    {
+        $name = $request->get('name');
+        $lastname = $request->get('lastname');
+        $email = $request->get('email');
 
-    $students = Student::query()
-    ->where('name', 'like', '%' . $name . '%')
-    ->where('lastname', 'like', '%' . $lastname . '%')
-    ->where(function ($query) use ($email) {
-        $query->where('email', 'like', '%' . $email . '%')
-              ->orWhere('sekemail', 'like', '%' . $email . '%');
-    })
-    ->get();
+        $students = Student::query()
+            ->where('name', 'like', '%' . $name . '%')
+            ->where('lastname', 'like', '%' . $lastname . '%')
+            ->where(function ($query) use ($email) {
+                $query->where('email', 'like', '%' . $email . '%')
+                    ->orWhere('sekemail', 'like', '%' . $email . '%');
+            })
+            ->get();
 
-// Debugging
-// dd($students); // This will help you see the retrieved students
+        // Debugging
+        // dd($students); // This will help you see the retrieved students
 
 
-    return response()->json($students);
-}
+        return response()->json($students);
+    }
 }

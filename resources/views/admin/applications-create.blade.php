@@ -8,7 +8,7 @@ if(request()->coursetype_id)
     $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
 }
 @endphp
-<x-setting heading="Prihlásiť sa na kurz">
+<x-setting heading="Vytvoriť prihlášku">
     <form action="/" method="post">
         @csrf
         <input type="hidden" name="typ" value="admin" />

@@ -76,17 +76,18 @@
                             <li>
                                 <a href="/admin/students"
                                     class="{{request()->is('admin/students') ? 'text-blue-500' : ''}}">- Študenti</a>
+                            </li> 
+                            <li>
+                                <a href="/admin/instructors"
+                                    class="{{request()->is('admin/instructors') ? 'text-blue-500' : ''}}">-
+                                    Inštruktori</a>
                             </li>
                             <li>
                                 <a href="/admin/applications"
                                     class="{{request()->is('admin/applications') ? 'text-blue-500' : ''}}">-
                                     Prihlášky</a>
                             </li>
-                            <li>
-                                <a href="/admin/instructors"
-                                    class="{{request()->is('admin/instructors') ? 'text-blue-500' : ''}}">-
-                                    Inštruktori</a>
-                            </li>
+                           
                         </ul>
                     </li>
                     <ul>
@@ -105,6 +106,12 @@
                                         class="{{request()->is('admin/coursetypes/create') ? 'text-blue-500' : ''}}">-
                                         Nový
                                         kurz</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/students/create"
+                                        class="{{request()->is('admin/students/create') ? 'text-blue-500' : ''}}">-
+                                        Nový
+                                        študent</a>
                                 </li>
                                 <li>
                                     <a href="/admin/instructors/create"

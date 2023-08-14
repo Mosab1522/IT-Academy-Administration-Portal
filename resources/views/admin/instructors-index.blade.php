@@ -4,7 +4,7 @@ session()->forget('instructor_id');
 @endphp
 @endif
 <x-layout />
-<x-setting heading="Akadémie">
+<x-setting heading="Inštruktori">
     <div class="flex flex-col">
         <div class="flex">
             <form method="get" action="{{ route('admin.instructors.index') }}">
