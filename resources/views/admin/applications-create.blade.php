@@ -191,9 +191,17 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
 
             <x-form.error name="category" />
         </x-form.field>
-        <x-form.button>
-            Odoslať
-        </x-form.button>
+        
+        <div class="flex">
+            <div class="block flex-1">
+                <x-form.button>
+                    Odoslať
+                </x-form.button>
+            </div>
+            @if(request()->student_id)
+            <a href="/admin/students" class ='items-center mt-6 px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150'>Preskočiť</a>
+            @endif
+        </div>
     </form>
     @php
     session()->forget('typ');
