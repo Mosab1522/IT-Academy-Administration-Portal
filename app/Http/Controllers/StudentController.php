@@ -41,12 +41,12 @@ class StudentController extends Controller
 
     public function store()
     {
-        dd($_REQUEST);
+        // dd($_REQUEST);
         $attributes = request()->validate([
             'name' => ['max:255'],
             'lastname' => ['max:255'],
             'email' => ['required', 'email', 'max:255'],
-            'sekemail' => ['email', 'max:255'],
+            'sekemail' => ['nullable','email', 'max:255'],
             'status' => ['nullable', 'min:7', 'max:9'],
             'skola' => ['nullable', 'min:3', 'max:3'],
             'ina' => ['max:255'],
@@ -58,7 +58,12 @@ class StudentController extends Controller
             'psc' => ['nullable','min:6', 'max:6']
         ]);
         $student = Student::create($attributes);
-        dd($student);
+        // dd($student);
+
+        // session(['student_id' => $student['id']]);
+
+        // return redirect('/admin/applications/create')->with('student_id', $student['id']);
+        return redirect('/admin/applications/create?student_id=' . urlencode($student['id']));
 
     }
 

@@ -5,7 +5,7 @@ session()->forget('coursetype_id');
 $coursetype = null;
 if(request()->coursetype_id)
 {
-    $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
+$coursetype = \App\Models\CourseType::find(request()->coursetype_id);
 }
 @endphp
 <x-setting heading="Vytvoriť prihlášku">
@@ -18,9 +18,9 @@ if(request()->coursetype_id)
         @endphp
         @endif
         @unless(session('student_id'))
-        
+
         <div class="flex min-w-full">
-            
+
             <div class="w-1/3 h-">
                 <x-form.input name="name" />
                 <x-form.input name="lastname" />
@@ -36,18 +36,26 @@ if(request()->coursetype_id)
             <input type="email" name="email" id="email">--}}
 
             <div class="ml-8 w-2/3">
-                <x-form.field>      
+                <x-form.field>
                     <h2 class="mt-6 mb-2 uppercase font-bold text-base">Návrhy</h2>
-                    {{-- <p  class="block mb-2 uppercase font-bold text-sm cursor-pointer text-gray-700" id="search-results"></p> --}}
-                    
+                    {{-- <p class="block mb-2 uppercase font-bold text-sm cursor-pointer text-gray-700"
+                        id="search-results"></p> --}}
+
                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table id="" class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
-                    <tr><th class="py-2 w-20">Meno</th><th class="w-1/12">Priezvisko</th><th class="w-1/4">Email</th><th>Doplňujúce informácie</th></tr>
-                    
-                    </table>
-                    <table id="search-results" class="bg-white min-w-full divide-y  divide-gray-200 text-sm font-medium text-gray-900">
-                       
-                        
+                        <table id=""
+                            class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
+                            <tr>
+                                <th class="py-2 w-20">Meno</th>
+                                <th class="w-1/12">Priezvisko</th>
+                                <th class="w-1/4">Email</th>
+                                <th>Doplňujúce informácie</th>
+                            </tr>
+
+                        </table>
+                        <table id="search-results"
+                            class="bg-white min-w-full divide-y  divide-gray-200 text-sm font-medium text-gray-900">
+
+
                         </table>
                     </div>
                 </x-form.field>
@@ -77,14 +85,15 @@ if(request()->coursetype_id)
             <input name="coursetype_id" value="{{$coursetype->id}}" hidden />
             @endif
 
-            
-            
+
+
             <div class="flex">
                 <div>
                     <x-form.label name="akadémia" />
                     <!-- parent -->
-                    <select name="academy_id" class="combo-a" data-nextcombo=".combo-b" {{$coursetype ? 'disabled' : ''}}>
-                        <option value="" disabled  selected hidden>Akadémia</option>
+                    <select name="academy_id" class="combo-a" data-nextcombo=".combo-b" {{$coursetype ? 'disabled' : ''
+                        }}>
+                        <option value="" disabled selected hidden>Akadémia</option>
                         @php
                         $academy = \App\Models\Academy::with(['coursetypes','applications'])
                         ->get();
@@ -117,14 +126,13 @@ if(request()->coursetype_id)
                         <option value="4" data-id="4" data-option="2">Illustrator</option>
                     </select> --}}
                     <select name="coursetype_id" id="coursetype_id" class="combo-b" disabled>
-                        <option value="" disabled  selected hidden>Typ kurzu</option>
+                        <option value="" disabled selected hidden>Typ kurzu</option>
                         {{-- @php
                         $academy = \App\Models\CourseType::all();
                         @endphp --}}
                         @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
                         <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
-                            @if($coursetype)
-                            {{$coursetype->id == $type->id ? 'selected' : ''}}
+                            @if($coursetype) {{$coursetype->id == $type->id ? 'selected' : ''}}
                             @endif
                             {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
                             ucwords($type->name) }}</option>
@@ -188,6 +196,6 @@ if(request()->coursetype_id)
         </x-form.button>
     </form>
     @php
-session()->forget('typ');
-@endphp
+    session()->forget('typ');
+    @endphp
 </x-setting>
