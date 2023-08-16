@@ -62,6 +62,7 @@ Route::get('admin/students/{student:id}', [StudentController::class, 'show']);
 Route::post('admin/students/create', [StudentController::class, 'store']);
 
 Route::get('admin/instructors', [InstructorController::class, 'index'])->name('admin.instructors.index');
+Route::patch('admin/instructors/{instructor}',[InstructorController::class,'update']);
 
 
 Route::get('admin/instructors/create', [InstructorController::class, 'create']);

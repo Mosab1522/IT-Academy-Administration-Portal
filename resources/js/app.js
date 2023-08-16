@@ -66,7 +66,21 @@ document.addEventListener("DOMContentLoaded", function () {
 //     console.log(newValue);
 //     setSubOptions(newValue);
 // });
-
+function povol() {
+  var inputs = document.querySelectorAll('input'); // Získání všech inputů typu text
+  inputs.forEach(function(input) {
+      if(input.disabled==true)
+      {
+        input.removeAttribute('disabled');
+      }
+      else{
+        input.disabled=true;
+      }
+       // Odstranění atributu disabled
+  });
+}
+const povool = document.querySelector('#pp');
+povool.addEventListener('click', povol);
 function handleFavLanguageRadio() {
     const favLanguageRadios = document.querySelectorAll('input[name="status"]');
     const additionalOptions = document.getElementById('ucm');
