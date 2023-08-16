@@ -15,12 +15,12 @@
             Vytváranie prihlášky</h4>
         <h4 class="my-4 font-semibold " title="Do prehľadu / typu kurzu">Pridať študenta - tlačidlo</h4>
         <h4 class="my-4 font-semibold " title="Študentovi">Pridať prihlášku - tlačidlo</h4> --}}
-        <h4 class="my-4 font-semibold "
+        {{-- <h4 class="my-4 font-semibold "
             title="Vytvoriť celú stránku vytvoriť śtudenda.">Vytvoriť študenta
         </h4>
         <h4 class="my-4 font-semibold "
             title="Pridať tlačidlo vytvoriť študenta ak ho nenajde admin v novej prihláške.">Tlačidlo vytvoriť študenta
-        </h4>
+        </h4> --}}
         <h4 class="my-4 font-semibold "
             title="-dorobiť views pre jednotlivých študentov, inštruktorov, prihlášku,typ kurzu, akadémie, .">Urobiť
             zobrazenia show</h4>

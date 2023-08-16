@@ -128,7 +128,12 @@
                     </colgroup>
                     <thead class="text-sm">
                         <tr>
-                            <td class="px-6 py-1">Meno a priezvisko</td>
+                            <td class="px-6 py-1">
+                                Meno a priezvisko
+                                <a href="{{ route('admin.dashboard.index', ['sort_by' => 'name_asc']) }}">▲</a>
+                                <a href="{{ route('admin.dashboard.index', ['sort_by' => 'name_desc']) }}">▼</a>
+                            </td>
+
                             <td class="px-6 py-2">Email</td>
                             <td></td>
                             <td>
@@ -154,6 +159,13 @@
                                 <div class="flex items-center">
                                     <div class="text-sm font-medium text-gray-900">
                                         {{$application->student->email}}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="text-xs font-light text-gray-900">vytvorená
+                                        {{ $application->created_at->diffForHumans()}}
                                     </div>
                                 </div>
                             </td>

@@ -43,6 +43,12 @@ class CourseTypeController extends Controller
             'coursetypes' => $coursetypes
         ]);
     }
+
+    public function show(Coursetype $coursetype)
+    {
+        return view('admin.coursetypes-show', ['coursetype' => $coursetype]);
+    }
+
     public function create()
     {
         return view('admin.coursetypes-create');

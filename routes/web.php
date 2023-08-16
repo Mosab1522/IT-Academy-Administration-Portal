@@ -33,6 +33,7 @@ Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admi
 
 Route::get('admin/applications', [ApplicationController::class, 'index'])->name('admin.applications.index');
 
+
 Route::get('/', [ApplicationController::class, 'create']);
 Route::post('/', [ApplicationController::class, 'store']);
 Route::get('admin/applications/create', [ApplicationController::class, 'admincreate'])->name('applications');
@@ -48,6 +49,7 @@ Route::get('admin/academies/{academy:id}', [AcademyController::class, 'show']);
 Route::post('admin/academies/create', [AcademyController::class, 'store']);
 
 Route::get('admin/coursetypes', [CourseTypeController::class, 'index'])->name('admin.coursetypes.index');
+Route::get('admin/coursetypes/{coursetype:id}', [CourseTypeController::class, 'show']);
 Route::get('admin/coursetypes/create', [CourseTypeController::class, 'create']);
 Route::post('admin/coursetypes/create', [CourseTypeController::class, 'store']);
 

@@ -1,5 +1,5 @@
 <x-layout />
-<x-setting heading="{{$academy->name}}">
+<x-setting heading="{{$coursetype->name}}">
     <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             
@@ -15,13 +15,14 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($academy->coursetypes as $coursetype)
+                            @foreach ($coursetype->applications as $application)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            <a href="/admin/coursetypes/{{ $coursetype->id }}" title="Ukázať podrobnosti">
-                                                {{$coursetype->name }}
+                                            <a href="/admin/application/{{ $application->id }}" title="Ukázať podrobnosti">
+                                                {{$application->student->name }}
+                                                {{$application->student->lastname }}
                                             </a>
                                         </div>
                                     </div>
@@ -30,18 +31,26 @@
                                  <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {{ $coursetype->applications->count()}}
+                                            {{$application->student->email}}
                                         </div>
                                     </div>
                                 </td> 
 
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-xs font-light text-gray-900">vytvorená
+                                            {{ $application->created_at->diffForHumans()}}
+                                        </div>
+                                    </div>
+                                </td>
+
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="/admin/coursetype/{{ $coursetype->id }}/edit"
+                                    <a href="/admin/application/{{ $application->id }}/edit"
                                         class="text-blue-500 hover:text-blue-600">Edit</a>
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <form method="POST" action="/admin/posts/{{ $coursetype->id }}">
+                                    <form method="POST" action="/admin/posts/{{ $application->id }}">
                                         @csrf
                                         @method('DELETE')
 
