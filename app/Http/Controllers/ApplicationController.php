@@ -62,6 +62,12 @@ class ApplicationController extends Controller
         ]);
     }
 
+    public function show(Application $application,)
+    {
+        return view('admin.applications-show', ['application' => $application]);
+    }
+
+
     public function create()
     {
         return view('applications-create');

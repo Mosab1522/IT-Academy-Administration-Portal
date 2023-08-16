@@ -127,7 +127,7 @@ session()->forget('instructor_id');
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            <a href="/admin/academies/{{ $instructor->id }}">
+                                            <a href="/admin/instructors/{{ $instructor->id }}">
                                                 {{$instructor->name }}{{$instructor->lastname}}
                                             </a>
                                         </div>

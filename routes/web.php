@@ -37,6 +37,7 @@ Route::get('admin/applications', [ApplicationController::class, 'index'])->name(
 Route::get('/', [ApplicationController::class, 'create']);
 Route::post('/', [ApplicationController::class, 'store']);
 Route::get('admin/applications/create', [ApplicationController::class, 'admincreate'])->name('applications');
+Route::get('admin/applications/{application:id}', [ApplicationController::class, 'show']);
 
 Route::get('/search-students', [StudentController::class, 'search'])->name('search-students');
 
@@ -49,17 +50,22 @@ Route::get('admin/academies/{academy:id}', [AcademyController::class, 'show']);
 Route::post('admin/academies/create', [AcademyController::class, 'store']);
 
 Route::get('admin/coursetypes', [CourseTypeController::class, 'index'])->name('admin.coursetypes.index');
-Route::get('admin/coursetypes/{coursetype:id}', [CourseTypeController::class, 'show']);
+
 Route::get('admin/coursetypes/create', [CourseTypeController::class, 'create']);
+Route::get('admin/coursetypes/{coursetype:id}', [CourseTypeController::class, 'show']);
 Route::post('admin/coursetypes/create', [CourseTypeController::class, 'store']);
 
 Route::get('admin/students', [StudentController::class, 'index'])->name('admin.students.index');
-Route::get('admin/students/{student:id}', [StudentController::class, 'show']);
 Route::get('admin/students/create', [StudentController::class, 'create']);
+Route::get('admin/students/{student:id}', [StudentController::class, 'show']);
+
 Route::post('admin/students/create', [StudentController::class, 'store']);
 
 Route::get('admin/instructors', [InstructorController::class, 'index'])->name('admin.instructors.index');
+
+
 Route::get('admin/instructors/create', [InstructorController::class, 'create']);
+Route::get('admin/instructors/{instructor:id}', [InstructorController::class, 'show']);
 Route::post('admin/instructors/create', [InstructorController::class, 'store']);
 
 

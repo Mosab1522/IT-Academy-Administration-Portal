@@ -133,6 +133,11 @@ class InstructorController extends Controller
             'instructors' => $instructors
         ]);
     }
+    public function show(Instructor $instructor)
+    {
+        return view('admin.instructors-show', ['instructor' => $instructor]);
+    }
+
     public function create()
     {
         return view('admin.instructors-create');
