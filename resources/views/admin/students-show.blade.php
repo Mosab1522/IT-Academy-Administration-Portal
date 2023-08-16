@@ -1,5 +1,5 @@
 <x-layout />
-<x-setting heading="{{$coursetype->name}}">
+<x-setting heading="{{$student->name}}">
     <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             
@@ -15,23 +15,32 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($coursetype->applications as $application)
+                            @foreach ($student->applications as $application)
+                                       
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            <a href="/admin/students/{{ $application->student->id }}" title="Ukázať podrobnosti">
-                                                {{$application->student->name }}
-                                                {{$application->student->lastname }}
+                                            <a href="/admin/application/{{ $application->id }}" title="Ukázať podrobnosti">
+                                                {{$application->academy->name }}
+                                                {{$application->coursetype->name }}
                                             </a>
                                         </div>
+                                       
                                     </div>
                                 </td>
 
                                  <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {{$application->student->email}}
+                                            {{$application->days}}
+                                        </div>
+                                    </div>
+                                </td> 
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{$application->time}}
                                         </div>
                                     </div>
                                 </td> 

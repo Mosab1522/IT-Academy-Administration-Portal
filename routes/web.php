@@ -54,6 +54,7 @@ Route::get('admin/coursetypes/create', [CourseTypeController::class, 'create']);
 Route::post('admin/coursetypes/create', [CourseTypeController::class, 'store']);
 
 Route::get('admin/students', [StudentController::class, 'index'])->name('admin.students.index');
+Route::get('admin/students/{student:id}', [StudentController::class, 'show']);
 Route::get('admin/students/create', [StudentController::class, 'create']);
 Route::post('admin/students/create', [StudentController::class, 'store']);
 
