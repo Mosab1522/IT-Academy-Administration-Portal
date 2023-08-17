@@ -224,7 +224,6 @@ class InstructorController extends Controller
 
     public function update(Instructor $instructor)
     {
-      
         $attributes = request()->validate(
             [
                 'name' => ['required', 'max:255'],

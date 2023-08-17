@@ -31,9 +31,11 @@
                                 <ul class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                     role="tablist">
                                     <li class="z-30 flex-auto text-center">
-                                        <a id="pp" href="javascript:;" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700">
+                                        <a id="pp" href="javascript:;"
+                                            class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white">
                                             <i class="ni ni-app"></i>
-                                            <span class="ml-2">Povoliť úpravy</span>
+                                            <span id="jj" class="ml-2">Povoliť úpravy</span>
+                                            <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -44,15 +46,15 @@
                             <div class="relative right-0">
                                 <ul class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                     role="tablist">
-                                    <li class="z-30 flex-auto text-center">
-                                        <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
-                                             href="javascript:;">
+                                    <li class="z-30 flex-auto text-center ">
+                                        <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            href="javascript:;">
                                             <i class="ni ni-email-83"></i>
                                             <span class="ml-2">Kurzy</span>
                                         </a>
                                     </li>
                                     <li class="z-30 flex-auto text-center">
-                                        <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700"
+                                        <a class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             nav-link href="javascript:;">
                                             <i class="ni ni-settings-gear-65"></i>
                                             <span class="ml-2">Login</span>
@@ -71,7 +73,7 @@
                         class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
                     <div class="flex-auto p-6">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">User Information</p>
-                        <form action="/admin/instructors/{{$instructor->id}}" method="post"
+                        <form id="formm" action="/admin/instructors/{{$instructor->id}}" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             @method('Patch')
@@ -99,7 +101,8 @@
                                     <div class="mb-4">
                                         <label for="username"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Username</label>
-                                        <input disabled type="text" name="username" value="{{$instructor->login->nickname}}"
+                                        <input disabled type="text" name="username"
+                                            value="{{$instructor->login->nickname}}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
@@ -141,7 +144,8 @@
                                         <label for="city"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Ulica a
                                             číslo</label>
-                                        <input disabled type="text" name="ulicacislo" value="{{$instructor->ulicacislo}}"
+                                        <input disabled type="text" name="ulicacislo"
+                                            value="{{$instructor->ulicacislo}}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
@@ -162,9 +166,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <x-form.button>
+                            {{-- <x-form.field>
+                                <button type="submit"
+                                    class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                            </x-form.field> --}}
+                            {{-- <x-form.button>
                                 Update
-                            </x-form.button>
+                            </x-form.button> --}}
+                            <x-form.field>
+                                <div class="flex">
+                                    <button id="upd" type="submit"
+                                        class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                                    <button id="res" type="reset"
+                                        class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
+                                </div>
+
+                            </x-form.field>
+
                         </form>
                     </div>
                 </div>

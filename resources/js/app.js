@@ -67,14 +67,29 @@ document.addEventListener("DOMContentLoaded", function () {
 //     setSubOptions(newValue);
 // });
 function povol() {
-  var inputs = document.querySelectorAll('input'); // Získání všech inputů typu text
+  var inputs = document.querySelectorAll('input:not([type="hidden"])');
+  var text1 = document.getElementById('jj');
+  var text2 = document.getElementById('zz');
+  var button = document.getElementById('upd');
+  var button2 = document.getElementById('res');
+  var form = document.getElementById('formm');
+  // Získání všech inputů typu text
   inputs.forEach(function(input) {
       if(input.disabled==true)
       {
-        input.removeAttribute('disabled');
+        input.disabled=false;
+        text1.style.display='none';
+        text2.style.display='block';
+        button.style.display='block';
+        button2.style.display='block';
       }
       else{
         input.disabled=true;
+        text2.style.display='none';
+        text1.style.display='block';
+         button.style.display='none';
+         button2.style.display='none';
+         form.reset();
       }
        // Odstranění atributu disabled
   });
