@@ -72,6 +72,27 @@ class StudentController extends Controller
         return redirect('/admin/applications/create?student_id=' . urlencode($student['id']));
 
     }
+    public function update(Student $student)
+    {
+        $attributes = request()->validate([
+            'name' => ['max:255'],
+            'lastname' => ['max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'sekemail' => ['nullable','email', 'max:255'],
+            'status' => ['nullable', 'min:7', 'max:9'],
+            'skola' => ['nullable', 'min:3', 'max:3'],
+            'ina' => ['max:255'],
+            'studium' => ['nullable', 'min:7', 'max:7'],
+            'program' => ['nullable', 'min:3', 'max:4'],
+            'iny' => ['max:255'],
+            'ulicacislo' => ['nullable', 'min:3', 'max:255'],
+            'mestoobec' => ['nullable', 'min:1', 'max:255'],
+            'psc' => ['nullable','min:6', 'max:6']
+        ]);
+        $student->update($attributes);
+
+        return back();
+    }
 
     public function search(Request $request)
     {
