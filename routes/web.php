@@ -53,6 +53,7 @@ Route::post('admin/academies/create', [AcademyController::class, 'store']);
 Route::get('admin/coursetypes', [CourseTypeController::class, 'index'])->name('admin.coursetypes.index');
 
 Route::get('admin/coursetypes/create', [CourseTypeController::class, 'create']);
+Route::patch('admin/coursetypes/{coursetype}', [CoursetypeController::class, 'update']);
 Route::get('admin/coursetypes/{coursetype:id}', [CourseTypeController::class, 'show']);
 Route::post('admin/coursetypes/create', [CourseTypeController::class, 'store']);
 

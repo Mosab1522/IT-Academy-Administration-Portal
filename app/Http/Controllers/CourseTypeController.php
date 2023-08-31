@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Academy;
 use App\Models\CourseType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
-
+use PhpParser\Node\Stmt\Else_;
 
 class CourseTypeController extends Controller
 {
@@ -64,6 +65,28 @@ class CourseTypeController extends Controller
         ]);
 
         CourseType::create($attributes);
+
+        return back();
+    }
+    public function update(Coursetype $coursetype)
+    {
+        $academy = Academy::with(['coursetypes', 'applications'])
+        ->where('name', '=', request()->lastname)->first();
+
+        if ($academy == null) {
+            dd(request()->all());
+        };
+
+        request()->merge(['academy_id'  => $academy['id']]); 
+
+        $attributes = request()->validate([
+            'name' => ['required', 'max:255', Rule::unique('course_types', 'name')->ignore($coursetype)],
+            'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
+            'min' => ['required', 'integer', 'lte:max'],
+            'max' => ['required', 'integer', 'gte:min'],
+        ]);
+
+        $coursetype->update($attributes);
 
         return back();
     }
