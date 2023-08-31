@@ -45,6 +45,7 @@ Route::get('/search-students', [StudentController::class, 'search'])->name('sear
 
 Route::get('admin/academies', [AcademyController::class, 'index'])
     ->name('admin.academies.index');;
+Route::patch('admin/academies/{academy}', [AcademyController::class, 'update']);
 Route::get('admin/academies/create', [AcademyController::class, 'create']);
 Route::get('admin/academies/{academy:id}', [AcademyController::class, 'show']);
 Route::post('admin/academies/create', [AcademyController::class, 'store']);
@@ -56,13 +57,14 @@ Route::get('admin/coursetypes/{coursetype:id}', [CourseTypeController::class, 's
 Route::post('admin/coursetypes/create', [CourseTypeController::class, 'store']);
 
 Route::get('admin/students', [StudentController::class, 'index'])->name('admin.students.index');
+Route::patch('admin/students/{student}', [StudentController::class, 'update']);
 Route::get('admin/students/create', [StudentController::class, 'create']);
 Route::get('admin/students/{student:id}', [StudentController::class, 'show']);
 
 Route::post('admin/students/create', [StudentController::class, 'store']);
 
 Route::get('admin/instructors', [InstructorController::class, 'index'])->name('admin.instructors.index');
-Route::patch('admin/instructors/{instructor}',[InstructorController::class,'update']);
+Route::patch('admin/instructors/{instructor}', [InstructorController::class, 'update']);
 
 
 Route::get('admin/instructors/create', [InstructorController::class, 'create']);

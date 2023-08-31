@@ -57,4 +57,13 @@ class AcademyController extends Controller
 
         return back();
     }
+    public function update(Academy $academy)
+    {
+        $attributes = request()->validate([
+            'name' => ['required', 'max:255', Rule::unique('academies', 'name')->ignore($academy)]
+        ]);
+        $academy->update($attributes);
+
+        return back();
+    }
 }
