@@ -79,6 +79,9 @@ function povol() {
   var form2 = document.getElementById('formm2');
   var kur = document.getElementById('kurzy');
   var login = document.getElementById('login');
+  // var studentId = $('#kk').data('student-id');
+  var redirectUrl = $('#kk').data('href');
+  // var redirectUrl = "{{ route('applications', ['student_id' => ':studentId']) }}".replace(':studentId', studentId);
   // Získání všech inputů typu text
 
   if (inputs[0].disabled == true && profile.style.display != 'none') {
@@ -101,7 +104,10 @@ function povol() {
     form.reset();
   }
   else if (kur.style.display != 'none') {
-    window.location = "/admin/instructors";
+
+    // Presmerovanie na URL
+    window.location.href = redirectUrl;
+    // window.location = "/admin/instructors";
   }
   else if (inputs2[0].disabled == true && login.style.display != 'none') {
     inputs2.forEach(function (input) {

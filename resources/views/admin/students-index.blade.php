@@ -107,7 +107,7 @@
                                             <div class="flex items-center">
                                                 <div class="text-sm font-medium text-gray-900">
                                                     <a
-                                                href={{route('applications', ['student_id' =>$student->id])}}"
+                                                href="{{route('applications', ['student_id' =>$student->id])}}"
                                                 >Vytvoriť prihlášku</a>
                                                 </div>
                                             </div>
