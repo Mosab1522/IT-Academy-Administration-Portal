@@ -90,6 +90,7 @@ class StudentController extends Controller
             'psc' => ['nullable','min:6', 'max:6']
         ]);
         $student->update($attributes);
+        $student->touch();
 
         return back();
     }
