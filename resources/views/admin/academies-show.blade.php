@@ -38,6 +38,7 @@
                                             <span id="jj" class="ml-2">Povoliť úpravy</span>
                                             <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
                                             <span style="display: none;" id="kk" class="ml-2">Vytvoriť kurz</span>
+                                            <span style="display: none;" id="nkk" class="ml-2">Zrušiť vytvorenie kurzu</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -205,7 +206,23 @@
 
                         </form>
                     </div>
-               
+                    <div class="hidden p-6" id="pridat">
+                        <p class="leading-normal uppercase  dark:opacity-60 text-sm">Vytvoriť kurz</p>
+                        <form action="/admin/coursetypes/create" method="POST">
+                            @csrf
+                            <input name="academy_id" value="{{$academy->id}}" hidden />
+
+                            <x-form.input name="name" />
+                            <x-form.input name="min" type="number" />
+                            <x-form.input name="max" type="number" />
+                            
+                            <x-form.field>
+                                <button id="pridbtn" type="submit"
+                                    class=" flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Vytvoriť
+                                </button>
+                            </x-form.field>
+                        </form>
+                    </div>
                 <div id="kurzy" class="hidden shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="text-sm">
