@@ -304,18 +304,21 @@
                     </div>
                     <div id="login" class="hidden flex-auto p-6">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Login</p>
-                        <form id="formm2" action="/admin/instructors/{{$instructor->id}}" method="post"
-                            enctype="multipart/form-data">
+                        <input name="instructor_id" value="{{$instructor->id}}" hidden />
+
+                        <form id="formm2" action="/admin/login/{{$instructor->login ? 'update' : 'create'}}" method="post">
                             @csrf
-                            @if($instructor->has('login'))
+                            @if($instructor->login)
                             @method('Patch')
                             @endif
+                            <input name="instructor_id" value="{{$instructor->id}}" hidden />
+
                             <div class="flex flex-wrap -mx-3">
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
                                     <div class="mb-4">
-                                        <label for="username"
+                                        <label for="nickname"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Username</label>
-                                        <input disabled type="text" name="username"
+                                        <input disabled type="text" name="nickname"
                                             value="{{$instructor->login->nickname ?? ''}}" required autofocus
                                             autocomplete="name"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />

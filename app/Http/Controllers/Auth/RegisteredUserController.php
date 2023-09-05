@@ -31,13 +31,16 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {   
-        $instructor_id = session('instructor_id');
+        $instructor_id = session('instructor_id') ?? request()->instructor_id;
+
+        request()->merge(['instructor_id'  => $instructor_id]); 
+
         session()->forget('instructor_id');
         $request->validate([
-            'nickname' => ['required', 'string', 'max:255'],
+            'instructor_id' => ['required' , 'integer', Rule::exists('instructors', 'id')],
+            'nickname' => ['required', 'string', 'max:255', Rule::unique('users', 'nickname')],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
         
         $user = User::create([
             'nickname' => $request->nickname,
