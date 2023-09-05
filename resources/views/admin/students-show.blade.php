@@ -40,8 +40,8 @@
                                                 href="{{route('applications', ['student_id' =>$student->id])}}">Vytvoriť
                                                 prihláśku</a> --}}
                                             <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
-                                            <span data-href="{{ route('applications', ['student_id' => $student->id]) }}" style="display: none;" id="kk" class="ml-2">Vytvoriť
-                                                prihláśku</span>
+                                            <span style="display: none;" id="kk" class="ml-2">Vytvoriť prihlášku</span>
+                                            <span style="display: none;" id="nkk" class="ml-2">Zrušiť vytvorenie prihlášky</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -61,7 +61,7 @@
                                             <span id="tlac2" class="hidden ml-2">Profil</span>
                                         </a>
                                     </li>
-                                    {{-- <li class="z-30 flex-auto text-center">
+                                    <li class="hidden" class="z-30 flex-auto text-center">
                                         <a id="tr"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             nav-link href="javascript:;">
@@ -69,7 +69,7 @@
                                             <span id="lt" class="ml-2">Login</span>
                                             <span id="kt" class="hidden ml-2">Kurzy</span>
                                         </a>
-                                    </li> --}}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -210,7 +210,98 @@
 
                         </form>
                     </div>
+                    <div class="hidden p-6" id="pridat">
+                        <p class="leading-normal uppercase  dark:opacity-60 text-sm">Vytvoriť prihlášku</p>
+                        <form action="/" method="POST">
+                            @csrf
+                            <div class="flex">
 
+                                <div>
+
+                                    <input name="student_id" value="{{$student->id}}" hidden />
+
+                                    <x-form.label name="akadémia" />
+                                    <!-- parent -->
+                                    <select name="academy_id" class="combo-a" data-nextcombo=".combo-b">
+                                        <option value="" disabled selected hidden>Akadémia</option>
+                                        {{-- @php
+                                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                                        ->get();
+                                        @endphp --}}
+                                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])->get() as $academ)
+                                      
+                                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
+                                            {{old('academy_id')==$academ->id ? 'selected' : ''}}>{{
+                                            ucwords($academ->name)}}</option>
+                                        @endforeach
+                                        {{-- <option value="" disabled selected hidden>Akadémia</option>
+                                        <option value="1" data-id="1" data-option="-1">Cisco</option>
+                                        <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                                    </select>
+                                </div>
+                                <div class="ml-4">
+                                    <x-form.label name="typ kurzu" />
+                                    <!-- child -->
+                                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
+                                        data-nextcombo=".combo-c" disabled>
+                                        <option value="" disabled selected hidden>Typ kurzu</option>
+                                        <option value="1" data-id="1" data-option="1">Lahky</option>
+                                        <option value="2" data-id="2" data-option="1">Stredny</option>
+                                        <option value="3" data-id="3" data-option="2">Photoshop</option>
+                                        <option value="4" data-id="4" data-option="2">Illustrator</option>
+                                    </select> --}}
+                                    <select name="coursetype_id" id="coursetype_id" class="combo-b" disabled>
+                                        <option value="" disabled selected hidden>Typ kurzu</option>
+                                        {{-- @php
+                                        $academy = \App\Models\CourseType::all();
+                                        @endphp --}}
+                                        @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $typ)
+                                        <option value="{{ $typ->id }}" data-id="{{ $typ->id }}" data-option="{{ $typ->academy_id }}"
+                                            {{old('coursetype_id')==$typ->id ? 'selected' : ''}}>{{
+                                            ucwords($typ->name) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <x-form.field>
+                                <div class="flex">
+                                    <div>
+                                        <x-form.label name="dni výučby" />
+                                        <select name="days" id="days">
+                                            <option value="" disabled selected hidden>Dni výučby</option>
+                                            <option value="1" {{old('days')==1 ? 'selected' : '' }}>Týždeň</option>
+                                            <option value="2" {{old('days')==2 ? 'selected' : '' }}>Víkend</option>
+                                            <option value="3" {{old('days')==3 ? 'selected' : '' }}>Nezáleží</option>
+                                            {{-- <option value="1" data-id="1" data-option="2">Týždeň</option>
+                                            <option value="1" data-id="1" data-option="3">Týždeň</option>
+                                            <option value="2" data-id="2" data-option="3">Víkend</option>
+                                            <option value="3" data-id="3" data-option="3">Nezáleží</option>
+                                            <option value="1" data-id="1" data-option="4">Týždeň</option> --}}
+                                        </select>
+                                    </div>
+                                    <div class="ml-4">
+                                        <x-form.label name="čas výučby" />
+                                        <select name="time" id="time">
+                                            <option value="" disabled selected hidden>Čas výučby</option>
+                                            <option value="1" {{old('time')==1 ? 'selected' : '' }}>Ranný</option>
+                                            <option value="2" {{old('time')==3 ? 'selected' : '' }}>Poobedný</option>
+                                            <option value="3" {{old('time')==3 ? 'selected' : '' }}>Nezáleží</option>
+                                            {{-- <option value="1" data-id="1" data-option="2">Ranný</option>
+                                            <option value="4" data-id="1" data-option="3">Ranný (Týždeň/Víkend)</option>
+                                            <option value="5" data-id="2" data-option="3">Poobedný (Týždeň)</option>
+                                            <option value="3" data-id="3" data-option="3">Nezáleží</option>
+                                            <option value="1" data-id="1" data-option="4">Ranný</option> --}}
+                                        </select>
+                                    </div>
+                                </div>
+                            </x-form.field>
+                            <x-form.field>
+                                <button id="pridbtn" type="submit"
+                                    class=" flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Pridať
+                                </button>
+                            </x-form.field>
+                        </form>
+                    </div>
                     <div id="kurzy" class="hidden shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="text-sm">

@@ -76,6 +76,35 @@ class ApplicationController extends Controller
 
     public function store()
     {
+       
+        if (request()->student_id){
+             
+            $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . request()->student_id . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id);
+            $value['student_id'] = request()->student_id;
+            $validation = Validator($value, $rule);
+            if ($validation->fails()) {
+                throw ValidationException::withMessages(['name' => 'Takáto prihláška už existuje']);
+            } else {
+                $attributes = request()->validate([
+
+                    'student_id' => ['required', 'integer' ,Rule::exists('students', 'id')],
+                    // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
+                    'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
+                    'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
+                    'days' => ['required', 'integer'],
+                    'time' => ['required', 'integer'],
+                ]);
+                // dd(request()->all());
+                // $student = Student::firstWhere('email', $email['email']);
+                Application::create([
+                    'student_id' => $attributes['student_id'],
+                    'academy_id' => $attributes['academy_id'],
+                    'coursetype_id' => $attributes['coursetype_id'],
+                    'days' => $attributes['days'],
+                    'time' => $attributes['time']
+                ]);
+            }
+        }
         session(['typ' => request()->typ]);
 
         $email['email'] = request()->email;
