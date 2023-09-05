@@ -38,6 +38,7 @@
                                             <span id="jj" class="ml-2">Povoliť úpravy</span>
                                             <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
                                             <span style="display: none;" id="kk" class="ml-2">Pridať kurz</span>
+                                            <span style="display: none;" id="nkk" class="ml-2">Zrušiť pridanie kurzu</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -49,7 +50,8 @@
                                 <ul class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                     role="tablist">
                                     <li class="z-30 flex-auto text-center ">
-                                        <a id="ku" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                        <a id="ku"
+                                            class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
                                             <span id="tlac1" class="ml-2">Kurzy</span>
@@ -57,7 +59,8 @@
                                         </a>
                                     </li>
                                     <li class="z-30 flex-auto text-center">
-                                        <a id="tr" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                        <a id="tr"
+                                            class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             nav-link href="javascript:;">
                                             <i class="ni ni-settings-gear-65"></i>
                                             <span id="lt" class="ml-2">Login</span>
@@ -181,119 +184,188 @@
 
                         </form>
                     </div>
+                    <div class="hidden p-6"  id="pridat">
+                        <p class="leading-normal uppercase  dark:opacity-60 text-sm">Pridať správu kurzu</p>
+                        <form action="/admin/coursetype_instructor" method="POST">
+                            @csrf
+                            <div class="flex"> 
                
-                <div id="kurzy" class="hidden shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="text-sm">
-                            <tr>
-                                <td class="px-6 py-1">Názov typu kurzu</td>
-                                <td class="px-6 py-2">Počet prihlášok</td>
-                                <td class="pl-6 py-2"><a
-                                        href="'.route('register', ['instructor_id' =>$instructor->id]).'"
-                                        class="text-red-600">Vytvoriť login</a></td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($instructor->coursetypes as $coursetype)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            <a href="/admin/coursetypes/{{ $coursetype->id }}"
-                                                title="Ukázať podrobnosti">
-                                                {{$coursetype->name }}
-                                                {{$coursetype->academyname }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            {{ $coursetype->applications->count()}}
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="/admin/coursetype/{{ $coursetype->id }}/edit"
-                                        class="text-blue-500 hover:text-blue-600">Edit</a>
-                                </td>
-
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <form method="POST" action="/admin/posts/{{ $coursetype->id }}">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button class="text-xs text-gray-400">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div id="login" class="hidden flex-auto p-6">
-                    <p class="leading-normal uppercase  dark:opacity-60 text-sm">Login</p>
-                    <form id="formm2" action="/admin/instructors/{{$instructor->id}}" method="post"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @if($instructor->has('login'))
-                        @method('Patch')
-                        @endif
-                        <div class="flex flex-wrap -mx-3">
-                            <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
-                                <div class="mb-4">
-                                    <label for="username"
-                                        class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Username</label>
-                                    <input disabled type="text" name="username"
-                                        value="{{$instructor->login->nickname ?? ''}}" required autofocus autocomplete="name"
-                                        class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                <div>
+                
+                                    
+                                    <input name="instructor_id" value="{{$instructor->id}}" hidden />
+    
+                                    <x-form.label name="akadémia" />
+                                    <!-- parent -->
+                                    <select name="academy_id" class="combo-a" data-nextcombo=".combo-b">
+                                        <option value="" disabled selected hidden>Akadémia</option>
+                                        {{-- @php
+                                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                                        ->get();
+                                        @endphp --}}
+                                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])
+                                        ->get() as $academ)
+                                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
+                                            {{old('academy_id')==$academ->id ? 'selected' : ''}}>{{
+                                            ucwords($academ->name)}}</option>
+                                        @endforeach
+                                        {{-- <option value="" disabled selected hidden>Akadémia</option>
+                                        <option value="1" data-id="1" data-option="-1">Cisco</option>
+                                        <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                                    </select>
+                                </div>
+                                <div class="ml-4">
+                                    <x-form.label name="typ kurzu" />
+                                    <!-- child -->
+                                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
+                                        disabled>
+                                        <option value="" disabled selected hidden>Typ kurzu</option>
+                                        <option value="1" data-id="1" data-option="1">Lahky</option>
+                                        <option value="2" data-id="2" data-option="1">Stredny</option>
+                                        <option value="3" data-id="3" data-option="2">Photoshop</option>
+                                        <option value="4" data-id="4" data-option="2">Illustrator</option>
+                                    </select> --}}
+                                    <select name="coursetype_id" id="coursetype_id" class="combo-b" disabled>
+                                        <option value="" disabled selected hidden>Typ kurzu</option>
+                                        {{-- @php
+                                        $academy = \App\Models\CourseType::all();
+                                        @endphp --}}
+                                        @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
+                                        <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
+                                            {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
+                                            ucwords($type->name) }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-                            <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
-                                <div class="mb-4">
-                                    <label for="password"
-                                        class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password</label>
-                                    <input disabled type="password" name="password"  required autocomplete="new-password"
-                                        class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                </div>
-                            </div>
-                            <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
-                                <div class="mb-4">
-                                    <label for="password_confirmation"
-                                        class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password confirmation</label>
-                                    <input disabled type="password" name="password_confirmation"  required autocomplete="new-password" 
-                                        class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                </div>
-                            </div>
-                           
+                            <x-form.field>
+                            <button id="pridbtn" type="submit"
+                                        class=" flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Pridať
+                                    </button>
+                                </x-form.field>
+                        </form>
+                    </div>
+                    <div id="kurzy" class="hidden flex-auto p-6">
+                        <p class="leading-normal uppercase  dark:opacity-60 text-sm">Kurzy</p>
+                        <div class="flex flex-wrap -mx-3 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="text-sm">
+                                    <tr>
+                                        <td class="px-6 py-1">Názov typu kurzu</td>
+                                        <td class="px-6 py-2">Počet prihlášok</td>
+                                        <td class="pl-6 py-2"><a
+                                                href="'.route('register', ['instructor_id' =>$instructor->id]).'"
+                                                class="text-red-600">Vytvoriť login</a></td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @foreach ($instructor->coursetypes as $coursetype)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    <a href="/admin/coursetypes/{{ $coursetype->id }}"
+                                                        title="Ukázať podrobnosti">
+                                                        {{$coursetype->name }}
+                                                        {{$coursetype->academyname }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ $coursetype->applications->count()}}
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="/admin/coursetype/{{ $coursetype->id }}/edit"
+                                                class="text-blue-500 hover:text-blue-600">Edit</a>
+                                        </td>
+
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <form method="POST" action="/admin/posts/{{ $coursetype->id }}">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button class="text-xs text-gray-400">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                        
-                        {{-- <x-form.field>
-                            <button type="submit"
-                                class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
-                        </x-form.field> --}}
-                        {{-- <x-form.button>
-                            Update
-                        </x-form.button> --}}
-                        <x-form.field>
-                            
-                            <div class="flex">
-                                <button id="upd1" type="submit"
-                                    class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">{{ $instructor->login ? 'Update' : 'Create' }}
-                                </button>
-                                <button id="res1" type="reset"
-                                    class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
+                    </div>
+                    <div id="login" class="hidden flex-auto p-6">
+                        <p class="leading-normal uppercase  dark:opacity-60 text-sm">Login</p>
+                        <form id="formm2" action="/admin/instructors/{{$instructor->id}}" method="post"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @if($instructor->has('login'))
+                            @method('Patch')
+                            @endif
+                            <div class="flex flex-wrap -mx-3">
+                                <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
+                                    <div class="mb-4">
+                                        <label for="username"
+                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Username</label>
+                                        <input disabled type="text" name="username"
+                                            value="{{$instructor->login->nickname ?? ''}}" required autofocus
+                                            autocomplete="name"
+                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                    </div>
+                                </div>
+                                <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
+                                    <div class="mb-4">
+                                        <label for="password"
+                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password</label>
+                                        <input disabled type="password" name="password" required
+                                            autocomplete="new-password"
+                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                    </div>
+                                </div>
+                                <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
+                                    <div class="mb-4">
+                                        <label for="password_confirmation"
+                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password
+                                            confirmation</label>
+                                        <input disabled type="password" name="password_confirmation" required
+                                            autocomplete="new-password"
+                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                    </div>
+                                </div>
+
                             </div>
 
-                        </x-form.field>
+                            {{-- <x-form.field>
+                                <button type="submit"
+                                    class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                            </x-form.field> --}}
+                            {{-- <x-form.button>
+                                Update
+                            </x-form.button> --}}
+                            <x-form.field>
 
-                    </form>
+                                <div class="flex">
+                                    <button id="upd1" type="submit"
+                                        class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">{{
+                                        $instructor->login ? 'Update' : 'Create' }}
+                                    </button>
+                                    <button id="res1" type="reset"
+                                        class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
+                                </div>
+
+                            </x-form.field>
+
+                        </form>
+                    </div>
                 </div>
-             </div>
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\AkademieController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CourseType_InstructorController;
 use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InstructorController;
@@ -53,9 +54,12 @@ Route::post('admin/academies/create', [AcademyController::class, 'store']);
 Route::get('admin/coursetypes', [CourseTypeController::class, 'index'])->name('admin.coursetypes.index');
 
 Route::get('admin/coursetypes/create', [CourseTypeController::class, 'create']);
+
 Route::patch('admin/coursetypes/{coursetype}', [CoursetypeController::class, 'update']);
 Route::get('admin/coursetypes/{coursetype:id}', [CourseTypeController::class, 'show']);
 Route::post('admin/coursetypes/create', [CourseTypeController::class, 'store']);
+
+Route::post('admin/coursetype_instructor', [CourseType_InstructorController::class, 'store']);
 
 Route::get('admin/students', [StudentController::class, 'index'])->name('admin.students.index');
 Route::patch('admin/students/{student}', [StudentController::class, 'update']);

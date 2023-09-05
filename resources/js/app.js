@@ -79,8 +79,11 @@ function povol() {
   var form2 = document.getElementById('formm2');
   var kur = document.getElementById('kurzy');
   var login = document.getElementById('login');
+  var pridat = document.getElementById('pridat');
+  var kk = document.getElementById('kk');
+  var nkk = document.getElementById('nkk');
   // var studentId = $('#kk').data('student-id');
-  var redirectUrl = $('#kk').data('href');
+  // var redirectUrl = $('#kk').data('href');
   // var redirectUrl = "{{ route('applications', ['student_id' => ':studentId']) }}".replace(':studentId', studentId);
   // Získání všech inputů typu text
 
@@ -103,10 +106,20 @@ function povol() {
     button2.style.display = 'none';
     form.reset();
   }
-  else if (kur.style.display != 'none') {
-
+  else if (kur.style.display != 'none' && pridat.style.display != 'block') {
+    pridat.style.display = 'block';
+    nkk.style.display = 'block';
+    kk.style.display = 'none';
     // Presmerovanie na URL
-    window.location.href = redirectUrl;
+    // window.location.href = redirectUrl;
+    // window.location = "/admin/instructors";
+  }
+  else if (kur.style.display != 'none' && pridat.style.display != 'none') {
+    pridat.style.display = 'none';
+    nkk.style.display = 'none';
+    kk.style.display = 'block';
+    // Presmerovanie na URL
+    // window.location.href = redirectUrl;
     // window.location = "/admin/instructors";
   }
   else if (inputs2[0].disabled == true && login.style.display != 'none') {
@@ -155,6 +168,8 @@ function kurzy() {
   var button21 = document.getElementById('res1');
   var lt = document.getElementById('lt');
   var kt = document.getElementById('kt');
+  var pridat = document.getElementById('pridat');
+  var nkk = document.getElementById('nkk');
 
   // Získání všech inputů typu text
 
@@ -168,7 +183,7 @@ function kurzy() {
     tlac2.style.display = 'block';
     button.style.display = 'none';
     button2.style.display = 'none';
-
+   
   }
   else if (inputs[0].disabled == false && profile.style.display != 'none') {
     inputs.forEach(function (input) {
@@ -184,6 +199,7 @@ function kurzy() {
     tlac2.style.display = 'block';
     button.style.display = 'none';
     button2.style.display = 'none';
+    
   }
   else if (kur.style.display != 'none') {
     // text2.style.display='none';
@@ -194,6 +210,8 @@ function kurzy() {
     kk.style.display = 'none';
     tlac1.style.display = 'block';
     tlac2.style.display = 'none';
+    pridat.style.display = 'none';
+    nkk.style.display = 'none';
   }
   else if (inputs2[0].disabled == true && login.style.display != 'none') {
      text2.style.display='none';
@@ -250,7 +268,8 @@ function tretia() {
   var button21 = document.getElementById('res1');
   var lt = document.getElementById('lt');
   var kt = document.getElementById('kt');
-
+  var pridat = document.getElementById('pridat');
+  var nkk = document.getElementById('nkk');
   // Získání všech inputů typu text
 
   if (inputs[0].disabled == true && profile.style.display != 'none') {
@@ -297,6 +316,7 @@ function tretia() {
     tlac2.style.display = 'block';
     kt.style.display = 'block';
     lt.style.display = 'none';
+    
   } 
   else if (inputs2[0].disabled == true && login.style.display != 'none') {
     text2.style.display = 'none';
