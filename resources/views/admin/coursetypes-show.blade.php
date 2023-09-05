@@ -37,7 +37,8 @@
                                             <i class="ni ni-app"></i>
                                             <span id="jj" class="ml-2">Povoliť úpravy</span>
                                             <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
-                                            <span style="display: none;" id="kk" class="ml-2">Vytvoriť prihlášku</span>
+                                            <span style="display: none;" id="kk" class="ml-2">Pridať inštruktora</span>
+                                            <span style="display: none;" id="nkk" class="ml-2">Zrušiť pridanie inštruktora</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -52,7 +53,7 @@
                                         <a id="ku" class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
-                                            <span id="tlac1" class="ml-2">Prihlášky</span>
+                                            <span id="tlac1" class="ml-2">Inštruktori</span>
                                             <span id="tlac2" class="hidden ml-2">Info</span>
                                         </a>
                                     </li>
@@ -204,13 +205,51 @@
 
                         </form>
                     </div>
+
+                    <div class="hidden p-6" id="pridat">
+                        <p class="leading-normal uppercase  dark:opacity-60 text-sm">Pridať inštruktora</p>
+                        <form action="/admin/coursetype_instructor" method="POST">
+                            @csrf
+                            <div>
+
+                                <input name="coursetype_id" value="{{$coursetype->id}}" hidden />
+
+                                <x-form.label name="inštruktor" />
+                                <!-- parent -->
+                                <select name="instructor_id" class="w-full">
+                                    <option value="" disabled selected hidden>Inštruktori</option>
+                                    {{-- @php
+                                    $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                                    ->get();
+                                    @endphp --}}
+                                    @foreach (\App\Models\Instructor::with(['coursetypes'])->get() as $instructor)
+                                  
+                                    <option value="{{ $instructor->id }}" data-id="{{ $instructor->id }}" data-option="-1"
+                                        {{old('instructor_id')==$instructor->id ? 'selected' : ''}}>Meno: {{
+                                        ucwords($instructor->name)}} {{
+                                        ucwords($instructor->lastname)}} Email: {{
+                                        ucwords($instructor->email)}}</option>
+                                    @endforeach
+                                    {{-- <option value="" disabled selected hidden>Akadémia</option>
+                                    <option value="1" data-id="1" data-option="-1">Cisco</option>
+                                    <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                                </select>
+                            </div>
+                            
+                            <x-form.field>
+                                <button id="pridbtn" type="submit"
+                                    class=" flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Pridať
+                                </button>
+                            </x-form.field>
+                        </form>
+                    </div>
                
                 <div id="kurzy" class="hidden shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="text-sm">
                             <tr>
-                                <td class="px-6 py-1">Názov typu kurzu</td>
-                                <td class="px-6 py-2">Počet prihlášok</td>
+                                <td class="px-6 py-1">Meno a priezvisko</td>
+                                <td class="px-6 py-2"></td>
                                 <td class="pl-6 py-2"><a
                                         href="'.route('register', ['academy_id' =>$academy->id]).'"
                                         class="text-red-600">Vytvoriť login</a></td>
@@ -218,45 +257,45 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($coursetype->applications as $application)
+                            @foreach ($coursetype->instructors as $instructor)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            <a href="/admin/applications/{{ $application->id }}"
+                                            <a href="/admin/instructors/{{ $instructor->id }}"
                                                 title="Ukázať podrobnosti">
                                                
-                                                {{$application->student->name }}
-                                                {{$application->student->lastname }}
+                                                {{$instructor->name }}
+                                                {{$instructor->lastname }}
                                                 
                                             </a>
                                         </div>
                                     </div>
                                 </td>
 
-                                {{-- <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            {{ $application->min}}
-                                            {{ $application->max}}
-                                        </div>
-                                    </div>
-                                </td> --}}
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {{ $application->created_at->diffForHumans()}}
+                                            {{$instructor->email }}
+                                           
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ $instructor->created_at->diffForHumans()}}
                                         </div>
                                     </div>
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="/admin/application/{{ $application->id }}/edit"
+                                    <a href="/admin/instructor/{{ $instructor->id }}/edit"
                                         class="text-blue-500 hover:text-blue-600">Edit</a>
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <form method="POST" action="/admin/posts/{{ $application->id }}">
+                                    <form method="POST" action="/admin/posts/{{ $instructor->id }}">
                                         @csrf
                                         @method('DELETE')
 
