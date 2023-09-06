@@ -94,6 +94,12 @@ class StudentController extends Controller
 
         return back();
     }
+    public function destroy(Student $student)
+    {
+        $student->delete();
+
+        return back()->with('success', 'Post deleted successfully');
+    }
 
     public function search(Request $request)
     {

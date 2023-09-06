@@ -34,4 +34,11 @@ class CourseType_InstructorController extends Controller
 
         return back();
     }
+
+    public function destroy(Instructor $application)
+    {
+        $application->delete();
+
+        return back()->with('success', 'Post deleted successfully');
+    }
 }
