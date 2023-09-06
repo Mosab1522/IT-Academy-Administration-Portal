@@ -18,6 +18,9 @@ Route::middleware('guest')->group(function () {
 
     Route::post('admin/login/create', [RegisteredUserController::class, 'store']);
 
+    Route::patch('admin/login/update', [RegisteredUserController::class, 'update'])
+    ->name('update');
+
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
 

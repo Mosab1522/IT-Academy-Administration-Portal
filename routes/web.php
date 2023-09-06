@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\AkademieController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CourseType_InstructorController;
 use App\Http\Controllers\CourseTypeController;
@@ -76,7 +77,7 @@ Route::get('admin/instructors/create', [InstructorController::class, 'create']);
 Route::get('admin/instructors/{instructor:id}', [InstructorController::class, 'show']);
 Route::post('admin/instructors/create', [InstructorController::class, 'store']);
 
-
+Route::get('admin/reset', [NewPasswordController::class, 'create']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

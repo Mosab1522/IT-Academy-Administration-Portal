@@ -310,9 +310,10 @@
                             @csrf
                             @if($instructor->login)
                             @method('Patch')
-                            @endif
+                            <input name="user_id" value="{{$instructor->login->id}}" hidden />
+                            @else
                             <input name="instructor_id" value="{{$instructor->id}}" hidden />
-
+                            @endif
                             <div class="flex flex-wrap -mx-3">
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
                                     <div class="mb-4">
@@ -328,7 +329,7 @@
                                     <div class="mb-4">
                                         <label for="password"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password</label>
-                                        <input disabled type="password" name="password" required
+                                        <input disabled type="password" name="password" 
                                             autocomplete="new-password"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
@@ -338,7 +339,7 @@
                                         <label for="password_confirmation"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password
                                             confirmation</label>
-                                        <input disabled type="password" name="password_confirmation" required
+                                        <input disabled type="password" name="password_confirmation"
                                             autocomplete="new-password"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
