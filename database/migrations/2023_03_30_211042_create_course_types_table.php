@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('course_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->foreignId('academy_id')->constrained();
+            $table->foreignId('academy_id')->constrained()->cascadeOnDelete();;
             $table->integer('min');
             $table->integer('max');
             $table->timestamps();

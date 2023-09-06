@@ -80,6 +80,8 @@ Route::patch('admin/instructors/{instructor}', [InstructorController::class, 'up
 Route::get('admin/instructors/create', [InstructorController::class, 'create']);
 Route::get('admin/instructors/{instructor:id}', [InstructorController::class, 'show']);
 Route::post('admin/instructors/create', [InstructorController::class, 'store']);
+Route::delete('admin/instructors/{instructor}',[InstructorController::class,'destroy']);
+
 
 Route::get('admin/reset', [NewPasswordController::class, 'create']);
 

@@ -230,7 +230,7 @@ class InstructorController extends Controller
                 'lastname' => ['required', 'max:255'],
                 'photo' => ['image'],
                 'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email')->ignore($instructor), Rule::unique('instructors', 'sekemail')->ignore($instructor)],
-                'sekemail' => ['nullable','email', 'different:email', Rule::unique('instructors', 'email')->ignore($instructor), Rule::unique('instructors', 'sekemail')->ignore($instructor)],
+                'sekemail' => ['nullable', 'email', 'different:email', Rule::unique('instructors', 'email')->ignore($instructor), Rule::unique('instructors', 'sekemail')->ignore($instructor)],
                 'telephone' => [
                     'nullable',
                     'regex:/^\+421\s?\d{3}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/', Rule::unique('instructors', 'telephone')->ignore($instructor)
@@ -240,7 +240,7 @@ class InstructorController extends Controller
                 'psc' => ['nullable', 'required_with:mestoobec,ulicacislo', 'min:6', 'max:6'],
             ]
         );
-        
+
         if (isset($attributes['photo'])) { //($attributes['thumbnail'] ?? false) uplne rovnake
             $attributes['photo'] = request()->file('photo')->store('photos');
         }
@@ -248,6 +248,16 @@ class InstructorController extends Controller
         $instructor->update($attributes);
 
         return back();
+    }
+
+    public function destroy(Instructor $instructor)
+    {
+        // $instructor->coursetypes()->detach();
+
+        // Teraz môžete vymazať inštruktora samotného.
+        $instructor->delete();
+
+        return back()->with('success', 'Post deleted successfully');
     }
 
     protected function normalizePhoneNumber($phoneNumber)
