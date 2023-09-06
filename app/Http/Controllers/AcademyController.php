@@ -66,4 +66,11 @@ class AcademyController extends Controller
 
         return back();
     }
+
+    public function destroy(Academy $academy)
+    {
+        $academy->delete();
+
+        return back()->with('success', 'Post deleted successfully');
+    }
 }
