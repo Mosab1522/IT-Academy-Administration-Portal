@@ -90,4 +90,11 @@ class CourseTypeController extends Controller
 
         return back();
     }
+
+    public function destroy(CourseType $coursetype)
+    {
+        $coursetype->delete();
+
+        return back()->with('success', 'Post deleted successfully');
+    }
 }
