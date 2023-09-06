@@ -76,9 +76,9 @@ class ApplicationController extends Controller
 
     public function store()
     {
-       
-        if (request()->student_id){
-             
+
+        if (request()->student_id) {
+
             $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . request()->student_id . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id);
             $value['student_id'] = request()->student_id;
             $validation = Validator($value, $rule);
@@ -87,7 +87,7 @@ class ApplicationController extends Controller
             } else {
                 $attributes = request()->validate([
 
-                    'student_id' => ['required', 'integer' ,Rule::exists('students', 'id')],
+                    'student_id' => ['required', 'integer', Rule::exists('students', 'id')],
                     // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
                     'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
                     'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
@@ -118,19 +118,19 @@ class ApplicationController extends Controller
 
         $rule2 = array('email' => [Rule::unique('students', 'sekemail')]);
         $validation2 = Validator($email, $rule2);
-       
+
         $rule3 = array('sekemail' => [Rule::unique('students', 'email')]);
         $validation3 = Validator($sekemail, $rule3);
 
         $rule4 = array('sekemail' => [Rule::unique('students', 'sekemail')]);
         $validation4 = Validator($sekemail, $rule4);
-      
-        
-        if ($validation->fails() || $validation2->fails()|| $validation3->fails()|| $validation4->fails()) {
+
+
+        if ($validation->fails() || $validation2->fails() || $validation3->fails() || $validation4->fails()) {
             if (request()->typ == "novy") {
                 throw ValidationException::withMessages(['email' => 'Tento email vedieme v systéme. Využite Zjednodušenú registráciu.']);
             }
-            
+
             // $rule1 = Rule::exists('students', 'name')->where('email', request()->email);
             // $rule2 = Rule::exists('students', 'lastname')->where('email', request()->email);
             // $rule3 = Rule::exists('students', 'lastname')->where('email', request()->email);
@@ -167,13 +167,13 @@ class ApplicationController extends Controller
                 'name' => ['required', 'max:255'],
                 'lastname' => ['required', 'max:255'],
                 'email' => ['required', 'email', 'max:255'],
-                'sekemail' => ['nullable','email', 'max:255'],
+                'sekemail' => ['nullable', 'email', 'max:255'],
                 'status' => ['required', 'min:7', 'max:9'],
-                'skola' => ['nullable','min:3','max:3','required_if:status,student'],
-                'ina' => ['max:255','required_if:skola,ina',],
-                'studium' => ['nullable','min:7','max:7','required_if:skola,ucm'],
-                'program' => ['nullable','min:3','max:4','required_if:skola,ucm'],
-                'iny' => ['max:255','required_if:program,iny'],
+                'skola' => ['nullable', 'min:3', 'max:3', 'required_if:status,student'],
+                'ina' => ['max:255', 'required_if:skola,ina',],
+                'studium' => ['nullable', 'min:7', 'max:7', 'required_if:skola,ucm'],
+                'program' => ['nullable', 'min:3', 'max:4', 'required_if:skola,ucm'],
+                'iny' => ['max:255', 'required_if:program,iny'],
                 'ulicacislo' => ['required', 'min:3', 'max:255'],
                 'mestoobec' => ['required', 'min:1', 'max:255'],
                 'psc' => ['required', 'min:6', 'max:6'],
@@ -274,6 +274,13 @@ class ApplicationController extends Controller
 
         return back();
     }
+    public function destroy(Application $application)
+    {
+        $application->delete();
+
+        return back()->with('success', 'Post deleted successfully');
+    }
+
     public function admincreate()
     {
         return view('admin.applications-create');

@@ -40,8 +40,10 @@ Route::get('/', [ApplicationController::class, 'create']);
 Route::post('/', [ApplicationController::class, 'store']);
 Route::get('admin/applications/create', [ApplicationController::class, 'admincreate'])->name('applications');
 Route::get('admin/applications/{application:id}', [ApplicationController::class, 'show']);
+Route::delete('admin/applications/{application}',[ApplicationController::class,'destroy']);
 
-Route::get('/search-students', [StudentController::class, 'search'])->name('search-students');
+
+
 
 
 
@@ -68,6 +70,8 @@ Route::get('admin/students/create', [StudentController::class, 'create']);
 Route::get('admin/students/{student:id}', [StudentController::class, 'show']);
 
 Route::post('admin/students/create', [StudentController::class, 'store']);
+Route::get('/search-students', [StudentController::class, 'search'])->name('search-students');
+
 
 Route::get('admin/instructors', [InstructorController::class, 'index'])->name('admin.instructors.index');
 Route::patch('admin/instructors/{instructor}', [InstructorController::class, 'update']);
