@@ -67,26 +67,29 @@ swith();
 //     setSubOptions(newValue);
 // });
 function povol() {
-  var inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
-  var inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
-  var text1 = document.getElementById('jj');
-  var text2 = document.getElementById('zz');
-  var button = document.getElementById('upd');
-  var button2 = document.getElementById('res');
-  var button1 = document.getElementById('upd1');
-  var button21 = document.getElementById('res1');
-  var form = document.getElementById('formm');
-  var form2 = document.getElementById('formm2');
-  var kur = document.getElementById('kurzy');
-  var login = document.getElementById('login');
-  var pridat = document.getElementById('pridat');
-  var kk = document.getElementById('kk');
-  var nkk = document.getElementById('nkk');
+  const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
+  const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
+  const text1 = document.getElementById('jj');
+  const text2 = document.getElementById('zz');
+  const button = document.getElementById('upd');
+  const button2 = document.getElementById('res');
+  const button1 = document.getElementById('upd1');
+  const button21 = document.getElementById('res1');
+  const form = document.getElementById('formm');
+  const form2 = document.getElementById('formm2');
+  const kur = document.getElementById('kurzy');
+  const login = document.getElementById('login');
+  const pridat = document.getElementById('pridat');
+  const kk = document.getElementById('kk');
+  const nkk = document.getElementById('nkk');
   // var studentId = $('#kk').data('student-id');
   // var redirectUrl = $('#kk').data('href');
   // var redirectUrl = "{{ route('applications', ['student_id' => ':studentId']) }}".replace(':studentId', studentId);
   // Získání všech inputů typu text
-
+  const povool = document.querySelector('#pp');
+// povool.addEventListener('click', povol);
+ if(povool){
+  povool.addEventListener('click', () => {
   if (inputs[0].disabled == true && profile.style.display != 'none') {
     inputs.forEach(function (input) {
       input.disabled = false;
@@ -141,38 +144,44 @@ function povol() {
     button21.style.display = 'none';
     form2.reset();
   }
+});
+ }
   // Odstranění atributu disabled
 
 }
-const povool = document.querySelector('#pp');
-povool.addEventListener('click', povol);
+povol();
+// const povool = document.querySelector('#pp');
+// povool.addEventListener('click', povol);
 
 function kurzy() {
-  var inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
-  var inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
-  var text1 = document.getElementById('jj');
-  var text2 = document.getElementById('zz');
-  // var button = document.getElementById('upd');
-  // var button2 = dokurzyycument.getElementById('res');
-  var form = document.getElementById('formm');
-  var form2 = document.getElementById('formm2');
-  var kur = document.getElementById('kurzy');
-  var login = document.getElementById('login');
-  var kk = document.getElementById('kk');
-  var tlac1 = document.getElementById('tlac1');
-  var tlac2 = document.getElementById('tlac2');
-  var profile = document.getElementById('profile');
-  var button = document.getElementById('upd');
-  var button2 = document.getElementById('res');
-  var button1 = document.getElementById('upd1');
-  var button21 = document.getElementById('res1');
-  var lt = document.getElementById('lt');
-  var kt = document.getElementById('kt');
-  var pridat = document.getElementById('pridat');
-  var nkk = document.getElementById('nkk');
+  const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
+  const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
+  const text1 = document.getElementById('jj');
+  const text2 = document.getElementById('zz');
+  // const button = document.getElementById('upd');
+  // const button2 = dokurzyycument.getElementById('res');
+  const form = document.getElementById('formm');
+  const form2 = document.getElementById('formm2');
+  const kur = document.getElementById('kurzy');
+  const login = document.getElementById('login');
+  const kk = document.getElementById('kk');
+  const tlac1 = document.getElementById('tlac1');
+  const tlac2 = document.getElementById('tlac2');
+  const profile = document.getElementById('profile');
+  const button = document.getElementById('upd');
+  const button2 = document.getElementById('res');
+  const button1 = document.getElementById('upd1');
+  const button21 = document.getElementById('res1');
+  const lt = document.getElementById('lt');
+  const kt = document.getElementById('kt');
+  const pridat = document.getElementById('pridat');
+  const nkk = document.getElementById('nkk');
 
   // Získání všech inputů typu text
-
+  const kurzyy = document.querySelector('#ku');
+  // kurzyy.addEventListener('click', kurzy);
+  if(kurzyy){
+  kurzyy.addEventListener('click', () => {
   if (inputs[0].disabled == true && profile.style.display != 'none') {
     text2.style.display = 'none';
     text1.style.display = 'none';
@@ -242,36 +251,40 @@ function kurzy() {
     button1.style.display = 'none';
     button21.style.display = 'none';
   }
-
+});
+  }
 }
-const kurzyy = document.querySelector('#ku');
-kurzyy.addEventListener('click', kurzy);
+kurzy();
+// const kurzyy = document.querySelector('#ku');
+// kurzyy.addEventListener('click', kurzy);
 
 function tretia() {
-  var inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
-  var inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
-  var text1 = document.getElementById('jj');
-  var text2 = document.getElementById('zz');
-  // var button = document.getElementById('upd');
-  // var button2 = dokurzyycument.getElementById('res');
-  var form = document.getElementById('formm');
-  var form2 = document.getElementById('formm2');
-  var kur = document.getElementById('kurzy');
-  var kk = document.getElementById('kk');
-  var tlac1 = document.getElementById('tlac1');
-  var tlac2 = document.getElementById('tlac2');
-  var profile = document.getElementById('profile');
-  var login = document.getElementById('login');
-  var button = document.getElementById('upd');
-  var button2 = document.getElementById('res');
-  var button1 = document.getElementById('upd1');
-  var button21 = document.getElementById('res1');
-  var lt = document.getElementById('lt');
-  var kt = document.getElementById('kt');
-  var pridat = document.getElementById('pridat');
-  var nkk = document.getElementById('nkk');
+  const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
+  const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
+  const text1 = document.getElementById('jj');
+  const text2 = document.getElementById('zz');
+  // const button = document.getElementById('upd');
+  // const button2 = dokurzyycument.getElementById('res');
+  const form = document.getElementById('formm');
+  const form2 = document.getElementById('formm2');
+  const kur = document.getElementById('kurzy');
+  const kk = document.getElementById('kk');
+  const tlac1 = document.getElementById('tlac1');
+  const tlac2 = document.getElementById('tlac2');
+  const profile = document.getElementById('profile');
+  const login = document.getElementById('login');
+  const button = document.getElementById('upd');
+  const button2 = document.getElementById('res');
+  const button1 = document.getElementById('upd1');
+  const button21 = document.getElementById('res1');
+  const lt = document.getElementById('lt');
+  const kt = document.getElementById('kt');
+  const pridat = document.getElementById('pridat');
+  const nkk = document.getElementById('nkk');
   // Získání všech inputů typu text
-
+  const tretie = document.querySelector('#tr');
+  if(tretie) {
+  tretie.addEventListener('click', () => {
   if (inputs[0].disabled == true && profile.style.display != 'none') {
     text2.style.display = 'none';
     text1.style.display = 'block';
@@ -348,11 +361,13 @@ function tretia() {
     kt.style.display = 'none';
     lt.style.display = 'block';
   }
-
+});
+  }
   // Odstranění atributu disabled
 }
-const tretie = document.querySelector('#tr');
-tretie.addEventListener('click', tretia);
+tretia();
+// const tretie = document.querySelector('#tr');
+
 
 
 
