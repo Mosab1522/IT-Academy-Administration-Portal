@@ -534,6 +534,20 @@ jQuery.fn.chainCombo = function () {
   });
 }();
 
+$('#setDefaults').click(function () {
+  // Získajte hodnoty predvolených hodnôt
+  var defaultOption1 = ''; // Nahraďte hodnotou zo svojho modelu alebo iného zdroja
+  var defaultOption2 = ''; // Nahraďte hodnotou zo svojho modelu alebo iného zdroja
+
+  // Nastavte predvolené hodnoty pre oba selecty
+  $('#academy').val(defaultOption1);
+  $('#coursetype_id').val(defaultOption2);
+  $('#coursetype_id').prop('disabled', true);
+
+  // Spustite funkciu jq_ChainCombo na prvom selecte, ak chcete, aby sa reťazové selecty aktualizovali
+  // jq_ChainCombo($('#academy'));
+});
+
 function debounce(fn, delay) {
   let timer = null;
   return function () {

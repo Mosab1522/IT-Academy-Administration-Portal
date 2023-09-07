@@ -1,5 +1,4 @@
 <x-layout />
-
 <x-setting heading="{{$coursetype->name}}">
     <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -222,13 +221,19 @@
                                     $academy = \App\Models\Academy::with(['coursetypes','applications'])
                                     ->get();
                                     @endphp --}}
+                                    @php
+                                        $assignedInstructors = $coursetype->instructors->pluck('id')->toArray();
+                                    @endphp
                                     @foreach (\App\Models\Instructor::with(['coursetypes'])->get() as $instructor)
-                                  
+                                    
+                                    @if(!in_array($instructor->id, $assignedInstructors))
+                                    
                                     <option value="{{ $instructor->id }}" data-id="{{ $instructor->id }}" data-option="-1"
                                         {{old('instructor_id')==$instructor->id ? 'selected' : ''}}>Meno: {{
                                         ucwords($instructor->name)}} {{
                                         ucwords($instructor->lastname)}} Email: {{
-                                        ucwords($instructor->email)}}</option>
+                                        ucwords($instructor->email)}}</option> 
+                                    @endif
                                     @endforeach
                                     {{-- <option value="" disabled selected hidden>Akadémia</option>
                                     <option value="1" data-id="1" data-option="-1">Cisco</option>
