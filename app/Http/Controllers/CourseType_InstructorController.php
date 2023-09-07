@@ -35,10 +35,23 @@ class CourseType_InstructorController extends Controller
         return back();
     }
 
-    public function destroy(Instructor $application)
+    public function destroy(Instructor $instructor, CourseType $coursetype)
     {
-        $application->delete();
-
+    //     dd($coursetype);
+    //     $attributes = request()->validate(
+    //     [
+    //         'coursetype_id' => ['nullable', Rule::exists('course_types', 'id')],
+    //         'instructor_id' => ['nullable', Rule::exists('instructors','id')]
+    //     ]
+    // );
+        // $instructor ? $instructor->coursetypes()->detach($attributes['coursetype_id']) : $coursetype->instructors()->detach($attributes['instructor_id']);
+        $instructor->coursetypes()->detach($coursetype['id']);
+        // if ($instructor){
+            
+        // }
+        // else if ($coursetype){
+            
+        // }
         return back()->with('success', 'Post deleted successfully');
     }
 }

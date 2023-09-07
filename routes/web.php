@@ -40,7 +40,7 @@ Route::get('/', [ApplicationController::class, 'create']);
 Route::post('/', [ApplicationController::class, 'store']);
 Route::get('admin/applications/create', [ApplicationController::class, 'admincreate'])->name('applications');
 Route::get('admin/applications/{application:id}', [ApplicationController::class, 'show']);
-Route::delete('admin/applications/{application}',[ApplicationController::class,'destroy']);
+Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy']);
 
 
 
@@ -53,7 +53,7 @@ Route::patch('admin/academies/{academy}', [AcademyController::class, 'update']);
 Route::get('admin/academies/create', [AcademyController::class, 'create']);
 Route::get('admin/academies/{academy:id}', [AcademyController::class, 'show']);
 Route::post('admin/academies/create', [AcademyController::class, 'store']);
-Route::delete('admin/academies/{academy}',[AcademyController::class,'destroy']);
+Route::delete('admin/academies/{academy}', [AcademyController::class, 'destroy']);
 
 
 Route::get('admin/coursetypes', [CourseTypeController::class, 'index'])->name('admin.coursetypes.index');
@@ -63,10 +63,11 @@ Route::get('admin/coursetypes/create', [CourseTypeController::class, 'create']);
 Route::patch('admin/coursetypes/{coursetype}', [CoursetypeController::class, 'update']);
 Route::get('admin/coursetypes/{coursetype:id}', [CourseTypeController::class, 'show']);
 Route::post('admin/coursetypes/create', [CourseTypeController::class, 'store']);
-Route::delete('admin/coursetypes/{coursetype}',[CourseTypeController::class,'destroy']);
+Route::delete('admin/coursetypes/{coursetype}', [CourseTypeController::class, 'destroy']);
 
 Route::post('admin/coursetype_instructor', [CourseType_InstructorController::class, 'store']);
-Route::delete('admin/coursetype_instructor/{coursetype_instructor}',[CourseType_InstructorController::class,'destroy']);
+Route::delete('admin/coursetype_instructor/{instructor}/{coursetype}', [CourseType_InstructorController::class, 'destroy'])->name('your.route.name');
+// Route::delete('admin/coursetype_instructor/{instructor}', [CourseType_InstructorController::class, 'destroy']);
 
 Route::get('admin/students', [StudentController::class, 'index'])->name('admin.students.index');
 Route::patch('admin/students/{student}', [StudentController::class, 'update']);
@@ -75,7 +76,7 @@ Route::get('admin/students/{student:id}', [StudentController::class, 'show']);
 
 Route::post('admin/students/create', [StudentController::class, 'store']);
 Route::get('/search-students', [StudentController::class, 'search'])->name('search-students');
-Route::delete('admin/students/{student}',[StudentController::class,'destroy']);
+Route::delete('admin/students/{student}', [StudentController::class, 'destroy']);
 
 
 Route::get('admin/instructors', [InstructorController::class, 'index'])->name('admin.instructors.index');
@@ -85,7 +86,7 @@ Route::patch('admin/instructors/{instructor}', [InstructorController::class, 'up
 Route::get('admin/instructors/create', [InstructorController::class, 'create']);
 Route::get('admin/instructors/{instructor:id}', [InstructorController::class, 'show']);
 Route::post('admin/instructors/create', [InstructorController::class, 'store']);
-Route::delete('admin/instructors/{instructor}',[InstructorController::class,'destroy']);
+Route::delete('admin/instructors/{instructor}', [InstructorController::class, 'destroy']);
 
 
 Route::get('admin/reset', [NewPasswordController::class, 'create']);

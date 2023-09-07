@@ -289,9 +289,11 @@
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <form method="POST" action="/admin/posts/{{ $coursetype->id }}">
+                                            <form method="POST" action="{{ route('your.route.name', ['instructor' => $instructor, 'coursetype' => $coursetype]) }}">
+
                                                 @csrf
                                                 @method('DELETE')
+                                                <input name="instructor_id" value="{{$instructor->id}}" hidden />
 
                                                 <button class="text-xs text-gray-400">Delete</button>
                                             </form>
