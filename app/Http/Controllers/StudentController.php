@@ -63,7 +63,58 @@ class StudentController extends Controller
             'mestoobec' => ['nullable', 'min:1', 'max:255'],
             'psc' => ['nullable','min:6', 'max:6']
         ]);
-        $student = Student::create($attributes);
+        if (request()->status == "nestudent") {
+            $student = Student::create([
+                'name' => $attributes['name'],
+                'lastname' => $attributes['lastname'],
+                'email' => $attributes['email'],
+                'sekemail' => $attributes['sekemail'],
+                'status' => request()->status,
+                'ulicacislo' => $attributes['ulicacislo'],
+                'mestoobec' => $attributes['mestoobec'],
+                'psc' => $attributes['psc'],
+            ]);
+        } else if (request()->skola == "ina") {
+            $student = Student::create([
+                'name' => $attributes['name'],
+                'lastname' => $attributes['lastname'],
+                'email' => $attributes['email'],
+                'sekemail' => $attributes['sekemail'],
+                'status' => request()->status,
+                'skola' => request()->ina,
+                'ulicacislo' => $attributes['ulicacislo'],
+                'mestoobec' => $attributes['mestoobec'],
+                'psc' => $attributes['psc']
+            ]);
+        } else if (request()->program == "apin") {
+            $student = Student::create([
+                'name' => $attributes['name'],
+                'lastname' => $attributes['lastname'],
+                'email' => $attributes['email'],
+                'sekemail' => $attributes['sekemail'],
+                'status' => request()->status,
+                'skola' => request()->skola,
+                'studium' => request()->studium,
+                'program' => request()->program,
+                'ulicacislo' => $attributes['ulicacislo'],
+                'mestoobec' => $attributes['mestoobec'],
+                'psc' => $attributes['psc']
+            ]);
+        } else {
+            $student = Student::create([
+                'name' => $attributes['name'],
+                'lastname' => $attributes['lastname'],
+                'email' => $attributes['email'],
+                'sekemail' => $attributes['sekemail'],
+                'status' => request()->status,
+                'skola' => request()->skola,
+                'studium' => request()->studium,
+                'program' => request()->iny,
+                'ulicacislo' => $attributes['ulicacislo'],
+                'mestoobec' => $attributes['mestoobec'],
+                'psc' => $attributes['psc']
+            ]);
+        }
         // dd($student);
 
         // session(['student_id' => $student['id']]);
