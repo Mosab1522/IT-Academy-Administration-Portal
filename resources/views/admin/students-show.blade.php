@@ -228,6 +228,9 @@
                                         $academy = \App\Models\Academy::with(['coursetypes','applications'])
                                         ->get();
                                         @endphp --}}
+                                        @php
+                                            $assignedCourses = $student->applications->pluck('coursetype_id')->toArray();
+                                        @endphp
                                         @foreach (\App\Models\Academy::with(['coursetypes','applications'])->get() as $academ)
                                       
                                         <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
@@ -256,9 +259,11 @@
                                         $academy = \App\Models\CourseType::all();
                                         @endphp --}}
                                         @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $typ)
+                                        @if (!in_array($typ->id, $assignedCourses))
                                         <option value="{{ $typ->id }}" data-id="{{ $typ->id }}" data-option="{{ $typ->academy_id }}"
                                             {{old('coursetype_id')==$typ->id ? 'selected' : ''}}>{{
                                             ucwords($typ->name) }}</option>
+                                        @endif
                                         @endforeach
                                     </select>
                                 </div>
