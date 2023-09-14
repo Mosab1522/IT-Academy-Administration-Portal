@@ -21,11 +21,11 @@
         <h4 class="my-4 font-semibold "
             title="Pridať tlačidlo vytvoriť študenta ak ho nenajde admin v novej prihláške.">Tlačidlo vytvoriť študenta
         </h4> --}}
-        <h4 class="my-4 font-semibold "
+        {{-- <h4 class="my-4 font-semibold "
             title="-dorobiť views pre jednotlivých študentov, inštruktorov, prihlášku,typ kurzu, akadémie, .">Urobiť
             zobrazenia show</h4>
         <h4 class="my-4 font-semibold " title=" .">Urobiť pridanie inštruktora kurzu</h4>
-        <h4 class="my-4 font-semibold " title=" .">Urobiť pridanie kurzu inštruktorovi</h4>
+        <h4 class="my-4 font-semibold " title=" .">Urobiť pridanie kurzu inštruktorovi</h4> --}}
 
         {{-- <h4 class="my-4 font-semibold "
             title="- Niejak vymyslieť že buď vytvoríme meno heslo a pošleme mu alebo že ho musí zmeniť prípadne že by on mohol vytvoriť heslo po emaile.">
@@ -34,9 +34,10 @@
 
 
 
-        <h4 class="my-4 font-semibold " title="-asi notifikácia / email adminovi a ten mu to musí potvrdiť.">Reset hesla
+        {{-- <h4 class="my-4 font-semibold " title="-asi notifikácia / email adminovi a ten mu to musí potvrdiť.">Reset hesla
             inštruktorovi</h4>
-        <h4 class="my-4 font-semibold " title="">Urobiť edit a delete</h4>
+        <h4 class="my-4 font-semibold " title="">Urobiť edit a delete</h4> --}}
+        <h4 class="my-4 font-semibold " title="">Skontrolovať všetky základne veci - show / edit / mazanie a doupravovat podmienky a podobne.</h4> 
         <h4 class="my-4 font-semibold " title="- vytváranie, spravovanie, trigger,  ">Začať riešiť už normálne kurzy
         </h4>
         <h4 class="my-4 font-semibold "
