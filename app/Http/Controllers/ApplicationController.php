@@ -105,7 +105,7 @@ class ApplicationController extends Controller
                 ]);
             }
         }
-        session(['typ' => request()->typ]);
+        // session(['typ' => request()->typ]);
 
         $email['email'] = request()->email;
         // $email['sekemail'] = request()->sekemail;

@@ -1,28 +1,33 @@
 <x-layout />
-
 <x-setting heading="Prihlásiť sa na kurz">
-    
-           <a class="inline-block w-1/2 font-bold text-base {{session('typ')!="stary" ? 'text-blue-500' : 'text-gray-700'}} " href="#" id="switch-form">Úplné prihlásenie na kurz</a>
-        
-      
-           <a class="inline font-bold text-smm {{session('typ')=="stary" ? 'text-blue-500' : 'text-gray-700'}}" href="#" id="switch-form2">Zjednodušené prihlásenie na kurz</a>
-        
-    <form id="novy" action="/" method="post" class="{{session('typ')!="stary" ? '' :'hidden'}}">
+
+    <a class="inline-block w-1/2 font-bold text-base {{old('typ')!=" stary" ? 'text-blue-500' : 'text-gray-700'
+        }} " href=" #" id="switch-form">Úplné prihlásenie na kurz</a>
+
+
+    <a class="inline font-bold text-smm {{old('typ')==" stary" ? 'text-blue-500' : 'text-gray-700' }}" href="#"
+        id="switch-form2">Zjednodušené prihlásenie na kurz</a>
+
+    <form id="novy" action="/" method="post" class="{{old('typ')!=" stary" ? '' :'hidden'}}">
         @csrf
         <input type="hidden" name="typ" value="novy" />
-        <x-form.field> 
-            <p class="block my-3 font-light text-xs border border-gray200 p-3 rounded-xl"><span class="font-medium">&#9432</span> Úplné prihlásenie je určené pre nových študentov, <span class="font-normal">ktorý si vytvárajú svoju prvú prihlášku v našom systéme.</span> V prípade, že ste si už vytvárali úplnú prihlášku využite možnosť <span class=" font-normal">Zjednodušené prihlásenie na kurz.</span></p>
+        <x-form.field>
+            <p class="block my-3 font-light text-xs border border-gray200 p-3 rounded-xl"><span
+                    class="font-medium">&#9432</span> Úplné prihlásenie je určené pre nových študentov, <span
+                    class="font-normal">ktorý si vytvárajú svoju prvú prihlášku v našom systéme.</span> V prípade, že
+                ste si už vytvárali úplnú prihlášku využite možnosť <span class=" font-normal">Zjednodušené prihlásenie
+                    na kurz.</span></p>
             <h3 class="block mt-5 mb-3 uppercase font-bold text-sm text-gray-700">Kurzy</h3>
-            
 
-           
-            
-            <div class="flex"> 
-               
+
+
+
+            <div class="flex">
+
                 <div>
 
-                    
-                   
+
+
 
                     <x-form.label name="akadémia" />
                     <!-- parent -->
@@ -34,8 +39,9 @@
                         @endphp --}}
                         @foreach (\App\Models\Academy::with(['coursetypes','applications'])
                         ->get() as $academ)
-                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
-                            {{old('academy_id')==$academ->id ? 'selected' : ''}}>{{
+                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
+                            {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                            >{{
                             ucwords($academ->name)}}</option>
                         @endforeach
                         {{-- <option value="" disabled selected hidden>Akadémia</option>
@@ -61,7 +67,8 @@
                         @endphp --}}
                         @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
                         <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
-                            {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
+                            {{-- {{old('coursetype_id')==$type->id ? 'selected' : ''}} --}}
+                            >{{
                             ucwords($type->name) }}</option>
                         @endforeach
                     </select>
@@ -122,71 +129,82 @@
                 </label>
             </div> --}}
 
-           
+
         </x-form.field>
-        
+
         <h3 class="block mt-5 mb-3 uppercase font-bold text-sm text-gray-700">Osobné údaje</h3>
-       
-      
+
+
         <div class="items-center">
             <x-form.label name="som:" />
 
-            <input class="mr-0.5" type="radio" id="student" name="status" value="student">
+            <input class="mr-0.5" type="radio" id="student" name="status" value="student" {{old('status')=='student'
+                ? 'checked' : '' }}>
             <label for="student">Študent</label>
 
-            <input class="ml-2 mr-0.5" type="radio" id="nestudent" name="status" value="nestudent">
+            <input class="ml-2 mr-0.5" type="radio" id="nestudent" name="status" value="nestudent"
+                {{old('status')=='nestudent' ? 'checked' : '' }}>
             <label for="nestudent">Neštudent</label>
 
         </div>
 
         <div class="flex pb-1">
-            <div class="h-20 mt-3" id="ucm" style="display: none;">
+            <div class="h-20 mt-3 {{old('skola') ? '' : 'hidden' }}" id="ucm">
                 <x-form.label name="univerzita:" />
                 <div class=" flex">
                     <div>
 
-                        <input type="radio" id="ucmka" name="skola" value="ucm">
+                        <input type="radio" id="ucmka" name="skola" value="ucm" {{old('skola')=='ucm' ? 'checked' : ''
+                            }}>
                         <label for="option1">UCM</label><br>
                         <div class="mt-1">
-                            <input  type="radio" id="inam" name="skola" value="ina">
+                            <input type="radio" id="inam" name="skola" value="ina" {{old('skola')=='ina' ? 'checked'
+                                : '' }}>
                             <label for="option2">Iná</label><br>
                         </div>
                     </div>
 
-                    <div id="ina" style="display: none"><input
-                            class=" border border-gray-200 mt-6 ml-2 p-2 w-80 rounded h-7" name="ina" id="nu"
-                            required disabled></div>
+                    <div id="ina" class="{{old('skola')=='ina' ? '' : 'hidden' }}"><input
+                            class=" border border-gray-200 mt-6 ml-2 p-2 w-80 rounded h-7" name="ina" id="nu" required
+                            value="{{old('ina') }}" {{old('skola')=='ina' ? '' : 'disabled' }}></div>
                 </div>
             </div>
 
-            <div class="ml-4 mt-3" id="ucmkari" style="display: none;">
+            <div class="ml-4 mt-3 {{old('skola')=='ucm' ? '' : 'hidden' }}" id="ucmkari">
 
                 <x-form.label name="studium:" />
-             
-                <input type="radio" id="option3" name="studium" value="interne">
+
+                <input type="radio" id="option3" name="studium" value="interne" {{old('studium')=='interne' ? 'checked'
+                : '' }}>
                 <label for="option1">Interné</label><br>
-                   <div class="mt-1">
-                <input type="radio" id="option4" name="studium" value="externe">
-                <label for="option2">Externé</label><br></div>
+                <div class="mt-1">
+                    <input type="radio" id="option4" name="studium" value="externe" {{old('studium')=='externe' ? 'checked'
+                    : '' }}>
+                    <label for="option2">Externé</label><br>
+                </div>
             </div>
 
 
 
 
-            <div class=" flex ml-4 mt-3" id="ucmkari2" style="display: none;">
+            <div class="ml-4 mt-3 {{old('skola')=='ucm' ? '' : 'hidden' }}" id="ucmkari2">
                 <x-form.label name="program:" />
                 <div>
-                    <input type="radio" id="option5" name="program" value="apin">
+                    <input type="radio" id="option5" name="program" value="apin" {{old('program')=='apin' ? 'checked'
+                    : '' }}>
                     <label for="option1">Aplikovaná informatika</label><br>
                     <div class="mt-1">
-                    <input type="radio" id="option6" name="program" value="iny">
-                    <label for="option2">Iný</label><br>
+                        <input type="radio" id="option6" name="program" value="iny" {{old('program')=='iny' ? 'checked'
+                        : '' }}>
+                        <label for="option2">Iný</label><br>
                     </div>
-                </div> 
+                </div>
             </div>
-                <div class="mt-16 -ml-32" id="iny" style="display: none"><input
-                        class=" border border-gray-200 ml-2 p-2 w-80 rounded h-7" name="iny" id="ny" required
-                        disabled></div>
+            <div class="mt-16 -ml-32 {{old('program')=='iny' ? ''
+            : 'hidden' }}" id="iny"><input
+                    class=" border border-gray-200 ml-2 p-2 w-80 rounded h-7" name="iny" id="ny" value="{{old('iny')}}" required {{old('program')=='iny' ? ''
+                    : 'disabled' }}>
+            </div>
 
 
         </div>
@@ -216,7 +234,7 @@
             <option value="Rock" data-option="Rock">Hard Rock</option>
         </select> --}}
 
-        
+
 
 
 
@@ -240,10 +258,10 @@
             Odoslať
         </x-form.button>
     </form>
-    <form id="stary" action="/" method="post" class="{{session('typ')=="stary" ? '' :'hidden'}}">
-       
-       
-        
+    <form id="stary" action="/" method="post" class="{{old('typ')==" stary" ? '' :'hidden'}}">
+
+
+
         {{--
         <x-form.input name="thumbnail" type="file" /> --}}
         {{--
@@ -262,10 +280,14 @@
             <option value="Rock" data-option="Rock">Hard Rock</option>
         </select> --}}
 
-        <x-form.field> 
-            <p class="block my-3 font-light text-xs border border-gray200 p-3 rounded-xl"><span class="font-medium">&#9432</span> Zjednodušené prihlásenie je určené pre študentov, <span class="font-normal">ktorý si už vytvorili úplnú prihlášku a sú evidovaný v našom systéme.  </span> V prípade, že ste si ešte nevytvárali úplnú prihlášku využite možnosť <span class=" font-normal">Úplné prihlásenie na kurz.</span></p>
-        @csrf
-        <input type="hidden" name="typ" value="stary" />
+        <x-form.field>
+            <p class="block my-3 font-light text-xs border border-gray200 p-3 rounded-xl"><span
+                    class="font-medium">&#9432</span> Zjednodušené prihlásenie je určené pre študentov, <span
+                    class="font-normal">ktorý si už vytvorili úplnú prihlášku a sú evidovaný v našom systéme. </span> V
+                prípade, že ste si ešte nevytvárali úplnú prihlášku využite možnosť <span class=" font-normal">Úplné
+                    prihlásenie na kurz.</span></p>
+            @csrf
+            <input type="hidden" name="typ" value="stary" />
             <h3 class="block mt-5 mb-3 uppercase font-bold text-sm text-gray-700">Kurzy</h3>
             <div class="flex">
                 <div>
@@ -279,8 +301,9 @@
                         @endphp
                         @foreach (\App\Models\Academy::with(['coursetypes','applications'])
                         ->get() as $academ)
-                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
-                            {{old('academy_id')==$academ->id ? 'selected' : ''}}>{{
+                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
+                            {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                            >{{
                             ucwords($academ->name)}}</option>
                         @endforeach
                         {{-- <option value="" disabled selected hidden>Akadémia</option>
@@ -306,7 +329,8 @@
                         @endphp --}}
                         @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
                         <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
-                            {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
+                            {{-- {{old('coursetype_id')==$type->id ? 'selected' : ''}} --}}
+                            >{{
                             ucwords($type->name) }}</option>
                         @endforeach
                     </select>
@@ -367,7 +391,7 @@
                 </label>
             </div> --}}
 
-           
+
         </x-form.field>
 
         <h3 class="block mt-5 mb-3 uppercase font-bold text-sm text-gray-700">Osobné údaje</h3>
@@ -394,9 +418,9 @@
             Odoslať
         </x-form.button>
     </form>
-@php
-session()->forget('typ');
-@endphp
+    {{-- @php
+    old()->forget('typ');
+    @endphp --}}
 </x-setting>
 
 <script>
