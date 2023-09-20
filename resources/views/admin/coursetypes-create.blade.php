@@ -7,11 +7,12 @@
         <x-form.field>
         <x-form.label name="academy" />
          <select name="academy_id" id="academy_id">
+              <option value="" disabled selected hidden>Akadémie</option>
                 @php
                 $academy = \App\Models\Academy::all();
                 @endphp
                 @foreach (\App\Models\Academy::all() as $academ)
-                <option value="{{ $academ->id }}" >{{ ucwords($academ->name) }}</option>
+                <option value="{{ $academ->id }}" {{old('academy_id')==$academ->id ? 'selected' : '' }} >{{ ucwords($academ->name) }}</option>
                 @endforeach
 
             </select>
