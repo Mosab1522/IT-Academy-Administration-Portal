@@ -39,7 +39,7 @@ Route::get('admin/applications', [ApplicationController::class, 'index'])->name(
 Route::get('/', [ApplicationController::class, 'create']);
 Route::post('/', [ApplicationController::class, 'store']);
 Route::get('admin/applications/create', [ApplicationController::class, 'admincreate'])->name('applications');
-Route::get('admin/applications/{application:id}', [ApplicationController::class, 'show']);
+// Route::get('admin/applications/{application:id}', [ApplicationController::class, 'show']);
 Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy']);
 
 

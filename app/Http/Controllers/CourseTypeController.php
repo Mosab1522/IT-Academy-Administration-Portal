@@ -71,13 +71,13 @@ class CourseTypeController extends Controller
     public function update(Coursetype $coursetype)
     {
         $academy = Academy::with(['coursetypes', 'applications'])
-        ->where('name', '=', request()->lastname)->first();
+        ->where('id', '=', request()->academy_id)->first();
 
         if ($academy == null) {
             dd(request()->all());
         };
 
-        request()->merge(['academy_id'  => $academy['id']]); 
+        // request()->merge(['academy_id'  => $academy['id']]); 
 
         $attributes = request()->validate([
             'name' => ['required', 'max:255', Rule::unique('course_types', 'name')->ignore($coursetype)],

@@ -134,7 +134,8 @@
                                     <div class="mb-4">
                                         <label for="email"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Telephone</label>
-                                        <input disabled type="email" name="telephone"
+                                        <input disabled type="" 
+                                        name="telephone"
                                             value="{{ $instructor->telephone }}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
@@ -207,7 +208,7 @@
 
                                     <x-form.label name="akadémia" />
                                     <!-- parent -->
-                                    <select id="academy" name="academy_id" class="combo-a"
+                                    <select disabled id="academy_id" name="academy_id" class="combo-a"
                                         data-nextcombo=".combo-b">
                                         <option value="" disabled selected hidden>Akadémia</option>
                                         {{-- @php
@@ -260,7 +261,7 @@
                                     class=" flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Pridať
                                 </button>
                             </x-form.field>
-                            <button type="button" id="setDefaults">Nastaviť predvolené hodnoty</button>
+                            {{-- <button type="button" id="setDefaults">Nastaviť predvolené hodnoty</button> --}}
                         </form>
                     </div>
                     <div id="kurzy" class="hidden flex-auto p-6">
@@ -303,7 +304,7 @@
                                             </td>
 
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="/admin/coursetype/{{ $coursetype->id }}/edit"
+                                                <a href="/admin/coursetypes/{{ $coursetype->id }}"
                                                     class="text-blue-500 hover:text-blue-600">Edit</a>
                                             </td>
 

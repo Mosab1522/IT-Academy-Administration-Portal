@@ -228,10 +228,8 @@
                         <thead class="text-sm">
                             <tr>
                                 <td class="px-6 py-1">Názov typu kurzu</td>
-                                <td class="px-6 py-2">Počet prihlášok</td>
-                                <td class="pl-6 py-2"><a
-                                        href="'.route('register', ['academy_id' =>$academy->id]).'"
-                                        class="text-red-600">Vytvoriť login</a></td>
+                                <td class="px-6 py-2">Min-Max</td>
+                                <td></td>
                                 <td></td>
                             </tr>
                         </thead>
@@ -268,7 +266,7 @@
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="/admin/coursetype/{{ $coursetype->id }}/edit"
+                                    <a href="/admin/coursetypes/{{ $coursetype->id }}"
                                         class="text-blue-500 hover:text-blue-600">Edit</a>
                                 </td>
 

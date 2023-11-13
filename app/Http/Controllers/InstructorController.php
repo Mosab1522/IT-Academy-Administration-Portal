@@ -157,7 +157,7 @@ class InstructorController extends Controller
                 'sekemail' => ['email', 'nullable', 'different:email', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
                 'telephone' => [
                     'nullable',
-                    'regex:/^\+421\s?\d{3}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/', Rule::unique('instructors', 'telephone')
+                    'regex:/^\+421\s?9\d{2}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/', // Rule::unique('instructors', 'telephone')
                 ],
                 'ulicacislo' => ['nullable', 'required_with:mestoobec,psc', 'min:3', 'max:255'],
                 'mestoobec' => ['nullable', 'required_with:ulicacislo,psc', 'min:1', 'max:255'],
@@ -167,11 +167,14 @@ class InstructorController extends Controller
                 'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
             ]
         );
+        
         if (empty($attributes['telephone'])) {
             $attributes['telephone'] = NULL;
+            
         } else {
+            
             $attributes['telephone'] = $this->normalizePhoneNumber(request()->telephone);
-
+            
             $rule = array('telephone' => [Rule::unique('instructors', 'telephone')]);
             $validation = Validator($attributes, $rule);
 
@@ -233,13 +236,25 @@ class InstructorController extends Controller
                 'sekemail' => ['nullable', 'email', 'different:email', Rule::unique('instructors', 'email')->ignore($instructor), Rule::unique('instructors', 'sekemail')->ignore($instructor)],
                 'telephone' => [
                     'nullable',
-                    'regex:/^\+421\s?\d{3}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/', Rule::unique('instructors', 'telephone')->ignore($instructor)
+                    'regex:/^\+421\s?9\d{2}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/'
                 ],
                 'ulicacislo' => ['nullable', 'required_with:mestoobec,psc', 'min:3', 'max:255'],
                 'mestoobec' => ['nullable', 'required_with:ulicacislo,psc', 'min:1', 'max:255'],
                 'psc' => ['nullable', 'required_with:mestoobec,ulicacislo', 'min:6', 'max:6'],
             ]
         );
+        if (empty($attributes['telephone'])) {
+            $attributes['telephone'] = NULL;
+        } else {
+            $attributes['telephone'] = $this->normalizePhoneNumber(request()->telephone);
+
+            $rule = array('telephone' => [Rule::unique('instructors', 'telephone')->ignore($instructor)]);
+            $validation = Validator($attributes, $rule);
+
+            if ($validation->fails()) {
+                throw ValidationException::withMessages(['telephone' => 'Toto telefonné číslo sa už používa.']);
+            }
+        }
 
         if (isset($attributes['photo'])) { //($attributes['thumbnail'] ?? false) uplne rovnake
             $attributes['photo'] = request()->file('photo')->store('photos');
@@ -261,19 +276,16 @@ class InstructorController extends Controller
     }
 
     protected function normalizePhoneNumber($phoneNumber)
-    {
-        // Remove non-digit characters and leading "0" from local numbers
-        $normalizedNumber = preg_replace('/\D/', '', $phoneNumber);
+{
+    // Remove spaces
+    $normalizedNumber = str_replace(' ', '', $phoneNumber);
 
-        // If the number starts with "0", replace it with the country code "+421"
-        if (strpos($normalizedNumber, '0') === 0) {
-            $normalizedNumber = '+421' . substr($normalizedNumber, 1);
-        } else if (strpos($normalizedNumber, '0') === '+') {
-            $normalizedNumber = '+' . substr($normalizedNumber, 0);
-        } else {
-            $normalizedNumber = null;
-        }
-
-        return $normalizedNumber;
+    // If the number starts with "0", replace it with the country code "+421"
+    if (strpos($normalizedNumber, '0') === 0) {
+        $normalizedNumber = '+421' . substr($normalizedNumber, 1);
     }
+    
+    return $normalizedNumber;
+}
+
 }

@@ -88,7 +88,7 @@
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/admin/academies/{{ $academy->id }}/edit" class="text-blue-500 hover:text-blue-600">Edit</a>
+                                            <a href="/admin/academies/{{ $academy->id }}" class="text-blue-500 hover:text-blue-600">Edit</a>
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

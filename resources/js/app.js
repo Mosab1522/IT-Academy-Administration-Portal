@@ -69,6 +69,8 @@ swith();
 function povol() {
   const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
   const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
+  const select = document.getElementById('academy_id');
+  const select2 = document.getElementById('coursetype_id');
   const text1 = document.getElementById('jj');
   const text2 = document.getElementById('zz');
   const button = document.getElementById('upd');
@@ -94,6 +96,9 @@ function povol() {
     inputs.forEach(function (input) {
       input.disabled = false;
     });
+    if(select){
+      select.disabled = false;
+    }
     text1.style.display = 'none';
     text2.style.display = 'block';
     button.style.display = 'block';
@@ -103,6 +108,9 @@ function povol() {
     inputs.forEach(function (input) {
       input.disabled = true;
     });
+    if(select){
+      select.disabled = true;
+    }
     text2.style.display = 'none';
     text1.style.display = 'block';
     button.style.display = 'none';
@@ -113,6 +121,12 @@ function povol() {
     pridat.style.display = 'block';
     nkk.style.display = 'block';
     kk.style.display = 'none';
+    if(select){
+      select.disabled = false;
+    }
+    if(select2){
+      select.disabled = false;
+    }
     // Presmerovanie na URL
     // window.location.href = redirectUrl;
     // window.location = "/admin/instructors";
@@ -121,6 +135,12 @@ function povol() {
     pridat.style.display = 'none';
     nkk.style.display = 'none';
     kk.style.display = 'block';
+    if(select){
+      select.disabled = true;
+    }
+    if(select2){
+      select.disabled = true;
+    }
     // Presmerovanie na URL
     // window.location.href = redirectUrl;
     // window.location = "/admin/instructors";
@@ -129,6 +149,9 @@ function povol() {
     inputs2.forEach(function (input) {
       input.disabled = false;
     });
+    if(select){
+      select.disabled = false;
+    }
     text1.style.display = 'none';
     text2.style.display = 'block';
     button1.style.display = 'block';
@@ -138,6 +161,9 @@ function povol() {
     inputs2.forEach(function (input) {
       input.disabled = true;
     });
+    if(select){
+      select.disabled = true;
+    }
     text2.style.display = 'none';
     text1.style.display = 'block';
     button1.style.display = 'none';
@@ -156,6 +182,7 @@ povol();
 function kurzy() {
   const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
   const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
+  const select = document.getElementById('academy_id');
   const text1 = document.getElementById('jj');
   const text2 = document.getElementById('zz');
   // const button = document.getElementById('upd');
@@ -198,6 +225,10 @@ function kurzy() {
     inputs.forEach(function (input) {
       input.disabled = true;
     });
+    if(select){
+      select.disabled = true;
+    }
+    
     text2.style.display = 'none';
     text1.style.display = 'none';
     form.reset();
@@ -238,6 +269,10 @@ function kurzy() {
     inputs2.forEach(function (input) {
       input.disabled = true;
     });
+    if(select){
+      select.disabled = true;
+    }
+
    text2.style.display='none';
     text1.style.display = 'block';
     form2.reset(); 
@@ -261,6 +296,8 @@ kurzy();
 function tretia() {
   const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
   const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
+  const select = document.getElementById('academy_id');
+  const select2 = document.getElementById('coursetype_id');
   const text1 = document.getElementById('jj');
   const text2 = document.getElementById('zz');
   // const button = document.getElementById('upd');
@@ -303,6 +340,9 @@ function tretia() {
     inputs.forEach(function (input) {
       input.disabled = true;
     });
+    if(select){
+      select.disabled = true;
+    }
     text2.style.display = 'none';
     text1.style.display = 'block';
     form.reset();
@@ -317,9 +357,18 @@ function tretia() {
     kt.style.display = 'block';
     lt.style.display = 'none';
   }
-  else if (kur.style.display != 'none') {
+  else if ( kur.style.display != 'none') {
+    if(select){
+      if(select.style.display != 'none'){
+        select.disabled = true;
+        select2.disabled = true;
+        pridat.style.display = 'none';
+        nkk.style.display = 'none';
+      }
+    }
     text2.style.display = 'none';
     text1.style.display = 'block';
+    
     //  form.reset(); 
     // profile.style.display = 'block';
     login.style.display = 'block';
@@ -331,6 +380,7 @@ function tretia() {
     lt.style.display = 'none';
     
   } 
+  
   else if (inputs2[0].disabled == true && login.style.display != 'none') {
     text2.style.display = 'none';
     text1.style.display = 'none';
@@ -348,6 +398,9 @@ function tretia() {
     inputs2.forEach(function (input) {
       input.disabled = true;
     });
+    if(select){
+      select.disabled = true;
+    }
     text2.style.display = 'none';
     text1.style.display = 'none';
     form2.reset();
@@ -534,19 +587,19 @@ jQuery.fn.chainCombo = function () {
   });
 }();
 
-$('#setDefaults').click(function () {
-  // Získajte hodnoty predvolených hodnôt
-  var defaultOption1 = ''; // Nahraďte hodnotou zo svojho modelu alebo iného zdroja
-  var defaultOption2 = ''; // Nahraďte hodnotou zo svojho modelu alebo iného zdroja
+// $('#setDefaults').click(function () {
+//   // Získajte hodnoty predvolených hodnôt
+//   var defaultOption1 = ''; // Nahraďte hodnotou zo svojho modelu alebo iného zdroja
+//   var defaultOption2 = ''; // Nahraďte hodnotou zo svojho modelu alebo iného zdroja
 
-  // Nastavte predvolené hodnoty pre oba selecty
-  $('#academy').val(defaultOption1);
-  $('#coursetype_id').val(defaultOption2);
-  $('#coursetype_id').prop('disabled', true);
+//   // Nastavte predvolené hodnoty pre oba selecty
+//   $('#academy').val(defaultOption1);
+//   $('#coursetype_id').val(defaultOption2);
+//   $('#coursetype_id').prop('disabled', true);
 
-  // Spustite funkciu jq_ChainCombo na prvom selecte, ak chcete, aby sa reťazové selecty aktualizovali
-  // jq_ChainCombo($('#academy'));
-});
+//   // Spustite funkciu jq_ChainCombo na prvom selecte, ak chcete, aby sa reťazové selecty aktualizovali
+//   // jq_ChainCombo($('#academy'));
+// });
 
 function debounce(fn, delay) {
   let timer = null;

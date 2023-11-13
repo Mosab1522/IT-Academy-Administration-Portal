@@ -312,9 +312,8 @@
                             <thead class="text-sm">
                                 <tr>
                                     <td class="px-6 py-1">Názov typu kurzu</td>
-                                    <td class="px-6 py-2">Počet prihlášok</td>
-                                    <td class="pl-6 py-2"><a href="'.route('register', ['student_id' =>$student->id]).'"
-                                            class="text-red-600">Vytvoriť login</a></td>
+                                    <td class="px-6 py-2">Days - Time</td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -324,9 +323,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="text-sm font-medium text-gray-900">
-                                                <a href="/admin/applications/{{ $application->id }}"
+                                                <a href="/admin/coursetypes/{{ $application->coursetype->id }}"
                                                     title="Ukázať podrobnosti">
-                                                    {{$application->academy->name }}
+                                                    
                                                     {{$application->coursetype->name }}
 
                                                 </a>
@@ -351,15 +350,14 @@
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="/admin/application/{{ $application->id }}/edit"
-                                            class="text-blue-500 hover:text-blue-600">Edit</a>
+                                        
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <form method="POST" action="/admin/posts/{{ $application->id }}">
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
+                                        <form method="POST" action="/admin/applications/{{ $application->id }}">
                                             @csrf
                                             @method('DELETE')
-
+    
                                             <button class="text-xs text-gray-400">Delete</button>
                                         </form>
                                     </td>
