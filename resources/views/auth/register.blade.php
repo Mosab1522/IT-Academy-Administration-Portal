@@ -1,3 +1,7 @@
+<x-flash />
+@php
+session()->forget('success_c');
+@endphp
 @if(session('instructor_id')||request()->instructor_id);
 @unless(session('instructor_id'))
 @php

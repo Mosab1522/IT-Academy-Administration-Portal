@@ -32,7 +32,7 @@ class CourseType_InstructorController extends Controller
 
 
 
-        return back();
+        return back()->with('success_c', 'Úspešne vytvorené');
     }
 
     public function destroy(Instructor $instructor, CourseType $coursetype)
@@ -52,6 +52,6 @@ class CourseType_InstructorController extends Controller
         // else if ($coursetype){
             
         // }
-        return back()->with('success', 'Post deleted successfully');
-    }
+        return back()->with('success_d', 'Úspešne vymazané');
+        }
 }

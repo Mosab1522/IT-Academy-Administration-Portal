@@ -66,7 +66,7 @@ class CourseTypeController extends Controller
 
         CourseType::create($attributes);
 
-        return back();
+        return back()->with('success_c', 'Úspešne vytvorené');
     }
     public function update(Coursetype $coursetype)
     {
@@ -88,13 +88,13 @@ class CourseTypeController extends Controller
 
         $coursetype->update($attributes);
 
-        return back();
+        return back()->with('success_u', 'Úspešne aktualizované');
     }
 
     public function destroy(CourseType $coursetype)
     {
         $coursetype->delete();
 
-        return back()->with('success', 'Post deleted successfully');
+        return back()->with('success_d', 'Úspešne vymazané');
     }
 }

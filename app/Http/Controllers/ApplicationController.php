@@ -272,13 +272,13 @@ class ApplicationController extends Controller
         session()->forget('student_id');
         session()->forget('coursetype_id');
 
-        return back();
+        return back()->with('success_c', 'Úspešne vytvorené');
     }
     public function destroy(Application $application)
     {
         $application->delete();
 
-        return back()->with('success', 'Post deleted successfully');
+        return back()->with('success_d', 'Úspešne vymazané');
     }
 
     public function admincreate()

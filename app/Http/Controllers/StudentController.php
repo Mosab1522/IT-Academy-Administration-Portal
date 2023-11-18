@@ -121,7 +121,7 @@ class StudentController extends Controller
         // session(['student_id' => $student['id']]);
 
         // return redirect('/admin/applications/create')->with('student_id', $student['id']);
-        return redirect('/admin/applications/create?student_id=' . urlencode($student['id']));
+        return redirect('/admin/applications/create?student_id=' . urlencode($student['id']))->with('success_c', 'Úspešne vytvorené');
 
     }
     public function update(Student $student)
@@ -149,13 +149,13 @@ class StudentController extends Controller
         $student->update($attributes);
         $student->touch();
 
-        return back();
+        return back()->with('success_u', 'Úspešne aktualizované');
     }
     public function destroy(Student $student)
     {
         $student->delete();
 
-        return back()->with('success', 'Post deleted successfully');
+        return back()->with('success_d', 'Úspešne vymazané');
     }
 
     public function search(Request $request)

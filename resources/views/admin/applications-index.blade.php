@@ -1,4 +1,7 @@
-
+<x-flash />
+@php
+session()->forget('success_d');
+@endphp
 <x-layout />
 <x-setting heading="Prihlášky">
     <div class="flex flex-col">

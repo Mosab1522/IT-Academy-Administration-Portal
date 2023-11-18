@@ -1,3 +1,7 @@
+<x-flash />
+@php
+session()->forget('success_c');
+@endphp
 <x-layout />
 @php
 session()->forget('student_id');

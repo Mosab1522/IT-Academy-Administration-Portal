@@ -1,5 +1,10 @@
+<x-flash />
+@php
+session()->forget('success_c');
+session()->forget('success_u');
+session()->forget('success_d');
+@endphp
 <x-layout />
-
 <x-setting heading="{{$application->student->name}}">
     <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

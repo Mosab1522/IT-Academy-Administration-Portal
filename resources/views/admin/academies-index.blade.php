@@ -1,3 +1,7 @@
+<x-flash />
+@php
+session()->forget('success_c');
+@endphp
 <x-layout/>
     <x-setting heading="Akadémie">
         <div class="flex flex-col">

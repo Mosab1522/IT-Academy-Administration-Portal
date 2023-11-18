@@ -225,7 +225,7 @@ class InstructorController extends Controller
 
         session(['instructor_id' => $instructor['id']]);
 
-        return redirect('/admin/login/create');
+        return redirect('/admin/login/create')->with('success_c', 'Úspešne vytvorené');
     }
 
     public function update(Instructor $instructor)
@@ -265,7 +265,7 @@ class InstructorController extends Controller
 
         $instructor->update($attributes);
 
-        return back();
+        return back()->with('success_u', 'Úspešne aktualizované');
     }
 
     public function destroy(Instructor $instructor)
@@ -275,7 +275,7 @@ class InstructorController extends Controller
         // Teraz môžete vymazať inštruktora samotného.
         $instructor->delete();
 
-        return back()->with('success', 'Post deleted successfully');
+        return back()->with('success_d', 'Úspešne vymazané');
     }
 
     protected function normalizePhoneNumber($phoneNumber)

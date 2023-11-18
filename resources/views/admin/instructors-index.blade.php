@@ -3,6 +3,10 @@
 session()->forget('instructor_id');
 @endphp
 @endif
+<x-flash />
+@php
+session()->forget('success_d');
+@endphp
 <x-layout />
 <x-setting heading="Inštruktori">
     <div class="flex flex-col">

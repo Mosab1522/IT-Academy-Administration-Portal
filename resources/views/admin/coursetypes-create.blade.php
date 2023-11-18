@@ -1,3 +1,7 @@
+<x-flash />
+@php
+session()->forget('success_c');
+@endphp
 <x-layout/>
 <x-setting heading="Vytvoriť typ kurzu">
     <form action="/admin/coursetypes/create" method="post">

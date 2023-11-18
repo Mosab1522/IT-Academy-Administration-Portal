@@ -55,7 +55,7 @@ class AcademyController extends Controller
 
         Academy::create($attributes);
 
-        return back();
+        return back()->with('success_c', 'Úspešne vytvorené');
     }
     public function update(Academy $academy)
     {
@@ -64,13 +64,13 @@ class AcademyController extends Controller
         ]);
         $academy->update($attributes);
 
-        return back();
+        return back()->with('success_u', 'Úspešne aktualizované');
     }
 
     public function destroy(Academy $academy)
     {
         $academy->delete();
 
-        return back()->with('success', 'Post deleted successfully');
+        return back()->with('success_d', 'Úspešne vymazané');
     }
 }

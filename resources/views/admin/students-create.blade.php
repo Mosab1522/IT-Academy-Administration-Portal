@@ -1,5 +1,8 @@
+<x-flash />
+@php
+session()->forget('success_c');
+@endphp
 <x-layout />
-
 <x-setting heading="Vytvoriť študenta">
     <form action="/admin/students/create" method="post" enctype="multipart/form-data">
         @csrf
