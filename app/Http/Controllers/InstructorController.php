@@ -194,11 +194,14 @@ class InstructorController extends Controller
         //     throw ValidationException::withMessages(['email' => 'Zadali ste totožné emaily.']);
         // }
 
-        $attributes['photo'] ??= NULL;
+        $attributes['photo']??=null;
         //  dd($attributes);
         if ($attributes['photo']) {
             $attributes['photo'] = request()->file('photo')->store('photos');
+        }else{
+            $attributes['photo'] ='photos/basic.jpg';
         }
+        
 
         $instructor = Instructor::create([
             'name' => $attributes['name'],
