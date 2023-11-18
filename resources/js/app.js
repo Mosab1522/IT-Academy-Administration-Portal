@@ -14,25 +14,29 @@ function swith() {
     const registerForm = document.getElementById("stary");
     const switchFormLink = document.getElementById("switch-form");
     const switchFormLink2 = document.getElementById("switch-form2");
+    if (switchFormLink) {
+      switchFormLink.addEventListener("click", function (event) {
+        event.preventDefault();
 
-    switchFormLink.addEventListener("click", function (event) {
-      event.preventDefault();
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+        switchFormLink.style.color = "rgb(59, 130, 246)";
+        switchFormLink2.style.color = "rgb(55 65 81)";
 
-      loginForm.style.display = "block";
-      registerForm.style.display = "none";
-      switchFormLink.style.color = "rgb(59, 130, 246)";
-      switchFormLink2.style.color = "rgb(55 65 81)";
-
-    });
-    switchFormLink2.addEventListener("click", function (event) {
-      event.preventDefault();
+      });
+    }
+    if (switchFormLink2) {
+      switchFormLink2.addEventListener("click", function (event) {
+        event.preventDefault();
 
 
-      loginForm.style.display = "none";
-      registerForm.style.display = "block";
-      switchFormLink2.style.color = "rgb(59, 130, 246)";
-      switchFormLink.style.color = "rgb(55 65 81)";
-    });
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+        switchFormLink2.style.color = "rgb(59, 130, 246)";
+        switchFormLink.style.color = "rgb(55 65 81)";
+      });
+    }
+
   });
 };
 
@@ -89,89 +93,89 @@ function povol() {
   // var redirectUrl = "{{ route('applications', ['student_id' => ':studentId']) }}".replace(':studentId', studentId);
   // Získání všech inputů typu text
   const povool = document.querySelector('#pp');
-// povool.addEventListener('click', povol);
- if(povool){
-  povool.addEventListener('click', () => {
-  if (inputs[0].disabled == true && profile.style.display != 'none') {
-    inputs.forEach(function (input) {
-      input.disabled = false;
+  // povool.addEventListener('click', povol);
+  if (povool) {
+    povool.addEventListener('click', () => {
+      if (inputs[0].disabled == true && profile.style.display != 'none') {
+        inputs.forEach(function (input) {
+          input.disabled = false;
+        });
+        if (select) {
+          select.disabled = false;
+        }
+        text1.style.display = 'none';
+        text2.style.display = 'block';
+        button.style.display = 'block';
+        button2.style.display = 'block';
+      }
+      else if (inputs[0].disabled == false && profile.style.display != 'none') {
+        inputs.forEach(function (input) {
+          input.disabled = true;
+        });
+        if (select) {
+          select.disabled = true;
+        }
+        text2.style.display = 'none';
+        text1.style.display = 'block';
+        button.style.display = 'none';
+        button2.style.display = 'none';
+        form.reset();
+      }
+      else if (kur.style.display != 'none' && pridat.style.display != 'block') {
+        pridat.style.display = 'block';
+        nkk.style.display = 'block';
+        kk.style.display = 'none';
+        if (select) {
+          select.disabled = false;
+        }
+        if (select2) {
+          select.disabled = false;
+        }
+        // Presmerovanie na URL
+        // window.location.href = redirectUrl;
+        // window.location = "/admin/instructors";
+      }
+      else if (kur.style.display != 'none' && pridat.style.display != 'none') {
+        pridat.style.display = 'none';
+        nkk.style.display = 'none';
+        kk.style.display = 'block';
+        if (select) {
+          select.disabled = true;
+        }
+        if (select2) {
+          select.disabled = true;
+        }
+        // Presmerovanie na URL
+        // window.location.href = redirectUrl;
+        // window.location = "/admin/instructors";
+      }
+      else if (inputs2[0].disabled == true && login.style.display != 'none') {
+        inputs2.forEach(function (input) {
+          input.disabled = false;
+        });
+        if (select) {
+          select.disabled = false;
+        }
+        text1.style.display = 'none';
+        text2.style.display = 'block';
+        button1.style.display = 'block';
+        button21.style.display = 'block';
+      }
+      else if (inputs2[0].disabled == false && login.style.display != 'none') {
+        inputs2.forEach(function (input) {
+          input.disabled = true;
+        });
+        if (select) {
+          select.disabled = true;
+        }
+        text2.style.display = 'none';
+        text1.style.display = 'block';
+        button1.style.display = 'none';
+        button21.style.display = 'none';
+        form2.reset();
+      }
     });
-    if(select){
-      select.disabled = false;
-    }
-    text1.style.display = 'none';
-    text2.style.display = 'block';
-    button.style.display = 'block';
-    button2.style.display = 'block';
   }
-  else if (inputs[0].disabled == false && profile.style.display != 'none') {
-    inputs.forEach(function (input) {
-      input.disabled = true;
-    });
-    if(select){
-      select.disabled = true;
-    }
-    text2.style.display = 'none';
-    text1.style.display = 'block';
-    button.style.display = 'none';
-    button2.style.display = 'none';
-    form.reset();
-  }
-  else if (kur.style.display != 'none' && pridat.style.display != 'block') {
-    pridat.style.display = 'block';
-    nkk.style.display = 'block';
-    kk.style.display = 'none';
-    if(select){
-      select.disabled = false;
-    }
-    if(select2){
-      select.disabled = false;
-    }
-    // Presmerovanie na URL
-    // window.location.href = redirectUrl;
-    // window.location = "/admin/instructors";
-  }
-  else if (kur.style.display != 'none' && pridat.style.display != 'none') {
-    pridat.style.display = 'none';
-    nkk.style.display = 'none';
-    kk.style.display = 'block';
-    if(select){
-      select.disabled = true;
-    }
-    if(select2){
-      select.disabled = true;
-    }
-    // Presmerovanie na URL
-    // window.location.href = redirectUrl;
-    // window.location = "/admin/instructors";
-  }
-  else if (inputs2[0].disabled == true && login.style.display != 'none') {
-    inputs2.forEach(function (input) {
-      input.disabled = false;
-    });
-    if(select){
-      select.disabled = false;
-    }
-    text1.style.display = 'none';
-    text2.style.display = 'block';
-    button1.style.display = 'block';
-    button21.style.display = 'block';
-  }
-  else if (inputs2[0].disabled == false && login.style.display != 'none') {
-    inputs2.forEach(function (input) {
-      input.disabled = true;
-    });
-    if(select){
-      select.disabled = true;
-    }
-    text2.style.display = 'none';
-    text1.style.display = 'block';
-    button1.style.display = 'none';
-    button21.style.display = 'none';
-    form2.reset();
-  }
-});
- }
   // Odstranění atributu disabled
 
 }
@@ -201,92 +205,114 @@ function kurzy() {
   const button21 = document.getElementById('res1');
   const lt = document.getElementById('lt');
   const kt = document.getElementById('kt');
+  const upravy = document.getElementById('upravy');
+
   const pridat = document.getElementById('pridat');
   const nkk = document.getElementById('nkk');
 
   // Získání všech inputů typu text
   const kurzyy = document.querySelector('#ku');
   // kurzyy.addEventListener('click', kurzy);
-  if(kurzyy){
-  kurzyy.addEventListener('click', () => {
-  if (inputs[0].disabled == true && profile.style.display != 'none') {
-    text2.style.display = 'none';
-    text1.style.display = 'none';
-    profile.style.display = 'none';
-    kur.style.display = 'block';
-    kk.style.display = 'block';
-    tlac1.style.display = 'none';
-    tlac2.style.display = 'block';
-    button.style.display = 'none';
-    button2.style.display = 'none';
-   
-  }
-  else if (inputs[0].disabled == false && profile.style.display != 'none') {
-    inputs.forEach(function (input) {
-      input.disabled = true;
-    });
-    if(select){
-      select.disabled = true;
-    }
-    
-    text2.style.display = 'none';
-    text1.style.display = 'none';
-    form.reset();
-    profile.style.display = 'none';
-    kur.style.display = 'block';
-    kk.style.display = 'block';
-    tlac1.style.display = 'none';
-    tlac2.style.display = 'block';
-    button.style.display = 'none';
-    button2.style.display = 'none';
-    
-  }
-  else if (kur.style.display != 'none') {
-    // text2.style.display='none';
-    text1.style.display = 'block';
-    //  form.reset(); 
-    profile.style.display = 'block';
-    kur.style.display = 'none';
-    kk.style.display = 'none';
-    tlac1.style.display = 'block';
-    tlac2.style.display = 'none';
-    pridat.style.display = 'none';
-    nkk.style.display = 'none';
-  }
-  else if (inputs2[0].disabled == true && login.style.display != 'none') {
-     text2.style.display='none';
-    text1.style.display = 'block';
-    //  form.reset(); 
-    profile.style.display = 'block';
-    login.style.display = 'none';
-    // kk.style.display = 'none';
-    tlac1.style.display = 'block';
-    tlac2.style.display = 'none';
-    kt.style.display = 'none';
-    lt.style.display = 'block';
-  }
-  else if (inputs2[0].disabled == false && login.style.display != 'none') {
-    inputs2.forEach(function (input) {
-      input.disabled = true;
-    });
-    if(select){
-      select.disabled = true;
-    }
+  if (kurzyy) {
+    kurzyy.addEventListener('click', () => {
+      if (inputs[0].disabled == true && profile.style.display != 'none') {
+        text2.style.display = 'none';
+        text1.style.display = 'none';
+        profile.style.display = 'none';
+        kur.style.display = 'block';
+        kk.style.display = 'block';
+        tlac1.style.display = 'none';
+        tlac2.style.display = 'block';
+        button.style.display = 'none';
+        button2.style.display = 'none';
 
-   text2.style.display='none';
-    text1.style.display = 'block';
-    form2.reset(); 
-    profile.style.display = 'block';
-    login.style.display = 'none';
-    // kk.style.display = 'none';
-    tlac1.style.display = 'block';
-    tlac2.style.display = 'none';
-    kt.style.display = 'none';
-    lt.style.display = 'block';
-    button1.style.display = 'none';
-    button21.style.display = 'none';
-  }
-});
+      }
+      else if (inputs[0].disabled == false && profile.style.display != 'none') {
+        inputs.forEach(function (input) {
+          input.disabled = true;
+        });
+        if (select) {
+          select.disabled = true;
+        }
+
+        text2.style.display = 'none';
+        text1.style.display = 'none';
+        form.reset();
+        profile.style.display = 'none';
+        kur.style.display = 'block';
+        kk.style.display = 'block';
+        tlac1.style.display = 'none';
+        tlac2.style.display = 'block';
+        button.style.display = 'none';
+        button2.style.display = 'none';
+
+      }
+      else if (kur.style.display != 'none') {
+        // text2.style.display='none';
+        text1.style.display = 'block';
+        //  form.reset(); 
+        profile.style.display = 'block';
+        kur.style.display = 'none';
+        kk.style.display = 'none';
+        tlac1.style.display = 'block';
+        tlac2.style.display = 'none';
+        pridat.style.display = 'none';
+        nkk.style.display = 'none';
+      }
+      else if (inputs2[0]) {
+      if (inputs2[0].disabled == true && login.style.display != 'none') {
+        text2.style.display = 'none';
+        text1.style.display = 'block';
+        //  form.reset(); 
+        profile.style.display = 'block';
+        login.style.display = 'none';
+        // kk.style.display = 'none';
+        tlac1.style.display = 'block';
+        tlac2.style.display = 'none';
+        kt.style.display = 'none';
+        lt.style.display = 'block';
+      }
+      else if (inputs2[0].disabled == false && login.style.display != 'none') {
+        inputs2.forEach(function (input) {
+          input.disabled = true;
+        });
+        if (select) {
+          select.disabled = true;
+        }
+        text2.style.display = 'none';
+        text1.style.display = 'block';
+        form2.reset();
+        profile.style.display = 'block';
+        login.style.display = 'none';
+        // kk.style.display = 'none';
+        tlac1.style.display = 'block';
+        tlac2.style.display = 'none';
+        kt.style.display = 'none';
+        lt.style.display = 'block';
+        button1.style.display = 'none';
+        button21.style.display = 'none';
+      }
+    }
+    else if(login.style.display != 'none')
+    {
+      if (select) {
+        select.disabled = true;
+      }
+      // upravy.style.display = 'none';
+      upravy.style.display = 'block';
+      text2.style.display = 'none';
+      text1.style.display = 'block';
+      profile.style.display = 'block';
+      login.style.display = 'none';
+      // kk.style.display = 'none';
+      tlac1.style.display = 'block';
+      tlac2.style.display = 'none';
+      kt.style.display = 'none';
+      lt.style.display = 'block';
+      // button1.style.display = 'none';
+      // button21.style.display = 'none';
+    }
+    });
   }
 }
 kurzy();
@@ -316,105 +342,138 @@ function tretia() {
   const button21 = document.getElementById('res1');
   const lt = document.getElementById('lt');
   const kt = document.getElementById('kt');
+  const upravy = document.getElementById('upravy');
   const pridat = document.getElementById('pridat');
   const nkk = document.getElementById('nkk');
   // Získání všech inputů typu text
   const tretie = document.querySelector('#tr');
-  if(tretie) {
-  tretie.addEventListener('click', () => {
-  if (inputs[0].disabled == true && profile.style.display != 'none') {
-    text2.style.display = 'none';
-    text1.style.display = 'block';
-    profile.style.display = 'none';
-    login.style.display = 'block';
-    kur.style.display = 'none';
-    kk.style.display = 'none';
-    tlac1.style.display = 'none';
-    tlac2.style.display = 'block';
-    button.style.display = 'none';
-    button2.style.display = 'none';
-    kt.style.display = 'block';
-    lt.style.display = 'none';
-  }
-  else if (inputs[0].disabled == false && profile.style.display != 'none') {
-    inputs.forEach(function (input) {
-      input.disabled = true;
-    });
-    if(select){
-      select.disabled = true;
-    }
-    text2.style.display = 'none';
-    text1.style.display = 'block';
-    form.reset();
-    profile.style.display = 'none';
-    login.style.display = 'block';
-    kur.style.display = 'none';
-    kk.style.display = 'none';
-    tlac1.style.display = 'none';
-    tlac2.style.display = 'block';
-    button.style.display = 'none';
-    button2.style.display = 'none';
-    kt.style.display = 'block';
-    lt.style.display = 'none';
-  }
-  else if ( kur.style.display != 'none') {
-    if(select){
-      if(select.style.display != 'none'){
-        select.disabled = true;
-        select2.disabled = true;
-        pridat.style.display = 'none';
-        nkk.style.display = 'none';
+  if (tretie) {
+    tretie.addEventListener('click', () => {
+      if (inputs[0].disabled == true && profile.style.display != 'none') {
+        text2.style.display = 'none';
+        text1.style.display = 'block';
+        profile.style.display = 'none';
+        login.style.display = 'block';
+        kur.style.display = 'none';
+        kk.style.display = 'none';
+        tlac1.style.display = 'none';
+        tlac2.style.display = 'block';
+        button.style.display = 'none';
+        button2.style.display = 'none';
+        kt.style.display = 'block';
+        lt.style.display = 'none';
+        if(!inputs2[0]){
+          upravy.style.display = 'none';
+        }
       }
-    }
-    text2.style.display = 'none';
-    text1.style.display = 'block';
-    
-    //  form.reset(); 
-    // profile.style.display = 'block';
-    login.style.display = 'block';
-    kur.style.display = 'none';
-    kk.style.display = 'none';
-    tlac1.style.display = 'none';
-    tlac2.style.display = 'block';
-    kt.style.display = 'block';
-    lt.style.display = 'none';
-    
-  } 
-  
-  else if (inputs2[0].disabled == true && login.style.display != 'none') {
-    text2.style.display = 'none';
-    text1.style.display = 'none';
-    login.style.display = 'none';
-    kur.style.display = 'block';
-    kk.style.display = 'block';
-    tlac1.style.display = 'none';
-    tlac2.style.display = 'block';
-    button1.style.display = 'none';
-    button21.style.display = 'none';
-    kt.style.display = 'none';
-    lt.style.display = 'block';
-  }
-  else if (inputs2[0].disabled == false && login.style.display != 'none') {
-    inputs2.forEach(function (input) {
-      input.disabled = true;
+      else if (inputs[0].disabled == false && profile.style.display != 'none') {
+        inputs.forEach(function (input) {
+          input.disabled = true;
+        });
+        if (select) {
+          select.disabled = true;
+        }
+        text2.style.display = 'none';
+        text1.style.display = 'block';
+        form.reset();
+        profile.style.display = 'none';
+        login.style.display = 'block';
+        kur.style.display = 'none';
+        kk.style.display = 'none';
+        tlac1.style.display = 'none';
+        tlac2.style.display = 'block';
+        button.style.display = 'none';
+        button2.style.display = 'none';
+        kt.style.display = 'block';
+        lt.style.display = 'none';
+        upravy.style.display = 'none';
+      }
+      else if (kur.style.display != 'none') {
+        if (select) {
+          if (select.style.display != 'none') {
+            select.disabled = true;
+            if(select2)
+            {
+               select2.disabled = true;
+            }
+           
+            pridat.style.display = 'none';
+            nkk.style.display = 'none';
+          }
+        }
+        if(!inputs2[0]){
+          upravy.style.display = 'none';
+        }
+
+        text2.style.display = 'none';
+        text1.style.display = 'block';
+
+        //  form.reset(); 
+        // profile.style.display = 'block';
+        login.style.display = 'block';
+        kur.style.display = 'none';
+        kk.style.display = 'none';
+        tlac1.style.display = 'none';
+        tlac2.style.display = 'block';
+        kt.style.display = 'block';
+        lt.style.display = 'none';
+
+      }
+      else if (inputs2[0]) {
+        if (inputs2[0].disabled == true && login.style.display != 'none') {
+          text2.style.display = 'none';
+          text1.style.display = 'none';
+          login.style.display = 'none';
+          kur.style.display = 'block';
+          kk.style.display = 'block';
+          tlac1.style.display = 'none';
+          tlac2.style.display = 'block';
+          button1.style.display = 'none';
+          button21.style.display = 'none';
+          kt.style.display = 'none';
+          lt.style.display = 'block';
+        }
+        else if (inputs2[0].disabled == false && login.style.display != 'none') {
+          inputs2.forEach(function (input) {
+            input.disabled = true;
+          });
+          if (select) {
+            select.disabled = true;
+          }
+          text2.style.display = 'none';
+          text1.style.display = 'none';
+          form2.reset();
+          login.style.display = 'none';
+          kur.style.display = 'block';
+          kk.style.display = 'block';
+          tlac1.style.display = 'none';
+          tlac2.style.display = 'block';
+          button1.style.display = 'none';
+          button21.style.display = 'none';
+          kt.style.display = 'none';
+          lt.style.display = 'block';
+        }
+      }
+      else if (login.style.display != 'none') {
+        if (select) {
+          select.disabled = true;
+        }
+        upravy.style.display = 'block';
+        text2.style.display = 'none';
+        text1.style.display = 'none';
+        login.style.display = 'none';
+        kur.style.display = 'block';
+        kk.style.display = 'block';
+        tlac1.style.display = 'none';
+        tlac2.style.display = 'block';
+        // button1.style.display = 'none';
+        // button21.style.display = 'none';
+        kt.style.display = 'none';
+        // pp.style.display = 'none';
+        lt.style.display = 'block';
+
+      }
     });
-    if(select){
-      select.disabled = true;
-    }
-    text2.style.display = 'none';
-    text1.style.display = 'none';
-    form2.reset();
-    login.style.display = 'none';
-    kur.style.display = 'block';
-    kk.style.display = 'block';
-    tlac1.style.display = 'none';
-    tlac2.style.display = 'block';
-    button1.style.display = 'none';
-    button21.style.display = 'none';
-    kt.style.display = 'none';
-    lt.style.display = 'block';
-  }
-});
   }
   // Odstranění atributu disabled
 }
