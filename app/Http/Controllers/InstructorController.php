@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Str;
 
 
 class InstructorController extends Controller
@@ -264,6 +264,12 @@ class InstructorController extends Controller
         }
 
         $instructor->update($attributes);
+
+        if (Str::endsWith(url()->previous(), '?pridat'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
+        }
 
         return back()->with('success_u', 'Úspešne aktualizované');
     }

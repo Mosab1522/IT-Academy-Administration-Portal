@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
@@ -150,6 +151,12 @@ class StudentController extends Controller
        
         $student->update($attributes);
         $student->touch();
+
+        if (Str::endsWith(url()->previous(), '?pridat'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
+        }
 
         return back()->with('success_u', 'Úspešne aktualizované');
     }

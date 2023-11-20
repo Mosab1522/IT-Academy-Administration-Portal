@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 use PhpParser\Node\Stmt\Else_;
+use Illuminate\Support\Facades\Request as IlluminateRequest;
+use Illuminate\Support\Str;
+
 
 class CourseTypeController extends Controller
 {
@@ -66,6 +69,12 @@ class CourseTypeController extends Controller
 
         CourseType::create($attributes);
 
+        if (Str::endsWith(url()->previous(), '?pridat'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_c', 'Úspešne vytvorené');
+        }
+
         return back()->with('success_c', 'Úspešne vytvorené');
     }
     public function update(Coursetype $coursetype)
@@ -73,11 +82,14 @@ class CourseTypeController extends Controller
         $academy = Academy::with(['coursetypes', 'applications'])
         ->where('id', '=', request()->academy_id)->first();
 
-        if ($academy == null) {
-            dd(request()->all());
-        };
+        // if ($academy == null) {
+        //     dd(request()->all());
+        // };
 
         // request()->merge(['academy_id'  => $academy['id']]); 
+        
+       
+        
 
         $attributes = request()->validate([
             'name' => ['required', 'max:255', Rule::unique('course_types', 'name')->ignore($coursetype)],
@@ -86,15 +98,28 @@ class CourseTypeController extends Controller
             'max' => ['required', 'integer', 'gte:min'],
         ]);
 
-        $coursetype->update($attributes);
+        $coursetype->update($attributes); 
+        
+        if (Str::endsWith(url()->previous(), '?pridat'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
+        }
 
         return back()->with('success_u', 'Úspešne aktualizované');
     }
 
     public function destroy(CourseType $coursetype)
-    {
+    {   
+        
         $coursetype->delete();
 
+        if (Str::endsWith(url()->previous(), '?pridat'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_d', 'Úspešne vymazané');
+        }
+        
         return back()->with('success_d', 'Úspešne vymazané');
     }
 }

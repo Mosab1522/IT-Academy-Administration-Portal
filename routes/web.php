@@ -38,6 +38,7 @@ Route::get('admin/applications', [ApplicationController::class, 'index'])->name(
 
 Route::get('/', [ApplicationController::class, 'create']);
 Route::post('/', [ApplicationController::class, 'store']);
+
 Route::get('admin/applications/create', [ApplicationController::class, 'admincreate'])->name('applications');
 // Route::get('admin/applications/{application:id}', [ApplicationController::class, 'show']);
 Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy']);
@@ -48,10 +49,10 @@ Route::delete('admin/applications/{application}', [ApplicationController::class,
 
 
 Route::get('admin/academies', [AcademyController::class, 'index'])
-    ->name('admin.academies.index');;
+    ->name('admin.academies.index');
 Route::patch('admin/academies/{academy}', [AcademyController::class, 'update']);
 Route::get('admin/academies/create', [AcademyController::class, 'create']);
-Route::get('admin/academies/{academy:id}', [AcademyController::class, 'show']);
+Route::get('admin/academies/{academy:id}', [AcademyController::class, 'show'])->name('academies.show');
 Route::post('admin/academies/create', [AcademyController::class, 'store']);
 Route::delete('admin/academies/{academy}', [AcademyController::class, 'destroy']);
 

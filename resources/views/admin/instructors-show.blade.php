@@ -44,12 +44,12 @@
                                         <a id="pp" href="javascript:;"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white">
                                             <i class="ni ni-app"></i>
-                                            <span id="jj" class="ml-2  {{session('success_cc') || session('success_dd') ? 'hidden' : '' }}">Povoliť úpravy</span>
-                                            <span style="display: none;" id="zz" class="ml-2">Zrušiť
+                                            <span id="jj" class="ml-2  {{session('success_cc') || session('success_dd') || request()->has('pridat') || request()->has('zmenit') || request()->has('vytvorit') ? 'hidden' : '' }}">Povoliť úpravy</span>
+                                            <span style="{{request()->has('vytvorit') || request()->has('zmenit') ? '' : 'display: none;' }}" id="zz" class="ml-2">Zrušiť
                                                 úpravy</span>
                                             <span id="kk" class="ml-2 {{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať
                                                 kurz</span>
-                                            <span style="display: none;" id="nkk" class="ml-2">Zrušiť pridanie
+                                            <span style="{{request()->has('pridat') ? '' : 'display: none;' }}" id="nkk" class="ml-2">Zrušiť pridanie
                                                 kurzu</span>
                                         </a>
                                     </li>
@@ -66,8 +66,8 @@
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
-                                            <span id="tlac1" class="ml-2 {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') ? 'hidden' : '' }}">Kurzy</span>
-                                            <span id="tlac2" class="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') ? '' : 'hidden' }} ml-2">Profil</span>
+                                            <span id="tlac1" class="ml-2 {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? 'hidden' : '' }}">Kurzy</span>
+                                            <span id="tlac2" class="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} ml-2">Profil</span>
                                         </a>
                                     </li>
                                     <li class="z-30 flex-auto text-center">
@@ -75,8 +75,8 @@
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             nav-link href="javascript:;">
                                             <i class="ni ni-settings-gear-65"></i>
-                                            <span id="lt" class="ml-2 {{session('success_c') || session('success_uu') ? 'hidden' : '' }}">Login</span>
-                                            <span id="kt" class="{{session('success_c') || session('success_uu') ? '' : 'hidden' }} ml-2">Kurzy</span>
+                                            <span id="lt" class="ml-2 {{session('success_c') || session('success_uu') || request()->has('vytvorit') || request()->has('zmenit') ? 'hidden' : '' }}">Login</span>
+                                            <span id="kt" class="{{session('success_c') || session('success_uu') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} ml-2">Kurzy</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -90,7 +90,7 @@
                     </div>
                     <hr
                         class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-                    <div id="profile" class="flex-auto p-6" style="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') ? 'display: none;' : '' }}">
+                    <div id="profile" class="flex-auto p-6" style="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat')  || request()->has('vytvorit') || request()->has('zmenit') ? 'display: none;' : '' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">User Information</p>
                         <form id="formm" action="/admin/instructors/{{ $instructor->id }}" method="post"
                             enctype="multipart/form-data">
@@ -201,7 +201,7 @@
 
                         </form>
                     </div>
-                    <div class="hidden p-6" id="pridat">
+                    <div class="p-6" id="pridat" style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Pridať správu kurzu</p>
                         <form action="/admin/coursetype_instructor" method="POST">
                             @csrf
@@ -214,7 +214,7 @@
 
                                     <x-form.label name="akadémia" />
                                     <!-- parent -->
-                                    <select disabled id="academy_id" name="academy_id" class="combo-a"
+                                    <select {{request()->has('pridat') ? '' : 'disabled' }} id="academy_id" name="academy_id" class="combo-a"
                                         data-nextcombo=".combo-b">
                                         <option value="" disabled selected hidden>Akadémia</option>
                                         {{-- @php
@@ -270,7 +270,7 @@
                             {{-- <button type="button" id="setDefaults">Nastaviť predvolené hodnoty</button> --}}
                         </form>
                     </div>
-                    <div id="kurzy" class="flex-auto p-6" style="{{session('success_cc') || session('success_dd') ? '' : 'display: none;' }}">
+                    <div id="kurzy" class="flex-auto p-6" style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Kurzy</p>
                         <div
                             class="flex flex-wrap -mx-3 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -330,7 +330,7 @@
                             </table>
                         </div>
                     </div>
-                    <div id="login" class="flex-auto p-6" style="{{ session('success_uu') || session('success_c') ? '' : 'display: none;' }}">
+                    <div id="login" class="flex-auto p-6" style="{{ session('success_uu') || session('success_c') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'display: none;' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Login</p>
                         <input name="instructor_id" value="{{ $instructor->id }}" hidden />
 
@@ -348,7 +348,7 @@
                                     <div class="mb-4">
                                         <label for="nickname"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Username</label>
-                                        <input disabled type="text" name="nickname"
+                                        <input {{request()->has('vytvorit') || request()->has('zmenit') ? '' : 'disabled' }} type="text" name="nickname"
                                             value="{{ $instructor->login->nickname ?? '' }}" required autofocus
                                             autocomplete="name"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
@@ -358,7 +358,7 @@
                                     <div class="mb-4">
                                         <label for="password"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password</label>
-                                        <input disabled type="password" name="password" autocomplete="new-password"
+                                        <input {{request()->has('vytvorit') || request()->has('zmenit') ? '' : 'disabled' }} type="password" name="password" autocomplete="new-password"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
@@ -367,7 +367,7 @@
                                         <label for="password_confirmation"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password
                                             confirmation</label>
-                                        <input disabled type="password" name="password_confirmation"
+                                        <input {{request()->has('vytvorit') || request()->has('zmenit') ? '' : 'disabled' }} type="password" name="password_confirmation"
                                             autocomplete="new-password"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
@@ -386,10 +386,10 @@
 
                                 <div class="flex">
                                     <button id="upd1" type="submit"
-                                        class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">{{ $instructor->login ? 'Update' : 'Create' }}
+                                        class="{{request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">{{ $instructor->login ? 'Update' : 'Create' }}
                                     </button>
                                     <button id="res1" type="reset"
-                                        class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
+                                        class="{{request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
                                 </div>
 
                             </x-form.field>
@@ -402,11 +402,3 @@
     </div>
 
 </x-setting>
-@php
-session()->forget('success_c');
-session()->forget('success_cc');
-session()->forget('success_u');
-session()->forget('success_uu');
-session()->forget('success_d');
-session()->forget('success_dd');
-@endphp

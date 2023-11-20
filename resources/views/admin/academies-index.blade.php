@@ -1,7 +1,4 @@
 <x-flash />
-@php
-session()->forget('success_c');
-@endphp
 <x-layout/>
     <x-setting heading="Akadémie">
         <div class="flex flex-col">
@@ -90,6 +87,13 @@ session()->forget('success_c');
                                                 </div>
                                             </div>
                                         </td>
+
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="/admin/academies/{{ $academy->id }}?pridat" class="text-blue-500 hover:text-blue-600">
+                                                Pridať typ kurzu
+                                            </a>
+                                        </td>
+                                        
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="/admin/academies/{{ $academy->id }}" class="text-blue-500 hover:text-blue-600">Edit</a>

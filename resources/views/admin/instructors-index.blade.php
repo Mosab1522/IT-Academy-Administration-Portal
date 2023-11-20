@@ -4,9 +4,6 @@ session()->forget('instructor_id');
 @endphp
 @endif
 <x-flash />
-@php
-session()->forget('success_d');
-@endphp
 <x-layout />
 <x-setting heading="Inštruktori">
     <div class="flex flex-col">
@@ -148,16 +145,38 @@ session()->forget('success_d');
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {{ $instructor->coursetypes->count()}}
+                                            @if($instructor->coursetypes->count() > 0)
+                                                    <span class="text-xs">
+                                                    @foreach($instructor->coursetypes as $coursetype)
+                                                    
+                                                    {{$coursetype->name}} - {{$coursetype->academy->name}} Akadémia <br>
+                                                    @endforeach
+                                                    </span>
+                                                    @else
+                                                    <a href="/admin/instructors/{{ $instructor->id }}?pridat" class="text-blue-500 hover:text-blue-600">
+                                                        Pridať kurz
+                                                    </a>
+                                                    @endif
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {!! $instructor->login ? '<a href="">Zmeniť login</a>' : '<a
-                                                href="'.route('register', ['instructor_id' =>$instructor->id]).'"
-                                                class="text-red-600">Vytvoriť login</a>'!!}
+                                            @if($instructor->login)
+                                                    <span class="text-xs">
+                                                        <a href="/admin/instructors/{{ $instructor->id }}?zmenit" >
+                                                            Zmeniť login
+                                                        </a>
+                                                    </span>
+                                                    @else
+                                                    <a href="/admin/instructors/{{ $instructor->id }}?vytvorit" class="text-red-500 hover:text-red-600">
+                                                        Vytvoriť login
+                                                    </a>
+                                                    @endif
+
+                                            {{-- {!! $instructor->login ? '<a href="/admin/instructors/{{ $instructor->id }}?zmenit">Zmeniť login</a>' : '<a href="/admin/instructors/{{ $instructor->id }}?zmenit"
+                                                class="text-red-600">Vytvoriť login</a>'!!} --}}
                                         </div>
                                     </div>
                                 </td>

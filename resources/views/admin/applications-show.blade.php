@@ -333,8 +333,3 @@
     </div>
 
 </x-setting>
-@php
-session()->forget('success_c');
-session()->forget('success_u');
-session()->forget('success_d');
-@endphp

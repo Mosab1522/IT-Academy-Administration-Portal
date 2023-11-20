@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
+use Illuminate\Support\Str;
 
 class ApplicationController extends Controller
 {
@@ -103,6 +104,12 @@ class ApplicationController extends Controller
                     'days' => $attributes['days'],
                     'time' => $attributes['time']
                 ]);
+
+                if (Str::endsWith(url()->previous(), '?pridat')) {
+                    $trimmedUrl = substr(url()->previous(), 0, -7);
+                    return redirect($trimmedUrl)->with('success_c', 'Úspešne vytvorené');
+                }
+
                 return back()->with('success_c', 'Úspešne vytvorené');
             }
         }
@@ -278,6 +285,12 @@ class ApplicationController extends Controller
     public function destroy(Application $application)
     {
         $application->delete();
+
+        if (Str::endsWith(url()->previous(), '?pridat'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_d', 'Úspešne vymazané');
+        }
 
         return back()->with('success_d', 'Úspešne vymazané');
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Academy;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class AcademyController extends Controller
 {
@@ -55,7 +56,7 @@ class AcademyController extends Controller
 
         Academy::create($attributes);
 
-        return back()->with('success_c', 'Úspešne vytvorené');
+        return back()->with('success_c', 'Úspešne vytvorené')->except('pridat');
     }
     public function update(Academy $academy)
     {
@@ -64,13 +65,19 @@ class AcademyController extends Controller
         ]);
         $academy->update($attributes);
 
-        return back()->with('success_u', 'Úspešne aktualizované');
+        if (Str::endsWith(url()->previous(), '?pridat'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
+        }
+
+        return back()->with('success_u', 'Úspešne aktualizované')->except('pridat');
     }
 
     public function destroy(Academy $academy)
     {
         $academy->delete();
 
-        return back()->with('success_d', 'Úspešne vymazané');
+        return back()->with('success_d', 'Úspešne vymazané')->except('pridat');
     }
 }

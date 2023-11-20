@@ -1,5 +1,4 @@
 <x-flash />
-
 <x-layout />
 <x-setting heading="{{$coursetype->name}}">
     <a href="{{ url()->previous() }}" class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
@@ -43,10 +42,10 @@
                                         <a id="pp" href="javascript:;"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white">
                                             <i class="ni ni-app"></i>
-                                            <span id="jj" class="ml-2 {{session('success_cc') || session('success_dd') ? 'hidden' : '' }}">Povoliť úpravy</span>
+                                            <span id="jj" class="ml-2 {{session('success_cc') || session('success_dd')  || request()->has('pridat') ? 'hidden' : '' }}">Povoliť úpravy</span>
                                             <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
                                             <span id="kk" class="ml-2 {{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať inštruktora</span>
-                                            <span style="display: none;" id="nkk" class="ml-2">Zrušiť pridanie
+                                            <span style="{{request()->has('pridat') ? '' : 'display: none;' }}" id="nkk" class="ml-2">Zrušiť pridanie
                                                 inštruktora</span>
                                         </a>
                                     </li>
@@ -63,8 +62,8 @@
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
-                                            <span id="tlac1" class="ml-2  {{session('success_cc') || session('success_d')  || session('success_dd') ? 'hidden' : '' }}">Inštruktori</span>
-                                            <span id="tlac2" class="{{session('success_cc') || session('success_d') || session('success_dd') ? '' : 'hidden' }}  ml-2">Info</span>
+                                            <span id="tlac1" class="ml-2  {{session('success_cc') || session('success_d')  || session('success_dd') || request()->has('pridat') ? 'hidden' : '' }}">Inštruktori</span>
+                                            <span id="tlac2" class="{{session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}  ml-2">Info</span>
                                         </a>
                                     </li>
                                     <li class="z-30 flex-auto text-center">
@@ -87,7 +86,7 @@
                     </div>
                     <hr
                         class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-                    <div id="profile" class="flex-auto p-6" style="{{session('success_cc') || session('success_d') || session('success_dd') ? 'display: none;' : '' }}">
+                    <div id="profile" class="flex-auto p-6" style="{{session('success_cc') || session('success_d') || session('success_dd')  || request()->has('pridat') ? 'display: none;' : '' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Coursetype Information</p>
                         <form id="formm" action="/admin/coursetypes/{{$coursetype->id}}" method="post"
                             enctype="multipart/form-data">
@@ -225,7 +224,7 @@
                         </form>
                     </div>
 
-                    <div class="hidden p-6" id="pridat">
+                    <div class="p-6" id="pridat" style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Pridať inštruktora</p>
                         <form action="/admin/coursetype_instructor" method="POST">
                             @csrf
@@ -270,7 +269,7 @@
                         </form>
                     </div>
 
-                    <div id="kurzy" class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg" style="{{session('success_cc') || session('success_dd') ? '' : 'display: none;' }}">
+                    <div id="kurzy" class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg" style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="text-sm">
                                 <tr>
@@ -401,10 +400,3 @@
     </div>
 
 </x-setting>
-@php
-session()->forget('success_c');
-session()->forget('success_cc');
-session()->forget('success_u');
-session()->forget('success_d');
-session()->forget('success_dd');
-@endphp
