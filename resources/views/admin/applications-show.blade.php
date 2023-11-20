@@ -1,9 +1,5 @@
 <x-flash />
-@php
-session()->forget('success_c');
-session()->forget('success_u');
-session()->forget('success_d');
-@endphp
+
 <x-layout />
 <x-setting heading="{{$application->student->name}}">
     <div class="flex flex-col">
@@ -337,3 +333,8 @@ session()->forget('success_d');
     </div>
 
 </x-setting>
+@php
+session()->forget('success_c');
+session()->forget('success_u');
+session()->forget('success_d');
+@endphp

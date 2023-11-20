@@ -1,9 +1,4 @@
 <x-flash />
-@php
-session()->forget('success_c');
-session()->forget('success_u');
-session()->forget('success_d');
-@endphp
 <x-layout />
 <x-setting heading="{{$student->name}}">
     <a href="{{ url()->previous() }}" class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
@@ -46,12 +41,12 @@ session()->forget('success_d');
                                         <a id="pp" href="javascript:;"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white">
                                             <i class="ni ni-app"></i>
-                                            <span id="jj" class="ml-2">Povoliť úpravy</span>
+                                            <span id="jj" class="ml-2  {{session('success_c') || session('success_d') ? 'hidden' : '' }}">Povoliť úpravy</span>
                                             {{-- <a style="display: none;" id="kk" class="ml-2"
                                                 href="{{route('applications', ['student_id' =>$student->id])}}">Vytvoriť
                                                 prihláśku</a> --}}
                                             <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
-                                            <span style="display: none;" id="kk" class="ml-2">Vytvoriť prihlášku</span>
+                                            <span id="kk" class="ml-2 {{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Vytvoriť prihlášku</span>
                                             <span style="display: none;" id="nkk" class="ml-2">Zrušiť vytvorenie prihlášky</span>
                                         </a>
                                     </li>
@@ -68,19 +63,19 @@ session()->forget('success_d');
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
-                                            <span id="tlac1" class="ml-2">Prihlášky</span>
-                                            <span id="tlac2" class="hidden ml-2">Profil</span>
+                                            <span id="tlac1" class="ml-2 {{session('success_c') || session('success_d') ? 'hidden' : '' }}">Prihlášky</span>
+                                            <span id="tlac2" class="{{session('success_c') || session('success_d') ? '' : 'hidden' }}  ml-2">Profil</span>
                                         </a>
                                     </li>
-                                    <li class="hidden" class="z-30 flex-auto text-center">
+                                    {{-- <li class="hidden" class="z-30 flex-auto text-center">
                                         <a id="tr"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             nav-link href="javascript:;">
                                             <i class="ni ni-settings-gear-65"></i>
-                                            <span id="lt" class="ml-2">Login</span>
-                                            <span id="kt" class="hidden ml-2">Kurzy</span>
+                                            <span id="lt" class="ml-2 {{session('success_c') || session('success_d') ? 'hidden' : '' }}">Login</span>
+                                            <span id="kt" class="{{session('success_c') || session('success_d') ? '' : 'hidden' }} ml-2">Kurzy</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
                         </div>
@@ -92,7 +87,7 @@ session()->forget('success_d');
                     </div>
                     <hr
                         class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-                    <div id="profile" class="flex-auto p-6">
+                    <div id="profile" class="flex-auto p-6" style="{{session('success_c') || session('success_d') ? 'display: none;' : '' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">User Information</p>
                         <form id="formm" action="/admin/students/{{$student->id}}" method="post"
                             enctype="multipart/form-data">
@@ -318,7 +313,7 @@ session()->forget('success_d');
                             </x-form.field>
                         </form>
                     </div>
-                    <div id="kurzy" class="hidden shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div id="kurzy" class="{{session('success_c') || session('success_d') ? '' : 'hidden' }} shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="text-sm">
                                 <tr>
@@ -446,3 +441,8 @@ session()->forget('success_d');
     </div>
 
 </x-setting>
+@php
+session()->forget('success_c');
+session()->forget('success_u');
+session()->forget('success_d');
+@endphp

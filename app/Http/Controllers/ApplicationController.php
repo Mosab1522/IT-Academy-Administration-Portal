@@ -103,6 +103,7 @@ class ApplicationController extends Controller
                     'days' => $attributes['days'],
                     'time' => $attributes['time']
                 ]);
+                return back()->with('success_c', 'Úspešne vytvorené');
             }
         }
         // session(['typ' => request()->typ]);

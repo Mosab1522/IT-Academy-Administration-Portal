@@ -1,17 +1,16 @@
 <x-layout />
 <x-flash />
-@php
-session()->forget('success_c');
-session()->forget('success_u');
-session()->forget('success_d');
-@endphp
+
 <x-setting heading="{{$academy->name}}">
-    <a href="{{ url()->previous() }}" class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
-    <svg class="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-    </svg>
-    Naspäť
-</a>
+    <a href="{{ url()->previous() }}"
+        class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
+        <svg class="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+            </path>
+        </svg>
+        Naspäť
+    </a>
     <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
@@ -53,9 +52,12 @@ session()->forget('success_d');
                                         <a id="pp" href="javascript:;"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white">
                                             <i class="ni ni-app"></i>
-                                            <span id="jj" class="ml-2">Povoliť úpravy</span>
+                                            <span id="jj"
+                                                class="ml-2 {{session('success_c') || session('success_d') ? 'hidden' : '' }}">Povoliť
+                                                úpravy</span>
                                             <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
-                                            <span style="display: none;" id="kk" class="ml-2">Vytvoriť kurz</span>
+                                            <span id="kk" class="ml-2 {{ session('success_c') || session('success_d') ? '' : 'hidden' }}
+                                            ">Vytvoriť kurz</span>
                                             <span style="display: none;" id="nkk" class="ml-2">Zrušiť vytvorenie
                                                 kurzu</span>
                                         </a>
@@ -73,8 +75,8 @@ session()->forget('success_d');
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
-                                            <span id="tlac1" class="ml-2">Kurzy</span>
-                                            <span id="tlac2" class="hidden ml-2">Info</span>
+                                            <span id="tlac1" class="ml-2 {{session('success_c') || session('success_d') ? 'hidden' : '' }}">Kurzy</span>
+                                            <span id="tlac2" class="{{session('success_c') || session('success_d') ? '' : 'hidden' }} ml-2">Info</span>
                                         </a>
                                     </li>
                                     {{-- <li class="z-30 flex-auto text-center">
@@ -97,7 +99,7 @@ session()->forget('success_d');
                     </div>
                     <hr
                         class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-                    <div id="profile" class="flex-auto p-6">
+                    <div id="profile" class="flex-auto p-6" style="{{session('success_c') || session('success_d') ? 'display: none;' : '' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Academy Information</p>
                         <form id="formm" action="/admin/academies/{{$academy->id}}" method="post"
                             enctype="multipart/form-data">
@@ -244,7 +246,7 @@ session()->forget('success_d');
                             </x-form.field>
                         </form>
                     </div>
-                    <div id="kurzy" class="hidden shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div id="kurzy" class="{{session('success_c') || session('success_d') ? '' : 'hidden' }} shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="text-sm">
                                 <tr>
@@ -373,3 +375,8 @@ session()->forget('success_d');
     </div>
 
 </x-setting>
+@php
+session()->forget('success_c');
+session()->forget('success_u');
+session()->forget('success_d');
+@endphp

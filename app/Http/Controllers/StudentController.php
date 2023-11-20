@@ -126,6 +126,7 @@ class StudentController extends Controller
     }
     public function update(Student $student)
     {
+        //  dd(request()->all());
         $attributes = request()->validate([
             'name' => ['required', 'max:255'],
             'lastname' => ['required', 'max:255'],
@@ -141,11 +142,12 @@ class StudentController extends Controller
             'mestoobec' => ['required', 'min:1', 'max:255'],
             'psc' => ['required', 'min:6', 'max:6'],
             //   'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
-            'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
-            'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
-            'days' => ['required', 'integer'],
-            'time' => ['required', 'integer'],
+            // 'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
+            // 'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
+            // 'days' => ['required', 'integer'],
+            // 'time' => ['required', 'integer'],
         ]);
+       
         $student->update($attributes);
         $student->touch();
 

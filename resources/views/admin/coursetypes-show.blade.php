@@ -1,9 +1,5 @@
 <x-flash />
-@php
-session()->forget('success_c');
-session()->forget('success_u');
-session()->forget('success_d');
-@endphp
+
 <x-layout />
 <x-setting heading="{{$coursetype->name}}">
     <a href="{{ url()->previous() }}" class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
@@ -41,15 +37,15 @@ session()->forget('success_d');
                         <div
                             class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
                             <div class="relative right-0">
-                                <ul id="upravy" class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
+                                <ul id="upravy" class=" {{ session('success_d') ? 'hidden' : '' }} relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                     role="tablist">
                                     <li class="z-30 flex-auto text-center">
                                         <a id="pp" href="javascript:;"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white">
                                             <i class="ni ni-app"></i>
-                                            <span id="jj" class="ml-2">Povoliť úpravy</span>
+                                            <span id="jj" class="ml-2 {{session('success_cc') || session('success_dd') ? 'hidden' : '' }}">Povoliť úpravy</span>
                                             <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
-                                            <span style="display: none;" id="kk" class="ml-2">Pridať inštruktora</span>
+                                            <span id="kk" class="ml-2 {{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať inštruktora</span>
                                             <span style="display: none;" id="nkk" class="ml-2">Zrušiť pridanie
                                                 inštruktora</span>
                                         </a>
@@ -67,8 +63,8 @@ session()->forget('success_d');
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
-                                            <span id="tlac1" class="ml-2">Inštruktori</span>
-                                            <span id="tlac2" class="hidden ml-2">Info</span>
+                                            <span id="tlac1" class="ml-2  {{session('success_cc') || session('success_d')  || session('success_dd') ? 'hidden' : '' }}">Inštruktori</span>
+                                            <span id="tlac2" class="{{session('success_cc') || session('success_d') || session('success_dd') ? '' : 'hidden' }}  ml-2">Info</span>
                                         </a>
                                     </li>
                                     <li class="z-30 flex-auto text-center">
@@ -76,8 +72,8 @@ session()->forget('success_d');
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             nav-link href="javascript:;">
                                             <i class="ni ni-settings-gear-65"></i>
-                                            <span id="lt" class="ml-2">Prihlášky</span>
-                                            <span id="kt" class="hidden ml-2">Inštruktori</span>
+                                            <span id="lt" class="ml-2 {{ session('success_d') ? 'hidden' : '' }}">Prihlášky</span>
+                                            <span id="kt" class="{{ session('success_d') ? '' : 'hidden' }} ml-2">Inštruktori</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -91,7 +87,7 @@ session()->forget('success_d');
                     </div>
                     <hr
                         class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-                    <div id="profile" class="flex-auto p-6">
+                    <div id="profile" class="flex-auto p-6" style="{{session('success_cc') || session('success_d') || session('success_dd') ? 'display: none;' : '' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Coursetype Information</p>
                         <form id="formm" action="/admin/coursetypes/{{$coursetype->id}}" method="post"
                             enctype="multipart/form-data">
@@ -274,7 +270,7 @@ session()->forget('success_d');
                         </form>
                     </div>
 
-                    <div id="kurzy" class="hidden shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div id="kurzy" class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg" style="{{session('success_cc') || session('success_dd') ? '' : 'display: none;' }}">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="text-sm">
                                 <tr>
@@ -338,7 +334,7 @@ session()->forget('success_d');
                             </tbody>
                         </table>
                     </div>
-                    <div id="login"  class="hidden shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div id="login"  class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg" style="{{session('success_d') ? '' : 'display: none;' }}">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="text-sm">
                                 <tr>
@@ -405,3 +401,10 @@ session()->forget('success_d');
     </div>
 
 </x-setting>
+@php
+session()->forget('success_c');
+session()->forget('success_cc');
+session()->forget('success_u');
+session()->forget('success_d');
+session()->forget('success_dd');
+@endphp

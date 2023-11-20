@@ -55,7 +55,7 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
 
-        return redirect('/');
+        return back()->with('success_c', 'Úspešne vytvorené');
     }
 
     public function update(Request $request): RedirectResponse
@@ -80,7 +80,7 @@ class RegisteredUserController extends Controller
             ]);
         }
 
-        return back()->with('status', 'password-updated');
+        return back()->with('success_uu', 'Úspešne aktualizované');
 
     }
 }
