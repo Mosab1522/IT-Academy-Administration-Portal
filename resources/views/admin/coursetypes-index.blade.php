@@ -92,7 +92,7 @@
                                     <td class="px-6 py-1">Názov</td>
                                     <td class="px-6 py-2">Akadémia</td>
                                     <td class="px-6 py-2">Počet prihlášok</td>
-                                    <td></td>
+                                    <td class="px-6 py-2">Inštruktori</td>
                                     <td></td>
                                 </tr>
                             </thead>

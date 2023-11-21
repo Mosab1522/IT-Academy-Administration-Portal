@@ -2,7 +2,7 @@
 <div class="flex">
 
 
-    <div class="w-48 pl-6 pt-4 ">
+    <div class="hidden w-48 pl-6 pt-4 ">
 
         {{-- <h4 class="mb-4 font-semibold " title="pre študentov, kurzy ,akadémie a inštruktorov.">Dorobiť hlavičku
             tabuľkám</h4> --}}

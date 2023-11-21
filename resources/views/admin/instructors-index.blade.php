@@ -105,10 +105,10 @@ session()->forget('instructor_id');
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="text-sm">
                             <tr>
-                                <td class="px-6 py-1">Meno a priezvisko</td>
+                                <td class="px-6 py-1"></td>
+                                <td class="px-6 py-2">Meno a Priezvisko</td>
                                 <td class="px-6 py-2">Email</td>
-                                <td class="px-6 py-2">Počet typov kurzov</td>
-                                <td></td>
+                                <td class="px-6 py-2">Priradené kurzy</td>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
