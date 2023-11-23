@@ -10,9 +10,9 @@ session()->forget('instructor_id');
         <div class="flex">
             <form method="get" action="{{ route('admin.instructors.index') }}">
                 @csrf
-                
+
                 @if(request()->filled('search'))
-                    <input type="hidden" name="search" value="{{request()->input('search')}}"/>
+                <input type="hidden" name="search" value="{{request()->input('search')}}" />
                 @endif
                 <div class="flex">
                     <div class="">
@@ -27,9 +27,11 @@ session()->forget('instructor_id');
                     <div class="px-6">
                         <x-form.label name="Smer zoradenia" /> <select class="form-control" id="orderDirection"
                             name="orderDirection">
-                            <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
+                            <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od
+                                najnovšej
                             </option>
-                            <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
+                            <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od
+                                najstaršej
                             </option>
                         </select>
                     </div>
@@ -52,9 +54,9 @@ session()->forget('instructor_id');
                                     ->get();
                                     $coursetype = \App\Models\CourseType::with(['academy','applications'])->get();
                                     @endphp
-            
-                                     <option value="" data-option="-1">Všetky</option>
-            
+
+                                    <option value="" data-option="-1">Všetky</option>
+
                                     @foreach ($academy as $academ)
                                     <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
                                         {{request()->input('academy_id')==$academ->id ? 'selected' : ''}}>{{
@@ -63,13 +65,16 @@ session()->forget('instructor_id');
                                 </select>
                                 <select name="coursetype_id" id="coursetype_id" class="combo-b" disabled>
                                     <option value="" disabled selected hidden>Typ kurzu</option>
-            
+
                                     @foreach ($academy as $academ)
-                                    <option value="" data-option="{{$academ->id}}"  {{request()->input('coursetype_id')==null ? 'selected' : ''}}>Všetky</option>
+                                    <option value="" data-option="{{$academ->id}}" {{request()->
+                                        input('coursetype_id')==null ? 'selected' : ''}}>Všetky</option>
                                     @endforeach
                                     @foreach ($coursetype as $type)
                                     <option value="{{ $type->id }}" data-id="{{ $type->id }}"
-                                        data-option="{{ $type->academy_id }}"  {{request()->input('coursetype_id')==$type->id ? 'selected' : ''}}>{{ ucwords($type->name) }}</option>
+                                        data-option="{{ $type->academy_id }}" {{request()->
+                                        input('coursetype_id')==$type->id ? 'selected' : ''}}>{{ ucwords($type->name) }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -82,17 +87,17 @@ session()->forget('instructor_id');
                 <form method="get" action="{{ route('admin.instructors.index') }}">
                     @csrf
                     @if(request()->filled('orderBy'))
-                    <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}"/>
-                    <input type="hidden" name="orderDirection" value="{{request()->input('orderDirection')}}"/>
+                    <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
+                    <input type="hidden" name="orderDirection" value="{{request()->input('orderDirection')}}" />
                     @endif
                     @if(request()->filled('academy_id')&&request()->filled('coursetype_id'))
-                    <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}"/>
-                    <input type="hidden" name="coursetype_id" value="{{request()->input('coursetype_id')}}"/>
+                    <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
+                    <input type="hidden" name="coursetype_id" value="{{request()->input('coursetype_id')}}" />
                     @elseif(request()->filled('academy_id'))
-                    <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}"/>
+                    <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
                     @endif
-                    <x-form.label name="Vyhľadávanie"/>
-                    <input type="text" name="search" value="{{request()->input('search')}}"/>
+                    <x-form.label name="Vyhľadávanie" />
+                    <input type="text" name="search" value="{{request()->input('search')}}" />
                     <x-form.button>
                         Hľadať
                     </x-form.button>
@@ -117,11 +122,12 @@ session()->forget('instructor_id');
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class=" text-sm font-medium text-gray-900">
-                                           <img style="
+                                            <img style="
                                             width: 100px; 
                                             height: 100px; 
                                             object-fit: cover;
-                                            object-position: 25% 25%;"  class="rounded-xl " src="{{asset('storage/' . $instructor->photo)}}" alt="">
+                                            object-position: 25% 25%;" class="rounded-xl "
+                                                src="{{asset('storage/' . $instructor->photo)}}" alt="">
                                         </div>
                                     </div>
                                 </td>
@@ -146,17 +152,18 @@ session()->forget('instructor_id');
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
                                             @if($instructor->coursetypes->count() > 0)
-                                                    <span class="text-xs">
-                                                    @foreach($instructor->coursetypes as $coursetype)
-                                                    
-                                                    {{$coursetype->name}} - {{$coursetype->academy->name}} Akadémia <br>
-                                                    @endforeach
-                                                    </span>
-                                                    @else
-                                                    <a href="/admin/instructors/{{ $instructor->id }}?pridat" class="text-blue-500 hover:text-blue-600">
-                                                        Pridať kurz
-                                                    </a>
-                                                    @endif
+                                            <span class="text-xs">
+                                                @foreach($instructor->coursetypes as $coursetype)
+
+                                                {{$coursetype->name}} - {{$coursetype->academy->name}} Akadémia <br>
+                                                @endforeach
+                                            </span>
+                                            @else
+                                            <a href="/admin/instructors/{{ $instructor->id }}?pridat"
+                                                class="text-blue-500 hover:text-blue-600">
+                                                Pridať kurz
+                                            </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
@@ -164,18 +171,21 @@ session()->forget('instructor_id');
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900">
                                             @if($instructor->login)
-                                                    <span class="text-xs">
-                                                        <a href="/admin/instructors/{{ $instructor->id }}?zmenit" >
-                                                            Zmeniť login
-                                                        </a>
-                                                    </span>
-                                                    @else
-                                                    <a href="/admin/instructors/{{ $instructor->id }}?vytvorit" class="text-red-500 hover:text-red-600">
-                                                        Vytvoriť login
-                                                    </a>
-                                                    @endif
+                                            <span class="text-xs">
+                                                <a href="/admin/instructors/{{ $instructor->id }}?zmenit">
+                                                    Zmeniť login
+                                                </a>
+                                            </span>
+                                            @else
+                                            <a href="/admin/instructors/{{ $instructor->id }}?vytvorit"
+                                                class="text-red-500 hover:text-red-600">
+                                                Vytvoriť login
+                                            </a>
+                                            @endif
 
-                                            {{-- {!! $instructor->login ? '<a href="/admin/instructors/{{ $instructor->id }}?zmenit">Zmeniť login</a>' : '<a href="/admin/instructors/{{ $instructor->id }}?zmenit"
+                                            {{-- {!! $instructor->login ? '<a
+                                                href="/admin/instructors/{{ $instructor->id }}?zmenit">Zmeniť login</a>'
+                                            : '<a href="/admin/instructors/{{ $instructor->id }}?zmenit"
                                                 class="text-red-600">Vytvoriť login</a>'!!} --}}
                                         </div>
                                     </div>
