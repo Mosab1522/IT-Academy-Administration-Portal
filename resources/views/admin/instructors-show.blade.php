@@ -256,7 +256,7 @@
                                                 <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                                     data-option="{{ $type->academy_id }}"
                                                     {{ old('coursetype_id') == $type->id ? 'selected' : '' }}>
-                                                    {{ ucwords($type->name) }}</option>
+                                                    {{ ucwords($type->name) }} - {{$type->type=='0'? 'študentský' : 'inštruktorský'}}</option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -278,10 +278,10 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="text-sm">
                                     <tr>
-                                        <td class="px-6 py-1">Názov typu kurzu</td>
+                                        <td class="px-6 py-1">Názov kurzu</td>
+                                        <td class="px-6 py-2">Typ</td>
+                                        <td class="px-6 py-2">Akadémia</td>
                                         <td class="px-6 py-2">Počet prihlášok</td>
-                                        <td class="pl-6 py-2"></td>
-                                        <td></td>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -293,12 +293,26 @@
                                                         <a href="/admin/coursetypes/{{ $coursetype->id }}"
                                                             title="Ukázať podrobnosti">
                                                             {{ $coursetype->name }}
-                                                            {{ $coursetype->academyname }}
+                                                            {{ $coursetype->academy->name }}
                                                         </a>
                                                     </div>
                                                 </div>
                                             </td>
-
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="text-sm font-medium text-gray-900">
+                                                        {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="text-sm font-medium text-gray-900">
+                                                        {{ $coursetype->academy->name }}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                           
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="text-sm font-medium text-gray-900">

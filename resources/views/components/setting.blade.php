@@ -34,11 +34,17 @@
 
 
 
-        {{-- <h4 class="my-4 font-semibold " title="-asi notifikácia / email adminovi a ten mu to musí potvrdiť.">Reset hesla
+        {{-- <h4 class="my-4 font-semibold " title="-asi notifikácia / email adminovi a ten mu to musí potvrdť.">Reset hesla
             inštruktorovi</h4>
         <h4 class="my-4 font-semibold " title="">Urobiť edit a delete</h4> --}}
         <h4 class="my-4 font-semibold " title="">Skontrolovať všetky základne veci - show / edit / mazanie a doupravovat podmienky a podobne.</h4> 
+        <h4 class="my-4 font-semibold " title="">SHOW pri neuspesnom aby sa to zobrazilo tam kde to skoncilo.</h4>
+        <h4 class="my-4 font-semibold " title="">Error message custom a zobrazovanie.</h4>  
         <h4 class="my-4 font-semibold " title="- vytváranie, spravovanie, trigger,  ">Začať riešiť už normálne kurzy
+        </h4>
+        <h4 class="my-4 font-semibold " title="- vytváranie, spravovanie, trigger,  ">V dashboarde sa pohrat aby to ukazalo aj typ kurzu daneho kurzu
+        </h4>
+        <h4 class="my-4 font-semibold " title="- vytváranie, spravovanie, trigger,  ">Pridavanie kurzov do kurzu
         </h4>
         <h4 class="my-4 font-semibold "
             title="- treba že či tak ako vo videu to rozlíšil že admin alebo úplne iné pohľady. ">Pohľad pre inštruktora

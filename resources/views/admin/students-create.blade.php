@@ -3,9 +3,9 @@
 <x-setting heading="Vytvoriť študenta">
     <form action="/admin/students/create" method="post" enctype="multipart/form-data">
         @csrf
-        <h3 class="block mt-2 mb-3 uppercase font-bold text-sm text-gray-700">Povinný údaj</h3>
+        {{-- <h3 class="block mt-2 mb-3 uppercase font-bold text-sm text-gray-700">Povinný údaj</h3>
         <x-form.input name="email" type="email"/>
-        <h3 class="block mt-6 mb-3 uppercase font-bold text-sm text-gray-700">Voliteľné údaje</h3>
+        <h3 class="block mt-6 mb-3 uppercase font-bold text-sm text-gray-700">Voliteľné údaje</h3> --}}
         <div class="items-center mt-4">
             <x-form.label name="je:" />
 
@@ -75,7 +75,7 @@
 
         <x-form.input name="name" />
         <x-form.input name="lastname" />
-        {{-- <x-form.input name="email" type="email"/> --}}
+        <x-form.input name="email" type="email"/>
         <x-form.input name="sekemail" type="email"/>
         <x-form.input name="ulicacislo" />
         <x-form.input name="mestoobec" />

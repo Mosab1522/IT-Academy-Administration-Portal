@@ -56,7 +56,7 @@ class AcademyController extends Controller
 
         Academy::create($attributes);
 
-        return back()->with('success_c', 'Úspešne vytvorené')->except('pridat');
+        return back()->with('success_c', 'Úspešne vytvorené');
     }
     public function update(Academy $academy)
     {
@@ -71,13 +71,13 @@ class AcademyController extends Controller
             return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
         }
 
-        return back()->with('success_u', 'Úspešne aktualizované')->except('pridat');
+        return back()->with('success_u', 'Úspešne aktualizované');
     }
 
     public function destroy(Academy $academy)
     {
         $academy->delete();
 
-        return back()->with('success_d', 'Úspešne vymazané')->except('pridat');
+        return back()->with('success_d', 'Úspešne vymazané');
     }
 }

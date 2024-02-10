@@ -318,8 +318,8 @@
                             <thead class="text-sm">
                                 <tr>
                                     <td class="px-6 py-1">Názov typu kurzu</td>
+                                    <td class="px-6 py-2">Typ</td>
                                     <td class="px-6 py-2">Days - Time</td>
-                                    <td></td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -335,6 +335,14 @@
                                                     {{$application->coursetype->name }}
 
                                                 </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                   
+                                            {{$application->coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
                                             </div>
                                         </div>
                                     </td>

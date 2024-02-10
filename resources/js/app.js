@@ -350,7 +350,7 @@ function tretia() {
   if (tretie) {
     tretie.addEventListener('click', () => {
       if (inputs[0].disabled == true && profile.style.display != 'none') {
-        text2.style.display = 'none';
+        text2.style.display = 'none'; 
         text1.style.display = 'block';
         profile.style.display = 'none';
         login.style.display = 'block';
@@ -480,8 +480,43 @@ function tretia() {
 tretia();
 // const tretie = document.querySelector('#tr');
 
+function handleTypeRadio() {
+  const favTypeRadios = document.querySelectorAll('input[name="type"]');
+  const student = document.getElementById('stud');
+  const instruktor = document.getElementById('inst');
+  const favTypeRadios2 = document.querySelectorAll('input[name="type2"]');
+  const student2 = document.getElementById('stud2');
+  const instruktor2 = document.getElementById('inst2');
+ 
 
-
+  favTypeRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.value === '0' && radio.checked) {
+        student.style.display = 'flex';
+        instruktor.style.display = 'none';
+      
+      } else {
+        instruktor.style.display = 'flex';
+        student.style.display = 'none';
+      
+      }
+    });
+  });
+  favTypeRadios2.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.value === '0' && radio.checked) {
+        student2.style.display = 'flex';
+        instruktor2.style.display = 'none';
+       
+      } else {
+        instruktor2.style.display = 'flex';
+        student2.style.display = 'none';
+       
+      }
+    });
+  });
+}
+handleTypeRadio();
 
 
 

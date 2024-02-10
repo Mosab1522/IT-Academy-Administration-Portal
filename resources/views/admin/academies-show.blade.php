@@ -235,6 +235,22 @@
                             <input name="academy_id" value="{{$academy->id}}" hidden />
 
                             <x-form.input name="name" />
+                            <div class="items-center my-4">
+                                <x-form.label name="typ kurzu:" />
+                    
+                                <input class="mr-0.5" type="radio"  name="type" value="0" {{old('type')=='0'
+                                    ? 'checked' : '' }}>
+                                <label for="0">Študentský</label>
+                    
+                                <input class="ml-2 mr-0.5" type="radio"  name="type" value="1"
+                                    {{old('type')=='1' ? 'checked' : '' }}>
+                                <label for="1">Inštruktorský</label>
+                
+                                <input class="ml-2 mr-0.5" type="radio"  name="type" value="2"
+                                    {{old('type')=='2' ? 'checked' : '' }}>
+                                <label for="2">Obidva</label>
+                    
+                            </div>
                             <x-form.input name="min" type="number" />
                             <x-form.input name="max" type="number" />
 
@@ -270,7 +286,13 @@
                                             </div>
                                         </div>
                                     </td>
-
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="text-sm font-medium text-gray-900">

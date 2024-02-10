@@ -90,6 +90,7 @@
                             <thead class="text-sm">
                                 <tr>
                                     <td class="px-6 py-1">Názov</td>
+                                    <td class="px-6 py-1">Typ</td>
                                     <td class="px-6 py-2">Akadémia</td>
                                     <td class="px-6 py-2">Počet prihlášok</td>
                                     <td class="px-6 py-2">Inštruktori</td>
@@ -108,7 +109,13 @@
                                                 </div>
                                             </div>
                                         </td>
-
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="text-sm font-medium text-gray-900">

@@ -110,8 +110,8 @@
                                 <td class="px-6 py-1 whitespace-nowrap">Meno a priezvisko</td>
                                 <td class="px-6 py-2">Email</td>
                                 <td class="px-6 py-2">Akadémia</td>
+                                <td class="px-6 py-2">Typ</td>
                                 <td class="px-6 py-2">Kurz</td>
-                                <td></td>
                                 <td></td>
                             </tr>
                         </thead>@foreach ($applications as $application)
@@ -141,6 +141,17 @@
                                             <a href="/admin/academies/{{ $application->academy->id }}">
                                             {{ $application->academy->name }}
                                             </a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            
+                                            
+                                            {{$application->coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
+                                           
+                                            
                                         </div>
                                     </div>
                                 </td>

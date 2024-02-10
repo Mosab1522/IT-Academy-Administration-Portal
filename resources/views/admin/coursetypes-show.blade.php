@@ -102,6 +102,19 @@
                                         <input disabled type="text" name="name" value="{{$coursetype->name}}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
+                                </div> 
+                                <div class="w-full max-w-full px-3 shrink-0">
+                                    <div class="mb-4">
+                                    <x-form.label name="typ kurzu:" />
+                        
+                                    <input disabled class="mr-0.5" type="radio"  name="type" value="0" {{$coursetype->type=='0'
+                                        ? 'checked' : '' }}>
+                                    <label for="0">Študentský</label>
+                        
+                                    <input disabled class="ml-2 mr-0.5" type="radio"  name="type" value="1"
+                                        {{$coursetype->type=='1' ? 'checked' : '' }}>
+                                    <label for="1">Inštruktorský</label>
+                                    </div>
                                 </div>
                                 <div class="w-full">
                                     <div class="w-full mb-4 px-3 shrink-0">
@@ -119,7 +132,7 @@
                                         </select>
                                     </div>
                                 </div>
-
+                               
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                     <div class="mb-4">
                                         <label for="email"

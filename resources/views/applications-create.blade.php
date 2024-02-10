@@ -19,10 +19,20 @@
                     na kurz.</span></p>
             <h3 class="block mt-5 mb-3 uppercase font-bold text-sm text-gray-700">Kurzy</h3>
 
+            <div class="items-center">
+                <x-form.label name="typ kurzu:" />
+    
+                <input class="mr-0.5" type="radio"  name="type" value="0" {{old('type')=='0'
+                    ? 'checked' : '' }}>
+                <label for="0">Študentský</label>
+    
+                <input class="ml-2 mr-0.5" type="radio"  name="type" value="1"
+                    {{old('type')=='1' ? 'checked' : '' }}>
+                <label for="1">Inštruktorský</label>
+    
+            </div>
 
-
-
-            <div class="flex">
+            <div class="mt-4 hidden" id="inst" >
 
                 <div>
 
@@ -65,11 +75,65 @@
                         {{-- @php
                         $academy = \App\Models\CourseType::all();
                         @endphp --}}
-                        @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
+                        @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1, 2])->get() as $type)
                         <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
                             {{-- {{old('coursetype_id')==$type->id ? 'selected' : ''}} --}}
                             >{{
                             ucwords($type->name) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            
+
+            <div class="mt-4 hidden" id="stud">
+
+                <div>
+
+
+
+
+                    <x-form.label name="akadémia" />
+                    <!-- parent -->
+                    <select name="academy_id2" class="combo-a3" data-nextcombo=".combo-b3">
+                        <option value="" disabled selected hidden>Akadémia</option>
+                        {{-- @php
+                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                        ->get();
+                        @endphp --}}
+                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])
+                        ->get() as $academ)
+                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
+                            {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                            >{{
+                            ucwords($academ->name)}}</option>
+                        @endforeach
+                        {{-- <option value="" disabled selected hidden>Akadémia</option>
+                        <option value="1" data-id="1" data-option="-1">Cisco</option>
+                        <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                    </select>
+                </div>
+                <div class="ml-4">
+                    <x-form.label name="typ kurzu" />
+                    <!-- child -->
+                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
+                        disabled>
+                        <option value="" disabled selected hidden>Typ kurzu</option>
+                        <option value="1" data-id="1" data-option="1">Lahky</option>
+                        <option value="2" data-id="2" data-option="1">Stredny</option>
+                        <option value="3" data-id="3" data-option="2">Photoshop</option>
+                        <option value="4" data-id="4" data-option="2">Illustrator</option>
+                    </select> --}}
+                    <select name="coursetype_id2" id="coursetype_id" class="combo-b3" disabled>
+                        <option value="" disabled selected hidden>Typ kurzu</option>
+                        {{-- @php
+                        $academy = \App\Models\CourseType::all();
+                        @endphp --}}
+                        @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [0, 2])->get() as $type2)
+                        <option value="{{ $type2->id }}" data-id="{{ $type2->id }}" data-option="{{ $type2->academy_id }}"
+                            {{-- {{old('coursetype_id')==$type->id ? 'selected' : ''}} --}}
+                            >{{
+                            ucwords($type2->name) }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -289,7 +353,20 @@
             @csrf
             <input type="hidden" name="typ" value="stary" />
             <h3 class="block mt-5 mb-3 uppercase font-bold text-sm text-gray-700">Kurzy</h3>
-            <div class="flex">
+            <div class="items-center">
+                <x-form.label name="typ kurzu:" />
+    
+                <input class="mr-0.5" type="radio"  name="type2" value="0" {{old('type')=='0'
+                    ? 'checked' : '' }}>
+                <label for="0">Študentský</label>
+    
+                <input class="ml-2 mr-0.5" type="radio"  name="type2" value="1"
+                    {{old('type')=='1' ? 'checked' : '' }}>
+                <label for="1">Inštruktorský</label>
+    
+            </div>
+
+            <div class="mt-4 hidden" id="inst2">
                 <div>
                     <x-form.label name="akadémia" />
                     <!-- parent -->
@@ -327,7 +404,7 @@
                         {{-- @php
                         $academy = \App\Models\CourseType::all();
                         @endphp --}}
-                        @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $type)
+                        @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1, 2])->get() as $type)
                         <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
                             {{-- {{old('coursetype_id')==$type->id ? 'selected' : ''}} --}}
                             >{{
@@ -336,6 +413,55 @@
                     </select>
                 </div>
             </div>
+
+            <div class="mt-4 hidden" id="stud2">
+                <div>
+                    <x-form.label name="akadémia" />
+                    <!-- parent -->
+                    <select name="academy_id2" class="combo-a4" data-nextcombo=".combo-b4">
+                        <option value="" disabled selected hidden>Akadémia</option>
+                        @php
+                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                        ->get();
+                        @endphp
+                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])
+                        ->get() as $academ)
+                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
+                            {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                            >{{
+                            ucwords($academ->name)}}</option>
+                        @endforeach
+                        {{-- <option value="" disabled selected hidden>Akadémia</option>
+                        <option value="1" data-id="1" data-option="-1">Cisco</option>
+                        <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                    </select>
+                </div>
+                <div class="ml-4">
+                    <x-form.label name="typ kurzu" />
+                    <!-- child -->
+                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
+                        disabled>
+                        <option value="" disabled selected hidden>Typ kurzu</option>
+                        <option value="1" data-id="1" data-option="1">Lahky</option>
+                        <option value="2" data-id="2" data-option="1">Stredny</option>
+                        <option value="3" data-id="3" data-option="2">Photoshop</option>
+                        <option value="4" data-id="4" data-option="2">Illustrator</option>
+                    </select> --}}
+                    <select name="coursetype_id2" id="coursetype_id2" class="combo-b4" disabled>
+                        <option value="" disabled selected hidden>Typ kurzu</option>
+                        {{-- @php
+                        $academy = \App\Models\CourseType::all();
+                        @endphp --}}
+                        @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [0, 2])->get() as $type2)
+                        <option value="{{ $type2->id }}" data-id="{{ $type2->id }}" data-option="{{ $type2->academy_id }}"
+                            {{-- {{old('coursetype_id')==$type->id ? 'selected' : ''}} --}}
+                            >{{
+                            ucwords($type2->name) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
 
 
 

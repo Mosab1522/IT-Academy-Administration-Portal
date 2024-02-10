@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained()->cascadeOnDelete();;
-            $table->foreignId('academy_id')->constrained()->cascadeOnDelete();;
-            $table->foreignId('coursetype_id')->constrained('course_types')->cascadeOnDelete();;
-            $table->integer('days');
-            $table->integer('time');
+            $table->foreignId('student_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('academy_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('coursetype_id')->constrained('course_types')->cascadeOnDelete();
+            $table->tinyInteger('days');
+            $table->tinyInteger('time');
             $table->timestamps();
-            $table->boolean('verified')->nullable();
+            $table->boolean('verified')->default(false);
         });
     }
 

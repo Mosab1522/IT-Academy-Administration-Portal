@@ -155,7 +155,7 @@ session()->forget('instructor_id');
                                             <span class="text-xs">
                                                 @foreach($instructor->coursetypes as $coursetype)
 
-                                                {{$coursetype->name}} - {{$coursetype->academy->name}} Akadémia <br>
+                                                {{$coursetype->name}}  {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}- {{$coursetype->academy->name}} Akadémia <br>
                                                 @endforeach
                                             </span>
                                             @else

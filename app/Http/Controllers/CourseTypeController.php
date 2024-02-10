@@ -60,14 +60,39 @@ class CourseTypeController extends Controller
 
     public function store()
     {
-        $attributes = request()->validate([
-            'name' => ['required', 'max:255', Rule::unique('course_types', 'name')],
+        
+        if(request()->type == 2)
+        {
+            $attributes = request()->validate([
+                'name' => 'required|max:255|unique:course_types,name,NULL,id,type,0',
+                'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
+                'type' => ['required', 'integer', 'in:0,1,2'],
+                'min' => ['required', 'integer', 'lte:max'],
+                'max' => ['required', 'integer', 'gte:min'],
+            ]);
+            $attributes = request()->validate([
+                'name' => 'required|max:255|unique:course_types,name,NULL,id,type,1',
+                'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
+                'type' => ['required', 'integer', 'in:0,1,2'],
+                'min' => ['required', 'integer', 'lte:max'],
+                'max' => ['required', 'integer', 'gte:min'],
+            ]);
+            $attributes['type'] = 0;
+            CourseType::create($attributes);
+            $attributes['type'] = 1;
+            CourseType::create($attributes);
+        }else
+        {
+            $attributes = request()->validate([
+            'name' => 'required|max:255|unique:course_types,name,NULL,id,type,' . request()->type,
             'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
+            'type' => ['required', 'integer', 'in:0,1,2'],
             'min' => ['required', 'integer', 'lte:max'],
             'max' => ['required', 'integer', 'gte:min'],
         ]);
-
-        CourseType::create($attributes);
+             CourseType::create($attributes);
+        }
+       
 
         if (Str::endsWith(url()->previous(), '?pridat'))
         {
@@ -92,7 +117,8 @@ class CourseTypeController extends Controller
         
 
         $attributes = request()->validate([
-            'name' => ['required', 'max:255', Rule::unique('course_types', 'name')->ignore($coursetype)],
+            'name' => 'required|max:255|unique:course_types,name,' . $coursetype->id . ',id,type,' . request()->type,
+            'type' => ['required', 'integer', 'in:0,1'],
             'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
             'min' => ['required', 'integer', 'lte:max'],
             'max' => ['required', 'integer', 'gte:min'],
