@@ -15,16 +15,29 @@
                     class="relative flex flex-col flex-auto min-w-0 p-4 mx-6 overflow-hidden break-words bg-white border-0 dark:bg-slate-850 dark:shadow-dark-xl shadow-3xl rounded-2xl bg-clip-border">
                     <div class="flex flex-wrap -mx-3">
                         <div class="flex-none w-auto max-w-full px-3">
-                            <div
-                                class="relative inline-flex items-center justify-center text-white transition-all duration-200 ease-in-out text-base h-19 w-19 rounded-xl">
-                                <img src="{{ asset('storage/' . $instructor->photo) }}" alt="profile_image"
-                                    style="
-                            width: 150px; 
-                            height: 150px; 
-                            object-fit: cover;
-                            object-position: 25% 25%;"
-                                    class=" shadow-2xl rounded-xl" />
-                            </div>
+                            <form id="formm" action="/admin/instructors/{{ $instructor->id }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                @method('Patch')
+                                <!-- Other input fields -->
+                            
+                                <div class="relative inline-flex items-center justify-center">
+                                    <img src="{{ asset('storage/' . $instructor->photo) }}" alt="profile_image" class="shadow-2xl rounded-xl" data-default-src="{{ asset('storage/' . $instructor->photo) }}" style="width: 150px; height: 150px; object-fit: cover; object-position: 25% 25%;" />
+
+                                    <label for="photo-upload" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100" style="background-color: rgba(0,0,0,0.5)">Change Photo</label>
+                                    <input type="file" id="photo-upload" name="photo" style="display: none;" onchange="handleFileUpload(event)">
+                                </div>
+                            
+                                <!-- Other form elements -->
+                            
+                                <div class="flex">
+                                    <button id="photobutton" type="submit" class="hidden w-full bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                                </div>
+                                <div class="flex">
+                                    <button id="photobutton-c" type="reset"
+                                    class="hidden w-full flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
+                                </div>
+                            </form>
+                            
                         </div>
                         <div class="flex-none w-auto max-w-full px-3 my-auto">
                             <div class="h-full">
@@ -97,7 +110,6 @@
                             @csrf
                             @method('Patch')
                             <div class="flex flex-wrap -mx-3">
-
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                     <div class="mb-4">
                                         <label for="first name"
@@ -416,3 +428,47 @@
     </div>
 
 </x-setting>
+
+<script>
+   function handleFileUpload(event) {
+    var image = document.querySelector('img[alt="profile_image"]');
+    var file = event.target.files[0];
+    const button = document.getElementById("photobutton");
+    const button_c = document.getElementById("photobutton-c");
+    var reader = new FileReader();
+
+    reader.onloadend = function() {
+        image.src = reader.result;
+    }
+
+    if (file) {
+        reader.readAsDataURL(file);
+        button.style.display = "block";
+        button_c.style.display = "block";
+    } else {
+        image.src = ""; // Fallback image or placeholder
+        button.style.display = "none";
+        button_c.style.display = "none";
+    }
+}
+document.getElementById("photobutton-c").addEventListener("click", function(event) {
+    // Prevent the default form reset behavior
+    event.preventDefault();
+
+    // Clear the file input
+    var fileInput = document.getElementById("photo-upload");
+    fileInput.value = "";
+
+    // Reset the image preview to the default image stored in `data-default-src`
+    var image = document.querySelector('img[alt="profile_image"]');
+    var defaultSrc = image.getAttribute('data-default-src'); // Get the default src
+    image.src = defaultSrc;
+
+    // Hide the buttons again
+    document.getElementById("photobutton").style.display = "none";
+    document.getElementById("photobutton-c").style.display = "none";
+
+    // Manually reset other fields as needed
+});
+
+    </script>

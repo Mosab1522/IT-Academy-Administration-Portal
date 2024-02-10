@@ -145,7 +145,7 @@ class InstructorController extends Controller
 
     public function store()
     {
-
+        
 
 
         $attributes = request()->validate(
@@ -229,12 +229,26 @@ class InstructorController extends Controller
     }
 
     public function update(Instructor $instructor)
-    {
+    { 
+       
+        if(request()->photo)
+        {
+            $attributes = request()->validate(
+                [
+                     'photo' => ['image']
+                ]
+                );
+                $attributes['photo'] = request()->file('photo')->store('photos');
+                $instructor->update($attributes);
+                return back()->with('success_u', 'Úspešne aktualizované');
+        }
+
+        
         $attributes = request()->validate(
             [
                 'name' => ['required', 'max:255'],
                 'lastname' => ['required', 'max:255'],
-                'photo' => ['image'],
+                
                 'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email')->ignore($instructor), Rule::unique('instructors', 'sekemail')->ignore($instructor)],
                 'sekemail' => ['nullable', 'email', 'different:email', Rule::unique('instructors', 'email')->ignore($instructor), Rule::unique('instructors', 'sekemail')->ignore($instructor)],
                 'telephone' => [
@@ -259,9 +273,9 @@ class InstructorController extends Controller
             }
         }
 
-        if (isset($attributes['photo'])) { //($attributes['thumbnail'] ?? false) uplne rovnake
-            $attributes['photo'] = request()->file('photo')->store('photos');
-        }
+       //($attributes['thumbnail'] ?? false) uplne rovnake
+            $attributes['photo'] = $instructor['photo'];
+        
 
         $instructor->update($attributes);
 
