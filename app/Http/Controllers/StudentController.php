@@ -148,8 +148,60 @@ class StudentController extends Controller
             // 'days' => ['required', 'integer'],
             // 'time' => ['required', 'integer'],
         ]);
-       
-        $student->update($attributes);
+        if (request()->status == "nestudent") {
+            $student->update([
+                'name' => $attributes['name'],
+                'lastname' => $attributes['lastname'],
+                'email' => $attributes['email'],
+                'sekemail' => $attributes['sekemail'],
+                'status' => request()->status,
+                'ulicacislo' => $attributes['ulicacislo'],
+                'mestoobec' => $attributes['mestoobec'],
+                'psc' => $attributes['psc'],
+            ]);
+        } else if (request()->skola == "ina") {
+            $student->update([
+                'name' => $attributes['name'],
+                'lastname' => $attributes['lastname'],
+                'email' => $attributes['email'],
+                'sekemail' => $attributes['sekemail'],
+                'status' => request()->status,
+                'skola' => request()->ina,
+                'ulicacislo' => $attributes['ulicacislo'],
+                'mestoobec' => $attributes['mestoobec'],
+                'psc' => $attributes['psc']
+            ]);
+        } else if (request()->program == "apin") {
+            $student->update([
+                'name' => $attributes['name'],
+                'lastname' => $attributes['lastname'],
+                'email' => $attributes['email'],
+                'sekemail' => $attributes['sekemail'],
+                'status' => request()->status,
+                'skola' => request()->skola,
+                'studium' => request()->studium,
+                'program' => request()->program,
+                'ulicacislo' => $attributes['ulicacislo'],
+                'mestoobec' => $attributes['mestoobec'],
+                'psc' => $attributes['psc']
+            ]);
+        } else {
+            $student->update([
+                'name' => $attributes['name'],
+                'lastname' => $attributes['lastname'],
+                'email' => $attributes['email'],
+                'sekemail' => $attributes['sekemail'],
+                'status' => request()->status,
+                'skola' => request()->skola,
+                'studium' => request()->studium,
+                'program' => request()->iny,
+                'ulicacislo' => $attributes['ulicacislo'],
+                'mestoobec' => $attributes['mestoobec'],
+                'psc' => $attributes['psc']
+            ]);
+        }
+
+        //$student->update($attributes);
         $student->touch();
 
         if (Str::endsWith(url()->previous(), '?pridat'))

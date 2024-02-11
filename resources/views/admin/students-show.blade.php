@@ -131,7 +131,7 @@
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
+                                {{-- <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                     <div class="mb-4">
                                         <label for="email"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Status</label>
@@ -162,7 +162,66 @@
                                         <input disabled type="text" name="program" value="{{$student->program}}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
+                                </div> --}}
+                            </div>
+                            <div>
+                                <div class="items-center">
+                                    <x-form.label name="JE:" />
+                                    <input disabled class="mr-0.5" type="radio" id="student" name="status" value="student" {{$student->status=='student'
+                                        ? 'checked' : '' }}>
+                                    <label for="student">Študent</label>
+                                    <input disabled class="ml-2 mr-0.5" type="radio" id="nestudent" name="status" value="nestudent"
+                                        {{$student->status=='nestudent' ? 'checked' : '' }}>
+                                    <label for="nestudent">Neštudent</label>
                                 </div>
+                                <div class="flex pb-1">
+                                    <div class="h-20 mt-3 {{$student->skola ? '' : 'hidden' }}" id="ucm">
+                                        <x-form.label name="univerzita:" />
+                                        <div class=" flex">
+                                            <div>
+                                                <input disabled type="radio" id="ucmka" name="skola" value="ucm" {{$student->skola=='ucm' ? 'checked' : ''
+                                                    }}>
+                                                <label for="option1">UCM</label><br>
+                                                <div class="mt-1">
+                                                    <input disabled type="radio" id="inam" name="skola" value="ina" {{$student->skola!='ucm' ? 'checked'
+                                                        : '' }}>
+                                                    <label for="option2">Iná</label><br>
+                                                </div>
+                                            </div>
+                                            <div id="ina" class="{{$student->skola!='ucm' ? '' : 'hidden' }}"><input
+                                                    disabled class=" border border-gray-200 mt-6 ml-2 p-2 w-80 rounded h-7" name="ina" id="nu" required
+                                                    value="{{$student->skola }}" {{--$student->skola=='ina' ? '' : 'disabled' --}}></div>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4 mt-3 {{$student->skola=='ucm' ? '' : 'hidden' }}" id="ucmkari">
+                                        <x-form.label name="studium:" />
+                                        <input disabled type="radio" id="option3" name="studium" value="interne" {{$student->studium=='interne' ? 'checked'
+                                        : '' }}>
+                                        <label for="option1">Interné</label><br>
+                                        <div class="mt-1">
+                                            <input disabled type="radio" id="option4" name="studium" value="externe" {{$student->studium=='externe' ? 'checked'
+                                            : '' }}>
+                                            <label for="option2">Externé</label><br>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4 mt-3 {{$student->skola=='ucm' ? '' : 'hidden' }}" id="ucmkari2">
+                                        <x-form.label name="program:" />
+                                        <div>
+                                            <input disabled type="radio" id="option5" name="program" value="apin" {{$student->program =='apin' ? 'checked'
+                                            : '' }}>
+                                            <label for="option1">Aplikovaná informatika</label><br>
+                                            <div class="mt-1">
+                                                <input disabled type="radio" id="option6" name="program" value="iny" {{$student->program !='apin' ? 'checked'
+                                                : '' }}>
+                                                <label for="option2">Iný</label><br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-16 -ml-32 {{$student->program!='apin' ? ''
+                                    : 'hidden' }}" id="iny"><input disabled
+                                            class=" border border-gray-200 ml-2 p-2 w-80 rounded h-7" name="iny" id="ny" value="{{$student->program}}" required {{--$student->program=='iny' ? ''
+                                            : 'disabled' --}}>
+                                    </div>
                             </div>
                             <hr
                                 class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
