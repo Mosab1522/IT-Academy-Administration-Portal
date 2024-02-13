@@ -76,7 +76,7 @@
                     @if(request()->filled('academy_id')&&request()->filled('coursetype_id'))
                     <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
                     <input type="hidden" name="coursetype_id" value="{{request()->input('coursetype_id')}}" />
-                    
+
                     @elseif(request()->filled('academy_id'))
                     <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
                     @endif
@@ -171,7 +171,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                               
+
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
                                 <form method="POST" action="/admin/applications/{{ $application->id }}">

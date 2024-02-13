@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             input.disabled = true; // Disable editing
         });
     });
-    document.querySelectorAll('.section button').forEach(button => {
+    document.querySelectorAll('.section button[type]').forEach(button => {
       button.style.display = 'none';
   });
 
@@ -134,12 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to show relevant buttons for the active section
   function showRelevantButtons(activeSectionId) {
       // Hide all buttons initially
-      editButtons.forEach(button => button.style.display = 'none');
+      editButtons.forEach(button => {button.style.display = 'none'; button.parentNode.style.display = 'none';} );
       addButtons.forEach(button => button.style.display = 'none');
-
+    
       // Show edit and add buttons that are relevant to the active section
       document.querySelectorAll(`.edit-button[data-target="${activeSectionId}"], .add-button[data-target="${activeSectionId}Add"]`).forEach(button => {
-          button.style.display = 'inline-block'; // Adjust display as needed
+          button.style.display = 'inline-block'; button.parentNode.style.display = 'flex';// Adjust display as needed
       });
   }
 

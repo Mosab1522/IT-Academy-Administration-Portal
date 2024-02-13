@@ -146,6 +146,6 @@ class CourseTypeController extends Controller
             return redirect($trimmedUrl)->with('success_d', 'Úspešne vymazané');
         }
         
-        return back()->with('success_d', 'Úspešne vymazané');
+        return back()->with('success_dd', 'Úspešne vymazané');
     }
 }
