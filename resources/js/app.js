@@ -70,414 +70,179 @@ swith();
 //     console.log(newValue);
 //     setSubOptions(newValue);
 // });
-function povol() {
-  const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
-  const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
-  const select = document.getElementById('academy_id');
-  const select2 = document.getElementById('coursetype_id');
-  const text1 = document.getElementById('jj');
-  const text2 = document.getElementById('zz');
-  const button = document.getElementById('upd');
-  const button2 = document.getElementById('res');
-  const button1 = document.getElementById('upd1');
-  const button21 = document.getElementById('res1');
-  const form = document.getElementById('formm');
-  const form2 = document.getElementById('formm2');
-  const kur = document.getElementById('kurzy');
-  const login = document.getElementById('login');
-  const pridat = document.getElementById('pridat');
-  const kk = document.getElementById('kk');
-  const nkk = document.getElementById('nkk');
-  // var studentId = $('#kk').data('student-id');
-  // var redirectUrl = $('#kk').data('href');
-  // var redirectUrl = "{{ route('applications', ['student_id' => ':studentId']) }}".replace(':studentId', studentId);
-  // Získání všech inputů typu text
-  const povool = document.querySelector('#pp');
-  // povool.addEventListener('click', povol);
-  if (povool) {
-    povool.addEventListener('click', () => {
-      if (inputs[0].disabled == true && profile.style.display != 'none') {
-        inputs.forEach(function (input) {
-          input.disabled = false;
+document.addEventListener('DOMContentLoaded', function() {
+  const sectionButtons = document.querySelectorAll('.section-button');
+  const sections = document.querySelectorAll('.section');
+  const editButtons = document.querySelectorAll('.edit-button');
+  const addButtons = document.querySelectorAll('.add-button');
+
+  // Function to toggle sections
+  function resetEditingAndAddingStates() {
+    // Reset editing state for all forms within sections
+    document.querySelectorAll('.section form').forEach(form => {
+        form.querySelectorAll('input:not([type="hidden"])').forEach(input => {
+            input.disabled = true; // Disable editing
         });
-        if (select) {
-          select.disabled = false;
-        }
-        text1.style.display = 'none';
-        text2.style.display = 'block';
-        button.style.display = 'block';
-        button2.style.display = 'block';
-      }
-      else if (inputs[0].disabled == false && profile.style.display != 'none') {
-        inputs.forEach(function (input) {
-          input.disabled = true;
-        });
-        if (select) {
-          select.disabled = true;
-        }
-        text2.style.display = 'none';
-        text1.style.display = 'block';
-        button.style.display = 'none';
-        button2.style.display = 'none';
-        form.reset();
-      }
-      else if (kur.style.display != 'none' && pridat.style.display != 'block') {
-        pridat.style.display = 'block';
-        nkk.style.display = 'block';
-        kk.style.display = 'none';
-        if (select) {
-          select.disabled = false;
-        }
-        if (select2) {
-          select.disabled = false;
-        }
-        // Presmerovanie na URL
-        // window.location.href = redirectUrl;
-        // window.location = "/admin/instructors";
-      }
-      else if (kur.style.display != 'none' && pridat.style.display != 'none') {
-        pridat.style.display = 'none';
-        nkk.style.display = 'none';
-        kk.style.display = 'block';
-        if (select) {
-          select.disabled = true;
-        }
-        if (select2) {
-          select.disabled = true;
-        }
-        // Presmerovanie na URL
-        // window.location.href = redirectUrl;
-        // window.location = "/admin/instructors";
-      }
-      else if (inputs2[0].disabled == true && login.style.display != 'none') {
-        inputs2.forEach(function (input) {
-          input.disabled = false;
-        });
-        if (select) {
-          select.disabled = false;
-        }
-        text1.style.display = 'none';
-        text2.style.display = 'block';
-        button1.style.display = 'block';
-        button21.style.display = 'block';
-      }
-      else if (inputs2[0].disabled == false && login.style.display != 'none') {
-        inputs2.forEach(function (input) {
-          input.disabled = true;
-        });
-        if (select) {
-          select.disabled = true;
-        }
-        text2.style.display = 'none';
-        text1.style.display = 'block';
-        button1.style.display = 'none';
-        button21.style.display = 'none';
-        form2.reset();
-      }
     });
-  }
-  // Odstranění atributu disabled
+    document.querySelectorAll('.section button').forEach(button => {
+      button.style.display = 'none';
+  });
 
-}
-povol();
-// const povool = document.querySelector('#pp');
-// povool.addEventListener('click', povol);
-
-function kurzy() {
-  const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
-  const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
-  const select = document.getElementById('academy_id');
-  const text1 = document.getElementById('jj');
-  const text2 = document.getElementById('zz');
-  // const button = document.getElementById('upd');
-  // const button2 = dokurzyycument.getElementById('res');
-  const form = document.getElementById('formm');
-  const form2 = document.getElementById('formm2');
-  const kur = document.getElementById('kurzy');
-  const login = document.getElementById('login');
-  const kk = document.getElementById('kk');
-  const tlac1 = document.getElementById('tlac1');
-  const tlac2 = document.getElementById('tlac2');
-  const profile = document.getElementById('profile');
-  const button = document.getElementById('upd');
-  const button2 = document.getElementById('res');
-  const button1 = document.getElementById('upd1');
-  const button21 = document.getElementById('res1');
-  const lt = document.getElementById('lt');
-  const kt = document.getElementById('kt');
-  const upravy = document.getElementById('upravy');
-
-  const pridat = document.getElementById('pridat');
-  const nkk = document.getElementById('nkk');
-
-  // Získání všech inputů typu text
-  const kurzyy = document.querySelector('#ku');
-  // kurzyy.addEventListener('click', kurzy);
-  if (kurzyy) {
-    kurzyy.addEventListener('click', () => {
-      if (inputs[0].disabled == true && profile.style.display != 'none') {
-        text2.style.display = 'none';
-        text1.style.display = 'none';
-        profile.style.display = 'none';
-        kur.style.display = 'block';
-        kk.style.display = 'block';
-        tlac1.style.display = 'none';
-        tlac2.style.display = 'block';
-        button.style.display = 'none';
-        button2.style.display = 'none';
-
-      }
-      else if (inputs[0].disabled == false && profile.style.display != 'none') {
-        inputs.forEach(function (input) {
-          input.disabled = true;
+    // Reset button texts to defaults
+    if (editButtons) {
+        editButtons.forEach(button => {
+            const editSpan = button.querySelector('span:first-child');
+            const stopEditSpan = button.querySelector('span:last-child');
+            editSpan.style.display = 'inline';
+            stopEditSpan.style.display = 'none';
         });
-        if (select) {
-          select.disabled = true;
-        }
-
-        text2.style.display = 'none';
-        text1.style.display = 'none';
-        form.reset();
-        profile.style.display = 'none';
-        kur.style.display = 'block';
-        kk.style.display = 'block';
-        tlac1.style.display = 'none';
-        tlac2.style.display = 'block';
-        button.style.display = 'none';
-        button2.style.display = 'none';
-
-      }
-      else if (kur.style.display != 'none') {
-        // text2.style.display='none';
-        text1.style.display = 'block';
-        //  form.reset(); 
-        profile.style.display = 'block';
-        kur.style.display = 'none';
-        kk.style.display = 'none';
-        tlac1.style.display = 'block';
-        tlac2.style.display = 'none';
-        pridat.style.display = 'none';
-        nkk.style.display = 'none';
-      }
-      else if (inputs2[0]) {
-      if (inputs2[0].disabled == true && login.style.display != 'none') {
-        text2.style.display = 'none';
-        text1.style.display = 'block';
-        //  form.reset(); 
-        profile.style.display = 'block';
-        login.style.display = 'none';
-        // kk.style.display = 'none';
-        tlac1.style.display = 'block';
-        tlac2.style.display = 'none';
-        kt.style.display = 'none';
-        lt.style.display = 'block';
-      }
-      else if (inputs2[0].disabled == false && login.style.display != 'none') {
-        inputs2.forEach(function (input) {
-          input.disabled = true;
+    }
+    
+    if (addButtons) {
+        addButtons.forEach(button => {
+            const addSpan = button.querySelector('span:first-child');
+            const stopAddingSpan = button.querySelector('span:last-child');
+            addSpan.style.display = 'inline';
+            stopAddingSpan.style.display = 'none';
         });
-        if (select) {
-          select.disabled = true;
-        }
-        text2.style.display = 'none';
-        text1.style.display = 'block';
-        form2.reset();
-        profile.style.display = 'block';
-        login.style.display = 'none';
-        // kk.style.display = 'none';
-        tlac1.style.display = 'block';
-        tlac2.style.display = 'none';
-        kt.style.display = 'none';
-        lt.style.display = 'block';
-        button1.style.display = 'none';
-        button21.style.display = 'none';
-      }
     }
-    else if(login.style.display != 'none')
-    {
-      if (select) {
-        select.disabled = true;
-      }
-      // upravy.style.display = 'none';
-      upravy.style.display = 'block';
-      text2.style.display = 'none';
-      text1.style.display = 'block';
-      profile.style.display = 'block';
-      login.style.display = 'none';
-      // kk.style.display = 'none';
-      tlac1.style.display = 'block';
-      tlac2.style.display = 'none';
-      kt.style.display = 'none';
-      lt.style.display = 'block';
-      // button1.style.display = 'none';
-      // button21.style.display = 'none';
-    }
+    
+    // Hide all add sections
+    document.querySelectorAll('.add-section').forEach(section => {
+        section.style.display = 'none';
     });
-  }
 }
-kurzy();
-// const kurzyy = document.querySelector('#ku');
-// kurzyy.addEventListener('click', kurzy);
 
-function tretia() {
-  const inputs = document.querySelectorAll('#formm input:not([type="hidden"])');
-  const inputs2 = document.querySelectorAll('#formm2 input:not([type="hidden"])');
-  const select = document.getElementById('academy_id');
-  const select2 = document.getElementById('coursetype_id');
-  const text1 = document.getElementById('jj');
-  const text2 = document.getElementById('zz');
-  // const button = document.getElementById('upd');
-  // const button2 = dokurzyycument.getElementById('res');
-  const form = document.getElementById('formm');
-  const form2 = document.getElementById('formm2');
-  const kur = document.getElementById('kurzy');
-  const kk = document.getElementById('kk');
-  const tlac1 = document.getElementById('tlac1');
-  const tlac2 = document.getElementById('tlac2');
-  const profile = document.getElementById('profile');
-  const login = document.getElementById('login');
-  const button = document.getElementById('upd');
-  const button2 = document.getElementById('res');
-  const button1 = document.getElementById('upd1');
-  const button21 = document.getElementById('res1');
-  const lt = document.getElementById('lt');
-  const kt = document.getElementById('kt');
-  const upravy = document.getElementById('upravy');
-  const pridat = document.getElementById('pridat');
-  const nkk = document.getElementById('nkk');
-  // Získání všech inputů typu text
-  const tretie = document.querySelector('#tr');
-  if (tretie) {
-    tretie.addEventListener('click', () => {
-      if (inputs[0].disabled == true && profile.style.display != 'none') {
-        text2.style.display = 'none'; 
-        text1.style.display = 'block';
-        profile.style.display = 'none';
-        login.style.display = 'block';
-        kur.style.display = 'none';
-        kk.style.display = 'none';
-        tlac1.style.display = 'none';
-        tlac2.style.display = 'block';
-        button.style.display = 'none';
-        button2.style.display = 'none';
-        kt.style.display = 'block';
-        lt.style.display = 'none';
-        if(!inputs2[0]){
-          upravy.style.display = 'none';
-        }
-      }
-      else if (inputs[0].disabled == false && profile.style.display != 'none') {
-        inputs.forEach(function (input) {
-          input.disabled = true;
-        });
-        if (select) {
-          select.disabled = true;
-        }
-        text2.style.display = 'none';
-        text1.style.display = 'block';
-        form.reset();
-        profile.style.display = 'none';
-        login.style.display = 'block';
-        kur.style.display = 'none';
-        kk.style.display = 'none';
-        tlac1.style.display = 'none';
-        tlac2.style.display = 'block';
-        button.style.display = 'none';
-        button2.style.display = 'none';
-        kt.style.display = 'block';
-        lt.style.display = 'none';
-        upravy.style.display = 'none';
-      }
-      else if (kur.style.display != 'none') {
-        if (select) {
-          if (select.style.display != 'none') {
-            select.disabled = true;
-            if(select2)
-            {
-               select2.disabled = true;
-            }
-           
-            pridat.style.display = 'none';
-            nkk.style.display = 'none';
+  // Function to toggle sections
+  function toggleSection(button) {
+      resetEditingAndAddingStates(); // Reset states when switching sections
+
+      sections.forEach(section => {
+          if (section.id === button.dataset.target) {
+              section.style.display = 'block';
+              // Show relevant buttons for the active section
+              showRelevantButtons(button.dataset.target);
+          } else {
+              section.style.display = 'none';
           }
-        }
-        if(!inputs2[0]){
-          upravy.style.display = 'none';
-        }
+      });
 
-        text2.style.display = 'none';
-        text1.style.display = 'block';
+      // Update visibility of section buttons
+      updateSectionButtonsVisibility(button.dataset.target);
+  }
 
-        //  form.reset(); 
-        // profile.style.display = 'block';
-        login.style.display = 'block';
-        kur.style.display = 'none';
-        kk.style.display = 'none';
-        tlac1.style.display = 'none';
-        tlac2.style.display = 'block';
-        kt.style.display = 'block';
-        lt.style.display = 'none';
+  // Function to show relevant buttons for the active section
+  function showRelevantButtons(activeSectionId) {
+      // Hide all buttons initially
+      editButtons.forEach(button => button.style.display = 'none');
+      addButtons.forEach(button => button.style.display = 'none');
 
-      }
-      else if (inputs2[0]) {
-        if (inputs2[0].disabled == true && login.style.display != 'none') {
-          text2.style.display = 'none';
-          text1.style.display = 'none';
-          login.style.display = 'none';
-          kur.style.display = 'block';
-          kk.style.display = 'block';
-          tlac1.style.display = 'none';
-          tlac2.style.display = 'block';
-          button1.style.display = 'none';
-          button21.style.display = 'none';
-          kt.style.display = 'none';
-          lt.style.display = 'block';
+      // Show edit and add buttons that are relevant to the active section
+      document.querySelectorAll(`.edit-button[data-target="${activeSectionId}"], .add-button[data-target="${activeSectionId}Add"]`).forEach(button => {
+          button.style.display = 'inline-block'; // Adjust display as needed
+      });
+  }
+
+  // Function to update the visibility of section buttons based on the active section
+  function updateSectionButtonsVisibility(activeSectionId) {
+      let firstTarget = null;
+      let firstParent = null;
+      sectionButtons.forEach(button => {
+        if(button.dataset.target != firstTarget && button.parentNode != firstParent) {
+        if(button.dataset.target === activeSectionId){
+         button.style.display = 'none'
+        
+        }else{
+          button.style.display = 'inline-block';
+          firstTarget = button.dataset.target;
+          firstParent = button.parentNode;
         }
-        else if (inputs2[0].disabled == false && login.style.display != 'none') {
-          inputs2.forEach(function (input) {
-            input.disabled = true;
+        }else{
+          button.style.display = 'none'
+        }
+          // if (button.dataset.target === activeSectionId) {
+          //     // Hide the button for the active section
+          //     button.style.display = 'none';
+          // } else {
+          //     // Show the button for all other sections
+          //     button.style.display = 'inline-block';
+          // }
+      });
+  }
+
+  function enableEditing(button) {
+    const targetForm = document.querySelector(`#${button.dataset.target}`);
+    if (targetForm) {
+        const isEditing = Array.from(targetForm.querySelectorAll('input:not([type="hidden"])')).some(input => input.disabled);
+
+        targetForm.querySelectorAll('input:not([type="hidden"])').forEach(input => {
+            input.disabled = !isEditing;
+        });
+        const buttons = targetForm.querySelectorAll('button');
+      
+        // Toggle the visibility of span elements based on the editing state
+        const editSpan = button.querySelector('span:first-child');
+        const stopEditSpan = button.querySelector('span:last-child');
+
+        if (isEditing) {
+            editSpan.style.display = 'none';
+            stopEditSpan.style.display = 'inline';
+            buttons.forEach(button => {
+              button.style.display = 'inline-block';
           });
-          if (select) {
-            select.disabled = true;
-          }
-          text2.style.display = 'none';
-          text1.style.display = 'none';
-          form2.reset();
-          login.style.display = 'none';
-          kur.style.display = 'block';
-          kk.style.display = 'block';
-          tlac1.style.display = 'none';
-          tlac2.style.display = 'block';
-          button1.style.display = 'none';
-          button21.style.display = 'none';
-          kt.style.display = 'none';
-          lt.style.display = 'block';
+        } else {
+            editSpan.style.display = 'inline';
+            stopEditSpan.style.display = 'none';
+            buttons.forEach(button => {
+              button.style.display = 'none';
+          });
         }
-      }
-      else if (login.style.display != 'none') {
-        if (select) {
-          select.disabled = true;
-        }
-        upravy.style.display = 'block';
-        text2.style.display = 'none';
-        text1.style.display = 'none';
-        login.style.display = 'none';
-        kur.style.display = 'block';
-        kk.style.display = 'block';
-        tlac1.style.display = 'none';
-        tlac2.style.display = 'block';
-        // button1.style.display = 'none';
-        // button21.style.display = 'none';
-        kt.style.display = 'none';
-        // pp.style.display = 'none';
-        lt.style.display = 'block';
-
-      }
-    });
-  }
-  // Odstranění atributu disabled
+    }
 }
-tretia();
+
+// Function to show add forms or sections
+function showAddForm(button) {
+  const targetSection = document.querySelector(`#${button.dataset.target}`);
+  if (targetSection) {
+      const isVisible = targetSection.style.display === 'block';
+      targetSection.style.display = isVisible ? 'none' : 'block';
+
+      // Toggle the visibility of span elements based on the section's visibility
+      const addSpan = button.querySelector('span:first-child');
+      const stopAddingSpan = button.querySelector('span:last-child');
+
+      if (isVisible) {
+          addSpan.style.display = 'inline';
+          stopAddingSpan.style.display = 'none';
+      } else {
+          addSpan.style.display = 'none';
+          stopAddingSpan.style.display = 'inline';
+      }
+  }
+}
+
+  // Event listener for section buttons
+  sectionButtons.forEach(button => {
+      button.addEventListener('click', function() {
+          toggleSection(button);
+      });
+  });
+
+  // Event listeners for edit buttons
+  editButtons.forEach(button => {
+      button.addEventListener('click', function() {
+          enableEditing(button);
+      });
+  });
+
+  // Event listeners for add buttons
+  addButtons.forEach(button => {
+      button.addEventListener('click', function() {
+          showAddForm(button);
+      });
+  });
+});
+
 // const tretie = document.querySelector('#tr');
 
 function handleTypeRadio() {
