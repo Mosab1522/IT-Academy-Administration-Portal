@@ -171,6 +171,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   let isEditing = false;
+  const vytvaranie = document.getElementById('vytvaranie')
+  if(vytvaranie)
+  {
+     if(vytvaranie.style.display === 'none') {
+    isEditing = true;
+    console.log('haha');
+  }
+  }
+ 
   function enableEditing(button) {
     const targetForm = document.querySelector(`#${button.dataset.target}`);
     console.log('tu');

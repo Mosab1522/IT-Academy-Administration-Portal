@@ -15,7 +15,7 @@
                     class="relative flex flex-col flex-auto min-w-0 p-4 mx-6 overflow-hidden break-words bg-white border-0 dark:bg-slate-850 dark:shadow-dark-xl shadow-3xl rounded-2xl bg-clip-border">
                     <div class="flex flex-wrap -mx-3">
                         <div class="flex-none w-auto max-w-full px-3">
-                            <form id="formm" action="/admin/instructors/{{ $instructor->id }}" method="post" enctype="multipart/form-data">
+                            <form id="form" action="/admin/instructors/{{ $instructor->id }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('Patch')
                                 <!-- Other input fields -->
@@ -54,7 +54,7 @@
                                 <ul class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                     role="tablist">
                                     <li class="z-30 flex-auto text-center">
-                                        <a id="pp" href="javascript:;"
+                                        {{-- <a id="pp" href="javascript:;"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white">
                                             <i class="ni ni-app"></i>
                                             <span id="jj" class="ml-2  {{session('success_cc') || session('success_dd') || request()->has('pridat') || request()->has('zmenit') || request()->has('vytvorit') ? 'hidden' : '' }}">Povoliť úpravy</span>
@@ -64,7 +64,30 @@
                                                 kurz</span>
                                             <span style="{{request()->has('pridat') ? '' : 'display: none;' }}" id="nkk" class="ml-2">Zrušiť pridanie
                                                 kurzu</span>
-                                        </a>
+                                        </a> --}}
+                                        <button
+                                        class="edit-button {{session('success_cc') || session('success_dd') || request()->has('pridat')  || request()->has('zmenit') || request()->has('vytvorit') ? 'hidden' : '' }} z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                        data-target="profile">
+                                        <span style="display: inline;">Povoliť
+                                            úpravy</span>
+                                        <span style="display: none;">Zrušiť úpravy</span>
+                                    </button>
+                                    <button
+                                        class="add-button z-30 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                        data-target="kurzyAdd">
+                                        <span
+                                            class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať
+                                            kurz</span>
+                                        <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť
+                                            pridanie kurzu</span>
+                                    </button>
+                                    <button 
+                                    class="edit-button {{request()->has('zmenit') || request()->has('vytvorit') ? '' : 'hidden' }} z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                    data-target="login">
+                                    <span id="vytvaranie" style="{{request()->has('zmenit') || request()->has('vytvorit') ? 'display: none;' : 'display: inline;' }}">Povoliť
+                                        úpravy</span>
+                                    <span style="{{request()->has('zmenit') || request()->has('vytvorit') ? 'display: inline;' : 'display: none;' }}">Zrušiť úpravy</span>
+                                </button>
                                     </li>
                                 </ul>
                             </div>
@@ -75,22 +98,36 @@
                                 <ul class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                     role="tablist">
                                     <li class="z-30 flex-auto text-center ">
-                                        <a id="ku"
+                                        {{-- <a id="ku"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
                                             <span id="tlac1" class="ml-2 {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? 'hidden' : '' }}">Kurzy</span>
                                             <span id="tlac2" class="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} ml-2">Profil</span>
-                                        </a>
+                                        </a> --}}
+
+                                        <button
+                                        class="section-button {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }}  z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                        data-target="profile">Profil</button>
+                                    <button
+                                        class="section-button {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? 'hidden' : '' }} z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                        data-target="kurzy">Kurzy</button>
                                     </li>
                                     <li class="z-30 flex-auto text-center">
-                                        <a id="tr"
+                                        {{-- <a id="tr"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             nav-link href="javascript:;">
                                             <i class="ni ni-settings-gear-65"></i>
                                             <span id="lt" class="ml-2 {{session('success_c') || session('success_uu') || request()->has('vytvorit') || request()->has('zmenit') ? 'hidden' : '' }}">Login</span>
                                             <span id="kt" class="{{session('success_c') || session('success_uu') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} ml-2">Kurzy</span>
-                                        </a>
+                                        </a> --}}
+
+                                        <button 
+                                            class="section-button {{session('success_c') || session('success_uu') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            data-target="kurzy">Kurzy</button>
+                                        <button
+                                            class="section-button {{session('success_c') || session('success_uu') || request()->has('vytvorit') || request()->has('zmenit') ? 'hidden' : '' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            data-target="login">Login</button>
                                     </li>
                                 </ul>
                             </div>
@@ -103,7 +140,7 @@
                     </div>
                     <hr
                         class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-                    <div id="profile" class="flex-auto p-6" style="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat')  || request()->has('vytvorit') || request()->has('zmenit') ? 'display: none;' : '' }}">
+                    <div id="profile" class="section flex-auto p-6" style="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat')  || request()->has('vytvorit') || request()->has('zmenit') ? 'display: none;' : '' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">User Information</p>
                         <form id="formm" action="/admin/instructors/{{ $instructor->id }}" method="post"
                             enctype="multipart/form-data">
@@ -213,7 +250,7 @@
 
                         </form>
                     </div>
-                    <div class="p-6" id="pridat" style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
+                    <div class="add-section p-6" id="kurzyAdd" style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Pridať správu kurzu</p>
                         <form action="/admin/coursetype_instructor" method="POST">
                             @csrf
@@ -282,7 +319,7 @@
                             {{-- <button type="button" id="setDefaults">Nastaviť predvolené hodnoty</button> --}}
                         </form>
                     </div>
-                    <div id="kurzy" class="flex-auto p-6" style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
+                    <div id="kurzy" class="section flex-auto p-6" style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Kurzy</p>
                         <div
                             class="flex flex-wrap -mx-3 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -356,7 +393,7 @@
                             </table>
                         </div>
                     </div>
-                    <div id="login" class="flex-auto p-6" style="{{ session('success_uu') || session('success_c') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'display: none;' }}">
+                    <div id="login" class="section flex-auto p-6" style="{{ session('success_uu') || session('success_c') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'display: none;' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Login</p>
                         <input name="instructor_id" value="{{ $instructor->id }}" hidden />
 
