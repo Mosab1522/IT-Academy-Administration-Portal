@@ -51,53 +51,53 @@ class StudentController extends Controller
     {
         // dd($_REQUEST);
         $attributes = request()->validate([
-            'name' => ['max:255'],
-            'lastname' => ['max:255'],
+            'name' => ['required', 'max:255'],
+            'lastname' => ['required', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
-            'sekemail' => ['nullable','email', 'max:255'],
-            'status' => ['nullable', 'min:7', 'max:9'],
-            'skola' => ['nullable', 'min:3', 'max:3'],
-            'ina' => ['max:255'],
-            'studium' => ['nullable', 'min:7', 'max:7'],
-            'program' => ['nullable', 'min:3', 'max:4'],
-            'iny' => ['max:255'],
-            'ulicacislo' => ['nullable', 'min:3', 'max:255'],
-            'mestoobec' => ['nullable', 'min:1', 'max:255'],
-            'psc' => ['nullable','min:6', 'max:6']
+            'sekemail' => ['nullable', 'email', 'max:255'],
+            'status' => ['required', 'min:7', 'max:9'],
+            'skola' => ['nullable', 'min:3', 'max:3', 'required_if:status,student'],
+            'ina' => ['max:255', 'required_if:skola,ina',],
+            'studium' => ['nullable', 'min:7', 'max:7', 'required_if:skola,ucm'],
+            'program' => ['nullable', 'min:3', 'max:4', 'required_if:skola,ucm'],
+            'iny' => ['max:255', 'required_if:program,iny'],
+            'ulicacislo' => ['required', 'min:3', 'max:255'],
+            'mestoobec' => ['required', 'min:1', 'max:255'],
+            'psc' => ['required', 'min:6', 'max:6'],
         ]);
-        if (request()->status == "nestudent") {
+        if ($attributes['status'] == "nestudent") {
             $student = Student::create([
                 'name' => $attributes['name'],
                 'lastname' => $attributes['lastname'],
                 'email' => $attributes['email'],
                 'sekemail' => $attributes['sekemail'],
-                'status' => request()->status,
+                'status' => $attributes['status'],
                 'ulicacislo' => $attributes['ulicacislo'],
                 'mestoobec' => $attributes['mestoobec'],
                 'psc' => $attributes['psc'],
             ]);
-        } else if (request()->skola == "ina") {
+        } else if ($attributes['skola'] == "ina") {
             $student = Student::create([
                 'name' => $attributes['name'],
                 'lastname' => $attributes['lastname'],
                 'email' => $attributes['email'],
                 'sekemail' => $attributes['sekemail'],
-                'status' => request()->status,
-                'skola' => request()->ina,
+                'status' => $attributes['status'],
+                'skola' => $attributes['ina'],
                 'ulicacislo' => $attributes['ulicacislo'],
                 'mestoobec' => $attributes['mestoobec'],
                 'psc' => $attributes['psc']
             ]);
-        } else if (request()->program == "apin") {
+        } else if ($attributes['program'] == "apin") {
             $student = Student::create([
                 'name' => $attributes['name'],
                 'lastname' => $attributes['lastname'],
                 'email' => $attributes['email'],
                 'sekemail' => $attributes['sekemail'],
-                'status' => request()->status,
-                'skola' => request()->skola,
-                'studium' => request()->studium,
-                'program' => request()->program,
+                'status' => $attributes['status'],
+                'skola' => $attributes['skola'],
+                'studium' => $attributes['studium'],
+                'program' => $attributes['program'],
                 'ulicacislo' => $attributes['ulicacislo'],
                 'mestoobec' => $attributes['mestoobec'],
                 'psc' => $attributes['psc']
@@ -108,10 +108,10 @@ class StudentController extends Controller
                 'lastname' => $attributes['lastname'],
                 'email' => $attributes['email'],
                 'sekemail' => $attributes['sekemail'],
-                'status' => request()->status,
-                'skola' => request()->skola,
-                'studium' => request()->studium,
-                'program' => request()->iny,
+                'status' => $attributes['status'],
+                'skola' => $attributes['skola'],
+                'studium' => $attributes['studium'],
+                'program' => $attributes['iny'],
                 'ulicacislo' => $attributes['ulicacislo'],
                 'mestoobec' => $attributes['mestoobec'],
                 'psc' => $attributes['psc']
@@ -148,39 +148,39 @@ class StudentController extends Controller
             // 'days' => ['required', 'integer'],
             // 'time' => ['required', 'integer'],
         ]);
-        if (request()->status == "nestudent") {
+        if ($attributes['status'] == "nestudent") {
             $student->update([
                 'name' => $attributes['name'],
                 'lastname' => $attributes['lastname'],
                 'email' => $attributes['email'],
                 'sekemail' => $attributes['sekemail'],
-                'status' => request()->status,
+                'status' => $attributes['status'],
                 'ulicacislo' => $attributes['ulicacislo'],
                 'mestoobec' => $attributes['mestoobec'],
                 'psc' => $attributes['psc'],
             ]);
-        } else if (request()->skola == "ina") {
+        } else if ($attributes['skola'] == "ina") {
             $student->update([
                 'name' => $attributes['name'],
                 'lastname' => $attributes['lastname'],
                 'email' => $attributes['email'],
                 'sekemail' => $attributes['sekemail'],
-                'status' => request()->status,
-                'skola' => request()->ina,
+                'status' => $attributes['status'],
+                'skola' => $attributes['ina'],
                 'ulicacislo' => $attributes['ulicacislo'],
                 'mestoobec' => $attributes['mestoobec'],
                 'psc' => $attributes['psc']
             ]);
-        } else if (request()->program == "apin") {
+        } else if ($attributes['program'] == "apin") {
             $student->update([
                 'name' => $attributes['name'],
                 'lastname' => $attributes['lastname'],
                 'email' => $attributes['email'],
                 'sekemail' => $attributes['sekemail'],
-                'status' => request()->status,
-                'skola' => request()->skola,
-                'studium' => request()->studium,
-                'program' => request()->program,
+                'status' => $attributes['status'],
+                'skola' => $attributes['skola'],
+                'studium' => $attributes['studium'],
+                'program' => $attributes['program'],
                 'ulicacislo' => $attributes['ulicacislo'],
                 'mestoobec' => $attributes['mestoobec'],
                 'psc' => $attributes['psc']
@@ -191,10 +191,10 @@ class StudentController extends Controller
                 'lastname' => $attributes['lastname'],
                 'email' => $attributes['email'],
                 'sekemail' => $attributes['sekemail'],
-                'status' => request()->status,
-                'skola' => request()->skola,
-                'studium' => request()->studium,
-                'program' => request()->iny,
+                'status' => $attributes['status'],
+                'skola' => $attributes['skola'],
+                'studium' => $attributes['studium'],
+                'program' => $attributes['iny'],
                 'ulicacislo' => $attributes['ulicacislo'],
                 'mestoobec' => $attributes['mestoobec'],
                 'psc' => $attributes['psc']

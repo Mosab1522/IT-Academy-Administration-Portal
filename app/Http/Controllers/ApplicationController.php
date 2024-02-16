@@ -229,56 +229,56 @@ class ApplicationController extends Controller
             //     'psc' => $students_a['psc']
             // ]);
 
-            if (request()->status == "nestudent") {
+            if ($attributes['status'] == "nestudent") {
                 $student = Student::create([
-                    'name' => $students_a['name'],
-                    'lastname' => $students_a['lastname'],
-                    'email' => $students_a['email'],
-                    'sekemail' => $students_a['sekemail'],
-                    'status' => request()->status,
-                    'ulicacislo' => $students_a['ulicacislo'],
-                    'mestoobec' => $students_a['mestoobec'],
-                    'psc' => $students_a['psc'],
+                    'name' => $attributes['name'],
+                    'lastname' => $attributes['lastname'],
+                    'email' => $attributes['email'],
+                    'sekemail' => $attributes['sekemail'],
+                    'status' => $attributes['status'],
+                    'ulicacislo' => $attributes['ulicacislo'],
+                    'mestoobec' => $attributes['mestoobec'],
+                    'psc' => $attributes['psc'],
                 ]);
-            } else if (request()->skola == "ina") {
+            } else if ($attributes['skola'] == "ina") {
                 $student = Student::create([
-                    'name' => $students_a['name'],
-                    'lastname' => $students_a['lastname'],
-                    'email' => $students_a['email'],
-                    'sekemail' => $students_a['sekemail'],
-                    'status' => request()->status,
-                    'skola' => request()->ina,
-                    'ulicacislo' => $students_a['ulicacislo'],
-                    'mestoobec' => $students_a['mestoobec'],
-                    'psc' => $students_a['psc']
+                    'name' => $attributes['name'],
+                    'lastname' => $attributes['lastname'],
+                    'email' => $attributes['email'],
+                    'sekemail' => $attributes['sekemail'],
+                    'status' => $attributes['status'],
+                    'skola' => $attributes['ina'],
+                    'ulicacislo' => $attributes['ulicacislo'],
+                    'mestoobec' => $attributes['mestoobec'],
+                    'psc' => $attributes['psc']
                 ]);
-            } else if (request()->program == "apin") {
+            } else if ($attributes['program'] == "apin") {
                 $student = Student::create([
-                    'name' => $students_a['name'],
-                    'lastname' => $students_a['lastname'],
-                    'email' => $students_a['email'],
-                    'sekemail' => $students_a['sekemail'],
-                    'status' => request()->status,
-                    'skola' => request()->skola,
-                    'studium' => request()->studium,
-                    'program' => request()->program,
-                    'ulicacislo' => $students_a['ulicacislo'],
-                    'mestoobec' => $students_a['mestoobec'],
-                    'psc' => $students_a['psc']
+                    'name' => $attributes['name'],
+                    'lastname' => $attributes['lastname'],
+                    'email' => $attributes['email'],
+                    'sekemail' => $attributes['sekemail'],
+                    'status' => $attributes['status'],
+                    'skola' => $attributes['skola'],
+                    'studium' => $attributes['studium'],
+                    'program' => $attributes['program'],
+                    'ulicacislo' => $attributes['ulicacislo'],
+                    'mestoobec' => $attributes['mestoobec'],
+                    'psc' => $attributes['psc']
                 ]);
             } else {
                 $student = Student::create([
-                    'name' => $students_a['name'],
-                    'lastname' => $students_a['lastname'],
-                    'email' => $students_a['email'],
-                    'sekemail' => $students_a['sekemail'],
-                    'status' => request()->status,
-                    'skola' => request()->skola,
-                    'studium' => request()->studium,
-                    'program' => request()->iny,
-                    'ulicacislo' => $students_a['ulicacislo'],
-                    'mestoobec' => $students_a['mestoobec'],
-                    'psc' => $students_a['psc']
+                    'name' => $attributes['name'],
+                    'lastname' => $attributes['lastname'],
+                    'email' => $attributes['email'],
+                    'sekemail' => $attributes['sekemail'],
+                    'status' => $attributes['status'],
+                    'skola' => $attributes['skola'],
+                    'studium' => $attributes['studium'],
+                    'program' => $attributes['iny'],
+                    'ulicacislo' => $attributes['ulicacislo'],
+                    'mestoobec' => $attributes['mestoobec'],
+                    'psc' => $attributes['psc']
                 ]);
             }
         }

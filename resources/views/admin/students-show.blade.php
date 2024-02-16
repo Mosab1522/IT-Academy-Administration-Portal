@@ -1,9 +1,11 @@
-<x-flash />
 <x-layout />
-<x-setting heading="{{$student->name}}">
-    <a href="{{ url()->previous() }}" class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
-        <svg class="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+<x-setting heading="{{ $student->name }}">
+    <a href="{{ url()->previous() }}"
+        class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
+        <svg class="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+            </path>
         </svg>
         Naspäť
     </a>
@@ -26,7 +28,7 @@
                         </div>
                         <div class="flex-none w-auto max-w-full px-3 my-auto">
                             <div class="h-full">
-                                <h5 class="text-lg font-semibold mb-1 ">{{$student->name}} {{$student->lastname}}
+                                <h5 class="text-lg font-semibold mb-1 ">{{ $student->name }} {{ $student->lastname }}
                                 </h5>
                                 <p class="mb-0 font-semibold leading-normal dark:opacity-60 text-sm">Študent</p>
                             </div>
@@ -38,17 +40,38 @@
                                 <ul class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                     role="tablist">
                                     <li class="z-30 flex-auto text-center">
-                                        <a id="pp" href="javascript:;"
+                                        {{-- <a id="pp" href="javascript:;"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white">
                                             <i class="ni ni-app"></i>
-                                            <span id="jj" class="ml-2  {{session('success_c') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }}">Povoliť úpravy</span>
+                                            <span id="jj"
+                                                class="ml-2  {{session('success_c') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }}">Povoliť
+                                                úpravy</span>
                                             {{-- <a style="display: none;" id="kk" class="ml-2"
                                                 href="{{route('applications', ['student_id' =>$student->id])}}">Vytvoriť
                                                 prihláśku</a> --}}
-                                            <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
-                                            <span id="kk" class="ml-2 {{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Vytvoriť prihlášku</span>
-                                            <span style="{{request()->has('pridat') ? '' : 'display: none;' }}" id="nkk" class="ml-2">Zrušiť vytvorenie prihlášky</span>
-                                        </a>
+                                            {{-- <span style="display: none;" id="zz" class="ml-2">Zrušiť úpravy</span>
+                                            <span id="kk"
+                                                class="ml-2 {{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Vytvoriť
+                                                prihlášku</span>
+                                            <span style="{{request()->has('pridat') ? '' : 'display: none;' }}" id="nkk"
+                                                class="ml-2">Zrušiť vytvorenie prihlášky</span>
+                                        </a> --}}
+                                        <button
+                                            class="edit-button {{ session('success_c') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }} z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            data-target="profile">
+                                            <span id="resetbutton" style="display: inline;">Povoliť
+                                                úpravy</span>
+                                            <span style="display: none;">Zrušiť úpravy</span>
+                                        </button>
+                                        <button
+                                            class="add-button z-30 {{ session('success_c') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }}  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            data-target="kurzyAdd">
+                                            <span
+                                                class="{{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Vytvoriť
+                                                prihlášku</span>
+                                            <span class="{{ request()->has('pridat') ? '' : 'hidden' }}">Zrušiť
+                                                vytvorenie prihlášky</span>
+                                        </button>
                                     </li>
                                 </ul>
                             </div>
@@ -59,21 +82,32 @@
                                 <ul class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                     role="tablist">
                                     <li class="z-30 flex-auto text-center ">
-                                        <a id="ku"
+                                        {{-- <a id="ku"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
                                             <i class="ni ni-email-83"></i>
-                                            <span id="tlac1" class="ml-2 {{session('success_c') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }}">Prihlášky</span>
-                                            <span id="tlac2" class="{{session('success_c') || session('success_d')|| request()->has('pridat') ? '' : 'hidden' }}  ml-2">Profil</span>
-                                        </a>
+                                            <span id="tlac1"
+                                                class="ml-2 {{session('success_c') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }}">Prihlášky</span>
+                                            <span id="tlac2"
+                                                class="{{session('success_c') || session('success_d')|| request()->has('pridat') ? '' : 'hidden' }}  ml-2">Profil</span>
+                                        </a> --}}
+
+                                        <button
+                                            class="section-button {{ session('success_c') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            data-target="profile">Profil</button>
+                                        <button
+                                            class="section-button {{ session('success_c') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }} z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            data-target="kurzy">Prihlasky</button>
                                     </li>
                                     {{-- <li class="hidden" class="z-30 flex-auto text-center">
                                         <a id="tr"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             nav-link href="javascript:;">
                                             <i class="ni ni-settings-gear-65"></i>
-                                            <span id="lt" class="ml-2 {{session('success_c') || session('success_d') ? 'hidden' : '' }}">Login</span>
-                                            <span id="kt" class="{{session('success_c') || session('success_d') ? '' : 'hidden' }} ml-2">Kurzy</span>
+                                            <span id="lt"
+                                                class="ml-2 {{session('success_c') || session('success_d') ? 'hidden' : '' }}">Login</span>
+                                            <span id="kt"
+                                                class="{{session('success_c') || session('success_d') ? '' : 'hidden' }} ml-2">Kurzy</span>
                                         </a>
                                     </li> --}}
                                 </ul>
@@ -87,9 +121,10 @@
                     </div>
                     <hr
                         class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-                    <div id="profile" class="flex-auto p-6" style="{{session('success_c') || session('success_d') || request()->has('pridat') ? 'display: none;' : '' }}">
+                    <div id="profile" class="section flex-auto p-6"
+                        style="{{ session('success_c') || session('success_d') || request()->has('pridat') ? 'display: none;' : '' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">User Information</p>
-                        <form id="formm" action="/admin/students/{{$student->id}}" method="post"
+                        <form id="formm" action="/admin/students/{{ $student->id }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             @method('Patch')
@@ -100,7 +135,7 @@
                                         <label for="first name"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">First
                                             name</label>
-                                        <input disabled type="text" name="name" value="{{$student->name}}"
+                                        <input disabled type="text" name="name" value="{{ $student->name }}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
@@ -109,7 +144,7 @@
                                         <label for="last name"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Last
                                             name</label>
-                                        <input disabled type="text" name="lastname" value="{{$student->lastname}}"
+                                        <input disabled type="text" name="lastname" value="{{ $student->lastname }}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
@@ -119,7 +154,7 @@
                                         <label for="email"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Email
                                             address</label>
-                                        <input disabled type="email" name="email" value="{{$student->email}}"
+                                        <input disabled type="email" name="email" value="{{ $student->email }}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
@@ -127,7 +162,7 @@
                                     <div class="mb-4">
                                         <label for="username"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Sekemail</label>
-                                        <input disabled type="text" name="sekemail" value="{{$student->sekemail}}"
+                                        <input disabled type="text" name="sekemail" value="{{ $student->sekemail }}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
@@ -167,344 +202,385 @@
                             <div>
                                 <div class="items-center">
                                     <x-form.label name="JE:" />
-                                    <input disabled class="mr-0.5" type="radio" id="student" name="status" value="student" {{$student->status=='student'
-                                        ? 'checked' : '' }}>
+                                    <input disabled class="mr-0.5" type="radio" id="student" name="status"
+                                        value="student" {{ $student->status == 'student' ? 'checked' : '' }}>
                                     <label for="student">Študent</label>
-                                    <input disabled class="ml-2 mr-0.5" type="radio" id="nestudent" name="status" value="nestudent"
-                                        {{$student->status=='nestudent' ? 'checked' : '' }}>
+                                    <input disabled class="ml-2 mr-0.5" type="radio" id="nestudent" name="status"
+                                        value="nestudent" {{ $student->status == 'nestudent' ? 'checked' : '' }}>
                                     <label for="nestudent">Neštudent</label>
                                 </div>
                                 <div class="flex pb-1">
-                                    <div class="h-20 mt-3 {{$student->skola ? '' : 'hidden' }}" id="ucm">
+                                    <div class="h-20 mt-3 {{ $student->skola ? '' : 'hidden' }}" id="ucm">
                                         <x-form.label name="univerzita:" />
                                         <div class=" flex">
                                             <div>
-                                                <input disabled type="radio" id="ucmka" name="skola" value="ucm" {{$student->skola=='ucm' ? 'checked' : ''
-                                                    }}>
+                                                <input disabled type="radio" id="ucmka" name="skola" value="ucm" {{
+                                                    $student->skola == 'ucm' ? 'checked' : '' }}>
                                                 <label for="option1">UCM</label><br>
                                                 <div class="mt-1">
-                                                    <input disabled type="radio" id="inam" name="skola" value="ina" {{$student->skola!='ucm' ? 'checked'
-                                                        : '' }}>
+                                                    <input disabled type="radio" id="inam" name="skola" value="ina" {{
+                                                        $student->skola == 'ucm' || $student->skola == null ? '' :
+                                                    'checked' }}>
                                                     <label for="option2">Iná</label><br>
                                                 </div>
                                             </div>
-                                            <div id="ina" class="{{$student->skola!='ucm' ? '' : 'hidden' }}"><input
-                                                    disabled class=" border border-gray-200 mt-6 ml-2 p-2 w-80 rounded h-7" name="ina" id="nu" required
-                                                    value="{{$student->skola }}" {{--$student->skola=='ina' ? '' : 'disabled' --}}></div>
+                                            <div id="ina"
+                                                class="{{ $student->skola == 'ucm' || $student->skola == null ? 'hidden' : '' }}">
+                                                <input disabled
+                                                    class=" border border-gray-200 mt-6 ml-2 p-2 w-80 rounded h-7"
+                                                    name="ina" id="nu" required
+                                                    value="{{ $student->skola == 'ucm' ? '' : $student->skola }}" {{--
+                                                    $student->skola=='ina' ? '' : 'disabled' --}}>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="ml-4 mt-3 {{$student->skola=='ucm' ? '' : 'hidden' }}" id="ucmkari">
+                                    <div class="ml-4 mt-3 {{ $student->skola == 'ucm' ? '' : 'hidden' }}" id="ucmkari">
                                         <x-form.label name="studium:" />
-                                        <input disabled type="radio" id="option3" name="studium" value="interne" {{$student->studium=='interne' ? 'checked'
-                                        : '' }}>
+                                        <input disabled type="radio" id="option3" name="studium" value="interne" {{
+                                            $student->studium == 'interne' ? 'checked' : '' }}>
                                         <label for="option1">Interné</label><br>
                                         <div class="mt-1">
-                                            <input disabled type="radio" id="option4" name="studium" value="externe" {{$student->studium=='externe' ? 'checked'
-                                            : '' }}>
+                                            <input disabled type="radio" id="option4" name="studium" value="externe" {{
+                                                $student->studium == 'externe' ? 'checked' : '' }}>
                                             <label for="option2">Externé</label><br>
                                         </div>
                                     </div>
-                                    <div class="ml-4 mt-3 {{$student->skola=='ucm' ? '' : 'hidden' }}" id="ucmkari2">
+                                    <div class="ml-4 mt-3 {{ $student->skola == 'ucm' ? '' : 'hidden' }}" id="ucmkari2">
                                         <x-form.label name="program:" />
                                         <div>
-                                            <input disabled type="radio" id="option5" name="program" value="apin" {{$student->program =='apin' ? 'checked'
-                                            : '' }}>
+                                            <input disabled type="radio" id="option5" name="program" value="apin" {{
+                                                $student->program == 'apin' ? 'checked' : '' }}>
                                             <label for="option1">Aplikovaná informatika</label><br>
                                             <div class="mt-1">
-                                                <input disabled type="radio" id="option6" name="program" value="iny" {{$student->program !='apin' ? 'checked'
-                                                : '' }}>
+                                                <input disabled type="radio" id="option6" name="program" value="iny" {{
+                                                    $student->program == 'apin' || $student->program == null ? '' :
+                                                'checked' }}>
                                                 <label for="option2">Iný</label><br>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mt-16 -ml-32 {{$student->program!='apin' ? ''
-                                    : 'hidden' }}" id="iny"><input disabled
-                                            class=" border border-gray-200 ml-2 p-2 w-80 rounded h-7" name="iny" id="ny" value="{{$student->program}}" required {{--$student->program=='iny' ? ''
-                                            : 'disabled' --}}>
-                                    </div>
-                            </div>
-                            <hr
-                                class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-
-                            <p class="leading-normal uppercase  dark:opacity-60 text-sm">Contact Information</p>
-                            <div class="flex flex-wrap -mx-3">
-
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
-
-                                    <div class="mb-4">
-                                        <label for="city"
-                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Ulica a
-                                            číslo</label>
-                                        <input disabled type="text" name="ulicacislo" value="{{$student->ulicacislo}}"
-                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                    <div class="mt-16 -ml-32 {{ $student->program == 'apin' || $student->program == null ? 'hidden' : '' }}"
+                                        id="iny"><input disabled
+                                            class=" border border-gray-200 ml-2 p-2 w-80 rounded h-7" name="iny" id="ny"
+                                            value="{{ $student->program == 'apin' ? '' : $student->program }}" required
+                                            {{-- $student->program=='iny' ? ''
+                                        : 'disabled' --}}>
                                     </div>
                                 </div>
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
-                                    <div class="mb-4">
-                                        <label for="country"
-                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Mesto/obec</label>
-                                        <input disabled type="text" name="mestoobec" value="{{$student->mestoobec}}"
-                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                    </div>
-                                </div>
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
-                                    <div class="mb-4">
-                                        <label for="postal code"
-                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">PSČ</label>
-                                        <input disabled type="text" name="psc" value="{{$student->psc}}"
-                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- <x-form.field>
-                                <button type="submit"
-                                    class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
-                            </x-form.field> --}}
-                            {{-- <x-form.button>
-                                Update
-                            </x-form.button> --}}
-                            <x-form.field>
-                                <div class="flex">
-                                    <button id="upd" type="submit"
-                                        class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
-                                    <button id="res" type="reset"
-                                        class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
-                                </div>
+                                <hr
+                                    class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
 
-                            </x-form.field>
+                                <p class="leading-normal uppercase  dark:opacity-60 text-sm">Contact Information</p>
+                                <div class="flex flex-wrap -mx-3">
+
+                                    <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
+
+                                        <div class="mb-4">
+                                            <label for="city"
+                                                class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Ulica
+                                                a
+                                                číslo</label>
+                                            <input disabled type="text" name="ulicacislo"
+                                                value="{{ $student->ulicacislo }}"
+                                                class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                        </div>
+                                    </div>
+                                    <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
+                                        <div class="mb-4">
+                                            <label for="country"
+                                                class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Mesto/obec</label>
+                                            <input disabled type="text" name="mestoobec"
+                                                value="{{ $student->mestoobec }}"
+                                                class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                        </div>
+                                    </div>
+                                    <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
+                                        <div class="mb-4">
+                                            <label for="postal code"
+                                                class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">PSČ</label>
+                                            <input disabled type="text" name="psc" value="{{ $student->psc }}"
+                                                class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <x-form.field>
+                                    <button type="submit"
+                                        class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                                </x-form.field> --}}
+                                {{-- <x-form.button>
+                                    Update
+                                </x-form.button> --}}
+                                <x-form.field>
+                                    <div class="flex">
+                                        <button id="upd" type="submit"
+                                            class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                                        <button id="yourResetButtonId" type="reset"
+                                            class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
+                                    </div>
+
+                                </x-form.field>
 
                         </form>
                     </div>
-                    <div class="p-6" id="pridat" style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
-                        <p class="leading-normal uppercase  dark:opacity-60 text-sm">Vytvoriť prihlášku</p>
-                        <form action="/" method="POST">
-                            @csrf
+                </div>
+                <div class="add-section p-6" id="kurzyAdd"
+                    style="{{ request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
+                    <p class="leading-normal uppercase  dark:opacity-60 text-sm">Vytvoriť prihlášku</p>
+                    <form action="/" method="POST">
+                        @csrf
+                        <div class="flex">
+
+                            <div>
+
+                                <input name="student_id" value="{{ $student->id }}" hidden />
+
+                                <x-form.label name="akadémia" />
+                                <!-- parent -->
+                                <select name="academy_id" class="combo-a" data-nextcombo=".combo-b">
+                                    <option value="" disabled selected hidden>Akadémia</option>
+                                    {{-- @php
+                                    $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                                    ->get();
+                                    @endphp --}}
+                                    @php
+                                    $assignedCourses = $student->applications->pluck('coursetype_id')->toArray();
+                                    @endphp
+                                    @foreach (\App\Models\Academy::with(['coursetypes', 'applications'])->get() as $academ)
+                                    <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{
+                                        old('academy_id')==$academ->id ? 'selected' : '' }}>
+                                        {{ ucwords($academ->name) }}</option>
+                                    @endforeach
+                                    {{-- <option value="" disabled selected hidden>Akadémia</option>
+                                    <option value="1" data-id="1" data-option="-1">Cisco</option>
+                                    <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                                </select>
+                            </div>
+                            <div class="ml-4">
+                                <x-form.label name="typ kurzu" />
+                                <!-- child -->
+                                {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
+                                    data-nextcombo=".combo-c" disabled>
+                                    <option value="" disabled selected hidden>Typ kurzu</option>
+                                    <option value="1" data-id="1" data-option="1">Lahky</option>
+                                    <option value="2" data-id="2" data-option="1">Stredny</option>
+                                    <option value="3" data-id="3" data-option="2">Photoshop</option>
+                                    <option value="4" data-id="4" data-option="2">Illustrator</option>
+                                </select> --}}
+                                <select name="coursetype_id" id="coursetype_id" class="combo-b" disabled>
+                                    <option value="" disabled selected hidden>Typ kurzu</option>
+                                    {{-- @php
+                                    $academy = \App\Models\CourseType::all();
+                                    @endphp --}}
+                                    @foreach (\App\Models\CourseType::with(['academy', 'applications'])->get() as $typ)
+                                    @if (!in_array($typ->id, $assignedCourses))
+                                    <option value="{{ $typ->id }}" data-id="{{ $typ->id }}"
+                                        data-option="{{ $typ->academy_id }}" {{ old('coursetype_id')==$typ->id ?
+                                        'selected' : '' }}>
+                                        {{ ucwords($typ->name) }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <x-form.field>
                             <div class="flex">
-
                                 <div>
-
-                                    <input name="student_id" value="{{$student->id}}" hidden />
-
-                                    <x-form.label name="akadémia" />
-                                    <!-- parent -->
-                                    <select name="academy_id" class="combo-a" data-nextcombo=".combo-b">
-                                        <option value="" disabled selected hidden>Akadémia</option>
-                                        {{-- @php
-                                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
-                                        ->get();
-                                        @endphp --}}
-                                        @php
-                                            $assignedCourses = $student->applications->pluck('coursetype_id')->toArray();
-                                        @endphp
-                                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])->get() as $academ)
-                                      
-                                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
-                                            {{old('academy_id')==$academ->id ? 'selected' : ''}}>{{
-                                            ucwords($academ->name)}}</option>
-                                        @endforeach
-                                        {{-- <option value="" disabled selected hidden>Akadémia</option>
-                                        <option value="1" data-id="1" data-option="-1">Cisco</option>
-                                        <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                                    <x-form.label name="dni výučby" />
+                                    <select name="days" id="days">
+                                        <option value="" disabled selected hidden>Dni výučby</option>
+                                        <option value="1" {{ old('days')==1 ? 'selected' : '' }}>Týždeň
+                                        </option>
+                                        <option value="2" {{ old('days')==2 ? 'selected' : '' }}>Víkend
+                                        </option>
+                                        <option value="3" {{ old('days')==3 ? 'selected' : '' }}>Nezáleží
+                                        </option>
+                                        {{-- <option value="1" data-id="1" data-option="2">Týždeň</option>
+                                        <option value="1" data-id="1" data-option="3">Týždeň</option>
+                                        <option value="2" data-id="2" data-option="3">Víkend</option>
+                                        <option value="3" data-id="3" data-option="3">Nezáleží</option>
+                                        <option value="1" data-id="1" data-option="4">Týždeň</option> --}}
                                     </select>
                                 </div>
                                 <div class="ml-4">
-                                    <x-form.label name="typ kurzu" />
-                                    <!-- child -->
-                                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
-                                        data-nextcombo=".combo-c" disabled>
-                                        <option value="" disabled selected hidden>Typ kurzu</option>
-                                        <option value="1" data-id="1" data-option="1">Lahky</option>
-                                        <option value="2" data-id="2" data-option="1">Stredny</option>
-                                        <option value="3" data-id="3" data-option="2">Photoshop</option>
-                                        <option value="4" data-id="4" data-option="2">Illustrator</option>
-                                    </select> --}}
-                                    <select name="coursetype_id" id="coursetype_id" class="combo-b" disabled>
-                                        <option value="" disabled selected hidden>Typ kurzu</option>
-                                        {{-- @php
-                                        $academy = \App\Models\CourseType::all();
-                                        @endphp --}}
-                                        @foreach (\App\Models\CourseType::with(['academy','applications'])->get() as $typ)
-                                        @if (!in_array($typ->id, $assignedCourses))
-                                        <option value="{{ $typ->id }}" data-id="{{ $typ->id }}" data-option="{{ $typ->academy_id }}"
-                                            {{old('coursetype_id')==$typ->id ? 'selected' : ''}}>{{
-                                            ucwords($typ->name) }}</option>
-                                        @endif
-                                        @endforeach
+                                    <x-form.label name="čas výučby" />
+                                    <select name="time" id="time">
+                                        <option value="" disabled selected hidden>Čas výučby</option>
+                                        <option value="1" {{ old('time')==1 ? 'selected' : '' }}>Ranný
+                                        </option>
+                                        <option value="2" {{ old('time')==3 ? 'selected' : '' }}>Poobedný
+                                        </option>
+                                        <option value="3" {{ old('time')==3 ? 'selected' : '' }}>Nezáleží
+                                        </option>
+                                        {{-- <option value="1" data-id="1" data-option="2">Ranný</option>
+                                        <option value="4" data-id="1" data-option="3">Ranný (Týždeň/Víkend)</option>
+                                        <option value="5" data-id="2" data-option="3">Poobedný (Týždeň)</option>
+                                        <option value="3" data-id="3" data-option="3">Nezáleží</option>
+                                        <option value="1" data-id="1" data-option="4">Ranný</option> --}}
                                     </select>
                                 </div>
                             </div>
-                            <x-form.field>
-                                <div class="flex">
-                                    <div>
-                                        <x-form.label name="dni výučby" />
-                                        <select name="days" id="days">
-                                            <option value="" disabled selected hidden>Dni výučby</option>
-                                            <option value="1" {{old('days')==1 ? 'selected' : '' }}>Týždeň</option>
-                                            <option value="2" {{old('days')==2 ? 'selected' : '' }}>Víkend</option>
-                                            <option value="3" {{old('days')==3 ? 'selected' : '' }}>Nezáleží</option>
-                                            {{-- <option value="1" data-id="1" data-option="2">Týždeň</option>
-                                            <option value="1" data-id="1" data-option="3">Týždeň</option>
-                                            <option value="2" data-id="2" data-option="3">Víkend</option>
-                                            <option value="3" data-id="3" data-option="3">Nezáleží</option>
-                                            <option value="1" data-id="1" data-option="4">Týždeň</option> --}}
-                                        </select>
-                                    </div>
-                                    <div class="ml-4">
-                                        <x-form.label name="čas výučby" />
-                                        <select name="time" id="time">
-                                            <option value="" disabled selected hidden>Čas výučby</option>
-                                            <option value="1" {{old('time')==1 ? 'selected' : '' }}>Ranný</option>
-                                            <option value="2" {{old('time')==3 ? 'selected' : '' }}>Poobedný</option>
-                                            <option value="3" {{old('time')==3 ? 'selected' : '' }}>Nezáleží</option>
-                                            {{-- <option value="1" data-id="1" data-option="2">Ranný</option>
-                                            <option value="4" data-id="1" data-option="3">Ranný (Týždeň/Víkend)</option>
-                                            <option value="5" data-id="2" data-option="3">Poobedný (Týždeň)</option>
-                                            <option value="3" data-id="3" data-option="3">Nezáleží</option>
-                                            <option value="1" data-id="1" data-option="4">Ranný</option> --}}
-                                        </select>
-                                    </div>
-                                </div>
-                            </x-form.field>
-                            <x-form.field>
-                                <button id="pridbtn" type="submit"
-                                    class=" flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Pridať
-                                </button>
-                            </x-form.field>
-                        </form>
-                    </div>
-                    <div id="kurzy" class="{{session('success_c') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }} shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="text-sm">
-                                <tr>
-                                    <td class="px-6 py-1">Názov typu kurzu</td>
-                                    <td class="px-6 py-2">Typ</td>
-                                    <td class="px-6 py-2">Days - Time</td>
-                                    <td></td>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($student->applications as $application)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="text-sm font-medium text-gray-900">
-                                                <a href="/admin/coursetypes/{{ $application->coursetype->id }}"
-                                                    title="Ukázať podrobnosti">
-                                                    
-                                                    {{$application->coursetype->name }}
-
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="text-sm font-medium text-gray-900">
-                                                   
-                                            {{$application->coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="text-sm font-medium text-gray-900">
-                                                {{ $application->days}}
-                                                {{ $application->time}}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="text-sm font-medium text-gray-900">
-                                                {{ $application->created_at->diffForHumans()}}
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
-                                        <form method="POST" action="/admin/applications/{{ $application->id }}">
-                                            @csrf
-                                            @method('DELETE')
-    
-                                            <button class="text-xs text-gray-400">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    {{-- <div id="login" class="hidden flex-auto p-6">
-                        <p class="leading-normal uppercase  dark:opacity-60 text-sm">Login</p>
-                        <form id="formm2" action="/admin/students/{{$student->id}}" method="post"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @if($student->has('login'))
-                            @method('Patch')
-                            @endif
-                            <div class="flex flex-wrap -mx-3">
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
-                                    <div class="mb-4">
-                                        <label for="username"
-                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Username</label>
-                                        <input disabled type="text" name="username"
-                                            value="{{$student->login->nickname ?? ''}}" required autofocus
-                                            autocomplete="name"
-                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                    </div>
-                                </div>
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
-                                    <div class="mb-4">
-                                        <label for="password"
-                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password</label>
-                                        <input disabled type="password" name="password" required
-                                            autocomplete="new-password"
-                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                    </div>
-                                </div>
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
-                                    <div class="mb-4">
-                                        <label for="password_confirmation"
-                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password
-                                            confirmation</label>
-                                        <input disabled type="password" name="password_confirmation" required
-                                            autocomplete="new-password"
-                                            class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                    </div>
-                                </div>
-
-                            </div> --}}
-
-                            {{-- <x-form.field>
-                                <button type="submit"
-                                    class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
-                            </x-form.field> --}}
-                            {{-- <x-form.button>
-                                Update
-                            </x-form.button> --}}
-                            {{-- <x-form.field>
-
-                                <div class="flex">
-                                    <button id="upd1" type="submit"
-                                        class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">{{
-                                        $student->login ? 'Update' : 'Create' }}
-                                    </button>
-                                    <button id="res1" type="reset"
-                                        class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
-                                </div>
-
-                            </x-form.field>
-
-                        </form>
-                    </div> --}}
+                        </x-form.field>
+                        <x-form.field>
+                            <button id="pridbtn" type="submit"
+                                class=" flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Pridať
+                            </button>
+                        </x-form.field>
+                    </form>
                 </div>
+                <div id="kurzy"
+                    class="section {{ session('success_c') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }} shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="text-sm">
+                            <tr>
+                                <td class="px-6 py-1">Názov typu kurzu</td>
+                                <td class="px-6 py-2">Typ</td>
+                                <td class="px-6 py-2">Days - Time</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach ($student->applications as $application)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            <a href="/admin/coursetypes/{{ $application->coursetype->id }}"
+                                                title="Ukázať podrobnosti">
+
+                                                {{ $application->coursetype->name }}
+
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-medium text-gray-900">
+
+                                            {{ $application->coursetype->type == '0' ? 'študentský' :
+                                            'inštruktorský' }}
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ $application->days }}
+                                            {{ $application->time }}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ $application->created_at->diffForHumans() }}
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
+                                    <form method="POST" action="/admin/applications/{{ $application->id }}">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button class="text-xs text-gray-400">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                {{-- <div id="login" class="hidden flex-auto p-6">
+                    <p class="leading-normal uppercase  dark:opacity-60 text-sm">Login</p>
+                    <form id="formm2" action="/admin/students/{{$student->id}}" method="post"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @if ($student->has('login'))
+                        @method('Patch')
+                        @endif
+                        <div class="flex flex-wrap -mx-3">
+                            <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
+                                <div class="mb-4">
+                                    <label for="username"
+                                        class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Username</label>
+                                    <input disabled type="text" name="username"
+                                        value="{{$student->login->nickname ?? ''}}" required autofocus
+                                        autocomplete="name"
+                                        class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                </div>
+                            </div>
+                            <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
+                                <div class="mb-4">
+                                    <label for="password"
+                                        class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password</label>
+                                    <input disabled type="password" name="password" required autocomplete="new-password"
+                                        class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                </div>
+                            </div>
+                            <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
+                                <div class="mb-4">
+                                    <label for="password_confirmation"
+                                        class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Password
+                                        confirmation</label>
+                                    <input disabled type="password" name="password_confirmation" required
+                                        autocomplete="new-password"
+                                        class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                </div>
+                            </div>
+
+                        </div> --}}
+
+                        {{-- <x-form.field>
+                            <button type="submit"
+                                class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                        </x-form.field> --}}
+                        {{-- <x-form.button>
+                            Update
+                        </x-form.button> --}}
+                        {{-- <x-form.field>
+
+                            <div class="flex">
+                                <button id="upd1" type="submit"
+                                    class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">{{
+                                    $student->login ? 'Update' : 'Create' }}
+                                </button>
+                                <button id="res1" type="reset"
+                                    class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
+                            </div>
+
+                        </x-form.field>
+
+                    </form>
+                </div> --}}
             </div>
         </div>
     </div>
-
+    </div>
+    @php
+    $student_s = null;
+    $student_p = null;
+    if ($student->skola) {
+    $student_s = $student->skola == 'ucm' ? 'ucm' : 'ina';
+    }
+    if ($student->program) {
+    $student_p = $student->program == 'apin' ? 'apin' : 'iny';
+    }
+    @endphp
 </x-setting>
+<x-flash />
+
+<script>
+    const studentData = {!! json_encode([
+        'status' => $student->status ?? null,
+        'skola' => $student_s,
+        'program' => $student_p,
+        'skola_r' => $student->skola ?? null,
+        'program_r' => $student->program ?? null,
+    ]) !!};
+</script>

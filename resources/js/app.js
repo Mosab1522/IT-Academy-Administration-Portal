@@ -70,140 +70,152 @@ swith();
 //     console.log(newValue);
 //     setSubOptions(newValue);
 // });
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const sectionButtons = document.querySelectorAll('.section-button');
   const sections = document.querySelectorAll('.section');
   const editButtons = document.querySelectorAll('.edit-button');
   const addButtons = document.querySelectorAll('.add-button');
+  
 
   // Function to toggle sections
   function resetEditingAndAddingStates() {
     // Reset editing state for all forms within sections
     document.querySelectorAll('.section form').forEach(form => {
-        form.querySelectorAll('input:not([type="hidden"])').forEach(input => {
-            input.disabled = true; // Disable editing
-        });
+      form.querySelectorAll('input:not([type="hidden"])').forEach(input => {
+        input.disabled = true; // Disable editing
+      });
     });
     document.querySelectorAll('.section button[type]').forEach(button => {
       button.style.display = 'none';
-  });
+    });
 
     // Reset button texts to defaults
     if (editButtons) {
-        editButtons.forEach(button => {
-            const editSpan = button.querySelector('span:first-child');
-            const stopEditSpan = button.querySelector('span:last-child');
-            editSpan.style.display = 'inline';
-            stopEditSpan.style.display = 'none';
-        });
+      editButtons.forEach(button => {
+        const editSpan = button.querySelector('span:first-child');
+        const stopEditSpan = button.querySelector('span:last-child');
+        editSpan.style.display = 'inline';
+        stopEditSpan.style.display = 'none';
+      });
     }
-    
+
     if (addButtons) {
-        addButtons.forEach(button => {
-            const addSpan = button.querySelector('span:first-child');
-            const stopAddingSpan = button.querySelector('span:last-child');
-            addSpan.style.display = 'inline';
-            stopAddingSpan.style.display = 'none';
-        });
+      addButtons.forEach(button => {
+        const addSpan = button.querySelector('span:first-child');
+        const stopAddingSpan = button.querySelector('span:last-child');
+        addSpan.style.display = 'inline';
+        stopAddingSpan.style.display = 'none';
+      });
     }
-    
+
     // Hide all add sections
     document.querySelectorAll('.add-section').forEach(section => {
-        section.style.display = 'none';
+      section.style.display = 'none';
     });
-}
+  }
 
   // Function to toggle sections
   function toggleSection(button) {
-      resetEditingAndAddingStates(); // Reset states when switching sections
+    resetEditingAndAddingStates(); // Reset states when switching sections
 
-      sections.forEach(section => {
-          if (section.id === button.dataset.target) {
-              section.style.display = 'block';
-              // Show relevant buttons for the active section
-              showRelevantButtons(button.dataset.target);
-          } else {
-              section.style.display = 'none';
-          }
-      });
+    sections.forEach(section => {
+      if (section.id === button.dataset.target) {
+        section.style.display = 'block';
+        // Show relevant buttons for the active section
+        showRelevantButtons(button.dataset.target);
+      } else {
+        section.style.display = 'none';
+      }
+    });
 
-      // Update visibility of section buttons
-      updateSectionButtonsVisibility(button.dataset.target);
+    // Update visibility of section buttons
+    updateSectionButtonsVisibility(button.dataset.target);
   }
 
   // Function to show relevant buttons for the active section
   function showRelevantButtons(activeSectionId) {
-      // Hide all buttons initially
-      editButtons.forEach(button => {button.style.display = 'none'; button.parentNode.style.display = 'none';} );
-      addButtons.forEach(button => button.style.display = 'none');
-    
-      // Show edit and add buttons that are relevant to the active section
-      document.querySelectorAll(`.edit-button[data-target="${activeSectionId}"], .add-button[data-target="${activeSectionId}Add"]`).forEach(button => {
-          button.style.display = 'inline-block'; button.parentNode.style.display = 'flex';// Adjust display as needed
-      });
+    // Hide all buttons initially
+    editButtons.forEach(button => { button.style.display = 'none'; button.parentNode.style.display = 'none'; });
+    addButtons.forEach(button => button.style.display = 'none');
+
+    // Show edit and add buttons that are relevant to the active section
+    document.querySelectorAll(`.edit-button[data-target="${activeSectionId}"], .add-button[data-target="${activeSectionId}Add"]`).forEach(button => {
+      button.style.display = 'inline-block'; button.parentNode.style.display = 'flex';// Adjust display as needed
+    });
   }
 
   // Function to update the visibility of section buttons based on the active section
   function updateSectionButtonsVisibility(activeSectionId) {
-      let firstTarget = null;
-      let firstParent = null;
-      sectionButtons.forEach(button => {
-        if(button.dataset.target != firstTarget && button.parentNode != firstParent) {
-        if(button.dataset.target === activeSectionId){
-         button.style.display = 'none'
-        
-        }else{
+    let firstTarget = null;
+    let firstParent = null;
+    sectionButtons.forEach(button => {
+      if (button.dataset.target != firstTarget && button.parentNode != firstParent) {
+        if (button.dataset.target === activeSectionId) {
+          button.style.display = 'none'
+
+        } else {
           button.style.display = 'inline-block';
           firstTarget = button.dataset.target;
           firstParent = button.parentNode;
         }
-        }else{
-          button.style.display = 'none'
-        }
-          // if (button.dataset.target === activeSectionId) {
-          //     // Hide the button for the active section
-          //     button.style.display = 'none';
-          // } else {
-          //     // Show the button for all other sections
-          //     button.style.display = 'inline-block';
-          // }
-      });
+      } else {
+        button.style.display = 'none'
+      }
+      // if (button.dataset.target === activeSectionId) {
+      //     // Hide the button for the active section
+      //     button.style.display = 'none';
+      // } else {
+      //     // Show the button for all other sections
+      //     button.style.display = 'inline-block';
+      // }
+    });
   }
-
+  let isEditing = false;
   function enableEditing(button) {
     const targetForm = document.querySelector(`#${button.dataset.target}`);
+    console.log('tu');
     if (targetForm) {
-        const isEditing = Array.from(targetForm.querySelectorAll('input:not([type="hidden"])')).some(input => input.disabled);
-
+        const form = targetForm.querySelector('form');
+        console.log('tu');
+        // const isEditing = Array.from(targetForm.querySelectorAll('input:not([type="hidden"])')).some(input => input.disabled);
+        isEditing = !isEditing;
+        // Toggle the disabled state of input elements based on the current editing state
         targetForm.querySelectorAll('input:not([type="hidden"])').forEach(input => {
             input.disabled = !isEditing;
         });
+        console.log('tu');
         const buttons = targetForm.querySelectorAll('button');
-      
+
         // Toggle the visibility of span elements based on the editing state
         const editSpan = button.querySelector('span:first-child');
         const stopEditSpan = button.querySelector('span:last-child');
-
+        console.log('tu');
         if (isEditing) {
+            // Hide edit span and show stop edit span
+            console.log('tue');
             editSpan.style.display = 'none';
             stopEditSpan.style.display = 'inline';
             buttons.forEach(button => {
-              button.style.display = 'inline-block';
-          });
+                button.style.display = 'inline-block';
+            });
         } else {
+            // Show edit span and hide stop edit span
+            console.log('tus');
             editSpan.style.display = 'inline';
             stopEditSpan.style.display = 'none';
             buttons.forEach(button => {
-              button.style.display = 'none';
-          });
+                button.style.display = 'none';
+            });
+            form.reset(); // Reset the form when ending editing
         }
     }
 }
 
-// Function to show add forms or sections
-function showAddForm(button) {
-  const targetSection = document.querySelector(`#${button.dataset.target}`);
-  if (targetSection) {
+
+  // Function to show add forms or sections
+  function showAddForm(button) {
+    const targetSection = document.querySelector(`#${button.dataset.target}`);
+    if (targetSection) {
       const isVisible = targetSection.style.display === 'block';
       targetSection.style.display = isVisible ? 'none' : 'block';
 
@@ -212,39 +224,39 @@ function showAddForm(button) {
       const stopAddingSpan = button.querySelector('span:last-child');
 
       if (isVisible) {
-          addSpan.style.display = 'inline';
-          stopAddingSpan.style.display = 'none';
+        addSpan.style.display = 'inline';
+        stopAddingSpan.style.display = 'none';
       } else {
-          addSpan.style.display = 'none';
-          stopAddingSpan.style.display = 'inline';
+        addSpan.style.display = 'none';
+        stopAddingSpan.style.display = 'inline';
       }
+    }
   }
-}
 
   // Event listener for section buttons
   sectionButtons.forEach(button => {
-      button.addEventListener('click', function() {
-          toggleSection(button);
-      });
+    button.addEventListener('click', function () {
+      toggleSection(button);
+    });
   });
 
   // Event listeners for edit buttons
   editButtons.forEach(button => {
-      button.addEventListener('click', function() {
-          enableEditing(button);
-      });
+    button.addEventListener('click', function () {
+      enableEditing(button);
+    });
   });
 
   // Event listeners for add buttons
   addButtons.forEach(button => {
-      button.addEventListener('click', function() {
-          showAddForm(button);
-      });
+    button.addEventListener('click', function () {
+      showAddForm(button);
+    });
   });
 });
 
-// const tretie = document.querySelector('#tr');
 
+// const tretie = document.querySelector('#tr');
 function handleTypeRadio() {
   const favTypeRadios = document.querySelectorAll('input[name="type"]');
   const student = document.getElementById('stud');
@@ -252,18 +264,18 @@ function handleTypeRadio() {
   const favTypeRadios2 = document.querySelectorAll('input[name="type2"]');
   const student2 = document.getElementById('stud2');
   const instruktor2 = document.getElementById('inst2');
- 
+
 
   favTypeRadios.forEach(radio => {
     radio.addEventListener('change', () => {
       if (radio.value === '0' && radio.checked) {
         student.style.display = 'flex';
         instruktor.style.display = 'none';
-      
+
       } else {
         instruktor.style.display = 'flex';
         student.style.display = 'none';
-      
+
       }
     });
   });
@@ -272,11 +284,11 @@ function handleTypeRadio() {
       if (radio.value === '0' && radio.checked) {
         student2.style.display = 'flex';
         instruktor2.style.display = 'none';
-       
+
       } else {
         instruktor2.style.display = 'flex';
         student2.style.display = 'none';
-       
+
       }
     });
   });
@@ -285,100 +297,298 @@ handleTypeRadio();
 
 
 
+document.addEventListener('DOMContentLoaded', function () {
+  setupRadioControls();
 
-function handleFavLanguageRadio() {
-  const favLanguageRadios = document.querySelectorAll('input[name="status"]');
-  const additionalOptions = document.getElementById('ucm');
-  const additionalUCM = document.getElementById('ucmkari');
-  const additionalUCM2 = document.getElementById('ucmkari2');
-  const ina = document.getElementById('ina');
-  const nu = document.getElementById('nu');
-  const iny = document.getElementById('iny');
-  const ny = document.getElementById('ny');
+  const form = document.getElementById('formm');
+  if (!form) return; // Exit if the form wasn't found
 
-  favLanguageRadios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === 'student' && radio.checked) {
-        additionalOptions.style.display = 'block';
-      } else {
-        additionalOptions.style.display = 'none';
-        additionalUCM.style.display = 'none';
-        additionalUCM2.style.display = 'none';
-        ina.style.display = 'none';
-        nu.value = "";
-        nu.disabled = true;
-        iny.style.display = 'none';
-        ny.disabled = true;
-        ny.value = "";
+  // Attach the reset event listener to the form
+  form.addEventListener('reset', function () {
+   // setTimeout(() => {
+      applyVisibilityRulesBasedOnStudentData(radioMappings, studentData);
+   // }, 1000); // Increase delay to 100 milliseconds
+  });
+  
 
-        document.getElementById("ucmka").checked = false;
-        document.getElementById("inam").checked = false;
-        document.getElementById("option3").checked = false;
-        document.getElementById("option4").checked = false;
-        document.getElementById("option5").checked = false;
-        document.getElementById("option6").checked = false;
+  function setupRadioControls() {
+    const radioMappings = [
+      {
+        name: 'status',
+        mappings: [
+          {
+            value: 'student',
+            elementsToShow: ['ucm'],
+            elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny'],
+            elementsToReset: ['nu', 'ny'],
+            elementsToEnable: [],
+            elementsToDisable: [],
+            radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
+          },
+          {
+            value: 'nestudent',
+            elementsToShow: [],
+            elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny'],
+            elementsToReset: ['nu', 'ny'],
+            elementsToEnable: [],
+            elementsToDisable: ['nu', 'ny'],
+            radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
+          }
+        ]
+      },
+      {
+        name: 'skola',
+        mappings: [
+          {
+            value: 'ucm',
+            elementsToShow: ['ucmkari', 'ucmkari2'],
+            elementsToHide: ['ina', 'iny'],
+            elementsToReset: ['nu', 'ny'],
+            elementsToEnable: [],
+            elementsToDisable: ['nu'],
+            radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
+          },
+          {
+            value: 'ina',
+            elementsToShow: ['ina'],
+            elementsToHide: ['ucmkari', 'ucmkari2', 'iny'],
+            elementsToReset: ['ny'],
+            elementsToEnable: ['nu'],
+            elementsToDisable: [],// Add this line to enable 'nu' when 'ina' is selected
+            radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
+          }
+        ]
+      },
+      {
+        name: 'program',
+        mappings: [
+          {
+            value: 'iny',
+            elementsToShow: ['iny'],
+            elementsToHide: [],
+            elementsToReset: [],
+            elementsToEnable: ['ny'],
+            elementsToDisable: [], // Add this line to enable 'ny' when 'iny' is selected
+            radiosToUncheck: []
+          },
+          {
+            value: 'apin',
+            elementsToShow: [],
+            elementsToHide: ['iny'],
+            elementsToReset: ['ny'],
+            elementsToEnable: [],
+            elementsToDisable: ['ny'],
+            radiosToUncheck: []
+          }
+        ]
       }
+    ];
+
+    radioMappings.forEach(mapping => {
+      const radios = document.querySelectorAll(`input[name="${mapping.name}"]`);
+      radios.forEach(radio => {
+        radio.addEventListener('change', function () {
+          mapping.mappings.forEach(map => {
+            if (radio.value === map.value && radio.checked) {
+              map.elementsToShow.forEach(id => document.getElementById(id).style.display = 'block');
+              map.elementsToHide.forEach(id => document.getElementById(id).style.display = 'none');
+              map.elementsToReset.forEach(id => {
+                document.getElementById(id).value = "";
+                document.getElementById(id).disabled = true;
+              });
+              map.elementsToEnable.forEach(id => document.getElementById(id).disabled = false);
+              map.elementsToDisable.forEach(id => document.getElementById(id).disabled = true);
+              map.radiosToUncheck.forEach(id => document.getElementById(id).checked = false);
+            }
+          });
+        });
+      });
     });
+  }
+});
+
+const radioMappings = [
+  {
+    name: 'status',
+    mappings: [
+      {
+        value: 'student',
+        elementsToShow: ['ucm'],
+        elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny'],
+        elementsToReset: ['nu', 'ny'],
+        elementsToHave: [],
+        elementsToEnable: [],
+        elementsToDisable: [],
+        radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
+      },
+      {
+        value: 'nestudent',
+        elementsToShow: [],
+        elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny'],
+        elementsToReset: ['nu', 'ny'],
+        elementsToHave: [],
+        elementsToEnable: [],
+        elementsToDisable: ['nu', 'ny'],
+        radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
+      }
+    ]
+  },
+  {
+    name: 'skola',
+    mappings: [
+      {
+        value: 'ucm',
+        elementsToShow: ['ucmkari', 'ucmkari2'],
+        elementsToHide: ['ina', 'iny'],
+        elementsToReset: ['nu', 'ny'],
+        elementsToHave: [],
+        elementsToEnable: [],
+        elementsToDisable: ['nu'],
+        radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
+      },
+      {
+        value: 'ina',
+        elementsToShow: ['ina'],
+        elementsToHide: ['ucmkari', 'ucmkari2', 'iny'],
+        elementsToReset: ['ny'],
+        elementsToHave: ['nu'],
+        elementsToEnable: ['nu'],
+        elementsToDisable: [],// Add this line to enable 'nu' when 'ina' is selected
+        radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
+      }
+    ]
+  },
+  {
+    name: 'program',
+    mappings: [
+      {
+        value: 'iny',
+        elementsToShow: ['iny'],
+        elementsToHide: [],
+        elementsToReset: [],
+        elementsToHave: ['ny'],
+        elementsToEnable: ['ny'],
+        elementsToDisable: [], // Add this line to enable 'ny' when 'iny' is selected
+        radiosToUncheck: []
+      },
+      {
+        value: 'apin',
+        elementsToShow: [],
+        elementsToHide: ['iny'],
+        elementsToReset: ['ny'],
+        elementsToHave: [],
+        elementsToEnable: [],
+        elementsToDisable: ['ny'],
+        radiosToUncheck: []
+      }
+    ]
+  }
+];
+
+function applyVisibilityRulesBasedOnStudentData(radioMappings, studentData) {
+  console.log(studentData);
+  radioMappings.forEach(mapping => {
+    if (studentData.hasOwnProperty(mapping.name)) {
+      const value = studentData[mapping.name];
+      console.log(mapping.name);
+      const mappingToApply = mapping.mappings.find(m => m.value === value);
+      if (mappingToApply) {
+        applyVisibilityRules(mapping, value,studentData);
+      }
+    }
   });
 }
 
-// Call the function to handle radio button selection
-handleFavLanguageRadio();
+function applyVisibilityRules(mapping, value,studentData) {
+  console.log('Applying visibility rules for:', mapping.name, 'with value:', value);
+  console.log(studentData);
+  const selectedMapping = mapping.mappings.find(m => m.value === value);
+  if (!selectedMapping) return;
 
-function handleUCMradio() {
-  const UCMradios = document.querySelectorAll('input[name="skola"]');
-  const additionalUCM = document.getElementById('ucmkari');
-  const additionalUCM2 = document.getElementById('ucmkari2');
-  const ina = document.getElementById('ina');
-  const nu = document.getElementById('nu');
-  const iny = document.getElementById('iny');
-  const ny = document.getElementById('ny');
-
-
-  UCMradios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === 'ucm' && radio.checked) {
-        additionalUCM.style.display = 'block';
-        additionalUCM2.style.display = 'block';
-        ina.style.display = 'none';
-        nu.disabled = true;
-        nu.value = "";
-      } else {
-        additionalUCM.style.display = 'none';
-        additionalUCM2.style.display = 'none';
-        ina.style.display = 'block';
-
-        iny.style.display = 'none';
-        ny.disabled = true;
-        ny.value = "";
-
-        nu.disabled = false;
-        document.getElementById("option3").checked = false;
-        document.getElementById("option4").checked = false;
-        document.getElementById("option5").checked = false;
-        document.getElementById("option6").checked = false;
-      }
-    });
+  // Show elements
+  selectedMapping.elementsToShow.forEach(id => {
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.style.display = 'block';
+    }
+  });
+  console.log('1');
+  // Hide elements
+  selectedMapping.elementsToHide.forEach(id => {
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.style.display = 'none';
+    }
+  });
+  console.log('2');
+  // Reset elements
+  selectedMapping.elementsToReset.forEach(id => {
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.value = '';
+      // Decide if you want to disable these elements as well
+      // elem.disabled = true;
+    }
   });
 
-  const programradio = document.querySelectorAll('input[name="program"]');
-
-  programradio.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === 'iny' && radio.checked) {
-        iny.style.display = 'block';
-        ny.disabled = false;
-      } else {
-        iny.style.display = 'none';
-        ny.disabled = true;
-        ny.value = "";
+   selectedMapping.elementsToEnable.forEach(id => {
+    const elem = document.getElementById(id);
+    const resetbutton = document.getElementById('resetbutton');
+    if (elem){ 
+      if(resetbutton.style.display == 'none')
+      {
+        elem.disabled = false;
       }
-    });
+      
+      if(id == 'nu')
+      {
+        elem.value = studentData['skola_r']; 
+      }
+      if(id =='ny')
+      {
+        elem.value = studentData['program_r']; 
+      }
+      
+    }
   });
+  
+  // selectedMapping.elementsToHave.forEach(id => {
+  //   const elem = document.getElementById(id);
+  //   if (elem && id == 'ina') {
+  //     elem.value = studentData.skola_r;
+  //     // Decide if you want to disable these elements as well
+  //     // elem.disabled = true;
+  //   }
+  //   if (elem && id == 'iny') {
+  //     console.log('som tu');
+  //     elem.value = 'this';
+  //     console.log('som tu');
+  //     // Decide if you want to disable these elements as well
+  //     // elem.disabled = true;
+  //   }
+  // });
+  console.log('3');
+  // Enable elements
+ 
+  console.log('4');
+  // Disable elements
+  selectedMapping.elementsToDisable.forEach(id => {
+    const elem = document.getElementById(id);
+    if (elem) {elem.disabled = true; }
+  });
+  console.log('5');
+  // Uncheck radios
+  // selectedMapping.radiosToUncheck.forEach(id => {
+  //   const radio = document.getElementById(id);
+  //   if (radio){ radio.checked = false; }
+  // });
+  console.log('6');
 }
 
-// Call the function to handle radio button selection
-handleUCMradio();
+
+
+
+
 
 // function handleStatusCheckbox() {
 //     const checkboxes = document.querySelectorAll('.status-checkbox');
