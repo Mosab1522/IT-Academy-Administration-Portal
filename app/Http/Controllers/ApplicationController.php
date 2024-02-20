@@ -171,9 +171,14 @@ class ApplicationController extends Controller
                 throw ValidationException::withMessages(['email' => 'Takáto prihláška už existuje']);
             } else {
                 // if(request()->type)
+                
                 if(request()->typ == "admin")
                 {
-                    
+                    if(!request()->type)
+                    {
+                        $coursetype = CourseType::firstWhere('id', request()->coursetype_id);
+                        request()->merge(['type' => $coursetype['id']]);
+                    }
                     $attributes = request()->validate([
                     
                         'email' => ['required', 'email', 'max:255'],
@@ -186,15 +191,15 @@ class ApplicationController extends Controller
                     ]);
                     
                 }else {
-                    $attributes = request()->validate([
                     
+                    $attributes = request()->validate([     
                     'email' => ['required', 'email', 'max:255'],
                     // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
-                    'type' => ['required', 'integer', 'in:0,1,2'],
-                    'academy_id' => ['required_if:type,1', 'integer', Rule::exists('academies', 'id')],
-                    'coursetype_id' => ['required_if:type,1', 'integer', Rule::exists('course_types', 'id')],
-                    'academy_id2' => ['required_if:type,0', 'integer', Rule::exists('academies', 'id')],
-                    'coursetype_id2' => ['required_if:type,0', 'integer', Rule::exists('course_types', 'id')],
+                    'type2' => ['required', 'integer', 'in:0,1'],
+                    'academy_id' => ['required_if:type2,1', 'integer', Rule::exists('academies', 'id')],
+                    'coursetype_id' => ['required_if:type2,1', 'integer', Rule::exists('course_types', 'id')],
+                    'academy_id2' => ['required_if:type2,0', 'integer', Rule::exists('academies', 'id')],
+                    'coursetype_id2' => ['required_if:type2,0', 'integer', Rule::exists('course_types', 'id')],
                     'days' => ['required', 'integer'],
                     'time' => ['required', 'integer'],
                 ]);
@@ -312,9 +317,16 @@ class ApplicationController extends Controller
                 ]);
             }
         }
-        if(request()->typ!= "admin")
+        if(request()->typ== "novy")
         {
-             if($attributes['type'] == 0)
+             if($attributes['type'] == 0 )
+        {
+            $attributes['academy_id'] = $attributes['academy_id2'];
+            $attributes['coursetype_id'] = $attributes['coursetype_id2'];
+        }
+        }else if(request()->typ== "stary")
+        {
+             if($attributes['type2'] == 0 )
         {
             $attributes['academy_id'] = $attributes['academy_id2'];
             $attributes['coursetype_id'] = $attributes['coursetype_id2'];
@@ -337,7 +349,10 @@ class ApplicationController extends Controller
             $trimmedUrl = substr(url()->previous(), 0, -9);
             return redirect($trimmedUrl)->with('success_c', 'Úspešne vytvorené');
         }
-
+        if (request()->typ != "admin")
+        {
+            return back()->with('success_c', $attributes['email']);
+        }
         return back()->with('success_c', 'Úspešne vytvorené');
     }
     public function destroy(Application $application)

@@ -136,7 +136,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                             @if($coursetype) {{$coursetype->id == $type->id ? 'selected' : ''}}
                             @endif
                             {{old('coursetype_id')==$type->id ? 'selected' : ''}}>{{
-                            ucwords($type->name) }}</option>
+                            ucwords($type->name) }} - {{$type->type == '0' ? 'študentský' : 'inštruktorský'}}</option>
                         @endforeach
                     </select>
                 </div>
