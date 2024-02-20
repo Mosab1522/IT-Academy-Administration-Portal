@@ -1,14 +1,14 @@
 <x-layout />
 <x-setting heading="Prihlásiť sa na kurz">
 
-    <a class="inline-block w-1/2 font-bold text-base {{old('typ')!=" stary" ? 'text-blue-500' : 'text-gray-700'
+    <a class="{{session('success_c')  ? 'hidden' :''}} inline-block w-1/2 font-bold text-base {{old('typ')=="stary" ? 'text-gray-700' : 'text-blue-500'
         }} " href=" #" id="switch-form">Úplné prihlásenie na kurz</a>
 
 
-    <a class="inline font-bold text-smm {{old('typ')==" stary" ? 'text-blue-500' : 'text-gray-700' }}" href="#"
+    <a class="{{session('success_c')  ? 'hidden' :''}} inline font-bold text-smm {{old('typ')=="stary" ? 'text-blue-500' : 'text-gray-700' }}" href="#"
         id="switch-form2">Zjednodušené prihlásenie na kurz</a>
 
-    <form id="novy" action="/" method="post" class="{{old('typ')!=" stary" ? '' :'hidden'}}">
+    <form id="novy" action="/" method="post" class="{{old('typ') == "stary" || session('success_c')  ? 'hidden' :''}}">
         @csrf
         <input type="hidden" name="typ" value="novy" />
         <x-form.field>
@@ -322,7 +322,7 @@
             Odoslať
         </x-form.button>
     </form>
-    <form id="stary" action="/" method="post" class="{{old('typ')==" stary" ? '' :'hidden'}}">
+    <form id="stary" action="/" method="post" class="{{old('typ') == "stary" ? '' :'hidden'}}">
 
 
 
@@ -544,6 +544,9 @@
             Odoslať
         </x-form.button>
     </form>
+    <p  class="{{session('success_c') ? '' : 'hidden'}} block text-center my-3 font-light text-base border border-gray200 p-3 rounded-xl"> Ďakujeme za prihlásenie na kurz. <br> Potvrdenie Vám bolo odoslané na Vami zadanú e-mailovú adresu: <span
+        class="font-normal">{{session('success_c')}}<br> Prosíme aby ste si po skontrolovaní údajov v e-maili potvrdili prihlášku kliknutím na potvrdzovací LINK v danom e-maili, ďakujeme.</span>  <br> V prípade, že
+    ste zadali zlý email, alebo iné údaje kontaktujte nás e-mailom na: <span class=" font-normal">blabla@ucm.sk</span></p>
     {{-- @php
     old()->forget('typ');
     @endphp --}}
