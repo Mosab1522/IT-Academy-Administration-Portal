@@ -62,7 +62,7 @@
                             <thead class="text-sm">
                                 <tr>
                                     <td class="px-6 py-1">Názov</td>
-                                    <td class="px-6 py-2">Počet typov kurzov</td>
+                                    <td class="px-6 py-2">Typy kurzov</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -82,8 +82,11 @@
 
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    {{ $academy->coursetypes->count()}}
+                                                <div class="text-xs font-medium text-gray-900">
+                                                    @foreach($academy->coursetypes as $coursetype)
+
+                                                    {{$coursetype->name}} - {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}} <br>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </td>

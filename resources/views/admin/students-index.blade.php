@@ -69,7 +69,7 @@
                                 <tr>
                                     <td class="px-6 py-1">Meno a priezvisko</td>
                                     <td class="px-6 py-2">Email</td>
-                                    <td class="px-6 py-2">Počet prihlášok</td>
+                                    <td class="px-6 py-2">Aktívne prihlášky</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -99,8 +99,11 @@
 
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    {{ $student->applications->count()}}
+                                                <div class="text-xs font-medium text-gray-900">
+                                                    @foreach($student->applications as $application)
+                                                    {{ $application->coursetype->name}} -{{$application->coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
+                                                    <br>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </td>
