@@ -45,9 +45,9 @@
                         <div
                             class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
                             <div class="relative right-0">
-                                <ul class="" nav-pills
-                                    role="tablist">
-                                    <li class=" {{ session('success_d') ? 'hidden' : '' }} z-30 flex-auto text-center relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl">
+                                <ul class="" nav-pills role="tablist">
+                                    <li
+                                        class=" {{ session('success_d') ? 'hidden' : '' }} z-30 flex-auto text-center relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl">
                                         <button
                                             class="edit-button {{session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : '' }} z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             data-target="profile">
@@ -113,7 +113,7 @@
                                             <span id="lt" class="ml-2">Login</span>
                                             <span id="kt" class="hidden ml-2">Kurzy</span>
                                         </a> --}}
-                                        <button 
+                                        <button
                                             class="section-button {{session('success_d')  ?  '' : 'hidden' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             data-target="kurzy">Kurzy</button>
                                         <button
@@ -289,19 +289,25 @@
                         </div>
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200">
+                                <colgroup>
+                                    <col style="width: 30%;">
+                                    <col style="width: 45%;">
+                                    <col style="width: 12.5%;">
+                                    <col style="width: 12.5%;">
+                                </colgroup>
                                 <thead class="text-sm">
                                     <tr>
                                         <td class="px-6 py-1">
                                             Meno a priezvisko
-
-
                                         </td>
 
                                         <td class="px-6 py-2">Email</td>
                                         <td></td>
                                         <td>
-                                            <a href={{route('applications', ['coursetype_id'=>$coursetype->id])}}"
-                                                >Pridať študenta</a>
+                                            <a href="/admin/coursetypes/{{ $coursetype->id }}?vytvorit"
+                                                class="text-blue-500 hover:text-blue-600">
+                                                Pridať študenta
+                                            </a>
                                         </td>
                                     </tr>
                                 </thead>
@@ -333,9 +339,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-
-                                        </td>
+                                        
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
                                             <form method="POST" action="/admin/applications/{{ $application->id }}">

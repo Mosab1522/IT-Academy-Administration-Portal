@@ -284,6 +284,16 @@ class InstructorController extends Controller
             $trimmedUrl = substr(url()->previous(), 0, -7);
             return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
         }
+        if (Str::endsWith(url()->previous(), '?vytvorit'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -9);
+            return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
+        }
+        if (Str::endsWith(url()->previous(), '?zmenit'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
+        }
 
         return back()->with('success_u', 'Úspešne aktualizované');
     }

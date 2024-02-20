@@ -35,6 +35,16 @@ class CourseType_InstructorController extends Controller
             $trimmedUrl = substr(url()->previous(), 0, -7);
             return redirect($trimmedUrl)->with('success_cc', 'Úspešne vytvorené');
         }
+        if (Str::endsWith(url()->previous(), '?vytvorit'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -9);
+            return redirect($trimmedUrl)->with('success_cc', 'Úspešne vytvorené');
+        }
+        if (Str::endsWith(url()->previous(), '?zmenit'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_cc', 'Úspešne vytvorené');
+        }
 
         return back()->with('success_cc', 'Úspešne pridané');
     }
@@ -55,6 +65,16 @@ class CourseType_InstructorController extends Controller
         // }
         // else if ($coursetype){
         if (Str::endsWith(url()->previous(), '?pridat')) {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_dd', 'Úspešne vymazané');
+        }
+        if (Str::endsWith(url()->previous(), '?vytvorit'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -9);
+            return redirect($trimmedUrl)->with('success_dd', 'Úspešne vymazané');
+        }
+        if (Str::endsWith(url()->previous(), '?zmenit'))
+        {
             $trimmedUrl = substr(url()->previous(), 0, -7);
             return redirect($trimmedUrl)->with('success_dd', 'Úspešne vymazané');
         }

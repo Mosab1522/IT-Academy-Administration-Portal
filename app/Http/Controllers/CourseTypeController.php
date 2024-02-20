@@ -104,6 +104,7 @@ class CourseTypeController extends Controller
     }
     public function update(Coursetype $coursetype)
     {
+        
         $academy = Academy::with(['coursetypes', 'applications'])
         ->where('id', '=', request()->academy_id)->first();
 
@@ -113,7 +114,10 @@ class CourseTypeController extends Controller
 
         // request()->merge(['academy_id'  => $academy['id']]); 
         
-       
+       if(request()->cname)
+       {
+        request()->merge(['name'  => request()->cname]);
+       }
         
 
         $attributes = request()->validate([
@@ -129,6 +133,11 @@ class CourseTypeController extends Controller
         if (Str::endsWith(url()->previous(), '?pridat'))
         {
             $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
+        }
+        if (Str::endsWith(url()->previous(), '?vytvorit'))
+        {
+            $trimmedUrl = substr(url()->previous(), 0, -9);
             return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
         }
 

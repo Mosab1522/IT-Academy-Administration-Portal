@@ -84,6 +84,9 @@ document.addEventListener('DOMContentLoaded', function () {
       form.querySelectorAll('input:not([type="hidden"])').forEach(input => {
         input.disabled = true; // Disable editing
       });
+      form.querySelectorAll('select').forEach(select => {
+        select.disabled = true;
+    });
     });
     document.querySelectorAll('.section button[type]').forEach(button => {
       button.style.display = 'none';
@@ -192,6 +195,9 @@ document.addEventListener('DOMContentLoaded', function () {
         targetForm.querySelectorAll('input:not([type="hidden"])').forEach(input => {
             input.disabled = !isEditing;
         });
+        targetForm.querySelectorAll('select').forEach(select => {
+          select.disabled = !isEditing;
+      });
         console.log('tu');
         const buttons = targetForm.querySelectorAll('button');
 
