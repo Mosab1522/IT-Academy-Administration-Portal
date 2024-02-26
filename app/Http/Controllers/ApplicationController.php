@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ConfirmationMail;
 use App\Models\Academy;
 use App\Models\Application;
 use App\Models\CourseType;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
@@ -334,16 +337,25 @@ class ApplicationController extends Controller
         }
        
         
-        Application::create([
+        $application = Application::create([
             'student_id' => $student['id'],
             'academy_id' => $attributes['academy_id'],
             'coursetype_id' => $attributes['coursetype_id'],
             'days' => $attributes['days'],
-            'time' => $attributes['time']
+            'time' => $attributes['time'],
+            'verification_token' => Str::random(60)
         ]);
         session()->forget('student_id');
         session()->forget('coursetype_id');
 
+        $course = CourseType::firstWhere('id', $attributes['coursetype_id']);
+
+        // $application->verification_token = Str::random(40);
+        // $application->save();
+
+        $emailData = ['email' => $student['email'], 'name' => $student['name'] , 'lastname' => $student['lastname'], 'coursename' => $course['name'], 'academyname' => $course->academy['name'], 'verificationToken' => $application->verification_token];
+
+        Mail::to($emailData['email'])->send(new ConfirmationMail($emailData));
         if (Str::endsWith(url()->previous(), '?vytvorit'))
         {
             $trimmedUrl = substr(url()->previous(), 0, -9);
@@ -377,4 +389,19 @@ class ApplicationController extends Controller
     {
         return view('admin.applications-create');
     }
+
+    public function verify($token)
+{
+    $application = Application::where('verification_token', $token)->firstOrFail();
+    if($application->verified == false)
+    {
+    $application->verified = true;
+    //$application->verification_token = null; // Clear the token after use
+    $application->verified_at = Carbon::now();
+    $application->save(); 
+    return view('confirmation')->with('success', 'Application confirmed successfully.');
+    }else{
+    return view('confirmation')->with('already', 'Already confirmed.');
+    }
+}
 }

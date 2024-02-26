@@ -20,6 +20,8 @@ return new class extends Migration
             $table->tinyInteger('time');
             $table->timestamps();
             $table->boolean('verified')->default(false);
+            $table->string('verification_token', 60)->nullable()->unique();
+            $table->timestamp('verified_at')->nullable();
         });
     }
 

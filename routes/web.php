@@ -14,7 +14,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TypkurzuController;
+use App\Mail\ConfirmationMail;
 use App\Models\Application;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 
@@ -30,6 +32,13 @@ use Illuminate\Support\Facades\Request;
 |
 */
 
+//Route for mailing
+Route::get('/email', function () {
+   // Mail::to('simonka.szlamkova1@gmail.com')->send(new ConfirmationMail());
+    return new ConfirmationMail();
+});
+
+Route::get('/application/verify/{token}', [ApplicationController::class, 'verify'])->name('application.verify');
 
 Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
