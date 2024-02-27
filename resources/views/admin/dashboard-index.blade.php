@@ -94,103 +94,83 @@
 
 
     </div>
-    @if($applications->count() > 0)
+    @if($groupedApplications->count() > 0)
     <div id="dashboard-container" class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="py-2 align-middle inline-block min-w-full
-            sm:px-6 lg:px-8">
-
-            @foreach ($types as $id => $name)
-            @php
-
-            $format = 'Y-m-d H:i:s';
-            $input = $lastApplications[$id];
-            // $date = strtotime($input);
-            \Carbon\Carbon::setLocale('sk');
-            $result = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $input)->diffForHumans();
-
-
-            @endphp
-
-            @foreach ($applications[$name] as $academy => $apps) <div class="text-sm w-full flex mt-2 mb-2">
-
-                <p class="flex-none text-sm font-medium text-gray-900 w-32">Kurz: {{ $name }}</p>
-                <p class="flex-1 font-light text-gray-500">Akadémia: {{$academy}}</p>
-                <p class="flex-none font-light text-gray-500">Posledná prihláška vytvorená: {{$result}}</p>
-            </div>
-            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-
-
-                <table class="min-w-full divide-y divide-gray-200" style="table-layout: fixed;">
-                    <colgroup>
-                        <col style=" width: 30%;">
-                        <col style="width: 45%;">
-                        <col style="width: 12.5%;">
-                        <col style="width: 12.5%;">
-                    </colgroup>
-                    <thead class="text-sm">
-                        <tr>
-                            <td class="px-6 py-1">
-                                Meno a priezvisko
-                                <a href="{{ route('admin.dashboard.index', ['sort_by' => 'name_asc']) }}">▲</a>
-                                <a href="{{ route('admin.dashboard.index', ['sort_by' => 'name_desc']) }}">▼</a>
-                            </td>
-
-                            <td class="px-6 py-2">Email</td>
-                            <td></td>
-                            <td>
-                                <a href={{route('applications', ['coursetype_id'=>$id])}}"
-                                    >Pridať študenta</a>
-                            </td>
-                        </tr>
-                    </thead>
-                    @foreach ($apps as $application)
-                    <tbody class="bg-white divide-y divide-gray-200" style="height: 3rem;">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        <a href="/admin/students/{{ $application->student->id }}">
-                                            {{$application->student->name }}
-                                            {{$application->student->lastname}}
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            @foreach ($groupedApplications as $coursetypeName => $academyGroup)
+    @foreach ($academyGroup as $academyName => $apps)
+        {{-- Assume all applications in $apps belong to the same coursetype --}}
+        @php
+            $coursetype = $apps->first()->coursetype; // Get the coursetype from the first application
+        @endphp
+        <div class="text-sm w-full flex mt-2 mb-2">
+            <p class="flex-none text-sm font-medium text-gray-900 w-32">Kurz: {{ $coursetypeName }} - {{ $coursetype->type == 0 ? 'študentský' : 'inštruktorský' }}</p>
+            <p class="flex-1 font-light text-gray-500">Akadémia: {{ $academyName }}</p>
+        </div>
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200" style="table-layout: fixed;">
+                            <thead class="text-sm">
+                                <tr>
+                                    <th class="px-6 py-1">Meno a priezvisko</th>
+                                    <th class="px-6 py-2">Email</th>
+                                    <th></th>
+                                    <th>
+                                        <a class="text-blue-500 hover:text-blue-600" href="{{ route('applications', ['coursetype_id' => $coursetype->id]) }}">Pridať študenta</a>
+                                        <a href="/admin/coursetypes/{{ $coursetype->id }}?vytvorit"
+                                            class="text-blue-500 hover:text-blue-600">
+                                            Pridať študenta
                                         </a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        {{$application->student->email}}
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="text-xs font-light text-gray-900">vytvorená
-                                        {{ $application->created_at->diffForHumans()}}
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
-                                <form method="POST" action="/admin/applications/{{ $application->id }}">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach ($apps as $application)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    <a href="/admin/students/{{ $application->student->id }}">
+                                                        {{$application->student->name }}
+                                                        {{$application->student->lastname}}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ $application->student->email }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-xs font-light text-gray-900">
+                                                    vytvorená {{ $application->created_at->diffForHumans() }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                             <form method="POST" action="/admin/applications/{{ $application->id }}">
                                     @csrf
                                     @method('DELETE')
 
                                     <button class="text-xs text-gray-400">Delete</button>
                                 </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                    @endforeach
-                </table>
-
-            </div>@endforeach
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endforeach
             @endforeach
         </div>
     </div>
-    @endif
+@else
+    <p>No applications found.</p>
+@endif
+
     </div>
 
 
