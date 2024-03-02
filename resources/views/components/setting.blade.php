@@ -55,6 +55,16 @@
 
     </div>
     <section class="py-8 w-full px-14 mx-auto">
+        @foreach (App\Models\Instructor::all() as $instructor)
+    <div>
+        <h3>{{ $instructor->name }}'s Unread Notifications</h3>
+        @if($instructor->unreadNotifications)
+        @foreach ($instructor->unreadNotifications as $notification)
+            <div>{{ $notification->data['course_name'] }}</div>
+        @endforeach
+        @endif
+    </div>
+@endforeach
         <h1 class="text-lg font-bold mb-8 pb-2 border-b">
             {{$heading}}
         </h1>

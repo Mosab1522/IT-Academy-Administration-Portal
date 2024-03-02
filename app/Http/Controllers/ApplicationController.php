@@ -6,7 +6,9 @@ use App\Mail\ConfirmationMail;
 use App\Models\Academy;
 use App\Models\Application;
 use App\Models\CourseType;
+use App\Models\Instructor;
 use App\Models\Student;
+use App\Notifications\NewStudent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -350,12 +352,22 @@ class ApplicationController extends Controller
 
         $course = CourseType::firstWhere('id', $attributes['coursetype_id']);
 
+        
+        // Assuming you know the instructor's ID
+
+
+        
         // $application->verification_token = Str::random(40);
         // $application->save();
 
-        $emailData = ['email' => $student['email'], 'name' => $student['name'] , 'lastname' => $student['lastname'], 'coursename' => $course['name'], 'academyname' => $course->academy['name'], 'verificationToken' => $application->verification_token];
+        $emailData = ['email' => $student['email'], 'name' => $student['name'] , 'lastname' => $student['lastname'],'id' => $course['id'], 'coursename' => $course['name'], 'coursetype' => $course['type'], 'academyname' => $course->academy['name'], 'date' => Carbon::now(), 'verificationToken' => $application->verification_token];
+        
+        // foreach ($course->instructors as $instructor)
+        // {
+        //      $instructor->notify(new NewStudent($emailData));
+        // }
 
-        Mail::to($emailData['email'])->send(new ConfirmationMail($emailData));
+        // Mail::to($emailData['email'])->send(new ConfirmationMail($emailData));
         if (Str::endsWith(url()->previous(), '?vytvorit'))
         {
             $trimmedUrl = substr(url()->previous(), 0, -9);

@@ -29,7 +29,7 @@ class ConfirmationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Potvrdenie prihlášky',
+            subject: 'Potvrdenie prihlášky - kurz '. $this->data['coursename'],
         );
     }
 

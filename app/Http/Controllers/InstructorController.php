@@ -13,7 +13,6 @@ use Illuminate\Support\Str;
 
 class InstructorController extends Controller
 {
-
     public function index(Request $request)
     {
         if ($request->filled('search')) {
