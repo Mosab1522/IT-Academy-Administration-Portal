@@ -20,6 +20,6 @@ class Instructor extends Model
 
     public function coursetypes()
     {
-        return $this->belongsToMany(CourseType::class, 'coursetype_instructor', 'instructor_id', 'coursetype_id');
+        return $this->belongsToMany(CourseType::class, 'coursetype_instructor', 'instructor_id', 'coursetype_id')->withTimestamps();
     }
 }

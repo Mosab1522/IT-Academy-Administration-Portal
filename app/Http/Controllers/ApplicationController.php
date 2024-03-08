@@ -368,6 +368,7 @@ class ApplicationController extends Controller
         // }
 
         // Mail::to($emailData['email'])->send(new ConfirmationMail($emailData));
+        
         if (Str::endsWith(url()->previous(), '?vytvorit'))
         {
             $trimmedUrl = substr(url()->previous(), 0, -9);
