@@ -104,7 +104,11 @@
                                     class="{{request()->is('admin/applications') ? 'text-blue-500' : ''}}">-
                                     Prihlášky</a>
                             </li>
-                           
+                            <li>
+                                <a href="/admin/classes"
+                                    class="{{request()->is('admin/classes') ? 'text-blue-500' : ''}}">-
+                                    Triedy</a>
+                            </li>
                         </ul>
                     </li>
                     <ul>
@@ -141,6 +145,12 @@
                                         class="{{request()->is('admin/applications/create') ? 'text-blue-500' : ''}}">-
                                         Nová
                                         prihláška</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/classes/create"
+                                        class="{{request()->is('admin/classes/create') ? 'text-blue-500' : ''}}">-
+                                        Nová
+                                        trieda</a>
                                 </li>
                             </ul>
                         </li>

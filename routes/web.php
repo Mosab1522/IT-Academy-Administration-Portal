@@ -5,6 +5,8 @@ use App\Http\Controllers\AkademieController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Class_StudentController;
+use App\Http\Controllers\CourseClassController;
 use App\Http\Controllers\CourseType_InstructorController;
 use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\DashboardController;
@@ -16,6 +18,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TypkurzuController;
 use App\Mail\ConfirmationMail;
 use App\Models\Application;
+use App\Models\CourseClass;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -98,6 +101,16 @@ Route::get('admin/instructors/{instructor:id}', [InstructorController::class, 's
 Route::post('admin/instructors/create', [InstructorController::class, 'store']);
 Route::delete('admin/instructors/{instructor}', [InstructorController::class, 'destroy']);
 
+Route::get('admin/classes', [CourseClassController::class, 'index'])->name('admin.classes.index');
+Route::patch('admin/classes/{class}', [CourseClassController::class, 'update']);
+
+Route::get('admin/classes/create', [CourseClassController::class, 'create']);
+Route::get('admin/classes/{class:id}', [CourseClassController::class, 'show']);
+Route::post('admin/classes/create', [CourseClassController::class, 'store']);
+Route::delete('admin/classes/{class}', [CourseClassController::class, 'destroy']);
+
+Route::post('admin/class-student', [Class_StudentController::class, 'store']);
+Route::delete('admin/class-student/{student}/{class}', [Class_StudentController::class, 'destroy']);
 
 Route::get('admin/reset', [NewPasswordController::class, 'create']);
 

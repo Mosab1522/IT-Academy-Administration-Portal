@@ -99,8 +99,8 @@ class ApplicationController extends Controller
                     'coursetype_id' => ['required_if:type,1', 'integer', Rule::exists('course_types', 'id')],
                     'academy_id2' => ['required_if:type,0', 'integer', Rule::exists('academies', 'id')],
                     'coursetype_id2' => ['required_if:type,0', 'integer', Rule::exists('course_types', 'id')],
-                    'days' => ['required', 'integer'],
-                    'time' => ['required', 'integer'],
+                    'days' => ['required', 'integer', 'in:1,2,3'],
+                    'time' => ['required', 'integer', 'in:1,2,3']
                 ]);
                 // dd(request()->all());
                 // $student = Student::firstWhere('email', $email['email']);
@@ -113,8 +113,8 @@ class ApplicationController extends Controller
                     'student_id' => $attributes['student_id'],
                     'academy_id' => $attributes['academy_id'],
                     'coursetype_id' => $attributes['coursetype_id'],
-                    'days' => $attributes['days'],
-                    'time' => $attributes['time']
+                    'days' =>   $attributes['days'],
+                    'time' =>   $attributes['time']
                 ]);
 
                 if (Str::endsWith(url()->previous(), '?pridat')) {
@@ -191,8 +191,8 @@ class ApplicationController extends Controller
                         'type' => ['required', 'integer', 'in:0,1'],
                         'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
                         'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
-                        'days' => ['required', 'integer'],
-                        'time' => ['required', 'integer'],
+                        'days' => ['required', 'integer', 'in:1,2,3'],
+                        'time' => ['required', 'integer', 'in:1,2,3']
                     ]);
                     
                 }else {
@@ -205,8 +205,8 @@ class ApplicationController extends Controller
                     'coursetype_id' => ['required_if:type2,1', 'integer', Rule::exists('course_types', 'id')],
                     'academy_id2' => ['required_if:type2,0', 'integer', Rule::exists('academies', 'id')],
                     'coursetype_id2' => ['required_if:type2,0', 'integer', Rule::exists('course_types', 'id')],
-                    'days' => ['required', 'integer'],
-                    'time' => ['required', 'integer'],
+                    'days' => ['required', 'integer', 'in:1,2,3'],
+                     'time' => ['required', 'integer', 'in:1,2,3']
                 ]);
                 }
                 
@@ -242,8 +242,8 @@ class ApplicationController extends Controller
                 'coursetype_id' => ['required_if:type,1', 'integer', Rule::exists('course_types', 'id')],
                 'academy_id2' => ['required_if:type,0', 'integer', Rule::exists('academies', 'id')],
                 'coursetype_id2' => ['required_if:type,0', 'integer', Rule::exists('course_types', 'id')],
-                'days' => ['required', 'integer'],
-                'time' => ['required', 'integer'],
+                'days' => ['required', 'integer', 'in:1,2,3'],
+                'time' => ['required', 'integer', 'in:1,2,3']
             ]);
 
 
