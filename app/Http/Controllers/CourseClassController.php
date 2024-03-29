@@ -163,6 +163,22 @@ class CourseClassController extends Controller
 
     public function destroy(CourseClass $class)
     {
+        if ($class->students->count() > 0) {
+            
+            foreach ($class->students as $student) {
+                // Access application_id from the pivot table
+                $applicationId = $student->pivot->application_id ?? null;
+                
+                if ($applicationId) {
+                    // Try to restore the application
+                    $application = Application::withTrashed()->find($applicationId);
+                    if ($application) {
+                        $application->restore();
+                        // Additional logic here, if needed
+                    }
+                }
+            }
+        }
 
         $class->delete();
 

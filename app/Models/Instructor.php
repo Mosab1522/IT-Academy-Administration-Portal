@@ -26,4 +26,9 @@ class Instructor extends Model
     {
         return $this->belongsToMany(CourseClass::class, 'class_instructor', 'instructor_id', 'class_id')->withTimestamps();
     }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
 }

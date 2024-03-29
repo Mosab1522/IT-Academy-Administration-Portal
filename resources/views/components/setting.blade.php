@@ -109,6 +109,11 @@
                                     class="{{request()->is('admin/classes') ? 'text-blue-500' : ''}}">-
                                     Triedy</a>
                             </li>
+                            <li>
+                                <a href="/admin/lessons"
+                                    class="{{request()->is('admin/lessons') ? 'text-blue-500' : ''}}">-
+                                    Hodiny</a>
+                            </li>
                         </ul>
                     </li>
                     <ul>
@@ -151,6 +156,12 @@
                                         class="{{request()->is('admin/classes/create') ? 'text-blue-500' : ''}}">-
                                         Nová
                                         trieda</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/lessons/create"
+                                        class="{{request()->is('admin/lessons/create') ? 'text-blue-500' : ''}}">-
+                                        Nová
+                                        hodina</a>
                                 </li>
                             </ul>
                         </li>

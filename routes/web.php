@@ -11,6 +11,7 @@ use App\Http\Controllers\CourseType_InstructorController;
 use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\PrihlaskyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
@@ -108,6 +109,14 @@ Route::get('admin/classes/create', [CourseClassController::class, 'create']);
 Route::get('admin/classes/{class:id}', [CourseClassController::class, 'show']);
 Route::post('admin/classes/create', [CourseClassController::class, 'store']);
 Route::delete('admin/classes/{class}', [CourseClassController::class, 'destroy']);
+
+Route::get('admin/lessons', [LessonController::class, 'index'])->name('admin.lessons.index');
+Route::patch('admin/lessons/{lesson}', [LessonController::class, 'update']);
+
+Route::get('admin/lessons/create', [LessonController::class, 'create']);
+Route::get('admin/lessons/{lesson:id}', [LessonController::class, 'show']);
+Route::post('admin/lessons/create', [LessonController::class, 'store']);
+Route::delete('admin/lessons/{lesson}', [LessonController::class, 'destroy']);
 
 Route::post('admin/class-student', [Class_StudentController::class, 'store']);
 Route::delete('admin/class-student/{student}/{class}', [Class_StudentController::class, 'destroy']);
