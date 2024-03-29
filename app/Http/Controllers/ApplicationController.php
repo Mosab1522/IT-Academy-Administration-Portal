@@ -382,7 +382,7 @@ class ApplicationController extends Controller
     }
     public function destroy(Application $application)
     {
-        $application->delete();
+        $application->forceDelete();
 
         if (Str::endsWith(url()->previous(), '?pridat'))
         {

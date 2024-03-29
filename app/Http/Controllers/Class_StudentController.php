@@ -29,8 +29,8 @@ class Class_StudentController extends Controller
                 return back()->with('message', 'Student is already in the class.');
             }
             $application = Application::where('student_id', $attributes['student_id'])
-            ->where('coursetype_id', $class->coursetype->id)
-            ->first();
+                ->where('coursetype_id', $class->coursetype->id)
+                ->first();
             // Attempt to retrieve an application for the student
 
         } else {
@@ -42,8 +42,8 @@ class Class_StudentController extends Controller
                 return back()->with('message', 'Student is already in the class.');
             }
             $application = Application::where('student_id', $student['id'])
-            ->where('coursetype_id', $class->coursetype->id)
-            ->first();
+                ->where('coursetype_id', $class->coursetype->id)
+                ->first();
         }
 
 
@@ -57,13 +57,14 @@ class Class_StudentController extends Controller
         $pivotData = [];
         if ($application) {
             $pivotData['application_id'] = $application->id;
+            $application->delete();
         }
 
         // Attach the student to the class, with application_id if available
         if (isset($attributes['student_id'])) {
-        $class->students()->attach($attributes['student_id'], $pivotData);
-        }else{
-        $class->students()->attach($student['id'], $pivotData);
+            $class->students()->attach($attributes['student_id'], $pivotData);
+        } else {
+            $class->students()->attach($student['id'], $pivotData);
         }
 
         if (Str::endsWith(url()->previous(), '?pridat')) {
@@ -92,6 +93,14 @@ class Class_StudentController extends Controller
         //     ]
         // );
         // $instructor ? $instructor->coursetypes()->detach($attributes['coursetype_id']) : $coursetype->instructors()->detach($attributes['instructor_id']);
+        $applicationId = $class->students()->where('student_id', $student->id)->first()->pivot->application_id ?? null;
+
+
+        if ($applicationId) {
+            $application = Application::withTrashed()->findOrFail($applicationId);
+            $application->restore();
+        }
+
         $class->students()->detach($student['id']);
         // if ($instructor){
 

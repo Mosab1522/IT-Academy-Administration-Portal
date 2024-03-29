@@ -101,6 +101,7 @@ class CourseClassController extends Controller
                     $class->students()->attach($student->id, ['application_id' => $application->id]);
                     // Optionally, you might want to mark the application as processed or remove it
                 }
+                $application->delete();
             }
         }
 
