@@ -5,6 +5,10 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/fullcalendar@5/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    
+
 </head>
 
 {{$slot}}

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('class_id')->constrained('course_classes')->cascadeOnDelete();
             $table->foreignId('instructor_id')->constrained()->cascadeOnDelete();
             $table->dateTime('lesson_date');
+            $table->integer('duration');
             $table->timestamps();
         });
     }

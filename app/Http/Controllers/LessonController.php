@@ -62,12 +62,21 @@ class LessonController extends Controller
 
     public function store()
     {
+       
         $attributes = request()->validate([
            // 'students' => ['in:on'],
             'title' => ['required', 'max:255', Rule::unique('lessons', 'title')],
             'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id' )],
-            'lesson_date' => ['required', 'date']
+            'lesson_date' => ['required', 'date'],
+            'duration' => 'required|date_format:H:i'
         ]);
+
+        list($hours, $minutes) = explode(':', $attributes['duration']);
+
+        // Convert hours to minutes and add to minutes
+        $totalMinutes = ($hours * 60) + $minutes;
+
+        $attributes['duration'] = $totalMinutes;
 
         foreach($attributes['instructor_id'] = CourseClass::find($attributes['class_id'])->instructors as $instructor)
         {
@@ -131,8 +140,16 @@ class LessonController extends Controller
             'title' => ['required', 'max:255', Rule::unique('lessons', 'title')->ignore($lesson)],
             'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id')],
             'instructor_id' => ['required', 'integer', Rule::exists('instructors', 'id')],
-            'lesson_date' => ['required', 'date']
+            'lesson_date' => ['required', 'date'],
+            'duration' => 'required|date_format:H:i'
         ]);
+
+        list($hours, $minutes) = explode(':', $attributes['duration']);
+
+        // Convert hours to minutes and add to minutes
+        $totalMinutes = ($hours * 60) + $minutes;
+
+        $attributes['duration'] = $totalMinutes;
 
         $lesson->update($attributes);
 

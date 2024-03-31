@@ -43,6 +43,7 @@
         <x-form.field>
             <x-form.label name="Dátum" />
             <input type="datetime-local" name="lesson_date" class="border">
+            <input type="time" id="duration" name="duration" step="60" value="00:45">
         </x-form.field>
        
         <x-form.button>

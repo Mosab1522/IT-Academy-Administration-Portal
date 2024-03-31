@@ -102,6 +102,11 @@ Route::get('admin/instructors/{instructor:id}', [InstructorController::class, 's
 Route::post('admin/instructors/create', [InstructorController::class, 'store']);
 Route::delete('admin/instructors/{instructor}', [InstructorController::class, 'destroy']);
 
+
+Route::get('/instructors/{instructor}/lessons', [InstructorController::class, 'lessonsForInstructor']);
+
+
+
 Route::get('admin/classes', [CourseClassController::class, 'index'])->name('admin.classes.index');
 Route::patch('admin/classes/{class}', [CourseClassController::class, 'update']);
 
