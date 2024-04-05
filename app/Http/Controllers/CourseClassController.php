@@ -106,10 +106,18 @@ class CourseClassController extends Controller
         }
 
         $instructors = CourseType::find($attributes['coursetype_id'])->instructors;
-        if ($instructors) {
-            foreach ($instructors as $instructor) {
-                $class->instructors()->save($instructor);
-            }
+        if ($instructors->count() > 1) {
+
+            dd(request()->all());
+            // foreach ($instructors as $instructor) {
+            //     $class->instructors()->save($instructor);
+            // }
+        }else if ($instructors->count() == 1)
+        {
+            $class->update(['instructor_id' => $instructors[0]['id']]);
+        }
+        else{
+            dd(request()->all());
         }
 
 
@@ -138,13 +146,15 @@ class CourseClassController extends Controller
         //     request()->merge(['name'  => request()->cname]);
         //    }
 
-
+        if(request()->cname)
+        {
+         request()->merge(['name'  => request()->cname]);
+        }
+        
         $attributes = request()->validate([
             'name' => ['required', 'max:255', Rule::unique('course_classes', 'name')->ignore($class)],
-            'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
-            'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
-            'min' => ['required', 'integer', 'lte:max'],
-            'max' => ['required', 'integer', 'gte:min'],
+            'days' => ['required', 'integer', 'in:1,2,3'],
+            'time' => ['required', 'integer', 'in:1,2,3']
         ]);
 
         $class->update($attributes);
@@ -189,4 +199,19 @@ class CourseClassController extends Controller
 
         return back()->with('success_d', 'Úspešne vymazané');
     }
+    
+    public function addinstructor()
+    {
+        $attributes = request()->validate([
+            'instructor_id' => ['required', 'integer', Rule::exists('instructors', 'id')],
+            'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id')],
+        ]);
+
+        $class = CourseClass::firstWhere('id', $attributes['class_id']);
+
+        $class->update(['instructor_id' => $attributes['instructor_id']]);
+    
+    }
 }
+
+

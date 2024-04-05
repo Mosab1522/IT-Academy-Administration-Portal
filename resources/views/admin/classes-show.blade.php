@@ -34,8 +34,12 @@
                                 </h5>
                                 <p class="mb-0 font-semibold leading-normal dark:opacity-60 text-sm">
                                     {{$class->coursetype->name}} - {{$class->academy->name}} akadémia</p>
-                                <p class="mb-0 font-semibold leading-normal dark:opacity-60 text-sm">{{$class->coursetype->type
+                                <p class="mb-0 font-semibold leading-normal dark:opacity-60 text-sm">
+                                    {{$class->coursetype->type
                                     == 0 ? 'študentský' : 'inštruktorský'}} kurz</p>
+                                <p class="mb-0 font-semibold leading-normal dark:opacity-60 text-sm">
+                                    {{$class->coursetype->min}} - {{$class->coursetype->max}} študentov</p>
+
                             </div>
                         </div>
 
@@ -80,7 +84,8 @@
                                             class="add-button z-30 {{ session('success_c') || session('success_d') || request()->has('vytvorit')  ? '' : 'hidden' }}  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             data-target="loginAdd">
                                             <span
-                                                class="{{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Pridať študenta</span>
+                                                class="{{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Pridať
+                                                študenta</span>
                                             <span class="{{request()->has('vytvorit') ? '' : 'hidden' }}">Zrušiť
                                                 pridanie študenta</span>
                                         </button>
@@ -122,12 +127,12 @@
                                                 class="{{ session('success_d') ? '' : 'hidden' }} ml-2">Inštruktori</span>
                                         </a> --}}
 
-                                        <button 
-                                        class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? '' : 'hidden' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
-                                        data-target="kurzy">Inštruktori</button>
-                                    <button
-                                        class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? 'hidden' : '' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
-                                        data-target="login">Študenti</button>
+                                        <button
+                                            class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? '' : 'hidden' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            data-target="kurzy">Inštruktori</button>
+                                        <button
+                                            class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? 'hidden' : '' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
+                                            data-target="login">Študenti</button>
                                     </li>
                                 </ul>
                             </div>
@@ -143,7 +148,7 @@
                     <div id="profile" class="section flex-auto p-6"
                         style="{{session('success_c') || session('success_cc') || session('success_d') || session('success_dd')  || request()->has('pridat') || request()->has('vytvorit') ? 'display: none;' : '' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Coursetype Information</p>
-                        <form id="formm" action="/admin/coursetypes/{{$class->id}}" method="post"
+                        <form id="formm" action="/admin/classes/{{$class->id}}" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             @method('Patch')
@@ -158,7 +163,7 @@
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
-                                <div class="w-full max-w-full px-3 shrink-0">
+                                {{-- <div class="w-full max-w-full px-3 shrink-0">
                                     <div class="mb-4">
                                         <x-form.label name="typ kurzu:" />
 
@@ -171,26 +176,41 @@
                                             {{$class->coursetype->type=='1' ? 'checked' : '' }}>
                                         <label for="1">Inštruktorský</label>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="w-full">
-                                    <div class="w-full mb-4 px-3 shrink-0">
-                                        <label for="first name"
-                                            class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">
-                                            Academy</label>
-                                        <select disabled name="academy_id" id="academy_id" class="w-full">
-                                            <option value="" disabled selected hidden>Akadémie</option>
-
-                                            @foreach (\App\Models\Academy::orderBy('name')->get() as $academ)
-                                            <option value="{{ $academ->id }}" {{$class->academy->id == $academ->id
-                                                ?
-                                                'selected' : '' }} >{{ ucwords($academ->name) }}</option>
-                                            @endforeach
-
+                                    <div class="w-full flex mb-4 px-3  shrink-0">
+                                        <div>
+                                        <x-form.label name="dni výučby" />
+                                        <select disabled class="mr-4" name="days" id="days">
+                                            <option value="" disabled selected hidden>Dni výučby</option>
+                                            <option value="1" {{$class->days==1 ? 'selected' : '' }}>Týždeň</option>
+                                            <option value="2" {{$class->days==2 ? 'selected' : '' }}>Víkend</option>
+                                            <option value="3" {{$class->days==3 ? 'selected' : '' }}>Nezáleží</option>
+                                            {{-- <option value="1" data-id="1" data-option="2">Týždeň</option>
+                                            <option value="1" data-id="1" data-option="3">Týždeň</option>
+                                            <option value="2" data-id="2" data-option="3">Víkend</option>
+                                            <option value="3" data-id="3" data-option="3">Nezáleží</option>
+                                            <option value="1" data-id="1" data-option="4">Týždeň</option> --}}
                                         </select>
+                                        </div>
+                                        <div>
+                                        <x-form.label name="čas výučby" />
+                                        <select disabled name="time" id="time">
+                                            <option value="" disabled selected hidden>Čas výučby</option>
+                                            <option value="1" {{$class->time==1 ? 'selected' : '' }}>Ranný</option>
+                                            <option value="2" {{$class->time==3 ? 'selected' : '' }}>Poobedný</option>
+                                            <option value="3" {{$class->time==3 ? 'selected' : '' }}>Nezáleží</option>
+                                            {{-- <option value="1" data-id="1" data-option="2">Ranný</option>
+                                            <option value="4" data-id="1" data-option="3">Ranný (Týždeň/Víkend)</option>
+                                            <option value="5" data-id="2" data-option="3">Poobedný (Týždeň)</option>
+                                            <option value="3" data-id="3" data-option="3">Nezáleží</option>
+                                            <option value="1" data-id="1" data-option="4">Ranný</option> --}}
+                                        </select>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
+                                {{-- <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                     <div class="mb-4">
                                         <label for="email"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Min</label>
@@ -205,7 +225,7 @@
                                         <input disabled type="text" name="max" value="{{$class->coursetype->max}}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
-                                </div>
+                                </div> --}}
                                 {{--
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                     <div class="mb-4">
@@ -298,11 +318,11 @@
                         style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
                         <p class="leading-normal uppercase  dark:opacity-60 text-sm">Pridať inštruktora</p>
 
-                        <form action="/admin/coursetype_instructor" method="POST">
+                        <form action="/admin/class-instructor" method="POST">
                             @csrf
                             <div>
 
-                                <input name="coursetype_id" value="{{$class->id}}" hidden />
+                                <input name="class_id" value="{{$class->id}}" hidden />
 
                                 <x-form.label name="inštruktor" />
                                 <!-- parent -->
@@ -313,11 +333,12 @@
                                     ->get();
                                     @endphp --}}
                                     @php
-                                    $assignedInstructors = $class->instructors->pluck('id')->toArray();
+                                    $assignableInstructors = $class->coursetype->instructors->pluck('id')->toArray();
+                                    
                                     @endphp
                                     @foreach (\App\Models\Instructor::with(['coursetypes'])->get() as $instructor)
 
-                                    @if(!in_array($instructor->id, $assignedInstructors))
+                                    @if(in_array($instructor->id, $assignableInstructors))
 
                                     <option value="{{ $instructor->id }}" data-id="{{ $instructor->id }}"
                                         data-option="-1" {{old('instructor_id')==$instructor->id ? 'selected' :
@@ -352,17 +373,18 @@
                                     <td></td>
                                 </tr>
                             </thead>
+                            @if($class->instructor)
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($class->instructors as $instructor)
+                                
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="text-sm font-medium text-gray-900">
-                                                <a href="/admin/instructors/{{ $instructor->id }}"
+                                                <a href="/admin/instructors/{{ $class->instructor->id }}"
                                                     title="Ukázať podrobnosti">
 
-                                                    {{$instructor->name }}
-                                                    {{$instructor->lastname }}
+                                                    {{$class->instructor->name }}
+                                                    {{$class->instructor->lastname }}
 
                                                 </a>
                                             </div>
@@ -372,7 +394,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="text-sm font-medium text-gray-900">
-                                                {{$instructor->email }}
+                                                {{$class->instructor->email }}
 
                                             </div>
                                         </div>
@@ -380,13 +402,13 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="text-sm font-medium text-gray-900">
-                                                {{ $instructor->created_at->diffForHumans()}}
+                                                {{ $class->instructor->created_at->diffForHumans()}}
                                             </div>
                                         </div>
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="/admin/instructors/{{ $instructor->id }}"
+                                        <a href="/admin/instructors/{{ $class->instructor->id }}"
                                             class="text-blue-500 hover:text-blue-600">Edit</a>
                                     </td>
 
@@ -402,8 +424,9 @@
                                         </form> --}}
                                     </td>
                                 </tr>
-                                @endforeach
+                             
                             </tbody>
+                            @endif
                         </table>
                     </div>
                     <div class="add-section p-6" id="loginAdd"
@@ -413,8 +436,8 @@
                         <form action="/admin/class-student" method="post">
                             @csrf
                             <input type="hidden" name="class_id" value="{{$class->id}}" />
-                    
-                            
+
+
 
                             <div class="flex min-w-full">
 
@@ -459,7 +482,7 @@
                                     </x-form.field>
                                 </div>
                             </div>
-                            
+
                             {{--
                             <x-form.input name="thumbnail" type="file" /> --}}
                             {{--
@@ -473,7 +496,7 @@
                                         Odoslať
                                     </x-form.button>
                                 </div>
-                                
+
                             </div>
                         </form>
                     </div>
@@ -494,8 +517,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="text-sm font-medium text-gray-900">
-                                                <a href="/admin/students/{{ $student->id }}"
-                                                    title="Ukázať podrobnosti">
+                                                <a href="/admin/students/{{ $student->id }}" title="Ukázať podrobnosti">
 
                                                     {{$student->name }}
                                                     {{$student->lastname }}
@@ -526,7 +548,8 @@
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
-                                        <form method="POST" action="/admin/class-student/{{ $student->id }}/{{$class->id}}">
+                                        <form method="POST"
+                                            action="/admin/class-student/{{ $student->id }}/{{$class->id}}">
                                             @csrf
                                             @method('DELETE')
 

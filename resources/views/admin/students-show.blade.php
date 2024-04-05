@@ -210,115 +210,122 @@
                                     <label for="nestudent">Neštudent</label>
                                 </div>
                                 <div class="flex pb-1">
-                                    <div class="h-20 mt-3 {{ $student->skola ? '' : 'hidden' }}" id="ucm">
-                                        <x-form.label name="univerzita:" />
-                                        <div class=" flex">
-                                            <div>
-                                                <input disabled type="radio" id="ucmka" name="skola" value="ucm" {{
-                                                    $student->skola == 'ucm' ? 'checked' : '' }}>
-                                                <label for="option1">UCM</label><br>
-                                                <div class="mt-1">
-                                                    <input disabled type="radio" id="inam" name="skola" value="ina" {{
-                                                        $student->skola == 'ucm' || $student->skola == null ? '' :
-                                                    'checked' }}>
-                                                    <label for="option2">Iná</label><br>
+                                    
+                                        <div class="h-20 mt-3 {{ $student->skola ? '' : 'hidden' }}" id="ucm">
+                                            <x-form.label name="univerzita:" />
+                                            <div class=" flex">
+                                                <div>
+                                                    <input disabled type="radio" id="ucmka" name="skola" value="ucm" {{
+                                                        $student->skola == 'ucm' ? 'checked' : '' }}>
+                                                    <label for="option1">UCM</label><br>
+                                                    <div class="mt-1">
+                                                        <input disabled type="radio" id="inam" name="skola" value="ina"
+                                                            {{ $student->skola == 'ucm' || $student->skola == null ? ''
+                                                        :
+                                                        ' checked' }}>
+                                                        <label for="option2">Iná</label><br>
+                                                    </div>
+                                                </div>
+                                                <div id="ina"
+                                                    class="{{ $student->skola == 'ucm' || $student->skola == null ? 'hidden' : '' }}">
+                                                    <input disabled
+                                                        class="{{ $student->skola == 'ucm' || $student->skola == null ? 'hidden' : '' }} border border-gray-200 mt-6 ml-2 p-2 w-80 rounded h-7"
+                                                        name="ina" id="nu" required
+                                                        value="{{ $student->skola == 'ucm' ? '' : $student->skola }}"
+                                                        {{-- $student->skola=='ina' ? '' : 'disabled' --}}>
                                                 </div>
                                             </div>
-                                            <div id="ina"
-                                                class="{{ $student->skola == 'ucm' || $student->skola == null ? 'hidden' : '' }}">
-                                                <input disabled
-                                                    class=" border border-gray-200 mt-6 ml-2 p-2 w-80 rounded h-7"
-                                                    name="ina" id="nu" required
-                                                    value="{{ $student->skola == 'ucm' ? '' : $student->skola }}" {{--
-                                                    $student->skola=='ina' ? '' : 'disabled' --}}>
-                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="ml-4 mt-3 {{ $student->skola == 'ucm' ? '' : 'hidden' }}" id="ucmkari">
-                                        <x-form.label name="studium:" />
-                                        <input disabled type="radio" id="option3" name="studium" value="interne" {{
-                                            $student->studium == 'interne' ? 'checked' : '' }}>
-                                        <label for="option1">Interné</label><br>
-                                        <div class="mt-1">
-                                            <input disabled type="radio" id="option4" name="studium" value="externe" {{
-                                                $student->studium == 'externe' ? 'checked' : '' }}>
-                                            <label for="option2">Externé</label><br>
-                                        </div>
-                                    </div>
-                                    <div class="ml-4 mt-3 {{ $student->skola == 'ucm' ? '' : 'hidden' }}" id="ucmkari2">
-                                        <x-form.label name="program:" />
-                                        <div>
-                                            <input disabled type="radio" id="option5" name="program" value="apin" {{
-                                                $student->program == 'apin' ? 'checked' : '' }}>
-                                            <label for="option1">Aplikovaná informatika</label><br>
+                                        <div class="ml-4 mt-3 {{ $student->skola == 'ucm' ? '' : 'hidden' }}"
+                                            id="ucmkari">
+                                            <x-form.label name="studium:" />
+                                            <input disabled type="radio" id="option3" name="studium" value="interne" {{
+                                                $student->studium == 'interne' ? 'checked' : '' }}>
+                                            <label for="option1">Interné</label><br>
                                             <div class="mt-1">
-                                                <input disabled type="radio" id="option6" name="program" value="iny" {{
-                                                    $student->program == 'apin' || $student->program == null ? '' :
-                                                'checked' }}>
-                                                <label for="option2">Iný</label><br>
+                                                <input disabled type="radio" id="option4" name="studium" value="externe"
+                                                    {{ $student->studium == 'externe' ? 'checked' : '' }}>
+                                                <label for="option2">Externé</label><br>
+                                            </div>
+                                        </div>
+                                        <div class="ml-4 mt-3 {{ $student->skola == 'ucm' ? '' : 'hidden' }}"
+                                            id="ucmkari2">
+                                            <x-form.label name="program:" />
+                                            <div>
+                                                <input disabled type="radio" id="option5" name="program" value="apin" {{
+                                                    $student->program == 'apin' ? 'checked' : '' }}>
+                                                <label for="option1">Aplikovaná informatika</label><br>
+                                                <div class="mt-1">
+                                                    <input disabled type="radio" id="option6" name="program" value="iny"
+                                                        {{ $student->program == 'apin' || $student->program == null ? ''
+                                                    :
+                                                    ' checked' }}>
+                                                    <label for="option2">Iný</label><br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-16 -ml-32 {{ $student->program == 'apin' || $student->program == null ? 'hidden' : '' }}"
+                                            id="iny"><input disabled
+                                                class="{{ $student->program == 'apin' || $student->program == null ? 'hidden' : '' }} border border-gray-200 ml-2 p-2 w-80 rounded h-7" name="iny"
+                                                id="ny"
+                                                value="{{ $student->program == 'apin' ? '' : $student->program }}"
+                                                required {{-- $student->program=='iny' ? ''
+                                            : 'disabled' --}}>
+                                        </div>
+                                    
+                                    </div>
+                                    <hr
+                                        class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
+
+                                    <p class="leading-normal uppercase  dark:opacity-60 text-sm">Contact Information</p>
+                                    <div class="flex flex-wrap -mx-3">
+
+                                        <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
+
+                                            <div class="mb-4">
+                                                <label for="city"
+                                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Ulica
+                                                    a
+                                                    číslo</label>
+                                                <input disabled type="text" name="ulicacislo"
+                                                    value="{{ $student->ulicacislo }}"
+                                                    class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                            </div>
+                                        </div>
+                                        <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
+                                            <div class="mb-4">
+                                                <label for="country"
+                                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Mesto/obec</label>
+                                                <input disabled type="text" name="mestoobec"
+                                                    value="{{ $student->mestoobec }}"
+                                                    class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                            </div>
+                                        </div>
+                                        <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
+                                            <div class="mb-4">
+                                                <label for="postal code"
+                                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">PSČ</label>
+                                                <input disabled type="text" name="psc" value="{{ $student->psc }}"
+                                                    class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mt-16 -ml-32 {{ $student->program == 'apin' || $student->program == null ? 'hidden' : '' }}"
-                                        id="iny"><input disabled
-                                            class=" border border-gray-200 ml-2 p-2 w-80 rounded h-7" name="iny" id="ny"
-                                            value="{{ $student->program == 'apin' ? '' : $student->program }}" required
-                                            {{-- $student->program=='iny' ? ''
-                                        : 'disabled' --}}>
-                                    </div>
-                                </div>
-                                <hr
-                                    class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-
-                                <p class="leading-normal uppercase  dark:opacity-60 text-sm">Contact Information</p>
-                                <div class="flex flex-wrap -mx-3">
-
-                                    <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
-
-                                        <div class="mb-4">
-                                            <label for="city"
-                                                class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Ulica
-                                                a
-                                                číslo</label>
-                                            <input disabled type="text" name="ulicacislo"
-                                                value="{{ $student->ulicacislo }}"
-                                                class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                    {{-- <x-form.field>
+                                        <button type="submit"
+                                            class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                                    </x-form.field> --}}
+                                    {{-- <x-form.button>
+                                        Update
+                                    </x-form.button> --}}
+                                    <x-form.field>
+                                        <div class="flex">
+                                            <button id="upd" type="submit"
+                                                class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
+                                            <button id="yourResetButtonId" type="reset"
+                                                class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
                                         </div>
-                                    </div>
-                                    <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
-                                        <div class="mb-4">
-                                            <label for="country"
-                                                class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">Mesto/obec</label>
-                                            <input disabled type="text" name="mestoobec"
-                                                value="{{ $student->mestoobec }}"
-                                                class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                        </div>
-                                    </div>
-                                    <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
-                                        <div class="mb-4">
-                                            <label for="postal code"
-                                                class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">PSČ</label>
-                                            <input disabled type="text" name="psc" value="{{ $student->psc }}"
-                                                class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- <x-form.field>
-                                    <button type="submit"
-                                        class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
-                                </x-form.field> --}}
-                                {{-- <x-form.button>
-                                    Update
-                                </x-form.button> --}}
-                                <x-form.field>
-                                    <div class="flex">
-                                        <button id="upd" type="submit"
-                                            class="hidden flex-1 bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">Update</button>
-                                        <button id="yourResetButtonId" type="reset"
-                                            class="hidden flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
-                                    </div>
 
-                                </x-form.field>
+                                    </x-form.field>
 
                         </form>
                     </div>
@@ -328,12 +335,27 @@
                     <p class="leading-normal uppercase  dark:opacity-60 text-sm">Vytvoriť prihlášku</p>
                     <form action="/" method="POST">
                         @csrf
-                        <div class="flex">
-
+                        <input name="student_id" value="{{ $student->id }}" hidden />
+                        <div class="items-center">
+                            <x-form.label name="typ kurzu:" />
+                
+                            <input class="mr-0.5" type="radio"  name="type" value="0" {{old('type')=='0'
+                                ? 'checked' : '' }}>
+                            <label for="0">Študentský</label>
+                
+                            <input class="ml-2 mr-0.5" type="radio"  name="type" value="1"
+                                {{old('type')=='1' ? 'checked' : '' }}>
+                            <label for="1">Inštruktorský</label>
+                
+                        </div>
+                
+                        <div class="mt-4 hidden" id="inst" >
+                
                             <div>
-
-                                <input name="student_id" value="{{ $student->id }}" hidden />
-
+                
+                
+                
+                
                                 <x-form.label name="akadémia" />
                                 <!-- parent -->
                                 <select name="academy_id" class="combo-a" data-nextcombo=".combo-b">
@@ -342,13 +364,12 @@
                                     $academy = \App\Models\Academy::with(['coursetypes','applications'])
                                     ->get();
                                     @endphp --}}
-                                    @php
-                                    $assignedCourses = $student->applications->pluck('coursetype_id')->toArray();
-                                    @endphp
-                                    @foreach (\App\Models\Academy::with(['coursetypes', 'applications'])->get() as $academ)
-                                    <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{
-                                        old('academy_id')==$academ->id ? 'selected' : '' }}>
-                                        {{ ucwords($academ->name) }}</option>
+                                    @foreach (\App\Models\Academy::with(['coursetypes','applications'])
+                                    ->get() as $academ)
+                                    <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
+                                        {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                                        >{{
+                                        ucwords($academ->name)}}</option>
                                     @endforeach
                                     {{-- <option value="" disabled selected hidden>Akadémia</option>
                                     <option value="1" data-id="1" data-option="-1">Cisco</option>
@@ -358,8 +379,8 @@
                             <div class="ml-4">
                                 <x-form.label name="typ kurzu" />
                                 <!-- child -->
-                                {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
-                                    data-nextcombo=".combo-c" disabled>
+                                {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
+                                    disabled>
                                     <option value="" disabled selected hidden>Typ kurzu</option>
                                     <option value="1" data-id="1" data-option="1">Lahky</option>
                                     <option value="2" data-id="2" data-option="1">Stredny</option>
@@ -371,13 +392,65 @@
                                     {{-- @php
                                     $academy = \App\Models\CourseType::all();
                                     @endphp --}}
-                                    @foreach (\App\Models\CourseType::with(['academy', 'applications'])->get() as $typ)
-                                    @if (!in_array($typ->id, $assignedCourses))
-                                    <option value="{{ $typ->id }}" data-id="{{ $typ->id }}"
-                                        data-option="{{ $typ->academy_id }}" {{ old('coursetype_id')==$typ->id ?
-                                        'selected' : '' }}>
-                                        {{ ucwords($typ->name) }}</option>
-                                    @endif
+                                    @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1, 2])->get() as $type)
+                                    <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
+                                        {{-- {{old('coursetype_id')==$type->id ? 'selected' : ''}} --}}
+                                        >{{
+                                        ucwords($type->name) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        
+                
+                        <div class="mt-4 hidden" id="stud">
+                
+                            <div>
+                
+                
+                
+                
+                                <x-form.label name="akadémia" />
+                                <!-- parent -->
+                                <select name="academy_id2" class="combo-a3" data-nextcombo=".combo-b3">
+                                    <option value="" disabled selected hidden>Akadémia</option>
+                                    {{-- @php
+                                    $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                                    ->get();
+                                    @endphp --}}
+                                    @foreach (\App\Models\Academy::with(['coursetypes','applications'])
+                                    ->get() as $academ)
+                                    <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
+                                        {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                                        >{{
+                                        ucwords($academ->name)}}</option>
+                                    @endforeach
+                                    {{-- <option value="" disabled selected hidden>Akadémia</option>
+                                    <option value="1" data-id="1" data-option="-1">Cisco</option>
+                                    <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                                </select>
+                            </div>
+                            <div class="ml-4">
+                                <x-form.label name="typ kurzu" />
+                                <!-- child -->
+                                {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
+                                    disabled>
+                                    <option value="" disabled selected hidden>Typ kurzu</option>
+                                    <option value="1" data-id="1" data-option="1">Lahky</option>
+                                    <option value="2" data-id="2" data-option="1">Stredny</option>
+                                    <option value="3" data-id="3" data-option="2">Photoshop</option>
+                                    <option value="4" data-id="4" data-option="2">Illustrator</option>
+                                </select> --}}
+                                <select name="coursetype_id2" id="coursetype_id" class="combo-b3" disabled>
+                                    <option value="" disabled selected hidden>Typ kurzu</option>
+                                    {{-- @php
+                                    $academy = \App\Models\CourseType::all();
+                                    @endphp --}}
+                                    @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [0, 2])->get() as $type2)
+                                    <option value="{{ $type2->id }}" data-id="{{ $type2->id }}" data-option="{{ $type2->academy_id }}"
+                                        {{-- {{old('coursetype_id')==$type->id ? 'selected' : ''}} --}}
+                                        >{{
+                                        ucwords($type2->name) }}</option>
                                     @endforeach
                                 </select>
                             </div>

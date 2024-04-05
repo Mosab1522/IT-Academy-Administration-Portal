@@ -36,7 +36,7 @@ class StudentController extends Controller
         ]);
     }
 
-    
+
     public function show(Student $student)
     {
         return view('admin.students-show', ['student' => $student]);
@@ -123,7 +123,6 @@ class StudentController extends Controller
 
         // return redirect('/admin/applications/create')->with('student_id', $student['id']);
         return redirect('/admin/applications/create?student_id=' . urlencode($student['id']))->with('success_c', 'Úspešne vytvorené');
-
     }
     public function update(Student $student)
     {
@@ -149,6 +148,13 @@ class StudentController extends Controller
             // 'time' => ['required', 'integer'],
         ]);
         if ($attributes['status'] == "nestudent") {
+            if ($student['status'] == 'student') {
+                $student->update([
+                    'skola' => null,
+                    'studium' => null,
+                    'program' => null
+                ]);
+            }
             $student->update([
                 'name' => $attributes['name'],
                 'lastname' => $attributes['lastname'],
@@ -160,6 +166,12 @@ class StudentController extends Controller
                 'psc' => $attributes['psc'],
             ]);
         } else if ($attributes['skola'] == "ina") {
+            if ($student['skola'] == 'ucm') {
+                $student->update([
+                    'studium' => null,
+                    'program' => null
+                ]);
+            }
             $student->update([
                 'name' => $attributes['name'],
                 'lastname' => $attributes['lastname'],
@@ -204,8 +216,7 @@ class StudentController extends Controller
         //$student->update($attributes);
         $student->touch();
 
-        if (Str::endsWith(url()->previous(), '?pridat'))
-        {
+        if (Str::endsWith(url()->previous(), '?pridat')) {
             $trimmedUrl = substr(url()->previous(), 0, -7);
             return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
         }

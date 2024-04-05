@@ -1,5 +1,17 @@
 <x-flash />
 <x-layout />
+@php
+// Assuming $lesson->duration contains the duration in minutes
+$hours = floor($lesson->duration / 60);
+$minutes = $lesson->duration % 60;
+
+// Format the hours and minutes to ensure they are always two digits
+$formattedHours = str_pad($hours, 2, '0', STR_PAD_LEFT);
+$formattedMinutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+
+// Concatenate the formatted hours and minutes with a colon
+$timeValue = $formattedHours . ':' . $formattedMinutes;
+@endphp
 <x-setting heading="{{$lesson->title}}">
     <a href="{{ url()->previous() }}"
         class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
@@ -147,13 +159,14 @@
                             enctype="multipart/form-data">
                             @csrf
                             @method('Patch')
+                            <input type="hidden" name="class_id" value="{{$lesson->class->id}}">
                             <div class="flex flex-wrap -mx-3">
 
                                 <div class="w-full max-w-full px-3 shrink-0 md:flex-0">
                                     <div class="mb-4">
                                         <label for="first name"
                                             class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 /80">
-                                            Name</label>
+                                            Title</label>
                                         <input disabled type="text" name="title" value="{{$lesson->title}}"
                                             class="focus:shadow-primary-outline dark:bg-slate-850  text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
@@ -162,8 +175,8 @@
                                     <div class="mb-4">
                                         <x-form.label name="Dátum hodiny - Trvanie" />
 
-                                        <input disabled class="mr-0.5" type="datetime-local" name="lessondate" value="{{$lesson->lesson_date}}">
-                                         <input disabled type="time" id="duration" name="duration" step="60" value="{{$lesson->duration}}">
+                                        <input disabled class="mr-0.5" type="datetime-local" name="lesson_date" value="{{$lesson->lesson_date}}">
+                                         <input disabled type="time" id="duration" name="duration" step="60" value="{{$timeValue}}">
                                      
                             
                                     </div>

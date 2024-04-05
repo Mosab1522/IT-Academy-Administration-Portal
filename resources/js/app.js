@@ -192,9 +192,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // const isEditing = Array.from(targetForm.querySelectorAll('input:not([type="hidden"])')).some(input => input.disabled);
         isEditing = !isEditing;
         // Toggle the disabled state of input elements based on the current editing state
-        targetForm.querySelectorAll('input:not([type="hidden"])').forEach(input => {
-            input.disabled = !isEditing;
-        });
+        targetForm.querySelectorAll('input:not([type="hidden"]):not(.hidden)').forEach(input => {
+          input.disabled = !isEditing;
+      });
         targetForm.querySelectorAll('select').forEach(select => {
           select.disabled = !isEditing;
       });
@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
           {
             value: 'student',
             elementsToShow: ['ucm'],
-            elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny'],
+            elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: [],
             elementsToDisable: [],
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
           {
             value: 'nestudent',
             elementsToShow: [],
-            elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny'],
+            elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: [],
             elementsToDisable: ['nu', 'ny'],
@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function () {
           {
             value: 'ucm',
             elementsToShow: ['ucmkari', 'ucmkari2'],
-            elementsToHide: ['ina', 'iny'],
+            elementsToHide: ['ina', 'iny','nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: [],
             elementsToDisable: ['nu'],
@@ -365,8 +365,8 @@ document.addEventListener('DOMContentLoaded', function () {
           },
           {
             value: 'ina',
-            elementsToShow: ['ina'],
-            elementsToHide: ['ucmkari', 'ucmkari2', 'iny'],
+            elementsToShow: ['ina', 'nu'],
+            elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny'],
             elementsToReset: ['ny'],
             elementsToEnable: ['nu'],
             elementsToDisable: [],// Add this line to enable 'nu' when 'ina' is selected
@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function () {
         mappings: [
           {
             value: 'iny',
-            elementsToShow: ['iny'],
+            elementsToShow: ['iny', 'ny'],
             elementsToHide: [],
             elementsToReset: [],
             elementsToEnable: ['ny'],
@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
           {
             value: 'apin',
             elementsToShow: [],
-            elementsToHide: ['iny'],
+            elementsToHide: ['iny', 'ny'],
             elementsToReset: ['ny'],
             elementsToEnable: [],
             elementsToDisable: ['ny'],
@@ -429,9 +429,8 @@ const radioMappings = [
       {
         value: 'student',
         elementsToShow: ['ucm'],
-        elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny'],
+        elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
-        elementsToHave: [],
         elementsToEnable: [],
         elementsToDisable: [],
         radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
@@ -439,9 +438,8 @@ const radioMappings = [
       {
         value: 'nestudent',
         elementsToShow: [],
-        elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny'],
+        elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
-        elementsToHave: [],
         elementsToEnable: [],
         elementsToDisable: ['nu', 'ny'],
         radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
@@ -454,19 +452,17 @@ const radioMappings = [
       {
         value: 'ucm',
         elementsToShow: ['ucmkari', 'ucmkari2'],
-        elementsToHide: ['ina', 'iny'],
+        elementsToHide: ['ina', 'iny','nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
-        elementsToHave: [],
         elementsToEnable: [],
         elementsToDisable: ['nu'],
         radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
       },
       {
         value: 'ina',
-        elementsToShow: ['ina'],
-        elementsToHide: ['ucmkari', 'ucmkari2', 'iny'],
+        elementsToShow: ['ina', 'nu'],
+        elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny'],
         elementsToReset: ['ny'],
-        elementsToHave: ['nu'],
         elementsToEnable: ['nu'],
         elementsToDisable: [],// Add this line to enable 'nu' when 'ina' is selected
         radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
@@ -478,10 +474,9 @@ const radioMappings = [
     mappings: [
       {
         value: 'iny',
-        elementsToShow: ['iny'],
+        elementsToShow: ['iny', 'ny'],
         elementsToHide: [],
         elementsToReset: [],
-        elementsToHave: ['ny'],
         elementsToEnable: ['ny'],
         elementsToDisable: [], // Add this line to enable 'ny' when 'iny' is selected
         radiosToUncheck: []
@@ -489,9 +484,8 @@ const radioMappings = [
       {
         value: 'apin',
         elementsToShow: [],
-        elementsToHide: ['iny'],
+        elementsToHide: ['iny', 'ny'],
         elementsToReset: ['ny'],
-        elementsToHave: [],
         elementsToEnable: [],
         elementsToDisable: ['ny'],
         radiosToUncheck: []

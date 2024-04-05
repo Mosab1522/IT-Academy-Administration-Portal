@@ -150,12 +150,12 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    @if($class->instructors->count() > 0)
+                                                    @if($class->instructor)
                                                     <span class="text-xs">
-                                                    @foreach($class->instructors as $instructor)
                                                     
-                                                    {{$instructor->name}} {{$instructor->lastname}} <br>
-                                                    @endforeach
+                                                    
+                                                    {{$class->instructor->name}} {{$class->instructor->lastname}} <br>
+                                                  
                                                     </span>
                                                     @else
                                                     <a href="/admin/classes/{{ $class->id }}?pridat" class="text-blue-500 hover:text-blue-600">

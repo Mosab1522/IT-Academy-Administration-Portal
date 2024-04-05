@@ -27,7 +27,8 @@ class NewStudent extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+       // return ['mail', 'database'];
+       return ['database'];
     }
 
     /**
@@ -42,8 +43,9 @@ class NewStudent extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'course_id' => $this->data['id'],
-            'course_name' => $this->data['coursename'],
+            'coursetype_id' => $this->data['id'],
+            'application_id' => $this->data['application_id'],
+            'student_id' => $this->data['student_id']
         ];
     }
 

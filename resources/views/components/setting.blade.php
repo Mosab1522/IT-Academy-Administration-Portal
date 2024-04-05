@@ -60,7 +60,7 @@
         <h3>{{ $instructor->name }}'s Unread Notifications</h3>
         @if($instructor->unreadNotifications)
         @foreach ($instructor->unreadNotifications as $notification)
-            <div>{{ $notification->data['course_name'] }}</div>
+            <div>{{ $notification->data['coursetype_id'] }}</div>
         @endforeach
         @endif
     </div>

@@ -65,7 +65,7 @@ class LessonController extends Controller
        
         $attributes = request()->validate([
            // 'students' => ['in:on'],
-            'title' => ['required', 'max:255', Rule::unique('lessons', 'title')],
+            'title' => ['required', 'max:255'],
             'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id' )],
             'lesson_date' => ['required', 'date'],
             'duration' => 'required|date_format:H:i'
@@ -135,9 +135,8 @@ class LessonController extends Controller
         //     request()->merge(['name'  => request()->cname]);
         //    }
 
-
         $attributes = request()->validate([
-            'title' => ['required', 'max:255', Rule::unique('lessons', 'title')->ignore($lesson)],
+            'title' => ['required', 'max:255'],
             'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id')],
             'instructor_id' => ['required', 'integer', Rule::exists('instructors', 'id')],
             'lesson_date' => ['required', 'date'],

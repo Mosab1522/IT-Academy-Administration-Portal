@@ -589,13 +589,8 @@ document.addEventListener('DOMContentLoaded', function() {
             minute: '2-digit',
             hour12: false
         },
-        events: [
-            {
-                title: 'Sample Event',
-                start: '2024-04-03T00:22:00+02:00',
-                end: '2024-04-03T01:07:00+02:00'
-            }
-        ],
+        events: 
+            "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
         // other options...
     });
     calendar.render();

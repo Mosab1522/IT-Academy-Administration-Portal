@@ -83,9 +83,30 @@ class ApplicationController extends Controller
     public function store()
     {
         if (request()->student_id) {
+            $student = Student::firstWhere('id', request()->student_id);
 
-            $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . request()->student_id . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id);
-            $value['student_id'] = request()->student_id;
+            if (request()->type == 0) {
+                $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . $student['id'] . ',academy_id,' . request()->academy_id2 . ',coursetype_id,' . request()->coursetype_id2);
+            } else if (request()->type == 1) {
+                $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . $student['id'] . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id);
+            }
+
+            $value['student_id'] = $student['id'];
+
+
+            if ($student->classes->count() > 0) {
+                foreach ($student->classes as $class) {
+                    if ($class->coursetype->id == request()->coursetype_id && request()->type2 == 1) {
+
+                        throw ValidationException::withMessages(['email' => 'Žiak je zapísaný v triede tohoto kurzu.']);
+                    }
+
+                    if ($class->coursetype->id == request()->coursetype_id2 && request()->type2 == 0) {
+
+                        throw ValidationException::withMessages(['email' => 'Žiak je zapísaný v triede tohoto kurzu.']);
+                    }
+                }
+            }
             $validation = Validator($value, $rule);
             if ($validation->fails()) {
                 throw ValidationException::withMessages(['name' => 'Takáto prihláška už existuje']);
@@ -104,8 +125,7 @@ class ApplicationController extends Controller
                 ]);
                 // dd(request()->all());
                 // $student = Student::firstWhere('email', $email['email']);
-                if($attributes['type'] == 0)
-                {
+                if ($attributes['type'] == 0) {
                     $attributes['academy_id'] = $attributes['academy_id2'];
                     $attributes['coursetype_id'] = $attributes['coursetype_id2'];
                 }
@@ -158,66 +178,85 @@ class ApplicationController extends Controller
             $student = Student::firstWhere('email', $email['email']) ?? Student::firstWhere('sekemail', $email['email']);
 
             if (request()->typ == "admin") {
-                if($student['name']!= request()->name)
-                {
-                     throw ValidationException::withMessages(['name' => 'Tento email vedieme v systéme pod iným menom.']);
+                if ($student['name'] != request()->name) {
+                    throw ValidationException::withMessages(['name' => 'Tento email vedieme v systéme pod iným menom.']);
                 }
-                if($student['lastname']!= request()->lastname)
-                {
-                throw ValidationException::withMessages(['lastname' => 'Tento email vedieme v systéme pod iným priezviskom.']);
+                if ($student['lastname'] != request()->lastname) {
+                    throw ValidationException::withMessages(['lastname' => 'Tento email vedieme v systéme pod iným priezviskom.']);
                 }
             }
             // dd($student);
             // $student ??= Student::firstWhere('sekemail', $email['email']);
-            $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . $student['id'] . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id);
+
+
+            if ($student->classes->count() > 0) {
+                foreach ($student->classes as $class) {
+                    if ($class->coursetype->id == request()->coursetype_id && request()->type2 == 1) {
+
+                        throw ValidationException::withMessages(['email' => 'Tento email už vedieme u žiaka v rovnakom kurze.']);
+                    }
+
+                    if ($class->coursetype->id == request()->coursetype_id2 && request()->type2 == 0) {
+
+                        throw ValidationException::withMessages(['email' => 'Tento email už vedieme u žiaka v rovnakom kurze.']);
+                    }
+                }
+            }
+            if (request()->type2 == 0) {
+                $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . $student['id'] . ',academy_id,' . request()->academy_id2 . ',coursetype_id,' . request()->coursetype_id2);
+            } else if (request()->type2 == 1) {
+                $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . $student['id'] . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id);
+            }
+
             $value['student_id'] = $student['id'];
+
             $validation = Validator($value, $rule);
             if ($validation->fails()) {
                 throw ValidationException::withMessages(['email' => 'Takáto prihláška už existuje']);
             } else {
+
                 // if(request()->type)
-                
-                if(request()->typ == "admin")
-                {
-                    if(!request()->type)
-                    {
+
+                if (request()->typ == "admin") {
+                    if (!request()->type) {
                         $coursetype = CourseType::firstWhere('id', request()->coursetype_id);
-                        request()->merge(['type' => $coursetype['id']]);
+                        request()->merge(['type' => $coursetype['type']]);
                     }
                     $attributes = request()->validate([
-                    
+
                         'email' => ['required', 'email', 'max:255'],
                         // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
                         'type' => ['required', 'integer', 'in:0,1'],
-                        'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
-                        'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
+                        'academy_id' => ['required_if:type,1', 'integer', Rule::exists('academies', 'id')],
+                        'coursetype_id' => ['required_if:type,1', 'integer', Rule::exists('course_types', 'id')],
+                        'academy_id2' => ['required_if:type,0', 'integer', Rule::exists('academies', 'id')],
+                        'coursetype_id2' => ['required_if:type,0', 'integer', Rule::exists('course_types', 'id')],
                         'days' => ['required', 'integer', 'in:1,2,3'],
                         'time' => ['required', 'integer', 'in:1,2,3']
                     ]);
-                    
-                }else {
-                    
-                    $attributes = request()->validate([     
-                    'email' => ['required', 'email', 'max:255'],
-                    // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
-                    'type2' => ['required', 'integer', 'in:0,1'],
-                    'academy_id' => ['required_if:type2,1', 'integer', Rule::exists('academies', 'id')],
-                    'coursetype_id' => ['required_if:type2,1', 'integer', Rule::exists('course_types', 'id')],
-                    'academy_id2' => ['required_if:type2,0', 'integer', Rule::exists('academies', 'id')],
-                    'coursetype_id2' => ['required_if:type2,0', 'integer', Rule::exists('course_types', 'id')],
-                    'days' => ['required', 'integer', 'in:1,2,3'],
-                     'time' => ['required', 'integer', 'in:1,2,3']
-                ]);
+                } else {
+
+                    $attributes = request()->validate([
+                        'email' => ['required', 'email', 'max:255'],
+                        // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
+                        'type2' => ['required', 'integer', 'in:0,1'],
+                        'academy_id' => ['required_if:type2,1', 'integer', Rule::exists('academies', 'id')],
+                        'coursetype_id' => ['required_if:type2,1', 'integer', Rule::exists('course_types', 'id')],
+                        'academy_id2' => ['required_if:type2,0', 'integer', Rule::exists('academies', 'id')],
+                        'coursetype_id2' => ['required_if:type2,0', 'integer', Rule::exists('course_types', 'id')],
+                        'days' => ['required', 'integer', 'in:1,2,3'],
+                        'time' => ['required', 'integer', 'in:1,2,3']
+                    ]);
                 }
-                
+
                 // $student = Student::firstWhere('email', $email['email']);
             }
         } else {
             if (request()->typ != "novy") {
                 throw ValidationException::withMessages(['email' => 'Tento email nevedieme v systéme. Využite Úplnú registráciu.']);
             }
-            
-            
+
+
             if ($email['email'] == $sekemail['sekemail']) {
                 throw ValidationException::withMessages(['email' => 'Zadali ste totožné emaily.']);
             }
@@ -322,23 +361,19 @@ class ApplicationController extends Controller
                 ]);
             }
         }
-        if(request()->typ== "novy")
-        {
-             if($attributes['type'] == 0 )
-        {
-            $attributes['academy_id'] = $attributes['academy_id2'];
-            $attributes['coursetype_id'] = $attributes['coursetype_id2'];
+        if (request()->typ == "novy") {
+            if ($attributes['type'] == 0) {
+                $attributes['academy_id'] = $attributes['academy_id2'];
+                $attributes['coursetype_id'] = $attributes['coursetype_id2'];
+            }
+        } else if (request()->typ == "stary") {
+            if ($attributes['type2'] == 0) {
+                $attributes['academy_id'] = $attributes['academy_id2'];
+                $attributes['coursetype_id'] = $attributes['coursetype_id2'];
+            }
         }
-        }else if(request()->typ== "stary")
-        {
-             if($attributes['type2'] == 0 )
-        {
-            $attributes['academy_id'] = $attributes['academy_id2'];
-            $attributes['coursetype_id'] = $attributes['coursetype_id2'];
-        }
-        }
-       
-        
+
+
         $application = Application::create([
             'student_id' => $student['id'],
             'academy_id' => $attributes['academy_id'],
@@ -352,45 +387,50 @@ class ApplicationController extends Controller
 
         $course = CourseType::firstWhere('id', $attributes['coursetype_id']);
 
-        
+
         // Assuming you know the instructor's ID
 
 
-        
+
         // $application->verification_token = Str::random(40);
         // $application->save();
 
-        $emailData = ['email' => $student['email'], 'name' => $student['name'] , 'lastname' => $student['lastname'],'id' => $course['id'], 'coursename' => $course['name'], 'coursetype' => $course['type'], 'academyname' => $course->academy['name'], 'date' => Carbon::now(), 'verificationToken' => $application->verification_token];
-        
-        // foreach ($course->instructors as $instructor)
-        // {
-        //      $instructor->notify(new NewStudent($emailData));
-        // }
+        $emailData = ['student_id' => $student['id'], 'email' => $student['email'], 'name' => $student['name'], 'lastname' => $student['lastname'], 'id' => $course['id'], 'coursename' => $course['name'], 'coursetype' => $course['type'], 'academyname' => $course->academy['name'], 'date' => Carbon::now(), 'application_id' => $application->id, 'verificationToken' => $application->verification_token];
+
+        foreach ($course->instructors as $instructor) {
+            $instructor->notify(new NewStudent($emailData));
+        }
 
         // Mail::to($emailData['email'])->send(new ConfirmationMail($emailData));
-        
-        if (Str::endsWith(url()->previous(), '?vytvorit'))
-        {
+
+        if (Str::endsWith(url()->previous(), '?vytvorit')) {
             $trimmedUrl = substr(url()->previous(), 0, -9);
             return redirect($trimmedUrl)->with('success_c', 'Úspešne vytvorené');
         }
-        if (request()->typ != "admin")
-        {
+        if (request()->typ != "admin") {
             return back()->with('success_c', $attributes['email']);
         }
         return back()->with('success_c', 'Úspešne vytvorené');
     }
     public function destroy(Application $application)
     {
+        foreach ($application->coursetype->instructors as $instructor) {
+            if ($instructor->unreadNotifications) {
+                foreach ($instructor->unreadNotifications as $notification) {
+                    if ($notification->data['application_id'] == $application->id) {
+                        $notification->delete();
+                    }
+                }
+            }
+        }
         $application->forceDelete();
 
-        if (Str::endsWith(url()->previous(), '?pridat'))
-        {
+
+        if (Str::endsWith(url()->previous(), '?pridat')) {
             $trimmedUrl = substr(url()->previous(), 0, -7);
             return redirect($trimmedUrl)->with('success_d', 'Úspešne vymazané');
         }
-        if (Str::endsWith(url()->previous(), '?vytvorit'))
-        {
+        if (Str::endsWith(url()->previous(), '?vytvorit')) {
             $trimmedUrl = substr(url()->previous(), 0, -9);
             return redirect($trimmedUrl)->with('success_d', 'Úspešne vymazané');
         }
@@ -404,17 +444,16 @@ class ApplicationController extends Controller
     }
 
     public function verify($token)
-{
-    $application = Application::where('verification_token', $token)->firstOrFail();
-    if($application->verified == false)
     {
-    $application->verified = true;
-    //$application->verification_token = null; // Clear the token after use
-    $application->verified_at = Carbon::now();
-    $application->save(); 
-    return view('confirmation')->with('success', 'Application confirmed successfully.');
-    }else{
-    return view('confirmation')->with('already', 'Already confirmed.');
+        $application = Application::where('verification_token', $token)->firstOrFail();
+        if ($application->verified == false) {
+            $application->verified = true;
+            //$application->verification_token = null; // Clear the token after use
+            $application->verified_at = Carbon::now();
+            $application->save();
+            return view('confirmation')->with('success', 'Application confirmed successfully.');
+        } else {
+            return view('confirmation')->with('already', 'Already confirmed.');
+        }
     }
-}
 }

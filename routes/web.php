@@ -115,6 +115,9 @@ Route::get('admin/classes/{class:id}', [CourseClassController::class, 'show']);
 Route::post('admin/classes/create', [CourseClassController::class, 'store']);
 Route::delete('admin/classes/{class}', [CourseClassController::class, 'destroy']);
 
+Route::post('admin/class-instructor', [CourseClassController::class, 'addinstructor']);
+
+
 Route::get('admin/lessons', [LessonController::class, 'index'])->name('admin.lessons.index');
 Route::patch('admin/lessons/{lesson}', [LessonController::class, 'update']);
 
