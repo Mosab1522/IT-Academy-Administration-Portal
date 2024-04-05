@@ -286,10 +286,10 @@
 
                                     <x-form.label name="akadémia" />
                                     <!-- parent -->
-                                    <select {{request()->has('pridat') ? '' : 'disabled' }} id="academy_id"
+                                    <select id="academy_id"
                                         name="academy_id" class="combo-a"
                                         data-nextcombo=".combo-b">
-                                        <option value="" disabled selected hidden>Akadémia</option>
+                                        <option value="" selected hidden>Akadémia</option>
                                         {{-- @php
                                         $academy = \App\Models\Academy::with(['coursetypes','applications'])
                                         ->get();
