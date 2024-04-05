@@ -273,7 +273,7 @@
 
         </div>
         <x-form.input name="name" />
-        <x-form.input name="lastname" />
+        <x-form.input name="lastname" type="text" />
         <x-form.input name="email" type="email" />
         <x-form.input name="sekemail" type="email" />
         <x-form.input name="ulicacislo" />

@@ -23,7 +23,7 @@
                     {{-- @php
                     $assignedInstructors = $coursetype->instructors->pluck('id')->toArray();
                     @endphp --}}
-                    @foreach (\App\Models\CourseClass::with(['instructors'])->get() as $class)
+                    @foreach (\App\Models\CourseClass::with(['instructor'])->get() as $class)
 
                    
 

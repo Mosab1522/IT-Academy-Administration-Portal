@@ -78,10 +78,8 @@ class LessonController extends Controller
 
         $attributes['duration'] = $totalMinutes;
 
-        foreach($attributes['instructor_id'] = CourseClass::find($attributes['class_id'])->instructors as $instructor)
-        {
-            $attributes['instructor_id'] = $instructor->id;
-        }
+        $attributes['instructor_id'] = CourseClass::find($attributes['class_id'])->instructor->id;
+        
         
         $lesson = Lesson::create($attributes);
 

@@ -43,7 +43,7 @@
                                     <select name="class_id" class="combo-a" data-nextcombo=".combo-b">
                                         <option value="" disabled selected hidden>Trieda</option>
                                         @php
-                                        $classes = \App\Models\CourseClass::with(['instructors','students'])->get();
+                                        $classes = \App\Models\CourseClass::with(['instructor','students'])->get();
                                         @endphp
                 
                                          <option value="" data-option="-1">Všetky</option>
@@ -181,3 +181,36 @@
         </div>
 
     </x-setting>
+
+    <x-layout>
+        <x-setting heading="Typy kurzov">
+            <div class="flex flex-col">
+                <!-- Top Bar with Filters and Search -->
+                <div class="bg-white p-4 shadow-md rounded-lg flex justify-between items-center mb-6">
+                    <!-- Filter and Sort Form -->
+                    <!-- ... -->
+    
+                    <!-- Search Form -->
+                    <!-- ... -->
+                </div>
+    
+                <!-- Main Table -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <!-- Table Head -->
+                        <thead class="bg-gray-100">
+                            <!-- Head Row -->
+                            <!-- ... -->
+                        </thead>
+                        <!-- Table Body -->
+                        <tbody class="divide-y divide-gray-200">
+                            @foreach ($lessons as $lesson)
+                                <!-- Row -->
+                                <!-- ... -->
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </x-setting>
+    </x-layout>

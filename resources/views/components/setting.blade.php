@@ -1,178 +1,87 @@
-@props(['heading'])
-<div class="flex">
+@props(['heading', 'ctitle','etitle',])
 
+<div class="flex h-screen bg-gray-100">
 
-    <div class="hidden w-48 pl-6 pt-4 ">
+    <!-- Navigation Sidebar -->
+    <aside class="w-48 flex-shrink-0 bg-gray-800 text-white">
+        <div class="flex flex-col bg-gray-800 text-white h-screen p-4">
+            <!-- Navigation Header -->
+            <div class="flex justify-between items-center mb-6">
+                <a href="/" class="text-blue-300 hover:text-blue-400">
+                    <span class="text-sm">Nová prihláška</span>
+                </a>
+            </div>
 
-        {{-- <h4 class="mb-4 font-semibold " title="pre študentov, kurzy ,akadémie a inštruktorov.">Dorobiť hlavičku
-            tabuľkám</h4> --}}
-        {{-- <h4 class="my-4 font-semibold " title="pre prihlášky, študentov, kurzy ,akadémie a inštruktorov.">
-            Vyhľadávanie</h4>
-        <h4 class="my-4 font-semibold " title="pre študentov, kurzy ,akadémie a inštruktorov.">Filtrovanie dokončiť</h4>
-        --}}
-        {{-- <h4 class="my-4 font-semibold "
-            title="- musí to vedieť že či existuje už daný študent a keď nie tak vytvoriť nového inak priradiť.">
-            Vytváranie prihlášky</h4>
-        <h4 class="my-4 font-semibold " title="Do prehľadu / typu kurzu">Pridať študenta - tlačidlo</h4>
-        <h4 class="my-4 font-semibold " title="Študentovi">Pridať prihlášku - tlačidlo</h4> --}}
-        {{-- <h4 class="my-4 font-semibold "
-            title="Vytvoriť celú stránku vytvoriť śtudenda.">Vytvoriť študenta
-        </h4>
-        <h4 class="my-4 font-semibold "
-            title="Pridať tlačidlo vytvoriť študenta ak ho nenajde admin v novej prihláške.">Tlačidlo vytvoriť študenta
-        </h4> --}}
-        {{-- <h4 class="my-4 font-semibold "
-            title="-dorobiť views pre jednotlivých študentov, inštruktorov, prihlášku,typ kurzu, akadémie, .">Urobiť
-            zobrazenia show</h4>
-        <h4 class="my-4 font-semibold " title=" .">Urobiť pridanie inštruktora kurzu</h4>
-        <h4 class="my-4 font-semibold " title=" .">Urobiť pridanie kurzu inštruktorovi</h4> --}}
+            <!-- Navigation Links -->
+            <nav class="flex flex-col space-y-2">
+                <a href="/admin/dashboard"
+                    class="{{ request()->is('admin/dashboard') ? 'bg-blue-500' : 'hover:bg-gray-700' }} flex items-center p-2 rounded">
+                    <span class="ml-3 text-sm">Prehľad</span>
+                </a>
 
-        {{-- <h4 class="my-4 font-semibold "
-            title="- Niejak vymyslieť že buď vytvoríme meno heslo a pošleme mu alebo že ho musí zmeniť prípadne že by on mohol vytvoriť heslo po emaile.">
-            Vytváranie inštruktorov</h4>
-        <h4 class="my-4 font-semibold " title="">Spravovanie inštruktorov</h4> --}}
+                <!-- More navigation links here... -->
 
-
-
-        {{-- <h4 class="my-4 font-semibold " title="-asi notifikácia / email adminovi a ten mu to musí potvrdť.">Reset hesla
-            inštruktorovi</h4>
-        <h4 class="my-4 font-semibold " title="">Urobiť edit a delete</h4> --}}
-        <h4 class="my-4 font-semibold " title="">Skontrolovať všetky základne veci - show / edit / mazanie a doupravovat podmienky a podobne.</h4> 
-        <h4 class="my-4 font-semibold " title="">SHOW pri neuspesnom aby sa to zobrazilo tam kde to skoncilo.</h4>
-        <h4 class="my-4 font-semibold " title="">Error message custom a zobrazovanie.</h4>  
-        <h4 class="my-4 font-semibold " title="- vytváranie, spravovanie, trigger,  ">Začať riešiť už normálne kurzy
-        </h4>
-        <h4 class="my-4 font-semibold " title="- vytváranie, spravovanie, trigger,  ">V dashboarde sa pohrat aby to ukazalo aj typ kurzu daneho kurzu
-        </h4>
-        <h4 class="my-4 font-semibold " title="- vytváranie, spravovanie, trigger,  ">Pridavanie kurzov do kurzu
-        </h4>
-        <h4 class="my-4 font-semibold "
-            title="- treba že či tak ako vo videu to rozlíšil že admin alebo úplne iné pohľady. ">Pohľad pre inštruktora
-        </h4>
-        <h4 class="relative bottom-0 font-semibold "
-            title="-php basics ten 7 hodinovy na laracaste, - eloquent relations na laracaste, niečo na validáciu">
-            Kuknúť videá</h4>
-
-    </div>
-    <section class="py-8 w-full px-14 mx-auto">
-        @foreach (App\Models\Instructor::all() as $instructor)
-    <div>
-        <h3>{{ $instructor->name }}'s Unread Notifications</h3>
-        @if($instructor->unreadNotifications)
-        @foreach ($instructor->unreadNotifications as $notification)
-            <div>{{ $notification->data['coursetype_id'] }}</div>
-        @endforeach
-        @endif
-    </div>
-@endforeach
-        <h1 class="text-lg font-bold mb-8 pb-2 border-b">
-            {{$heading}}
-        </h1>
-        <div class="flex">
-            <aside class="w-48 flex-shrink-0">
-                <h4 class="font-semibold mb-4"><a href="/" class="{{request()->is('/') ? 'text-blue-500' : ''}}">Nová
-                        prihláška</a></h4>
-
-                <h4 class="font-semibold mb-4"><a href="/admin/dashboard"
-                        class="{{request()->is('admin/dashboard') ? 'text-blue-500' : ''}}">Prehľad</a></h4>
-                <ul>
-
-                    <li>
+                <!-- Management Dropdown -->
+                <div
+                    x-data="{ open: {{ request()->routeIs('admin.academies.*', 'admin.coursetypes.*', 'admin.students.*', 'admin.applications.*') ? 'true' : 'false' }} }">
+                    <button @click="open = !open"
+                        class="flex items-center justify-between p-2 w-full text-left {{ request()->routeIs('admin.academies.*', 'admin.coursetypes.*', 'admin.students.*', 'admin.applications.*') ? 'bg-blue-500' : 'hover:bg-gray-700' }} rounded">
+                        <span class="flex items-center">
+                            <span class="ml-3 text-sm">Spravovanie</span>
+                        </span>
+                    </button>
+                    <div x-show="open" class="ml-6 space-y-2 mt-2" x-cloak>
+                        <!-- Sub-menu items -->
                         <a href="/admin/academies"
-                            class="{{request()->is('admin/academies')||request()->is('admin/coursetypes')||request()->is('admin/students')||request()->is('admin/applications') ? 'font-bold' : ''}}">Spravovanie</a>
-                        <ul class="ml-4 text-sm">
-                            <li>
-                                <a href="/admin/academies"
-                                    class="{{request()->is('admin/academies') ? 'text-blue-500' : ''}}">- Akadémie</a>
-                            </li>
-                            <li>
-                                <a href="/admin/coursetypes"
-                                    class="{{request()->is('admin/coursetypes') ? 'text-blue-500' : ''}}">- Typy
-                                    kurzov</a>
-                            </li>
-                            <li>
-                                <a href="/admin/students"
-                                    class="{{request()->is('admin/students') ? 'text-blue-500' : ''}}">- Študenti</a>
-                            </li> 
-                            <li>
-                                <a href="/admin/instructors"
-                                    class="{{request()->is('admin/instructors') ? 'text-blue-500' : ''}}">-
-                                    Inštruktori</a>
-                            </li>
-                            <li>
-                                <a href="/admin/applications"
-                                    class="{{request()->is('admin/applications') ? 'text-blue-500' : ''}}">-
-                                    Prihlášky</a>
-                            </li>
-                            <li>
-                                <a href="/admin/classes"
-                                    class="{{request()->is('admin/classes') ? 'text-blue-500' : ''}}">-
-                                    Triedy</a>
-                            </li>
-                            <li>
-                                <a href="/admin/lessons"
-                                    class="{{request()->is('admin/lessons') ? 'text-blue-500' : ''}}">-
-                                    Hodiny</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <ul>
-                        <li>
-                            <a href="/admin/academies/create"
-                                class="{{request()->is('admin/*/create') ? 'font-bold' : ''}}">Vytvorenie</a>
-                            <ul class="ml-4 text-sm">
-                                <li>
-                                    <a href="/admin/academies/create"
-                                        class="{{request()->is('admin/academies/create') ? 'text-blue-500' : ''}}">-
-                                        Nová
-                                        akadémia</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/coursetypes/create"
-                                        class="{{request()->is('admin/coursetypes/create') ? 'text-blue-500' : ''}}">-
-                                        Nový
-                                        kurz</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/students/create"
-                                        class="{{request()->is('admin/students/create') ? 'text-blue-500' : ''}}">-
-                                        Nový
-                                        študent</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/instructors/create"
-                                        class="{{request()->is('admin/instructors/create') ? 'text-blue-500' : ''}}">-
-                                        Nový
-                                        inštruktor</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/applications/create"
-                                        class="{{request()->is('admin/applications/create') ? 'text-blue-500' : ''}}">-
-                                        Nová
-                                        prihláška</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/classes/create"
-                                        class="{{request()->is('admin/classes/create') ? 'text-blue-500' : ''}}">-
-                                        Nová
-                                        trieda</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/lessons/create"
-                                        class="{{request()->is('admin/lessons/create') ? 'text-blue-500' : ''}}">-
-                                        Nová
-                                        hodina</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-            </aside>
-            <main class="flex-1">
-                <x-panel>
-                    {{$slot}}
-                </x-panel>
-            </main>
+                            class="{{ request()->is('admin/academies') ? 'text-blue-300' : 'hover:text-gray-300' }} text-sm ml-3">-
+                            Akadémie</a>
+                        <!-- Add other sub-menu items here -->
+                    </div>
+                </div>
+            </nav>
         </div>
-    </section>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="flex-1 overflow-auto">
+        <header class="bg-gray-800 text-white shadow py-6 px-4">
+            <h1 class="text-xl font-semibold">{{ $heading }}</h1>
+        </header>
+
+        
+            <section class="flex-1 overflow-auto">
+
+                <main class="p-12">
+                    <div class="flex flex-col">
+                        <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie {{$ctitle}}</h3>
+                            {{ $create }}
+                        </div>
+                        <!-- The rest of your content -->
+                    </div>
+                    <!-- Instructor's Notifications -->
+                    {{-- @foreach (App\Models\Instructor::all() as $instructor)
+                    <div class="bg-white p-4 rounded-lg shadow mb-6">
+                        <h3 class="text-lg font-semibold mb-4">{{ $instructor->name }}'s Unread Notifications</h3>
+                        <ul>
+                            @forelse($instructor->unreadNotifications as $notification)
+                            <li class="p-2 border-b border-gray-200">{{ $notification->data['coursetype_id'] }}</li>
+                            @empty
+                            <li class="p-2 text-gray-500">No notifications</li>
+                            @endforelse
+                        </ul>
+                    </div>
+                    @endforeach --}}
+                    <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Existujúce {{ $etitle }}</h3>
+                        <div class="flex flex-col">
+                            {{ $slot }}
+                        </div>
+                    </div>
+                  
+                        
+                    
+                </main>
+            </section>
+
 </div>
