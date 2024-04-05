@@ -1,6 +1,6 @@
 @props(['name'])
 <x-form.field>
     <x-form.label name="{{$name}}"/>
-    <input class="border border-gray-200 p-2 w-full rounded" name="{{$name}}" id="{{$name}}"  {{$attributes(['value' => old($name)])}}>
+    <input class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" name="{{$name}}" id="{{$name}}"  {{$attributes(['value' => old($name)])}}>
     <x-form.error name="{{$name}}"/>
 </x-form.field>

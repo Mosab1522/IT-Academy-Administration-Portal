@@ -1,2 +1,2 @@
 @props(['name'])
-<label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="{{$name}}">{{ucwords($name)}}</label>
+<label class="block text-sm font-medium text-gray-700" for="{{$name}}">{{ucwords($name)}}</label>
