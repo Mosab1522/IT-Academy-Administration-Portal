@@ -1,6 +1,6 @@
 <x-flash />
 <x-layout />
-<x-setting heading="Triedy" ctitle="triedy" etitle="triedy">
+<x-setting heading="Triedy" ctitle="triedy" etitle="e triedy">
     <x-slot:create>
         <form action="/admin/classes/create" method="post">
             @csrf

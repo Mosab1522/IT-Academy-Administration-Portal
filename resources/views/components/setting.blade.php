@@ -36,7 +36,7 @@
                 </div>
                 @endforeach --}}
                 <div class="bg-white p-8 rounded-lg shadow-md mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Existujúce {{ $etitle }}</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Existujúc{{ $etitle }}</h3>
                     <div class="flex flex-col">
                         {{ $slot }}
                     </div>

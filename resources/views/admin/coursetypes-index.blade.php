@@ -1,6 +1,6 @@
 <x-flash />
 <x-layout />
-<x-setting heading="Typy kurzov" ctitle="kurzu" etitle="kurzy">
+<x-setting heading="Typy kurzov" ctitle="kurzu" etitle="e kurzy">
     <x-slot:create>
         <form action="/admin/coursetypes/create" method="post">
             @csrf
