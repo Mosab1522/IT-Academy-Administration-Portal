@@ -7,7 +7,7 @@
             {{--
             <x-form.label name="Zapísať všetkých ktorý majú prihlášku na kurz?" />
             <input type="checkbox" name="students"> --}}
-            <x-form.input name="title" type="text"/>
+            <x-form.input name="title" type="text" />
             <x-form.field>
 
                 <div>
@@ -53,90 +53,76 @@
             </x-form.button>
         </form>
     </x-slot:create>
-    <div class="flex mt-3">
-        <form method="get" action="{{ route('admin.lessons.index') }}">
-            @csrf
 
+    <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
+        <form method="get" action="{{ route('admin.academies.index') }}" class="flex flex-wrap items-end">
+            @csrf
             @if(request()->filled('search'))
             <input type="hidden" name="search" value="{{request()->input('search')}}" />
             @endif
-            <div class="flex">
-                <div class="">
-                    <x-form.label name="Zoradiť podľa" />
-                    <select class="form-control" id="orderBy" name="orderBy">
-                        <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' :
-                            ''}}>Dátumu vytvorenia</option>
-                        <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' :
-                            ''}}>Dátumu poslednej úpravy</option>
-                    </select>
-                </div>
-                <div class="px-6">
-                    <x-form.label name="Smer zoradenia" /> <select class="form-control" id="orderDirection"
-                        name="orderDirection">
-                        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od
-                            najnovšej
-                        </option>
-                        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od
-                            najstaršej
-                        </option>
-                    </select>
-                </div>
-                {{-- <div class="form-group">
-                    <select class="form-control" id="filterBy" name="filterBy[]" multiple>
-                        <option value="academy_id|1">Akadémia 1</option>
-                        <option value="academy_id|2">Akadémia 2</option>
-                        <option value="coursetype_id|1">Typ kurzu 1</option>
-                        <option value="coursetype_id|2">Typ kurzu 2</option>
-                    </select>
-                </div> --}}
-                <div>
-                    <x-form.label name="Filtrovať podľa" />
-                    <div class="flex">
-                        <div>
-                            <select name="class_id" class="combo-a" data-nextcombo=".combo-b">
-                                <option value="" disabled selected hidden>Trieda</option>
-                                @php
-                                $classes = \App\Models\CourseClass::with(['instructor','students'])->get();
-                                @endphp
-
-                                <option value="" data-option="-1">Všetky</option>
-
-                                @foreach ($classes as $class)
-                                <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1"
-                                    {{request()->input('academy_id')==$class->id ? 'selected' : ''}}>{{
-                                    ucwords($class->name) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
+    
+            <div class="w-full md:w-auto md:mr-4">
+                <label for="orderBy" class="block text-sm font-medium text-gray-700">Zoradiť podľa</label>
+                <select name="orderBy" id="orderBy" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
+                    <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu vytvorenia</option>
+                    <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu poslednej úpravy</option>
+                </select>
             </div>
-            <x-form.button type="submit">Filtrovať a zoradiť</x-form.button>
+
+            <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
+                <label for="orderDirection" class="block text-sm font-medium text-gray-700">Smer zoradenia</label>
+                <select name="orderDirection" id="orderDirection" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
+                    <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej</option>
+                    <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej</option>
+                </select>
+            </div>
+
+            <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
+                <label for="class_id" class="block text-sm font-medium text-gray-700">Triedy</label>
+                <select name="class_id" id="class_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
+                    @php
+                    $classes = \App\Models\CourseClass::with(['instructor','students'])->get();
+                    @endphp
+
+                    <option value="" data-option="-1">Všetky</option>
+
+                    @foreach ($classes as $class)
+                    <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1" {{request()->
+                        input('academy_id')==$class->id ? 'selected' : ''}}>{{
+                        ucwords($class->name) }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            
+
+            <button type="submit" class="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Filtrovať a zoradiť
+            </button>
         </form>
-        <div class="ml-auto">
-            <form method="get" action="{{ route('admin.classes.index') }}">
-                @csrf
-                @if(request()->filled('orderBy'))
-                <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
-                <input type="hidden" name="orderDirection" value="{{request()->input('orderDirection')}}" />
-                @endif
-                @if(request()->filled('academy_id')&&request()->filled('coursetype_id'))
-                <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
-                <input type="hidden" name="coursetype_id" value="{{request()->input('coursetype_id')}}" />
-                @elseif(request()->filled('academy_id'))
-                <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
-                @endif
-                <x-form.label name="Vyhľadávanie" />
-                <input type="text" name="search" value="{{request()->input('search')}}" />
-                <x-form.button>
-                    Hľadať
-                </x-form.button>
-            </form>
-        </div>
+
+        <!-- Search Form -->
+        <form method="get" action="{{ route('admin.academies.index') }}" class="flex flex-wrap items-end">
+            @csrf
+            <div class="flex">
+                
+                <input type="text" name="search" value="{{request()->input('search')}}"
+                    class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    placeholder="Vyhľadávanie">
+                    <button type="submit" class="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Hľadať
+                    </button>
+            </div>
+        </form>
     </div>
+
+
+
+
+
     <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div class="overflow-x-auto relative ">
+            <div class="overflow-x-auto relative rounded-lg shadow">
                 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     <!-- Iterate over classes -->
                     @foreach ($lessons->groupBy('class.name') as $className => $lessonsInClass)

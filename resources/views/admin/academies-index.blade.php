@@ -25,64 +25,50 @@
         </div>
         <!-- The rest of your content -->
     </div> --}}
-    <div class="flex mt-3">
-        <form method="get" action="{{ route('admin.academies.index') }}">
+    <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
+        <form method="get" action="{{ route('admin.academies.index') }}" class="flex flex-wrap items-end">
             @csrf
-
             @if(request()->filled('search'))
             <input type="hidden" name="search" value="{{request()->input('search')}}" />
             @endif
-            <div class="flex">
-                <div class="">
-                    <x-form.label name="Zoradiť podľa" />
-                    <select class="form-control" id="orderBy" name="orderBy">
-                        <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' :
-                            ''}}>Dátumu vytvorenia</option>
-                        <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' :
-                            ''}}>Dátumu poslednej úpravy</option>
-                    </select>
-                </div>
-                <div class="px-6">
-                    <x-form.label name="Smer zoradenia" /> <select class="form-control" id="orderDirection"
-                        name="orderDirection">
-                        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od
-                            najnovšej
-                        </option>
-                        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od
-                            najstaršej
-                        </option>
-                    </select>
-                </div>
-                {{-- <div class="form-group">
-                    <select class="form-control" id="filterBy" name="filterBy[]" multiple>
-                        <option value="academy_id|1">Akadémia 1</option>
-                        <option value="academy_id|2">Akadémia 2</option>
-                        <option value="coursetype_id|1">Typ kurzu 1</option>
-                        <option value="coursetype_id|2">Typ kurzu 2</option>
-                    </select>
-                </div> --}}
-
+    
+            <div class="w-full md:w-auto md:flex-1 md:mr-4">
+                <label for="orderBy" class="block text-sm font-medium text-gray-700">Zoradiť podľa</label>
+                <select name="orderBy" id="orderBy" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
+                    <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu vytvorenia</option>
+                    <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu poslednej úpravy</option>
+                </select>
             </div>
-            <x-form.button type="submit">Filtrovať a zoradiť</x-form.button>
+    
+            <div class="w-full md:w-auto md:flex-1 md:mr-4 mt-4 md:mt-0">
+                <label for="orderDirection" class="block text-sm font-medium text-gray-700">Smer zoradenia</label>
+                <select name="orderDirection" id="orderDirection" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
+                    <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej</option>
+                    <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Zoradiť
+            </button>
         </form>
-        <div class="ml-auto">
-            <form method="get" action="{{ route('admin.academies.index') }}">
-                @csrf
-                @if(request()->filled('orderBy'))
-                <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
-                <input type="hidden" name="orderDirection" value="{{request()->input('orderDirection')}}" />
-                @endif
-                <x-form.label name="Vyhľadávanie" />
-                <input type="text" name="search" value="{{request()->input('search')}}" />
-                <x-form.button>
+    
+        <!-- Search Form -->
+        <form method="get" action="{{ route('admin.academies.index') }}" class="flex flex-wrap items-end">
+            @csrf
+            <div class="flex">
+                <input type="text" name="search" value="{{request()->input('search')}}" class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Vyhľadávanie">
+                <button type="submit" class="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Hľadať
-                </x-form.button>
-            </form>
-        </div>
+                 </button>
+            </div>
+        </form>
     </div>
-    <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div class="overflow-x-auto relative ">
+    
+    
+    <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
+        <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8 ">
+            <div class="overflow-x-auto relative rounded-lg shadow">
                 <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
                     <thead class="text-xs uppercase bg-gray-200">
                         <tr>
