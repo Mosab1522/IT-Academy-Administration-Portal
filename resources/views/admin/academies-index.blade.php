@@ -1,6 +1,6 @@
 <x-flash />
 <x-layout />
-<x-setting heading="Akadémie" ctitle="akadémie" etitle="e akadémie">
+<x-setting heading="Akadémie" ctitle="akadémie" etitle="eakadémie">
 
 
 
