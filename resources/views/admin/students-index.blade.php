@@ -1,8 +1,95 @@
 <x-flash />
 <x-layout/>
-    <x-setting heading="Študenti">
-        <div class="flex flex-col">
-            <div class="flex">
+    <x-setting heading="Študenti" ctitle="študenta" etitle="i študenti">
+        <x-slot:create>
+            <form action="/admin/students/create" method="post" enctype="multipart/form-data">
+                @csrf
+                {{-- <h3 class="block mt-2 mb-3 uppercase font-bold text-sm text-gray-700">Povinný údaj</h3>
+                <x-form.input name="email" type="email"/>
+                <h3 class="block mt-6 mb-3 uppercase font-bold text-sm text-gray-700">Voliteľné údaje</h3> --}}
+                <div class="items-center mt-4">
+                    <x-form.label name="je:" />
+        
+                    <input class="mr-0.5" type="radio" id="student" name="status" value="student">
+                    <label for="student">Študent</label>
+        
+                    <input class="ml-2 mr-0.5" type="radio" id="nestudent" name="status" value="nestudent">
+                    <label for="nestudent">Neštudent</label>
+                    
+                    <input class="ml-2 mr-0.5" type="radio" id="neviem" name="status" value=NULL>
+                    <label for="nestudent">Neviem</label>
+        
+                </div>
+        
+                <div class="flex pb-1">
+                    <div class="h-20 mt-3" id="ucm" style="display: none;">
+                        <x-form.label name="univerzita:" />
+                        <div class=" flex">
+                            <div>
+        
+                                <input type="radio" id="ucmka" name="skola" value="ucm">
+                                <label for="option1">UCM</label><br>
+                                <div class="mt-1">
+                                    <input  type="radio" id="inam" name="skola" value="ina">
+                                    <label for="option2">Iná</label><br>
+                                </div>
+                                
+                            </div>
+        
+                            <div id="ina" style="display: none"><input
+                                    class=" border border-gray-200 mt-6 ml-2 p-2 w-80 rounded h-7" name="ina" id="nu"
+                                    required disabled></div>
+                        </div>
+                    </div>
+        
+                    <div class="ml-4 mt-3" id="ucmkari" style="display: none;">
+        
+                        <x-form.label name="studium:" />
+                     
+                        <input type="radio" id="option3" name="studium" value="interne">
+                        <label for="option1">Interné</label><br>
+                           <div class="mt-1">
+                        <input type="radio" id="option4" name="studium" value="externe">
+                        <label for="option2">Externé</label><br></div>
+                    </div>
+        
+        
+        
+        
+                    <div class=" flex ml-4 mt-3" id="ucmkari2" style="display: none;">
+                        <x-form.label name="program:" />
+                        <div>
+                            <input type="radio" id="option5" name="program" value="apin">
+                            <label for="option1">Aplikovaná informatika</label><br>
+                            <div class="mt-1">
+                            <input type="radio" id="option6" name="program" value="iny">
+                            <label for="option2">Iný</label><br>
+                            </div>
+                        </div> 
+                    </div>
+                        <div class="mt-16 -ml-32" id="iny" style="display: none"><input
+                                class=" border border-gray-200 ml-2 p-2 w-80 rounded h-7" name="iny" id="ny" required
+                                disabled></div>
+        
+        
+                </div>
+        
+                <x-form.input name="name" type="text"/>
+                <x-form.input name="lastname" type="text"/>
+                <x-form.input name="email" type="email"/>
+                <x-form.input name="sekemail" type="email"/>
+                <x-form.input name="ulicacislo" type="text"/>
+                <x-form.input name="mestoobec" type="text"/>
+                <x-form.input name="psc" type="text"/>
+        
+        
+                <x-form.button>
+                    Odoslať
+                </x-form.button>
+            </form>
+            </x-slot:create>
+
+            <div class="flex mt-3">
                 <form method="get" action="{{ route('admin.students.index') }}">
                     @csrf
                     
@@ -61,81 +148,57 @@
                     </form>
                 </div>
             </div>
-            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="text-sm">
+            <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <div class="overflow-x-auto relative ">
+                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
+                            <thead class="text-xs uppercase bg-gray-200">
                                 <tr>
-                                    <td class="px-6 py-1">Meno a priezvisko</td>
-                                    <td class="px-6 py-2">Email</td>
-                                    <td class="px-6 py-2">Aktívne prihlášky</td>
-                                    <td></td>
-                                    <td></td>
+                                    <th scope="col" class="py-3 px-6">Meno</th>
+                                    <th scope="col" class="py-3 px-6">Email</th>
+                                    <th scope="col" class="py-3 px-6">Prihlášky</th>
+                                    <th scope="col" class="py-3 px-6">Aktuálne triedy</th>
+                                    <th scope="col" class="py-3 px-6 w-40">Akcie</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody>
                                 @foreach ($students as $student)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    <a href="/admin/students/{{ $student->id }}"> 
-                                                         {{$student->name}} {{$student->lastname}} 
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    <a href="/admin/students/{{ $student->id }}"> 
-                                                         {{$student->email}}  
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="text-xs font-medium text-gray-900">
-                                                    @foreach($student->applications as $application)
-                                                    {{ $application->coursetype->name}} -{{$application->coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
-                                                    <br>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    <a href="/admin/students/{{ $student->id }}?pridat" class="text-blue-500 hover:text-blue-600">
-                                                        Pridať prihlášku
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/admin/students/{{ $student->id }}" class="text-blue-500 hover:text-blue-600">Edit</a>
-                                        </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <form method="POST" action="/admin/students/{{ $student->id }}">
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <button class="text-xs text-gray-400 ">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                 @endforeach 
+                                <tr
+                                    class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
+                                    <td class="py-4 px-6">{{$student->name}} {{$student->lastname}}</td>
+                                    <td class="py-4 px-6">{{$student->email}}</td>
+                                    <td class="py-4 px-6">
+                                        @foreach($student->applications as $application)
+                                        {{$application->coursetype->name}} - {{$$application->coursetype->type == '0' ? 'študentský' :
+                                        'inštruktorský'}} ({{$application->academy->name}} akadémia)<br>
+                                        @endforeach
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        @foreach($student->classes as $class)
+                                        {{$class->name}} ({{$class->coursetype->name}} - {{$class->coursetype->type == '0' ? 'študentský' :
+                                        'inštruktorský'}})<br>
+                                        @endforeach
+                                    </td>
+                                    <td class="py-4 px-6 text-right">
+                                        <a href="/admin/students/{{ $student->id }}"
+                                            class="text-blue-600 hover:text-blue-700 hover:underline ">Upraviť</a>
+                                            &nbsp;
+                                        <form method="POST" action="/admin/students/{{ $student->id }}" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
+        
+        
+        
                 </div>
             </div>
-        </div>
+        
 
     </x-setting>
