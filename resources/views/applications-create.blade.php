@@ -1,5 +1,5 @@
 <x-layout />
-<x-setting heading="Prihlásiť sa na kurz">
+<x-form heading="Prihlásiť sa na kurz">
 
     <a class="{{session('success_c')  ? 'hidden' :''}} inline-block w-1/2 font-bold text-base {{old('typ')=="stary" ? 'text-gray-700' : 'text-blue-500'
         }} " href=" #" id="switch-form">Úplné prihlásenie na kurz</a>
@@ -550,7 +550,7 @@
     {{-- @php
     old()->forget('typ');
     @endphp --}}
-</x-setting>
+</x-form>
 
 <script>
     var oldInput = {!! json_encode(old()) !!};
