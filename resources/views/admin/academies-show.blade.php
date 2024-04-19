@@ -7,8 +7,8 @@
 
 
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
-
-        <div class="flex items-center space-x-4">
+        <x-show-header name="{{$academy->name}}" title="Akadémia"/>
+        {{-- <div class="flex items-center space-x-4">
             <!-- Image Placeholder or Icon -->
             <div class="flex items-center space-x-4">
                 <div class="flex-shrink-0">
@@ -27,7 +27,7 @@
                     <p class="text-sm text-gray-500">Akadémia</p>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
 
         {{-- <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
@@ -70,13 +70,14 @@
                 </ul>
             </div>
         </div> --}}
-        <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
+        {{-- <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
             <div class="relative">
                 <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5" role="tablist"
-                    nav-pills>
+                    nav-pills> --}}
+                <x-buttonsection>
                     <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
                         <button
-                            class="edit-button  {{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : '' }} w-full flex items-center justify-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 rounded-xl shadow-sm"
+                            class="edit-button  {{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : '' }} ae-button"
                             data-target="profile">
                             <span
                                 class="{{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : 'block' }}">Povoliť
@@ -89,7 +90,7 @@
                     <li
                         class="flex-1 {{ session('success_c') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
                         <button
-                            class="add-button w-full flex items-center justify-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 rounded-xl shadow-sm"
+                            class="add-button ae-button"
                             data-target="kurzyAdd">
                             <span class="{{ session('success_c') || session('success_dd') ? '' : 'hidden' }}">Vytvoriť
                                 kurz</span>
@@ -97,42 +98,43 @@
                                 vytvorenie kurzu</span>
                         </button>
                     </li>
-
-                </ul>
+            </x-buttonsection>
+                {{-- </ul>
             </div>
-        </div>
+        </div> --}}
 
-
-        <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
+        <x-buttonsection>
+        {{-- <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
             <div class="relative">
-                <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5 shadow" role="tablist">
+                <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5 shadow" role="tablist" nav-pills> --}}
                     <li class="flex-auto pr-0.5">
                         <button
-                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }} w-full text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 rounded-l-xl shadow-sm"
+                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }} section-button rounded-l-lg"
                             data-target="profile">
                             Info
                         </button>
                         <button
-                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }} w-full text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 rounded-l-xl shadow-sm"
+                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }} section-button rounded-l-lg"
                             data-target="kurzy">
                             Kurzy
                         </button>
                     </li>
                     <li class="flex-auto">
                         <button
-                            class="section-button {{ session('success_d') ? '' : 'hidden' }} w-full text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 rounded-r-xl shadow-sm"
+                            class="section-button {{ session('success_d') ? '' : 'hidden' }} section-button rounded-r-lg"
                             data-target="kurzy">
                             Kurzy
                         </button>
                         <button
-                            class="section-button {{ session('success_d') ? 'hidden' : '' }} w-full text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 rounded-r-xl shadow-sm"
+                            class="section-button {{ session('success_d') ? 'hidden' : '' }} section-button rounded-r-lg"
                             data-target="login">
                             Prihlášky
                         </button>
                     </li>
-                </ul>
+                </x-buttonsection>
+                {{-- </ul>
             </div>
-        </div>
+        </div> --}}
 
 
 

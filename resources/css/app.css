@@ -17,3 +17,14 @@
     display: none;
 }
 
+@layer components {
+    .ae-button {
+      @apply w-full flex items-center justify-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-xl shadow-sm;
+    }
+  }
+
+  @layer components {
+    .section-button {
+      @apply w-full text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 shadow-sm;
+    }
+  }
