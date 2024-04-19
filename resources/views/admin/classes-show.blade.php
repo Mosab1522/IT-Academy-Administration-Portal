@@ -144,13 +144,13 @@
                                                 data-target="profile">Info</button>
                                             <button
                                                 class="section-button {{session('success_c') || session('success_cc') || session('success_d')  || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? 'hidden' : '' }} rounded-l-lg"
-                                                data-target="kurzy">Inštruktori</button>
+                                                data-target="kurzy">Hodiny</button>
                                         </li>
                                         <li class="flex-auto">
 
                                             <button
                                                 class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? '' : 'hidden' }} rounded-r-lg"
-                                                data-target="kurzy">Inštruktori</button>
+                                                data-target="kurzy">Hodiny</button>
                                             <button
                                                 class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? 'hidden' : '' }} rounded-r-lg"
                                                 data-target="login">Študenti</button>
@@ -452,7 +452,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    class="text-red-600 hover:text-red-700 hover:underline">Vymazať</button>
+                                                    class="delete-button text-red-600 hover:text-red-700 hover:underline">Vymazať</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -556,7 +556,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    class="text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
+                                                    class="delete-button text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
                                             </form>
                                         </td>
                                     </tr>
