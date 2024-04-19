@@ -3,9 +3,6 @@
 <x-setting heading="{{$academy->name}}">
 
 
-
-
-
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
         <x-show-header name="{{$academy->name}}" title="Akadémia"/>
         {{-- <div class="flex items-center space-x-4">
@@ -223,7 +220,7 @@
 
         </form>
     </div>
-    <div class="add-section p-6 ring-2 ring-indigo-200 ring-opacity-50 border-indigo-300 shadow-sm rounded-md" id="kurzyAdd"
+    <div class="add-section" id="kurzyAdd"
         style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
         <p class="text-sm font-semibold uppercase text-gray-700">Vytvoriť kurz</p>
         <form action="/admin/coursetypes/create" method="POST">

@@ -34,3 +34,11 @@
       @apply w-full text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 shadow-sm;
     }
   }
+
+  @layer components {
+    .add-section {
+      @apply p-6 ring-2 ring-indigo-200 ring-opacity-50 border-indigo-300 shadow-sm rounded-md;
+    }
+  }
+
+  
