@@ -10,7 +10,7 @@
                     <div class="flex items-center mt-6">
                         <input id="students" name="students" type="checkbox"
                             class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
-                        <label for="students" class="ml-2 block text-gray-700">Zapísať všetkých študentov ktorí majú
+                        <label for="students" class="ml-2 block text-gray-700 text-sm leading-5.6">Zapísať všetkých študentov ktorí majú
                             prihlášku na kurz</label>
                     </div>
                     <x-form.field>

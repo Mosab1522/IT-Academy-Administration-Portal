@@ -1,7 +1,17 @@
 @props(['name', 'value', 'for'])
+
 <div {{ $attributes->merge(['class' => 'flex items-center']) }}>
-    <input id="{{$for}}" type="radio" name="{{$name}}" value="{{$value}}" {{ (old($name) == $value) ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-    <label for="{{$for}}" class="ml-2 block text-base text-gray-700">
-        {{$slot}}
+    <input 
+        id="{{ $for }}" 
+        type="radio" 
+        name="{{ $name }}" 
+        value="{{ $value }}" 
+        class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 disabled:text-gray-500"
+        {{ old($name) == $value ? 'checked' : '' }}
+        {{ $attributes->get('disabled') ? 'disabled' : '' }}
+        {{ $attributes->get('checked') ? 'checked' : '' }}
+    >
+    <label for="{{ $for }}" class="ml-2 block text-sm leading-5.6 text-gray-700">
+        {{ $slot }}
     </label>
 </div>
