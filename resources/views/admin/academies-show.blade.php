@@ -77,7 +77,7 @@
                 <x-buttonsection>
                     <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
                         <button
-                            class="edit-button  {{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : '' }} ae-button"
+                            class="edit-button  {{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : '' }} "
                             data-target="profile">
                             <span
                                 class="{{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : 'block' }}">Povoliť
@@ -90,7 +90,7 @@
                     <li
                         class="flex-1 {{ session('success_c') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
                         <button
-                            class="add-button ae-button"
+                            class="add-button "
                             data-target="kurzyAdd">
                             <span class="{{ session('success_c') || session('success_dd') ? '' : 'hidden' }}">Vytvoriť
                                 kurz</span>
@@ -109,24 +109,24 @@
                 <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5 shadow" role="tablist" nav-pills> --}}
                     <li class="flex-auto pr-0.5">
                         <button
-                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }} section-button rounded-l-lg"
+                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }}  rounded-l-lg"
                             data-target="profile">
                             Info
                         </button>
                         <button
-                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }} section-button rounded-l-lg"
+                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }}  rounded-l-lg"
                             data-target="kurzy">
                             Kurzy
                         </button>
                     </li>
                     <li class="flex-auto">
                         <button
-                            class="section-button {{ session('success_d') ? '' : 'hidden' }} section-button rounded-r-lg"
+                            class="section-button {{ session('success_d') ? '' : 'hidden' }}  rounded-r-lg"
                             data-target="kurzy">
                             Kurzy
                         </button>
                         <button
-                            class="section-button {{ session('success_d') ? 'hidden' : '' }} section-button rounded-r-lg"
+                            class="section-button {{ session('success_d') ? 'hidden' : '' }}  rounded-r-lg"
                             data-target="login">
                             Prihlášky
                         </button>
