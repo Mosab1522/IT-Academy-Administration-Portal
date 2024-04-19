@@ -167,7 +167,7 @@ class InstructorController extends Controller
                 'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
             ]
         );
-        
+        dd(request()->all());
         if (empty($attributes['telephone'])) {
             $attributes['telephone'] = NULL;
             

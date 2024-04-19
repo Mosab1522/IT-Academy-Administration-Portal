@@ -1,6 +1,6 @@
 <x-flash />
 <x-layout />
-<x-setting heading="Akadémie" ctitle="akadémie" etitle="eakadémie">
+<x-setting heading="Akadémie" etitle="Existujúce akadémie">
 
 
 
@@ -8,18 +8,23 @@
         <div class="bg-white p-8 rounded-lg shadow-md mb-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie akadémie</h3> --}}
             <x-slot:create>
+                <div class="flex flex-col">
+                    <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie akadémie</h3>
                 <form action="/admin/academies/create" method="post">
                     @csrf
-                    <div class="mb-4">
-                        <x-form.input name="name" type="text" />
-                    </div>
+                    <x-form.field>
+                        <x-form.input name="name" type="text" title="Názov" placeholder="Názov" />
+                   </x-form.field>
 
-                    <div class="mt-6">
-                        <x-form.button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                   
+                        <x-form.button class="mt-6">
                             Odoslať
                         </x-form.button>
-                    </div>
+                   
                 </form>
+                    </div>
+                </div>
             </x-slot:create>
             {{--
         </div>
@@ -32,36 +37,36 @@
             <input type="hidden" name="search" value="{{request()->input('search')}}" />
             @endif
     
-            <div class="w-full md:w-auto md:flex-1 md:mr-4">
-                <label for="orderBy" class="block text-sm font-medium text-gray-700">Zoradiť podľa</label>
-                <select name="orderBy" id="orderBy" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
-                    <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu vytvorenia</option>
-                    <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu poslednej úpravy</option>
-                </select>
-            </div>
-    
-            <div class="w-full md:w-auto md:flex-1 md:mr-4 mt-4 md:mt-0">
-                <label for="orderDirection" class="block text-sm font-medium text-gray-700">Smer zoradenia</label>
-                <select name="orderDirection" id="orderDirection" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
-                    <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej</option>
-                    <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej</option>
-                </select>
-            </div>
+            <x-form.search-select name="orderBy" title="Zoradiť podľa">
+                <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu
+                    vytvorenia</option>
+                <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu
+                    poslednej úpravy</option>
+    </x-form.search-select>
+    <x-form.search-select name="orderDirection" title="Smer zoradenia">
+        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
+        </option>
+        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
+        </option>
+</x-form.search-select>
             
-            <button type="submit" class="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Zoradiť
-            </button>
+<x-form.button class="ml-2">Zoradiť</x-form.button>
         </form>
     
         <!-- Search Form -->
         <form method="get" action="{{ route('admin.academies.index') }}" class="flex flex-wrap items-end">
             @csrf
-            <div class="flex">
-                <input type="text" name="search" value="{{request()->input('search')}}" class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Vyhľadávanie">
-                <button type="submit" class="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Hľadať
-                 </button>
-            </div>
+            @if(request()->filled('orderBy'))
+                <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
+                <input type="hidden" name="orderDirection" value="{{request()->input('orderDirection')}}" />
+                @endif
+                <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
+
+                    <input type="text" name="search" value="{{old('search')}}"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"
+                        placeholder="Vyhľadávanie">
+                </div>
+                <x-form.button class="ml-2">Hľadať</x-form.button>
         </form>
     </div>
     
@@ -95,7 +100,7 @@
                                 <form method="POST" action="/admin/academies/{{ $academy->id }}" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
+                                    <button type="submit" class="delete-button text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
                                 </form>
                             </td>
                         </tr>

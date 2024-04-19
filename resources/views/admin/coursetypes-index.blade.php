@@ -1,30 +1,40 @@
 <x-flash />
 <x-layout />
-<x-setting heading="Typy kurzov" ctitle="kurzu" etitle="e kurzy">
+<x-setting heading="Typy kurzov" etitle="Existujúce kurzy">
     <x-slot:create>
+        <div class="flex flex-col">
+            <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie kurzu</h3>
         <form action="/admin/coursetypes/create" method="post">
             @csrf
-            <x-form.input name="name" type="text"/>
-
             <x-form.field>
-                <div class="items-center mb-4">
-                    <x-form.label name="typ kurzu:" />
+            <x-form.input name="name" type="text" title="Názov" placeholder="Názov"/>
+            </x-form.field>
 
-                    <input class="mr-0.5" type="radio" name="type" value="0" {{old('type')=='0' ? 'checked' : '' }}>
-                    <label for="0">Študentský</label>
+            
+                <div class="items-center mt-6">
+                    <x-form.label name="type" title="Typ kurzu" />
 
-                    <input class="ml-2 mr-0.5" type="radio" name="type" value="1" {{old('type')=='1' ? 'checked' : ''
-                        }}>
-                    <label for="1">Inštruktorský</label>
-
-                    <input class="ml-2 mr-0.5" type="radio" name="type" value="2" {{old('type')=='2' ? 'checked' : ''
-                        }}>
-                    <label for="2">Obidva</label>
-
+                    <div class="flex items-center mt-1">
+                        <x-form.input-radio name="type" for="type_student" value="0">
+                            Študentský
+                        </x-form.input-radio>
+                        
+                        <x-form.input-radio class="ml-6" name="type" for="type_instructor" value="1">
+                            Inštruktorský
+                        </x-form.input-radio>
+                    
+                        <x-form.input-radio class="ml-6" name="type" for="type_both" value="2">
+                            Obidva
+                        </x-form.input-radio>
+                       
+                    </div>
+                    
                 </div>
-                <x-form.label name="academy" />
-                <select name="academy_id" id="academy_id">
-                    <option value="" disabled selected hidden>Akadémie</option>
+                <x-form.field>
+                    <x-form.select name="academy_id" title="Akadémia">
+                
+                    <option class="text-gray-500" value="" disabled selected hidden>Akadémie</option>
                     @php
                     $academy = \App\Models\Academy::all();
                     @endphp
@@ -33,44 +43,40 @@
                         ucwords($academ->name) }}</option>
                     @endforeach
 
-                </select>
+                    </x-form.select>
             </x-form.field>
-            <x-form.input name="min" type="number" />
-            <x-form.input name="max" type="number" />
-
-            <x-form.button>
+            <x-form.field>
+            <x-form.input name="min" type="number" title="Minimum študentov" placeholder="Minimum"/>
+            </x-form.field>
+            <x-form.field>
+            <x-form.input name="max" type="number" title="Maximum študentov" placeholder="Maximum"/>
+            </x-form.field>
+            <x-form.button class="mt-6">
                 Odoslať
             </x-form.button>
         </form>
+            </div>
+        </div>
     </x-slot:create>
-    <div class="flex mt-3">
-        <form method="get" action="{{ route('admin.coursetypes.index') }}">
+    <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
+        <form method="get" action="{{ route('admin.coursetypes.index') }}" class="flex flex-wrap items-end">
             @csrf
 
             @if(request()->filled('search'))
             <input type="hidden" name="search" value="{{request()->input('search')}}" />
             @endif
-            <div class="flex">
-                <div class="">
-                    <x-form.label name="Zoradiť podľa" />
-                    <select class="form-control" id="orderBy" name="orderBy">
-                        <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' :
-                            ''}}>Dátumu vytvorenia</option>
-                        <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' :
-                            ''}}>Dátumu poslednej úpravy</option>
-                    </select>
-                </div>
-                <div class="px-6">
-                    <x-form.label name="Smer zoradenia" /> <select class="form-control" id="orderDirection"
-                        name="orderDirection">
-                        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od
-                            najnovšej
-                        </option>
-                        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od
-                            najstaršej
-                        </option>
-                    </select>
-                </div>
+            <x-form.search-select name="orderBy" title="Zoradiť podľa">
+                <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu
+                    vytvorenia</option>
+                <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu
+                    poslednej úpravy</option>
+    </x-form.search-select>
+    <x-form.search-select name="orderDirection" title="Smer zoradenia">
+        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
+        </option>
+        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
+        </option>
+</x-form.search-select>
                 {{-- <div class="form-group">
                     <select class="form-control" id="filterBy" name="filterBy[]" multiple>
                         <option value="academy_id|1">Akadémia 1</option>
@@ -79,11 +85,7 @@
                         <option value="coursetype_id|2">Typ kurzu 2</option>
                     </select>
                 </div> --}}
-                <div>
-                    <x-form.label name="Filtrovať podľa" />
-                    <div class="flex">
-                        <div>
-                            <select name="academy_id" class="combo-a" data-nextcombo=".combo-b">
+                <x-form.search-select name="academy_id" title="Akadémia">
                                 <option value="" disabled selected hidden>Akadémia</option>
                                 @php
                                 $academy = \App\Models\Academy::with(['coursetypes','applications'])
@@ -98,15 +100,12 @@
                                     {{request()->input('academy_id')==$academ->id ? 'selected' : ''}}>{{
                                     ucwords($academ->name) }}</option>
                                 @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <x-form.button type="submit">Filtrovať a zoradiť</x-form.button>
+                            
+                </x-form.search-select>
+            <x-form.button class="ml-2">Filtrovať a zoradiť</x-form.button>
         </form>
-        <div class="ml-auto">
-            <form method="get" action="{{ route('admin.coursetypes.index') }}">
+        
+            <form method="get" action="{{ route('admin.coursetypes.index') }}" class="flex flex-wrap items-end">
                 @csrf
                 @if(request()->filled('orderBy'))
                 <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
@@ -118,22 +117,25 @@
                 @elseif(request()->filled('academy_id'))
                 <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
                 @endif
-                <x-form.label name="Vyhľadávanie" />
-                <input type="text" name="search" value="{{request()->input('search')}}" />
-                <x-form.button>
-                    Hľadať
-                </x-form.button>
+                <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
+
+                    <input type="text" name="search" value="{{old('search')}}"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"
+                        placeholder="Vyhľadávanie">
+                </div>
+                <x-form.button class="ml-2">Hľadať</x-form.button>
             </form>
-        </div>
+        
     </div>
-    <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div class="overflow-x-auto relative ">
+    <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
+        <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8 ">
+            <div class="overflow-x-auto relative rounded-lg shadow">
                 <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
                     <thead class="text-xs uppercase bg-gray-200">
                         <tr>
                             <th scope="col" class="py-3 px-6">Názov kurzu</th>
                             <th scope="col" class="py-3 px-6">Akadémia</th>
+                            <th scope="col" class="py-3 px-6">Typ kurzu</th>
                             <th scope="col" class="py-3 px-6">Min/max študentov</th>
                             <th scope="col" class="py-3 px-6">Inštruktori</th>
                             <th scope="col" class="py-3 px-6">Triedy</th>
@@ -146,6 +148,9 @@
                         <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                             <td class="py-4 px-6">{{$coursetype->name}}</td> 
                             <td class="py-4 px-6">{{$coursetype->academy->name}}</td>
+                            <td class="py-4 px-6">
+                                {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
+                            </td>
                             <td class="py-4 px-6">{{$coursetype->min}} / {{$coursetype->max}}</td>
                             <td class="py-4 px-6">
                                 @foreach($coursetype->instructors as $instructor)

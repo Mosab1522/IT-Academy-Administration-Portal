@@ -9,5 +9,11 @@
     margin-left: 0.5em;
 }
 
+.flex-button {
+    flex: 1;
+}
 
+.hidden-button {
+    display: none;
+}
 

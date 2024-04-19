@@ -17,7 +17,7 @@ class LessonController extends Controller
     public function index(Request $request)
     {
         if ($request->filled('search')) {
-            $lessons = Lesson::with(['class', 'instructor'])->where('name', 'like', '%' . $request->input('search') . '%')
+            $lessons = Lesson::with(['class', 'instructor'])->where('title', 'like', '%' . $request->input('search') . '%')
                 ->orwhereHas('class', function (Builder $query) use ($request) {
                     $query->where('name', 'like', '%' . $request->input('search') . '%');
                 })->orwhereHas('instructor', function (Builder $query) use ($request) {
@@ -40,7 +40,7 @@ class LessonController extends Controller
             $orderDirection = $request->input('orderDirection');
             $lessons->orderBy($orderBy, $orderDirection);
         } else {
-            $lessons->orderBy('created_at', 'desc');
+            $lessons->orderBy('lesson_date', 'asc');
         }
 
         $lessons = $lessons->get();

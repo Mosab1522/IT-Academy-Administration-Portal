@@ -1,86 +1,97 @@
 <x-flash />
 <x-layout />
-<x-setting heading="Hodiny" ctitle="hodiny" etitle="e hodiny">
+<x-setting heading="Hodiny" etitle="Existujúce hodiny">
     <x-slot:create>
-        <form action="/admin/lessons/create" method="post">
-            @csrf
-            {{--
-            <x-form.label name="Zapísať všetkých ktorý majú prihlášku na kurz?" />
-            <input type="checkbox" name="students"> --}}
-            <x-form.input name="title" type="text" />
-            <x-form.field>
+        <div class="flex flex-col">
+            <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie hodiny</h3>
+                <form action="/admin/lessons/create" method="post">
+                    @csrf
+                    {{--
+                    <x-form.label name="Zapísať všetkých ktorý majú prihlášku na kurz?" />
+                    <input type="checkbox" name="students"> --}}
+                    <x-form.field>
+                    <x-form.input name="title" type="text" title="Názov hodiny" placeholder="Názov hodiny" />
+                    </x-form.field>
+                    <x-form.field>
 
-                <div>
+                        <div>
 
-                    {{-- <input name="coursetype_id" value="{{$coursetype->id}}" hidden /> --}}
-
-                    <x-form.label name="Triedy" />
-                    <!-- parent -->
-                    <select name="class_id" class="w-full">
-                        <option value="" disabled selected hidden>Triedy</option>
-                        {{-- @php
-                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
-                        ->get();
-                        @endphp --}}
-                        {{-- @php
-                        $assignedInstructors = $coursetype->instructors->pluck('id')->toArray();
-                        @endphp --}}
-                        @foreach (\App\Models\CourseClass::with(['instructor'])->get() as $class)
+                            {{-- <input name="coursetype_id" value="{{$coursetype->id}}" hidden /> --}}
 
 
+                            <!-- parent -->
+                            <x-form.select name="class_id" title="Triedy">
+                                <option style="color: gray;" value="" disabled selected hidden>Triedy</option>
+                                {{-- @php
+                                $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                                ->get();
+                                @endphp --}}
+                                {{-- @php
+                                $assignedInstructors = $coursetype->instructors->pluck('id')->toArray();
+                                @endphp --}}
+                                @foreach (\App\Models\CourseClass::with(['instructor'])->get() as $class)
 
-                        <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1"
-                            {{old('instructor_id')==$class->id ? 'selected' :
-                            ''}}>Meno: {{
-                            ucwords($class->name)}} {{
-                            ucwords($class->coursetype->name)}}</option>
 
-                        @endforeach
-                        {{-- <option value="" disabled selected hidden>Akadémia</option>
-                        <option value="1" data-id="1" data-option="-1">Cisco</option>
-                        <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
-                    </select>
-                </div>
-            </x-form.field>
-            <x-form.field>
-                <x-form.label name="Dátum" />
-                <input type="datetime-local" name="lesson_date" class="border">
-                <input type="time" id="duration" name="duration" step="60" value="00:45">
-            </x-form.field>
 
-            <x-form.button>
-                Odoslať
-            </x-form.button>
-        </form>
+                                <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1"
+                                    {{old('instructor_id')==$class->id ? 'selected' :
+                                    ''}}>Meno: {{
+                                    ucwords($class->name)}} {{
+                                    ucwords($class->coursetype->name)}}</option>
+
+                                @endforeach
+                                {{-- <option value="" disabled selected hidden>Akadémia</option>
+                                <option value="1" data-id="1" data-option="-1">Cisco</option>
+                                <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                            </x-form.select>
+                        </div>
+                    </x-form.field>
+                    <x-form.field>
+                        <div class="flex">
+                            <x-form.label name="datetime-local" title="Dátum a trvanie hodiny" />
+
+                        </div>
+                        <div class="flex">
+                            <input type="datetime-local" name="lesson_date" value="{{ old('lesson_date')}}"
+                                class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <input type="time" name="duration"
+                                class="mt-1 ml-4 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                step="60" value="{{ old('duration', '00:45') }}">
+
+                        </div>
+
+                    </x-form.field>
+
+                    <x-form.button class="mt-6">
+                        Odoslať
+                    </x-form.button>
+                </form>
+            </div>
+        </div>
     </x-slot:create>
 
     <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
-        <form method="get" action="{{ route('admin.academies.index') }}" class="flex flex-wrap items-end">
+        <form method="get" action="{{ route('admin.lessons.index') }}" class="flex flex-wrap items-end">
             @csrf
             @if(request()->filled('search'))
             <input type="hidden" name="search" value="{{request()->input('search')}}" />
             @endif
-    
-            <div class="w-full md:w-auto md:mr-4">
-                <label for="orderBy" class="block text-sm font-medium text-gray-700">Zoradiť podľa</label>
-                <select name="orderBy" id="orderBy" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
-                    <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu vytvorenia</option>
-                    <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu poslednej úpravy</option>
-                </select>
-            </div>
+            <x-form.search-select name="orderBy" title="Zoradiť podľa">
+                    <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu
+                        vytvorenia</option>
+                    <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu
+                        poslednej úpravy</option>
+        </x-form.search-select>
+        <x-form.search-select name="orderDirection" title="Smer zoradenia">
+            <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
+            </option>
+            <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
+            </option>
+</x-form.search-select>
 
-            <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
-                <label for="orderDirection" class="block text-sm font-medium text-gray-700">Smer zoradenia</label>
-                <select name="orderDirection" id="orderDirection" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
-                    <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej</option>
-                    <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej</option>
-                </select>
-            </div>
-
-            <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
-                <label for="class_id" class="block text-sm font-medium text-gray-700">Triedy</label>
-                <select name="class_id" id="class_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate">
-                    @php
+<x-form.search-select name="class_id" title="Trieda">
+    @php
                     $classes = \App\Models\CourseClass::with(['instructor','students'])->get();
                     @endphp
 
@@ -88,31 +99,37 @@
 
                     @foreach ($classes as $class)
                     <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1" {{request()->
-                        input('academy_id')==$class->id ? 'selected' : ''}}>{{
+                        input('class_id')==$class->id ? 'selected' : ''}}>{{
                         ucwords($class->name) }}</option>
                     @endforeach
-                </select>
-            </div>
+</x-form.search-select>
 
-            
 
-            <button type="submit" class="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Filtrovať a zoradiť
-            </button>
+
+            <x-form.button class="ml-2">Filtrovať a zoradiť</x-form.button>
         </form>
 
         <!-- Search Form -->
-        <form method="get" action="{{ route('admin.academies.index') }}" class="flex flex-wrap items-end">
+        <form method="get" action="{{ route('admin.lessons.index') }}" class="flex flex-wrap items-end">
             @csrf
-            <div class="flex">
-                
-                <input type="text" name="search" value="{{request()->input('search')}}"
-                    class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            @if(request()->filled('orderBy'))
+                <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
+                <input type="hidden" name="orderDirection" value="{{request()->input('orderDirection')}}" />
+                @endif
+                @if(request()->filled('class_id'))
+                <input type="hidden" name="class_id" value="{{request()->input('class_id')}}" />
+
+                @endif
+            <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
+
+                <input type="text" name="search" value="{{old('search')}}"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"
                     placeholder="Vyhľadávanie">
-                    <button type="submit" class="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Hľadať
-                    </button>
             </div>
+            <x-form.button class="ml-2">Hľadať</x-form.button>
+
+
+
         </form>
     </div>
 
@@ -123,7 +140,7 @@
     <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div class="overflow-x-auto relative rounded-lg shadow">
-                <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="max-w-8xl mx-auto py-6 sm:px-6 lg:px-8">
                     <!-- Iterate over classes -->
                     @foreach ($lessons->groupBy('class.name') as $className => $lessonsInClass)
                     @php
@@ -131,38 +148,34 @@
                     $firstLesson = $lessonsInClass->first();
                     $classId = $firstLesson->class->id;
                     @endphp
-                    <div class="mb-10">
-                        <h3 class="text-lg leading-6 font-medium text-gray-800 mb-2">
+                    <div class="mb-8">
+                        <h3 class=" leading-6  text-gray-700 mb-2">
                             <a href="/admin/lessons/{{ $classId }}" class="hover:underline hover:text-gray-900">
-                                Trieda: {{ $className }}
+                            {{ $className }}
                             </a>
                         </h3>
-                        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-200">
+                        <div class="bg-white shadow overflow-hidden rounded-lg">
+                            <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
+                                <thead class="text-xs uppercase bg-gray-200">
                                     <tr>
-                                        <th scope="col"
-                                            class="py-3 px-6 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
+                                        <th scope="col" class="py-3 px-6">
                                             Názov hodiny
                                         </th>
-                                        <th scope="col"
-                                            class="py-3 px-6 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
+                                        <th scope="col" class="py-3 px-6">
                                             Inštruktor
                                         </th>
-                                        <th scope="col"
-                                            class="py-3 px-6 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
+                                        <th scope="col" class="py-3 px-6">
                                             Dátum a trvanie
                                         </th>
-                                        <th scope="col"
-                                            class="py-3 px-6 text-xs font-medium text-gray-800 uppercase tracking-wider w-64">
+                                        <th scope="col" class="py-3 px-8 w-40">
                                             Akcie
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tbody>
                                     <!-- Iterate over lessons in this class -->
                                     @foreach ($lessonsInClass as $lesson)
-                                    <tr class="hover:bg-gray-50">
+                                    <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                         <td class="py-4 px-6">
                                             {{ $lesson->title }}
                                         </td>

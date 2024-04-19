@@ -88,9 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
         select.disabled = true;
     });
     });
-    document.querySelectorAll('.section button[type]').forEach(button => {
+    
+    document.querySelectorAll('.section button[type="submit"]:not(.delete-button),.section button[type="reset"]').forEach(button => {
       button.style.display = 'none';
-    });
+  });
 
     // Reset button texts to defaults
     if (editButtons) {
@@ -138,12 +139,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to show relevant buttons for the active section
   function showRelevantButtons(activeSectionId) {
     // Hide all buttons initially
-    editButtons.forEach(button => { button.style.display = 'none'; button.parentNode.style.display = 'none'; });
-    addButtons.forEach(button => button.style.display = 'none');
+    editButtons.forEach(button => { button.style.display = 'none'; button.parentNode.style.display = 'none'; button.parentNode.parentNode.style.display = 'none';});
+    addButtons.forEach(button => { button.style.display = 'none'; button.parentNode.style.display = 'none'; button.parentNode.parentNode.style.display = 'none';} );
 
     // Show edit and add buttons that are relevant to the active section
     document.querySelectorAll(`.edit-button[data-target="${activeSectionId}"], .add-button[data-target="${activeSectionId}Add"]`).forEach(button => {
-      button.style.display = 'inline-block'; button.parentNode.style.display = 'flex';// Adjust display as needed
+      button.style.display = 'block';  // Display as block-level elements
+      button.style.flex = '1';         // Ensure the button takes equal space
+      button.parentNode.style.display = 'flex';// Adjust display as needed
+      button.parentNode.parentNode.style.display = 'flex';
     });
   }
 
@@ -710,94 +714,75 @@ function searchStudents() {
   }).then(response => {
     searchResults.innerHTML = '';
     let students = response.data;
-    students.forEach(student => {
-      let option = document.createElement('tr');
+    // Assuming 'students' is an array of student objects and 'searchResults' is the tbody element of your table
+students.forEach(student => {
+  let option = document.createElement('tr');
+  option.className = "bg-white hover:bg-gray-50";
 
-      // První sloupec s rowspan="2"
-      let nameCell = document.createElement('td');
-      nameCell.setAttribute('rowspan', '2');
-      nameCell.className = 'px-6 py-4 whitespace-nowrap';
-      nameCell.textContent = student.name;
-      option.appendChild(nameCell);
+  // Name cell
+  let nameCell = document.createElement('td');
+  nameCell.className = 'px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900';
+  nameCell.textContent = student.name;
+  option.appendChild(nameCell);
 
-      // Druhý sloupec s rowspan="2"
-      let lastnameCell = document.createElement('td');
-      lastnameCell.setAttribute('rowspan', '2');
-      lastnameCell.className = 'px-6 py-4 whitespace-nowrap';
-      lastnameCell.textContent = student.lastname;
-      option.appendChild(lastnameCell);
+  // Lastname cell
+  let lastnameCell = document.createElement('td');
+  lastnameCell.className = 'px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900';
+  lastnameCell.textContent = student.lastname;
+  option.appendChild(lastnameCell);
 
-      // Třetí sloupec s rowspan="2"
-      let emailCell = document.createElement('td');
-      // emailCell.setAttribute('rowspan', '2');
-      emailCell.className = 'text-xs font-bold px-3 py-2 whitespace-nowrap';
-      emailCell.textContent = student.email;
-      option.appendChild(emailCell);
+  // Email cell
+  let emailCell = document.createElement('td');
+  emailCell.className = 'text-sm px-6 py-3 whitespace-nowrap text-gray-500';
+  emailCell.textContent = student.email;
+  option.appendChild(emailCell);
 
-      // Čtvrtý sloupec
-      let ulica = document.createElement('td');
-      ulica.className = 'text-xs px-3 py-2 whitespace-nowrap';
-      ulica.textContent = student.ulicacislo;
-      option.appendChild(ulica);
+  // More Info cell
+  let moreInfoIndicatorCell = document.createElement('td');
+    moreInfoIndicatorCell.className = 'text-sm px-6 py-3 whitespace-nowrap text-gray-500 cursor-pointer more-info-column';
+    moreInfoIndicatorCell.textContent = "Viac info...";
+    moreInfoIndicatorCell.setAttribute('data-info-visible', 'false');
+    option.appendChild(moreInfoIndicatorCell);
 
-      let mesto = document.createElement('td');
-      mesto.className = 'text-xs px-3 py-2 whitespace-nowrap';
-      mesto.textContent = student.mestoobec;
-      option.appendChild(mesto);
+  // Append the first row to the table body
+  searchResults.appendChild(option);
 
-      let pscCell = document.createElement('td');
-      pscCell.className = 'text-xs px-3 py-2 whitespace-nowrap';
-      pscCell.textContent = student.psc;
-      option.appendChild(pscCell);
+  // Additional info row for detailed information
+  let subOption = document.createElement('tr');
+  subOption.className = "bg-white hidden"; // Start hidden
+  let additionalInfoCell = document.createElement('td');
+  additionalInfoCell.className = 'text-xs px-4 py-2 text-gray-500';
+  additionalInfoCell.setAttribute('colspan', '4');
+  additionalInfoCell.innerHTML = `Additional Emails: ${student.sekemail}, Status: ${student.status}, School: ${student.skola}, Study: ${student.studium}, Program: ${student.program}`;
+  subOption.appendChild(additionalInfoCell);
 
-      // Přidání prvního řádku do tabulky
-      searchResults.appendChild(option);
+  // Append the second row to the table body
+  searchResults.appendChild(subOption);
 
-      // Druhý řádek s dodatečným sloupcem
-      let suboption = document.createElement('tr');
-      let subemail = document.createElement('td');
-      subemail.className = 'text-xs font-normal text-gray-600 px-3 py-2 whitespace-nowrap';
-      subemail.textContent = student.sekemail;
-      suboption.appendChild(subemail);
+  // Event Listener for toggling additional information
+  moreInfoIndicatorCell.addEventListener('click', function() {
+    let isInfoVisible = this.getAttribute('data-info-visible') === 'true';
+    this.textContent = isInfoVisible ? "Viac info..." : "Menej info...";
+    subOption.style.display = isInfoVisible ? 'none' : 'table-row'; // Use 'table-row' instead of empty string for display
+    this.setAttribute('data-info-visible', String(!isInfoVisible));
+});
 
-      let suboptionCell = document.createElement('td');
-      suboptionCell.className = 'text-xs px-3 py-2 whitespace-nowrap';
-      suboptionCell.textContent = student.status;
-      suboption.appendChild(suboptionCell);
+  // Click event for the whole row, excluding the More/Less info cell
+  option.addEventListener('click', function(event) {
+      if (event.target !== moreInfoIndicatorCell) {
+          document.querySelector('input[name="name"]').value = student.name;
+          document.querySelector('input[name="lastname"]').value = student.lastname;
+          document.querySelector('input[name="email"]').value = student.email;
+          // Clear the table or perform any other required actions
+          searchResults.innerHTML = '';
+      }
+  });
+});
 
-      let skola = document.createElement('td');
-      skola.className = 'text-xs px-3 py-2 whitespace-nowrap';
-      skola.textContent = student.skola;
-      suboption.appendChild(skola);
-
-      let studium = document.createElement('td');
-      studium.className = 'text-xs px-3 py-2 whitespace-nowrap';
-      studium.textContent = student.studium;
-      suboption.appendChild(studium);
-
-      let program = document.createElement('td');
-      program.className = 'text-xs px-3 py-2 whitespace-nowrap';
-      program.textContent = student.program;
-      suboption.appendChild(program);
-
-      // Přidání druhého řádku do tabulky
-      searchResults.appendChild(suboption);
-
-      // Události pro první řádek
-      option.setAttribute('title', student.email);
-      option.addEventListener('click', function () {
-        document.querySelector('input[name="name"]').value = student.name;
-        document.querySelector('input[name="lastname"]').value = student.lastname;
-        document.querySelector('input[name="email"]').value = student.email;
-        searchResults.innerHTML = '';
-      });
-      suboption.addEventListener('click', function () {
-        document.querySelector('input[name="name"]').value = student.name;
-        document.querySelector('input[name="lastname"]').value = student.lastname;
-        document.querySelector('input[name="email"]').value = student.email;
-        searchResults.innerHTML = '';
-      });
-    });
+  
+  
+  
+  
 
   }).catch(error => {
     console.error(error);
@@ -817,35 +802,27 @@ let pairsCount = 1;
 
 function addSelectsPair() {
   const pairWrapper = document.createElement('div');
-  pairWrapper.classList.add('selects-pair');
+  pairWrapper.classList.add('selects-pair', 'flex', 'items-center', 'justify-between', 'mb-6'); // Tailwind classes for flex layout
   pairWrapper.dataset.pairId = ++pairsCount;
 
   const academySelect = document.createElement('select');
   academySelect.name = 'academy_id[]';
-  academySelect.classList.add('academy-select');
+  academySelect.classList.add('academy-select', 'bg-white', 'border', 'border-gray-300', 'rounded-md', 'text-gray-700', 'p-2', 'flex-1', 'mr-2'); // Tailwind classes for the select
   academySelect.dataset.pairId = pairsCount;
-  // academySelect.addEventListener('change', select);
-
 
   const firstAcademySelect = selectsContainer.querySelector('.academy-select');
   if (firstAcademySelect) {
-    academySelect.innerHTML = firstAcademySelect.innerHTML;
-    academySelect.value = "";
-    // firstAcademySelect.addEventListener('change', select);
+      academySelect.innerHTML = firstAcademySelect.innerHTML;
+      academySelect.value = "";
   }
 
   const coursetypeSelect = document.createElement('select');
   coursetypeSelect.name = 'coursetypes_id[]';
-  coursetypeSelect.classList.add('coursetype-select');
+  coursetypeSelect.classList.add('coursetype-select', 'bg-white', 'border', 'border-gray-300', 'rounded-md', 'text-gray-700', 'p-2', 'flex-1', 'mx-2'); // Tailwind classes for the select
   coursetypeSelect.dataset.pairId = pairsCount;
 
-  const firstCoursetypeSelect = selectsContainer.querySelector('.coursetype-select');
-  if (firstCoursetypeSelect) {
-    coursetypeSelect.innerHTML = '<option value="">Typ kurzu</option>';
-    coursetypeSelect.value = "";
-  }
   const removeBtn = document.createElement('button');
-  removeBtn.classList.add('remove-selects-btn');
+  removeBtn.classList.add('remove-selects-btn', 'text-white', 'bg-red-500', 'hover:bg-red-700', 'p-2', 'rounded' ,'ml-4'); // Tailwind classes for button
   removeBtn.setAttribute('type', 'button');
   removeBtn.textContent = 'Remove';
   removeBtn.setAttribute('data-pair-id', pairsCount);
@@ -856,6 +833,8 @@ function addSelectsPair() {
   pairWrapper.appendChild(removeBtn);
   selectsContainer.appendChild(pairWrapper);
 }
+
+
 
 
 

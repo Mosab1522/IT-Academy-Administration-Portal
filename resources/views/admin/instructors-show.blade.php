@@ -523,7 +523,7 @@
         button.style.display = "block";
         button_c.style.display = "block";
     } else {
-        image.src = ""; // Fallback image or placeholder
+        image.src = ; // Fallback image or placeholder
         button.style.display = "none";
         button_c.style.display = "none";
     }

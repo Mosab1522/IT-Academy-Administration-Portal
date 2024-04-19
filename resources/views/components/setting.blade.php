@@ -1,9 +1,9 @@
-@props(['heading', 'ctitle','etitle',])
+@props(['heading', 'etitle',])
 
 <div class="flex h-screen bg-gray-100">
 
     <!-- Navigation Sidebar -->
-    <x-aside/>
+    <x-aside />
 
     <!-- Main Content -->
     <section class="flex-1 overflow-auto">
@@ -15,13 +15,9 @@
         <section class="flex-1 overflow-auto">
 
             <main class="p-12">
-                <div class="flex flex-col">
-                    <div class="bg-white p-8 rounded-lg shadow-md mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie {{$ctitle}}</h3>
-                        {{ $create }}
-                    </div>
-                    <!-- The rest of your content -->
-                </div>
+                
+                        {{ $create ?? '' }}
+                    
                 <!-- Instructor's Notifications -->
                 {{-- @foreach (App\Models\Instructor::all() as $instructor)
                 <div class="bg-white p-4 rounded-lg shadow mb-6">
@@ -35,9 +31,10 @@
                     </ul>
                 </div>
                 @endforeach --}}
-                <div class="bg-white p-8 rounded-lg shadow-md mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Existujúc{{ $etitle }}</h3>
-                    <div class="flex flex-col">
+                <div class="flex flex-col">
+                    <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $etitle ?? '' }}</h3>
+
                         {{ $slot }}
                     </div>
                 </div>
