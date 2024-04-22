@@ -62,7 +62,7 @@
                     </div>
                 </div>
         </div>
-        <a href="/" class="text-blue-300 hover:text-blue-400">
+        <a href="/" class="text-blue-300 hover:text-blue-400 mb-20 lg:mb-0">
             <span class="text-sm">Nová prihláška</span>
         </a>
         </nav>
