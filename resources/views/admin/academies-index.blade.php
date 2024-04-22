@@ -9,18 +9,19 @@
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie akadémie</h3> --}}
             <x-slot:create>
                 <div class="flex flex-col">
-                    <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                    <div class="bg-white p-8 rounded-lg shadow mb-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie akadémie</h3>
-                <form action="/admin/academies/create" method="post">
+                <form action="/admin/academies/create" method="post" class=" ">
                     @csrf
                     <x-form.field>
                         <x-form.input name="name" type="text" title="Názov" placeholder="Názov" />
                    </x-form.field>
 
-                   
-                        <x-form.button class="mt-6">
+                  
+                        <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                             Odoslať
                         </x-form.button>
+                   
                    
                 </form>
                     </div>
@@ -30,7 +31,7 @@
         </div>
         <!-- The rest of your content -->
     </div> --}}
-    <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
+    {{-- <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
         <form method="get" action="{{ route('admin.academies.index') }}" class="flex flex-wrap items-end">
             @csrf
             @if(request()->filled('search'))
@@ -66,50 +67,68 @@
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"
                         placeholder="Vyhľadávanie">
                 </div>
-                <x-form.button class="ml-2 ">Hľadať</x-form.button>
+                
+                <x-form.button class="ml-2">Hľadať</x-form.button>
+                
         </form>
-    </div>
+    </div> --}}
 
-    <div class="bg-white p-6 rounded-lg shadow mb-4 lg:flex">
+    <div class="bg-white p-6 rounded-lg shadow mb-4 lg:flex lg:items-end lg:justify-between gap-6">
     <form method="GET" action="{{ route('admin.academies.index') }}" class="flex flex-col sm:flex-row gap-2">
         @csrf
         @if(request()->filled('search'))
             <input type="hidden" name="search" value="{{request()->input('search')}}" />
         @endif
 
-        <div class="flex-grow">
+        {{-- <div class="flex-grow">
             <x-form.label name="orderBy" title="Zoradiť podľa" />
             <select name="orderBy" id="orderBy" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm leading-5.6">
                 <option value="created_at" {{ request()->input('orderBy') == 'created_at' ? 'selected' : '' }}>Dátumu vytvorenia</option>
                 <option value="updated_at" {{ request()->input('orderBy') == 'updated_at' ? 'selected' : '' }}>Dátumu poslednej úpravy</option>
             </select>
-        </div>
+        </div> --}}
+        <x-form.search-select name="orderBy" title="Zoradiť podľa">
+             <option value="created_at" {{ request()->input('orderBy') == 'created_at' ? 'selected' : '' }}>Dátumu vytvorenia</option>
+                <option value="updated_at" {{ request()->input('orderBy') == 'updated_at' ? 'selected' : '' }}>Dátumu poslednej úpravy</option>
+        </x-form.search-select>
 
-        <div class="flex-grow">
+         <x-form.search-select name="orderDirection" title="Smer zoradenia">
+        <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
+        </option>
+        <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
+        </option>
+</x-form.search-select>
+        {{-- <div class="flex-grow">
             <x-form.label name="orderDirection" title="Smer zoradenia" />
             <select name="orderDirection" id="orderDirection" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm leading-5.6">
                 <option value="desc" {{ request()->input('orderDirection') == 'desc' ? 'selected' : '' }}>Od najnovšej</option>
                 <option value="asc" {{ request()->input('orderDirection') == 'asc' ? 'selected' : '' }}>Od najstaršej</option>
             </select>
-        </div>
-
+        </div> --}}
         <div class="flex-shrink-0">
-            <button type="submit" class=" w-full mt-6 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 ease-in-out">Zoradiť</button>
+        <x-form.button class="md:mt-6 mt-2 sm:mt-6 w-full">Zoradiť</x-form.button>
         </div>
+        {{-- <div class="flex-shrink-0">
+            <button type="submit" class=" w-full mt-6 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 ease-in-out">Zoradiť</button>
+        </div> --}}
     </form>
-    <form method="GET" action="{{ route('admin.academies.index') }}" class="flex flex-col sm:flex-row gap-2">
+    <form method="GET" action="{{ route('admin.academies.index') }}" class="flex flex-col  sm:flex-row gap-2 lg:mt-0 mt-2 ">
         @csrf
         @if(request()->filled('orderBy'))
             <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
             <input type="hidden" name="orderDirection" value="{{request()->input('orderDirection')}}" />
         @endif
         <div class="flex-grow">
-            <input type="text" name="search" value="{{request()->input('search') ?: old('search')}}"
-                   class="mt-6 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm leading-5.6"
-                   placeholder="Vyhľadávanie">
+            
+            {{-- <input type="text" name="search" value="{{request()->input('search') ?: old('search')}}"
+                   class="mt-7 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm leading-5.6"
+                   placeholder="Vyhľadávanie"> --}}
+                   <x-form.input name="search" type="text" title="Vyhľadávanie" placeholder="Vyhľadávanie" class="mt-2"/>
+            
         </div>
         <div class="flex-shrink-0">
-            <button type="submit" class="w-full mt-6  px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 ease-in-out">Hľadať</button>
+            <x-form.button class="md:mt-7 mt-2 sm:mt-7 w-full">Hľadať</x-form.button>
+            {{-- <button type="submit" class="w-full mt-6  px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 ease-in-out">Hľadať</button> --}}
         </div>
     </form>
 </div>
@@ -118,8 +137,7 @@
     
 <div class="my-2 sm:-mx-6 lg:-mx-8">
     <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-        <!-- Shadow container with Tailwind shadow utility -->
-        <div class="shadow  rounded-lg overflow-hidden">
+        <div class="shadow rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800">
                     <thead class="text-xs uppercase bg-gray-200">
@@ -157,6 +175,7 @@
         </div>
     </div>
 </div>
+
 
 
 

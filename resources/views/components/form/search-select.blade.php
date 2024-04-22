@@ -6,7 +6,7 @@ if ($attributes->get('disabled')) {
 @endphp
 
 @props(['name', 'title'])
-<div class="w-full md:w-auto md:mr-4">
+<div class="flex-grow">
     <x-form.label name="{{$name}}" title="{{$title}}"/>
     <select name="{{$name}}" id="{{$name}}"
      {{ $attributes->merge(['class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm truncate disabled:bg-gray-100 disabled:text-gray-500 bg-white text-sm leading-5.6' , 'data-nextcombo' => '' ])->merge($conditionalAttributes) }}>

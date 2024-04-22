@@ -346,8 +346,8 @@
                     <div id="kurzy" class="section flex-auto p-6"
                         style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Kurzy v správe</p>
-                        <div class="overflow-x-auto relative rounded-lg shadow mt-6">
-                            <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
+                        <div class="overflow-x-auto relative rounded-lg shadow mt-6 align-middle ">
+                            <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 ">
                                 <thead class="text-xs uppercase bg-gray-200">
                                 
                                     <tr>
@@ -358,7 +358,9 @@
                                         <th scope="col" class="py-3 px-6">Inštruktori</th>
                                         <th scope="col" class="py-3 px-6">Triedy</th>
                                         <th scope="col" class="py-3 px-6">Počet prihlášok</th>
-                                        <th scope="col" class="py-3 px-6 w-40">Akcie</th>
+                                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">
+                                            Akcie
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -381,7 +383,7 @@
                                             @endforeach
                                         </td>
                                         <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                                        <td class="py-4 px-6 text-right">
+                                       <td class="px-3 py-4 text-right text-sm font-medium lg:px-6 lg:py-4">
                                             <a href="/admin/coursetypes/{{ $coursetype->id }}" class="text-blue-600 hover:text-blue-700 hover:underline ">Upraviť</a>
                                             &nbsp;
                                             <form method="POST" action="/admin/coursetypes/{{ $coursetype->id }}" class="inline">
