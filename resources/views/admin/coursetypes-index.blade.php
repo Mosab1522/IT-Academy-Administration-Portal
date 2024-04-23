@@ -195,20 +195,25 @@
                     </x-slot:head>
                         @foreach ($coursetypes as $coursetype)
                         <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
-                            <td class="py-4 px-6">{{$coursetype->name}}</td>
-                            <td class="py-4 px-6">{{$coursetype->academy->name}}</td>
+                            <td class="py-4 px-6"><x-table.td url="coursetypes/{{ $coursetype->id }}">{{$coursetype->name}}</x-table.td></td>
+                            <td class="py-4 px-6"><x-table.td url="academies/{{ $coursetype->academy->id }}">{{$coursetype->academy->name}}</x-table.td></td>
                             <td class="py-4 px-6">
                                 {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
                             </td>
                             <td class="py-4 px-6">{{$coursetype->min}} / {{$coursetype->max}}</td>
                             <td class="py-4 px-6">
                                 @foreach($coursetype->instructors as $instructor)
-                                {{$instructor->name}} {{$instructor->lastname}} <br>
+                                <x-table.td url="instructors/{{ $instructor->id }}">
+                                {{$instructor->name}} {{$instructor->lastname}}
+                                </x-table.td>
+                                <br>
                                 @endforeach
                             </td>
                             <td class="py-4 px-6">
                                 @foreach($coursetype->classes as $class)
-                                {{$class->name}}<br>
+                                <x-table.td url="classes/{{ $class->id }}">
+                                {{$class->name}}
+                                </x-table.td><br>
                                 @endforeach
                             </td>
                             <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
