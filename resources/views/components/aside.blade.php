@@ -42,12 +42,18 @@
                   </div>
                   <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
+                        <button @click="activeSection = (activeSection === 'management' ? null : 'management'); activeSectionName = 'Spravovanie'"
+                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'calendar' }" class="flex items-center py-2 px-4 rounded-md border hover:bg-gray-700 transition-colors duration-200">
                       <span class="material-icons material-icons-custom">calendar_today</span>
+                        </button>
                     </div>
                   </div>
                   <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
+                        <button @click="activeSection = (activeSection === 'management' ? null : 'management'); activeSectionName = 'Spravovanie'"
+                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'more' }" class="flex items-center py-2 px-4 rounded-md border hover:bg-gray-700 transition-colors duration-200">
                       <span class="material-icons material-icons-custom">calendar_today</span>
+                        </button>
                     </div>
                   </div>
                 <!-- Repeat for other icons -->
