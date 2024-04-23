@@ -14,11 +14,11 @@
 
         </div>
         <!-- Navigation Header with Dynamic Main Category Name -->
-        <div class="height-breakpoint2">
+        <div class="-mt-4 sm:mt-0">
             <div class="flex items-center justify-center -mt-3 p-4 w-full height-breakpoint">
                 <span x-text="activeSectionName" class="text-base font-medium"></span>
             </div>
-            <div class="grid grid-cols-2  items-center justify-center -mt-3 p-4 w-full">
+            <div class="grid grid-cols-2  items-center justify-center -mt-3 px-4 pt-4 sm:p-4 w-full">
                 <!-- Icons here. Replace `template-icon` with actual icon classes or SVGs -->
                 <div class="flex justify-center">
                   <div class="icon-bg p-3 rounded-md">
@@ -68,28 +68,28 @@
         </div>
 
         <!-- Sub-sections displayed based on activeSection -->
-        <div class="mt-4 height-breakpoint">
+        <div class="mt-2 sm:mt-4 height-breakpoint">
             <div x-show="activeSection === 'management'" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium" x-transition>
                 <a href="/admin/academies"
-                class="{{ request()->is('admin/academies', 'admin/academies/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center py-2 height-breakpoint4 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
+                class="{{ request()->is('admin/academies', 'admin/academies/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
                 Akadémie</a>
             <a href="/admin/coursetypes"
-                class="{{ request()->is('admin/coursetypes', 'admin/coursetypes/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center py-2 height-breakpoint4 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
+                class="{{ request()->is('admin/coursetypes', 'admin/coursetypes/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Typy kurzy</a>
             <a href="/admin/classes"
-                class="{{ request()->is('admin/classes', 'admin/classes/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center py-2 height-breakpoint4 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
+                class="{{ request()->is('admin/classes', 'admin/classes/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Triedy</a>
             <a href="/admin/lessons"
-                class="{{ request()->is('admin/lessons', 'admin/lessons/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center py-2 height-breakpoint4 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
+                class="{{ request()->is('admin/lessons', 'admin/lessons/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Hodiny</a>
             <a href="/admin/students"
-                class="{{ request()->is('admin/students', 'admin/students/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center py-2 height-breakpoint4 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
+                class="{{ request()->is('admin/students', 'admin/students/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Študenti</a>
             <a href="/admin/applications"
-                class="{{ request()->is('admin/applications', 'admin/applications/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center py-2 height-breakpoint4 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
+                class="{{ request()->is('admin/applications', 'admin/applications/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Prihlášky</a>
             <a href="/admin/instructors"
-                class="{{ request()->is('admin/instructors', 'admin/instructors/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center py-2 height-breakpoint4 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
+                class="{{ request()->is('admin/instructors', 'admin/instructors/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Inštruktori</a>
             </div>
         </div>
