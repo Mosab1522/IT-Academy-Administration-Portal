@@ -161,7 +161,7 @@
 
     
 
-<x-index-table>
+<x-single-table>
 <x-slot:head>
                             <th scope="col" class="py-3 px-6">Názov akadémie</th>
                             <th scope="col" class="py-3 px-6">Kurzy</th>
@@ -191,7 +191,7 @@
                         </tr>
                         @endforeach
          
-</x-index-table>
+</x-single-table>
 
 
 
