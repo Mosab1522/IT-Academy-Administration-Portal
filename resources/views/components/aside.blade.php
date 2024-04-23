@@ -16,14 +16,14 @@
         <!-- Navigation Header with Dynamic Main Category Name -->
         <div class="-mt-4 sm:mt-0">
             <div class="flex items-center justify-center -mt-3 p-4 w-full height-breakpoint">
-                <span x-text="activeSectionName" class="text-base font-medium"></span>
+                <span x-text="activeSectionName" class="text-lg lg:text-base font-medium"></span>
             </div>
             <div class="grid grid-cols-2  items-center justify-center -mt-3 px-4 pt-4 sm:p-4 w-full">
                 <!-- Icons here. Replace `template-icon` with actual icon classes or SVGs -->
                 <div class="flex justify-center">
                   <div class="icon-bg p-3 rounded-md">
                     <button @click="activeSection = (activeSection === 'overview' ? null : 'overview'); activeSectionName = 'Prehľad'"
-                        :class="{ 'bg-indigo-600 border-indigo-600': activeSection === 'overview' }" class="flex items-center py-2 px-4 rounded-md border hover:bg-gray-700 transition-colors duration-200">
+                        :class="{ 'bg-indigo-600 border-indigo-600': activeSection === 'overview' }" class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
                     <span class="material-icons material-icons-custom">home</span>
                  
                     
@@ -34,7 +34,7 @@
                 <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
                         <button @click="activeSection = (activeSection === 'management' ? null : 'management'); activeSectionName = 'Spravovanie'"
-                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'management' }" class="flex items-center py-2 px-4 rounded-md border hover:bg-gray-700 transition-colors duration-200">
+                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'management' }" class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
                       <span class="material-icons material-icons-custom">settings</span>
                      
                         </button>
@@ -43,7 +43,7 @@
                   <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
                         <button @click="activeSection = (activeSection === 'management' ? null : 'management'); activeSectionName = 'Spravovanie'"
-                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'calendar' }" class="flex items-center py-2 px-4 rounded-md border hover:bg-gray-700 transition-colors duration-200">
+                        :class="{ ' bg-indigo-600  border-indigo-600': activeSection === 'calendar' }" class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
                       <span class="material-icons material-icons-custom">calendar_today</span>
                         </button>
                     </div>
@@ -51,7 +51,7 @@
                   <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
                         <button @click="activeSection = (activeSection === 'management' ? null : 'management'); activeSectionName = 'Spravovanie'"
-                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'more' }" class="flex items-center py-2 px-4 rounded-md border hover:bg-gray-700 transition-colors duration-200">
+                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'more' }" class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
                       <span class="material-icons material-icons-custom">calendar_today</span>
                         </button>
                     </div>
