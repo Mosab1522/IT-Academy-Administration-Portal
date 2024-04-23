@@ -22,6 +22,22 @@
   .material-icons-custom {
     font-size: 1.25rem !important; /* back to default size on lg devices */
   }
+} 
+
+@media screen and (max-height: 760px) {
+  .height-breakpoint {
+   @apply -mt-4;
+  }
+  .height-breakpoint2 {
+    @apply -mt-12;
+   }
+   .height-breakpoint3 {
+    @apply -mt-8 p-8;
+   }
+   .height-breakpoint4 {
+    @apply py-1.5;
+   }
+   
 }
 
 .selects-pair{
