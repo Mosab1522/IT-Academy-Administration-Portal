@@ -7,6 +7,17 @@ window.Alpine = Alpine;
 Alpine.start();
 
 
+if (window.screen.width < 660) {
+  // Attempt to lock the screen orientation
+  const lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation || screen.orientation.lock;
+
+  if (lockOrientation) {
+    lockOrientation('portrait').catch(function(error) {
+      // Handle the error
+      console.warn("Orientation lock not allowed: ", error);
+    });
+  }
+}
 
 function swith() {
   document.addEventListener("DOMContentLoaded", function () {
