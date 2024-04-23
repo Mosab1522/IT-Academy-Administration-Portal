@@ -172,10 +172,18 @@
 
                         @foreach ($academies as $academy)
                         <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
-                            <td class="py-4 px-6">{{$academy->name}}</td>
+                           
+                            <td class="py-4 px-6">
+                                <x-table.td url="academies/{{ $academy->id }}">
+                                    {{$academy->name}}
+                                </x-table.td>
+                            </td>
                             <td class="py-4 px-6">
                                 @foreach($academy->coursetypes as $coursetype)
-                                {{$coursetype->name}} - {{$coursetype->type == '0' ? 'študentský' : 'inštruktorský'}}<br>
+                                <x-table.td url="coursetypes/{{ $coursetype->id }}">
+                                    {{$coursetype->name}} - {{$coursetype->type == '0' ? 'študentský' : 'inštruktorský'}}
+                                </x-table.td>
+                                <br>
                                 @endforeach
                             </td>
                             <x-table.td-last url="academies/{{ $academy->id }}" delete=1 itemName="akadémiu {{$academy->name}}" />
