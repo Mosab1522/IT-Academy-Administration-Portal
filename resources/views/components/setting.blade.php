@@ -7,7 +7,7 @@
         </svg>
     </button>
     <div class="content-overlay fixed inset-0 bg-black bg-opacity-50 z-30 hidden lg:hidden"></div>
-    <div class="sidebar bg-gray-800 text-white w-48 fixed inset-y-0 left-0 transform -translate-x-full z-30 transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:block">
+    <div class="sidebar bg-gray-800 text-white w-2/3 sm:w-1/3 lg:w-48 fixed inset-y-0 left-0 transform -translate-x-full z-30 transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0">
         <x-aside />
     </div>
     <section class="main-content flex-1 overflow-auto">
@@ -34,7 +34,7 @@
                 </div>
                 @endforeach --}}
                 <div class="flex flex-col">
-                    <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                    <div class="bg-white p-8 rounded-lg shadow mb-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $etitle ?? '' }}</h3>
 
                         {{ $slot }}
@@ -93,13 +93,7 @@
 });
 
 // Listen to scroll events on middle-content
-document.querySelector('.middle-content').addEventListener('scroll', function() {
-    this.classList.add('scrolling');
-    clearTimeout(window.removeScrollTimeout);
-    window.removeScrollTimeout = setTimeout(() => {
-        this.classList.remove('scrolling');
-    }, 1000);
-});
+
 
 
 

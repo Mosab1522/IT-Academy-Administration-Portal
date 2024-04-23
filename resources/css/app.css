@@ -1,6 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Add this inside a <style> tag in your HTML document head or in your external stylesheet */
+.material-icons-custom {
+  font-size: 2.25rem !important; /* default size */
+}
+
+@media (min-width: 640px) { /* Tailwind's 'sm' breakpoint */
+  .material-icons-custom {
+    font-size: 2.25rem !important; /* larger size on sm devices */
+  }
+}
+
+@media (min-width: 768px) { /* Tailwind's 'md' breakpoint */
+  .material-icons-custom {
+    font-size: 2.25rem !important; /* even larger size on md devices */
+  }
+}
+
+@media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
+  .material-icons-custom {
+    font-size: 1.25rem !important; /* back to default size on lg devices */
+  }
+}
 
 .selects-pair{
     margin-top: 0.5em;
@@ -181,46 +203,56 @@
 /* General styling for the scrollbar */
 /* General styling for the scrollbar */
 /* General styling for the scrollbar */
-.main-content::-webkit-scrollbar {
-  width: 4px;  /* Narrow width for the scrollbar */
+/* Basic styling for the scrollbar */
+/* Basic styling for both vertical and horizontal scrollbars */
+.main-content::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+  width: 4px;  /* Default narrow width suitable for mobile */
+  height: 4px;  /* For horizontal scrollbar */
+  background: transparent;  /* Transparent background */
 }
 
 /* Styling for the track */
-.main-content::-webkit-scrollbar-track {
+.main-content::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track {
   background: #f3f3f3;  /* Light gray track */
 }
 
 /* Styling for the thumb */
-.main-content::-webkit-scrollbar-thumb {
+.main-content::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb {
   background-color: #4B5563; /* Dark gray thumb */
-  border-radius: 2px;  /* Rounded corners on the thumb */
+  border-radius: 3px;  /* Rounded corners on the thumb */
 }
 
-/* Hide scrollbar buttons/arrows, including during the scrolling state */
+/* Hide scrollbar buttons/arrows */
 .main-content::-webkit-scrollbar-button,
-.main-content.scrolling::-webkit-scrollbar-button {
-  display: none; /* Ensure scrollbar buttons/arrows are not displayed */
+.overflow-x-auto::-webkit-scrollbar-button,
+.main-content.scrolling::-webkit-scrollbar-button,
+.overflow-x-auto.scrolling::-webkit-scrollbar-button {
+  display: none; /* Hide scrollbar buttons/arrows */
 }
 
-/* Additional rule to hide up/down arrows, ensuring they're never shown */
-.main-content::-webkit-scrollbar-button:start:decrement,
-.main-content::-webkit-scrollbar-button:end:increment,
-.main-content.scrolling::-webkit-scrollbar-button:start:decrement,
-.main-content.scrolling::-webkit-scrollbar-button:end:increment {
-  display: none;
+/* Responsive scrollbar width */
+@media (min-width: 768px) {
+  .main-content::-webkit-scrollbar,
+  .overflow-x-auto::-webkit-scrollbar {
+    width: 8px;  /* Wider scrollbar for larger screens */
+    height: 4px;  /* For horizontal scrollbar */
+  }
 }
 
 /* Hide the scrollbar on smaller screens by default */
-
-
-/* Show scrollbar only when user is scrolling on smaller screens */
-.main-content.scrolling::-webkit-scrollbar {
-  width: 4px;  /* Ensure the scrollbar is visible when scrolling */
+.main-content.scrolling::-webkit-scrollbar,
+.overflow-x-auto.scrolling::-webkit-scrollbar {
+  width: 4px;  /* Visible when scrolling */
+  height: 4px;  /* For horizontal scrollbar */
 }
 
-.main-content.scrolling {
+.main-content.scrolling,
+.overflow-x-auto.scrolling {
   scrollbar-width: thin;  /* Show thin scrollbar in Firefox when scrolling */
-  scrollbar-color: #4B5563 #f3f3f3;  /* Use custom colors for the scrollbar */
+  scrollbar-color: #4B5563 #f3f3f3;  /* Custom colors for the scrollbar */
 }
 
 
