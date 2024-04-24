@@ -456,8 +456,9 @@
                             <input type="hidden" name="class_id" value="{{$class->id}}" />
 
 
-
+                            <x-form.field>
                             <x-form.live-search/>
+                        </x-form.field>
 
                             {{--
                             <x-form.input name="thumbnail" type="file" /> --}}

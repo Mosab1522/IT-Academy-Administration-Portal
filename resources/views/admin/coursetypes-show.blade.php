@@ -456,8 +456,9 @@
                                 @endphp
                                 @endif
                                 @unless(session('student_id'))
-
+                                <x-form.field>
                                 <x-form.live-search/>
+                            </x-form.field>
                                 @else
                                 @php
 
