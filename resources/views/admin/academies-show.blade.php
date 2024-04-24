@@ -280,11 +280,7 @@
                         class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                         <td class="py-4 px-6">
 
-                            <a href="/admin/coursetypes/{{ $coursetype->id }}" title="Ukázať podrobnosti">
-
-                                {{$coursetype->name }}
-
-                            </a>
+                            <td class="py-4 px-6"><x-table.td url="coursetypes/{{ $coursetype->id }}">{{$coursetype->name}}</x-table.td></td>
 
                         </td>
                         <td class="py-4 px-6">
@@ -299,13 +295,18 @@
                         </td>
                         <td class="py-4 px-6">
                             @foreach($coursetype->instructors as $instructor)
-                                {{$instructor->name}} {{$instructor->lastname}} <br>
+                            <x-table.td url="instructors/{{ $instructor->id }}">
+                            {{$instructor->name}} {{$instructor->lastname}}
+                            </x-table.td>
+                            <br>
                             @endforeach
                         </td>
                         <td class="py-4 px-6">
                             @foreach($coursetype->classes as $class)
-                                {{$class->name}}<br>
-                            @endforeach
+                                <x-table.td url="classes/{{ $class->id }}">
+                                {{$class->name}}
+                                </x-table.td><br>
+                                @endforeach
                         </td>
                         <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
                         <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz {{$coursetype->name}}" />
@@ -359,10 +360,10 @@
                         @foreach($coursetype->applications()->orderByDesc('created_at')->get() as $application)
                         <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                             <td class="py-4 px-6">
-                                        <a href="/admin/students/{{ $application->student->id }}">
+                                <x-table.td url="students/{{ $application->student->id }}">
                                             {{$application->student->name }}
                                             {{$application->student->lastname}}
-                                        </a>
+                                </x-table.td>
                                    
                             </td>
                             <td class="py-4 px-6">
@@ -379,15 +380,9 @@
                                    
                             </td>
 
+                            <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku {{$application->student->name}}" />
 
-                            <td class="py-4 px-4 text-right">
-                                <form method="POST" action="/admin/applications/{{ $application->id }}"
-                                    class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="delete-button text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
-                                </form>
-                            </td>
+                           
                         </tr>
                         @endforeach
                    </x-single-table>
