@@ -44,7 +44,7 @@
                             </div>
                         </div> --}}
                         <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
-                            <x-show-header name="{{$class->name}}" title="Trieda" src="{{ asset('storage/') }}" path="instructors/{{ $class->id }}"/>
+                            <x-show-header name="{{$class->name}}" title="Trieda" />
                             <x-buttonsection>
                                 <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
                                     <button
