@@ -46,11 +46,11 @@
                         <x-form.label name="skola" title="Škola"/>
                         <div class="flex mt-1">
                             <div class="flex items-center mr-6">
-                                <input type="radio" id="ucmka" name="skola" value="ucm" class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <input type="radio" id="ucmka" name="skola" value="ucm" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
                                 <label for="ucmka" class="ml-2  text-gray-700">UCM</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="radio" id="inam" name="skola" value="ina" class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <input type="radio" id="inam" name="skola" value="ina" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
                                 <label for="inam" class="ml-2  text-gray-700">Iná</label>
                             </div>
                         </div>
@@ -64,11 +64,11 @@
                         <x-form.label name="studium" title="Druh štúdia"/>
                         <div class="flex mt-1">
                             <div class="flex items-center mr-6">
-                                <input type="radio" id="option3" name="studium" value="interne" class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <input type="radio" id="option3" name="studium" value="interne" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
                                 <label for="option3" class="ml-2  text-gray-700">Interné</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="radio" id="option4" name="studium" value="externe" class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <input type="radio" id="option4" name="studium" value="externe" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
                                 <label for="option4" class="ml-2  text-gray-700">Externé</label>
                             </div>
                         </div>
@@ -79,11 +79,11 @@
                         <x-form.label name="program" title="Program"/>
                         <div class="flex mt-1">
                             <div class="flex items-center mr-6">
-                                <input type="radio" id="option5" name="program" value="apin" class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <input type="radio" id="option5" name="program" value="apin" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
                                 <label for="option5" class="ml-2  text-gray-700">Aplikovaná informatika</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="radio" id="option6" name="program" value="iny" class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <input type="radio" id="option6" name="program" value="iny" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
                                 <label for="option6" class="ml-2  text-gray-700">Iný</label>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                 <x-form.input name="psc" type="text" title="PSČ" placeholder="PSČ"/>
                 </x-form.field>
         
-                <x-form.button class="mt-6">
+                <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                     Odoslať
                 </x-form.button>
             </form>
@@ -124,8 +124,7 @@
             </div>
             </x-slot:create>
 
-            <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
-                <form method="get" action="{{ route('admin.students.index') }}" class="flex flex-wrap items-end">
+            <x-form.search action="{{ route('admin.students.index') }}" text="Zoradiť">
                     @csrf
                     
                     @if(request()->filled('search'))
@@ -153,10 +152,7 @@
                         </div> --}}
                         
                     
-                        <x-form.button class="ml-2">Zoradiť</x-form.button>
-                </form>
-               
-                <form method="get" action="{{ route('admin.students.index') }}" class="flex flex-wrap items-end">
+                        <x-slot:search>
                         @csrf
                         @if(request()->filled('orderBy'))
                         <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}"/>
@@ -168,33 +164,22 @@
                         @elseif(request()->filled('academy_id'))
                         <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}"/>
                         @endif
-                        <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
-
-                            <input type="text" name="search" value="{{old('search')}}"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"
-                                placeholder="Vyhľadávanie">
-                        </div>
-                        <x-form.button class="ml-2">Hľadať</x-form.button>
-                    </form>
-            </div>
-            <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
-                <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8 ">
-                    <div class="overflow-x-auto relative rounded-lg shadow">
-                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
-                            <thead class="text-xs uppercase bg-gray-200">
-                                <tr>
+                    </x-slot:search>
+                </x-form.search>
+                <x-single-table>
+                    <x-slot:head>
                                     <th scope="col" class="py-3 px-6">Meno</th>
                                     <th scope="col" class="py-3 px-6">Email</th>
                                     <th scope="col" class="py-3 px-6">Prihlášky</th>
                                     <th scope="col" class="py-3 px-6">Aktuálne triedy</th>
-                                    <th scope="col" class="py-3 px-6 w-40">Akcie</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                    <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
+                                </x-slot:head>
                                 @foreach ($students as $student)
                                 <tr
-                                    class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
-                                    <td class="py-4 px-6">{{$student->name}} {{$student->lastname}}</td>
+                            class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
+                                    <td class="py-4 px-6">
+                                        <x-table.td url="students/{{ $student->id }}">{{$student->name}} {{$student->lastname}}
+                                        </x-table.td></td>
                                     <td class="py-4 px-6">{{$student->email}}</td>
                                     <td class="py-4 px-6">
                                         @foreach($student->applications as $application)
@@ -204,30 +189,15 @@
                                     </td>
                                     <td class="py-4 px-6">
                                         @foreach($student->classes as $class)
+                                        <x-table.td url="classes/{{ $class->id }}">
                                         {{$class->name}} ({{$class->coursetype->name}} - {{$class->coursetype->type == '0' ? 'študentský' :
-                                        'inštruktorský'}})<br>
+                                        'inštruktorský'}})</x-table.td><br>
                                         @endforeach
                                     </td>
-                                    <td class="py-4 px-6 text-right">
-                                        <a href="/admin/students/{{ $student->id }}"
-                                            class="text-blue-600 hover:text-blue-700 hover:underline ">Upraviť</a>
-                                            &nbsp;
-                                        <form method="POST" action="/admin/students/{{ $student->id }}" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
-                                        </form>
-                                    </td>
+                                    <x-table.td-last url="students/{{ $student->id }}" delete=1 itemName="študenta {{$student->name}}" />
+                                    
                                 </tr>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-        
-        
-        
-                </div>
-            </div>
-        
+                            </x-single-table>
 
     </x-setting>
