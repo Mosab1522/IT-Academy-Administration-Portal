@@ -3,12 +3,13 @@
 <div class="flex items-center space-x-4">
     <!-- Image Placeholder or Icon -->
     <div class="flex items-center space-x-4">
-        <form id="form" action="/admin/{{$path}}"  method="post" enctype="multipart/form-data" class="m-0">
+        @if($path ?? null)
+        <form id="form" action="/admin/{{$path ?? ''}}"  method="post" enctype="multipart/form-data" class="m-0">
             @csrf
             @method('Patch')
             <div class="flex-shrink-0">
                 <div class="h-20 w-20 rounded-lg bg-gray-300 overflow-hidden relative">
-                    <img class="shadow-xl rounded-lg w-full h-full object-cover" data-default-src="{{$src}}" src="{{$src}}" alt="profile_image">
+                    <img class="shadow-xl rounded-lg w-full h-full object-cover" data-default-src="{{$src ?? ''}}" src="{{$src ?? ''}}" alt="profile_image">
                     <label for="photo-upload" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100 rounded-lg cursor-pointer">
                         <span class="text-center text-sm">Zmeniť fotku</span>
                     </label>
@@ -25,6 +26,7 @@
                 </button>
             </div>
         </form>
+        @endif
 
         <!-- Text Description -->
         <div class="flex-grow">
