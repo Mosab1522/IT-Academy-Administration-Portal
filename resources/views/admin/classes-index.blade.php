@@ -248,7 +248,7 @@
                             <th scope="col" class="py-3 px-6">Inštruktor</th>
                             <th scope="col" class="py-3 px-6">Dni / čas</th>
                             <th scope="col" class="py-3 px-6">Počet študentov</th>
-                            <th scope="col" class="py-3 px-6 w-40">Akcie</th>
+                            <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
                         </x-slot:head>
                         @foreach ($classes as $class)
                         <tr
