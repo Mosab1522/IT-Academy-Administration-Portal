@@ -44,7 +44,7 @@
                             </div>
                         </div> --}}
                         <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
-                            <x-show-header name="{{$class->name}}" title="Trieda" />
+                            <x-show-header name="{{$class->name}}" title="Trieda" src="{{ asset('storage/') }}" path="instructors/{{ $class->id }}"/>
                             <x-buttonsection>
                                 <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
                                     <button
@@ -61,10 +61,9 @@
                                         class="add-button z-30 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }} "
                                         data-target="kurzyAdd">
                                         <span
-                                            class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať
-                                            inštruktora</span>
-                                        <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť pridanie
-                                            inštruktora</span>
+                                            class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Vytvoriť hodinu</span>
+                                        <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť vytvorenie
+                                            hodiny</span>
                                     </button>
                                 </li>
                                 <li
@@ -402,7 +401,7 @@
 
                             </x-form.field>
 
-                            <x-form.button class="mt-6">
+                            <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                                 Odoslať
                             </x-form.button>
                         </form>
@@ -411,9 +410,8 @@
                     <div id="kurzy" class="section flex-auto p-6"
                         style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Hodiny triedy</p>
-                        <div class="overflow-x-auto relative rounded-lg shadow mt-6">
-                            <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
-                                <thead class="text-xs uppercase bg-gray-200">
+                        <x-single-table>
+                            <x-slot:head>
                                     <tr>
                                         <th scope="col" class="py-3 px-6">
                                             Názov hodiny
@@ -424,42 +422,30 @@
                                         <th scope="col" class="py-3 px-6">
                                             Dátum a trvanie
                                         </th>
-                                        <th scope="col" class="py-3 px-8 w-40">
-                                            Akcie
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
+                    </x-slot:head>
                                     <!-- Iterate over lessons in this class -->
                                     @foreach ($class->lessons as $lesson)
                                     <tr
                                         class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                         <td class="py-4 px-6">
+                                            <x-table.td url="lessons/{{ $lesson->id }}">
                                             {{ $lesson->title }}
+                                            </x-table.td>
                                         </td>
                                         <td class="py-4 px-6">
+                                            <x-table.td url="instructors/{{ $lesson->instructor->id }}">
                                             {{ $lesson->instructor->name }} {{ $lesson->instructor->lastname }}
+                                            </x-table.td>
                                         </td>
                                         <td class="py-4 px-6">
                                             {{ $lesson->lesson_date }} - {{ $lesson->duration }} minút
                                         </td>
-                                        <td class="py-4 px-4 text-right">
-                                            <a href="/admin/lessons/{{ $lesson->id }}"
-                                                class="text-blue-600 hover:text-blue-700 hover:underline">Upraviť</a>
-                                            &nbsp;
-                                            <form method="POST" action="/admin/lessons/{{ $lesson->id }}"
-                                                class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="delete-button text-red-600 hover:text-red-700 hover:underline">Vymazať</button>
-                                            </form>
-                                        </td>
+                                        <x-table.td-last url="lessons/{{ $lesson->id }}" edit=1 itemName="hodinu {{$lesson->title}}" />
+                                      
                                     </tr>
                                     @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                </x-single-table>
                     </div>
                     <div class="add-section" id="loginAdd"
                         style="{{request()->has('vytvorit') ? 'display:block;' : 'display: none;' }}">
@@ -471,50 +457,7 @@
 
 
 
-                            <div class="flex justify-between mt-6">
-                                <!-- Left side with input fields -->
-                                <div class="w-1/2 space-y-6">
-                                    <div>
-
-                                        <x-form.input name="name" type="text" title="Meno" placeholder="Meno" />
-                                    </div>
-                                    <div>
-                                        <x-form.input name="lastname" type="text" title="Priezvisko"
-                                            placeholder="Priezvisko" />
-                                    </div>
-                                    <div>
-                                        <x-form.input name="email" type="email" title="Email" placeholder="Email" />
-                                    </div>
-                                </div>
-
-                                <!-- Right side with the table -->
-                                <div class="ml-8 w-1/2 -mt-1">
-                                    <div class="mb-2">
-                                        <h2 class="uppercase font-bold text-sm text-gray-700">Návrhy</h2>
-                                    </div>
-                                    <div class="shadow overflow-hidden border-b border-gray-200 rounded-lg ">
-                                        <table
-                                            class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="py-3 px-6 text-left">Meno</th>
-                                                    <th class="pr-16 text-left">Priezvisko</th>
-                                                    <th class="pr-20 text-left">Email</th>
-                                                    <th class="px-6 text-right">Doplňujúce informácie</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                        <div class="max-h-40 overflow-auto">
-                                            <table
-                                                class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
-                                                <tbody id="search-results" class="divide-y divide-gray-200">
-                                                    <!-- JavaScript generated rows will go here -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-form.live-search/>
 
                             {{--
                             <x-form.input name="thumbnail" type="file" /> --}}
@@ -523,7 +466,7 @@
                             <x-form.textarea name="body" /> --}}
 
 
-                            <x-form.button class="mt-6">
+                            <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                                 Odoslať
                             </x-form.button>
                         </form>
@@ -531,40 +474,25 @@
                     <div id="login" class="section flex-auto p-6 "
                         style="{{session('success_d') || session('success_c')  || request()->has('vytvorit')? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700 mb-6">Študenti v triede</p>
-                        <div class="overflow-x-auto relative rounded-lg shadow mt-6">
-                            <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
-                                <thead class="text-xs uppercase bg-gray-200">
-                                    <tr>
+                        <x-single-table>
+                            <x-slot:head>
                                         <th scope="col" class="py-3 px-6">Meno</th>
                                         <th scope="col" class="py-3 px-6">Email</th>
-                                        <th scope="col" class="py-3 px-6 w-40">Akcie</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
+                                    </x-slot:head>
                                     @foreach ($class->students as $student)
                                     <tr
                                         class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
-                                        <td class="py-4 px-6">{{$student->name}} {{$student->lastname}}</td>
+                                        <td class="py-4 px-6">  <x-table.td url="students/{{ $student->id }}">
+                                            {{$student->name}} {{$student->lastname}}
+                                            </x-table.td></td>
                                         <td class="py-4 px-6">{{$student->email}}</td>
 
-                                        <td class="py-4 px-6 text-right">
-                                            <a href="/admin/students/{{ $student->id }}"
-                                                class="text-blue-600 hover:text-blue-700 hover:underline ">Upraviť</a>
-                                            &nbsp;
-                                            <form method="POST" action="/admin/students/{{ $student->id }}"
-                                                class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="delete-button text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
-                                            </form>
-                                        </td>
+                                        <x-table.td-last url="students/{{ $student->id }}" edit=1 itemName="študenta {{$student->name}}" />
+                                       
                                     </tr>
                                     @endforeach
-                                </tbody>
-                            </table>
-
-                        </div>
+                                </x-single-table>
                     </div>
 
 </x-setting>
