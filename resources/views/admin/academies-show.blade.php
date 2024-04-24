@@ -232,25 +232,24 @@
                 </x-form.field>
     
                 
-                    <div class="items-center mt-6">
-                        <x-form.label name="type" title="Typ kurzu" />
-    
-                        <div class="flex items-center mt-1">
-                            <x-form.input-radio name="type" for="type_student" value="0">
-                                Študentský
-                            </x-form.input-radio>
-                            
-                            <x-form.input-radio class="ml-6" name="type" for="type_instructor" value="1">
-                                Inštruktorský
-                            </x-form.input-radio>
+                <div class="items-center mt-6">
+                    <x-form.label name="type" title="Typ kurzu" />
+                
+                    <div class="flex flex-wrap items-center mt-1">
+                        <x-form.input-radio name="type" for="type_student" value="0" class="mb-2 sm:mb-0">
+                            Študentský
+                        </x-form.input-radio>
                         
-                            <x-form.input-radio class="ml-6" name="type" for="type_both" value="2">
-                                Obidva
-                            </x-form.input-radio>
-                           
-                        </div>
+                        <x-form.input-radio class="ml-6 mb-2 sm:mb-0" name="type" for="type_instructor" value="1">
+                            Inštruktorský
+                        </x-form.input-radio>
                         
+                        <x-form.input-radio class="w-full sm:w-auto sm:ml-6" name="type" for="type_both" value="2">
+                            Obidva
+                        </x-form.input-radio>
                     </div>
+                </div>
+                
                     <x-form.field>
                         <x-form.input name="min" type="number" title="Minimum študentov" placeholder="Minimum"/>
                         </x-form.field>
@@ -258,28 +257,24 @@
                         <x-form.input name="max" type="number" title="Maximum študentov" placeholder="Maximum"/>
                         </x-form.field>
 
-            <x-form.button class="mt-6">
-                Odoslať
-            </x-form.button>
+                        <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
+                            Odoslať
+                        </x-form.button>
         </form>
     </div>
     <div id="kurzy"
         class="section {{session('success_c') || session('success_dd') || request()->has('pridat')  ? '' : 'hidden' }} flex-auto p-6 ">
         <p class="text-sm font-semibold uppercase text-gray-700">Kurzy pod touto akadémiou</p>
-        <div class="overflow-x-auto relative rounded-lg shadow mt-6">
-            <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
-                <thead class="text-xs uppercase bg-gray-200">
-                    <tr>
+        <x-single-table>
+            <x-slot:head>
                         <th scope="col" class="py-3 px-6">Názov kurzu</th>
                         <th scope="col" class="py-3 px-6">Typ kurzu</th>
                         <th scope="col" class="py-3 px-6">Min/max študentov</th>
                         <th scope="col" class="py-3 px-6">Inštruktori</th>
                         <th scope="col" class="py-3 px-6">Triedy</th>
                         <th scope="col" class="py-3 px-6">Počet prihlášok</th>
-                        <th scope="col" class="py-3 px-6 w-40">Akcie</th>
-                    </tr>
-                </thead>
-                <tbody>
+                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
+                    </x-slot:head>
                     @foreach ($academy->coursetypes as $coursetype)
                     <tr
                         class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
@@ -313,25 +308,11 @@
                             @endforeach
                         </td>
                         <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                        <td class="py-4 px-6 text-right">
-                            <a href="/admin/coursetypes/{{ $coursetype->id }}"
-                                class="text-blue-600 hover:text-blue-700 hover:underline">Upraviť</a>
-                            &nbsp;
-
-
-                            <form method="POST" action="/admin/coursetypes/{{ $coursetype->id }}" class="inline">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit"
-                                    class="delete-button text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
-                            </form>
-                        </td>
+                        <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz {{$coursetype->name}}" />
+                        
                     </tr>
                     @endforeach
-                </tbody>
-            </table>
-        </div>
+                </x-single-table>
     </div>
     <div id="login" class="section {{session('success_d')  ? '' : 'hidden' }} flex-auto p-6">
         @php
@@ -348,36 +329,33 @@
         {{-- @if($coursetype->applications->isNotEmpty()) --}}
        
 
-        <div class=" mb-8">
+        <div class=" mb-6">
 
-            <div class="flex">
-            <h3 class=" leading-6  text-gray-700 mb-2">
-                <a href="/admin/lessons/{{ $coursetype->id }}" class="hover:underline hover:text-gray-900">
-                    {{ $coursetype->name }}
+            <div class="md:flex -mb-4">
+            <h3 class="block md:flex-1 leading-6 w-full md:w-auto   text-gray-700 ">
+                <a href="/admin/lessons/{{ $coursetype->id }}" class="inline hover:underline hover:text-gray-900">
+                    {{ $coursetype->name }} 
                 </a>
+                <span class=" font-light text-gray-500"> - {{$coursetype->type == 0 ? 'študentský' :
+                'inštruktorský'}}</span>
             </h3>
-            <p class="flex-1 font-light text-gray-500"> - {{$coursetype->type == 0 ? 'študentský' :
-                'inštruktorský'}}</p>
+            {{-- <p class="flex-1 font-light text-gray-500"> - {{$coursetype->type == 0 ? 'študentský' :
+                'inštruktorský'}}</p> --}}
             <p class="flex-none font-light text-gray-500">Posledná prihláška vytvorená:
                 {{$coursetype->applications->isNotEmpty() ?
                 $coursetype->applications()->latest()->first()->created_at->diffForHumans() : 'zatiaľ
                 žiadna'}}
                 </div>
 
-            <div class="bg-white shadow overflow-x-auto rounded-lg">
-                <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
-                    
-
-                        <thead class="text-xs uppercase bg-gray-200">
+             <x-single-table>
+                    <x-slot:head>
                             <th scope="col" class="py-3 px-6">Meno študenta</th>
                             <th scope="col" class="py-3 px-6">Dni / čas</th>
                             <th scope="col" class="py-3 px-6">Potvrdená</th>
                             <th scope="col" class="py-3 px-6">Vytvorená</th>
                             <th scope="col" class="py-3 px-6 w-48"> <a href="/admin/coursetypes/{{ $coursetype->id }}"
                                 class="text-blue-600 hover:text-blue-700 hover:underline">Pridať študenta</a></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                           </x-slot:head>
                         @foreach($coursetype->applications()->orderByDesc('created_at')->get() as $application)
                         <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                             <td class="py-4 px-6">
@@ -412,9 +390,7 @@
                             </td>
                         </tr>
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
+                   </x-single-table>
         </div>
         {{-- @endif --}}
         @endforeach
