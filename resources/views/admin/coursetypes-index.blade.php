@@ -217,7 +217,7 @@
                                 @endforeach
                             </td>
                             <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                            <x-table.td-last url="coursetypes/{{ $coursetype->id }}" delete=1 itemName="kurz {{$coursetype->name}}" />
+                            <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz {{$coursetype->name}}" />
                             
                         </tr>
                         @endforeach

@@ -170,7 +170,7 @@
                                 <td class="py-4 px-6">
                                     {{ $lesson->lesson_date }} - {{ $lesson->duration }} minút
                                 </td>
-                                <x-table.td-last url="lessons/{{ $lesson->id }}" delete=1 itemName="hodinu {{$lesson->title}}" />
+                                <x-table.td-last url="lessons/{{ $lesson->id }}" edit=1 itemName="hodinu {{$lesson->title}}" />
                                
                             </tr>
                             @endforeach

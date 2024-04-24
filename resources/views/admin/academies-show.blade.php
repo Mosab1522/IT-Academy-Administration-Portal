@@ -4,7 +4,7 @@
 
 
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
-        <x-show-header name="{{$academy->name}}" title="Akadémia"/>
+        <x-show-header name="{{$academy->name}}" title="Akadémia" src="{{ asset('storage/') }}" path="instructors/{{ $academy->id }}"/>
         {{-- <div class="flex items-center space-x-4">
             <!-- Image Placeholder or Icon -->
             <div class="flex items-center space-x-4">
@@ -364,7 +364,7 @@
                 žiadna'}}
                 </div>
 
-            <div class="bg-white shadow overflow-hidden rounded-lg">
+            <div class="bg-white shadow overflow-x-auto rounded-lg">
                 <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
                     
 

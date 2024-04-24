@@ -194,7 +194,7 @@
                                         'inštruktorský'}})</x-table.td><br>
                                         @endforeach
                                     </td>
-                                    <x-table.td-last url="students/{{ $student->id }}" delete=1 itemName="študenta {{$student->name}}" />
+                                    <x-table.td-last url="students/{{ $student->id }}" edit=1 itemName="študenta {{$student->name}}" />
                                     
                                 </tr>
                                 @endforeach

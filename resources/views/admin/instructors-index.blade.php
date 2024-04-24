@@ -14,36 +14,36 @@ session()->forget('instructor_id');
             @csrf
             <div class="flex justify-between">
                 <!-- Left side with input fields -->
-                <div class="w-1/2 ">
+                <div class="w-full ">
                     
                         <x-form.input name="name" type="text" title="Meno" placeholder="Meno"/>
                     
                     <x-form.field>
                         <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko"/>
                     </x-form.field>
-                    <x-form.field>
+                    <div class="mt-6 hidden md:block">
                         <x-form.input name="email" type="email" title="Email" placeholder="Email"/>
-                    </x-form.field>
-                    <x-form.field>
+                    </div>
+                    <div class="mt-6 hidden lg:block">
                         <x-form.input name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email"/>
-                        </x-form.field>
+                    </div>
+                    
                     <!-- Add other input fields here as needed -->
                 </div>
             
                 <!-- Right Column for Profile Image -->
-                <div class="w-1/2 flex justify-center items-center">
-                    <div class="relative">
-                        <div class="mb-2">
-                            <x-form.label name="photo-upload" title="Profilová fotka"/>
-                        </div>
-                        <div class="relative flex justify-center items-center w-72 h-72">
-                            <img src="{{ asset('storage/photos/basic.jpg') }}" alt="profile_image" id="image-preview" class="shadow-2xl rounded-xl w-full h-full object-cover" data-default-src="{{ asset('storage/photos/basic.jpg') }}" />
-                            <label for="photo-upload" class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 text-white opacity-0 hover:opacity-100 cursor-pointer rounded-xl">
-                                Zmeniť fotku
+                <div class="w-auto flex justify-center px-6">
+                    <div class="flex-shrink-0"> 
+                        <x-form.label name="photo" title="Profilová fotka"/>
+                        <div class="h-32 w-32 md:h-52 md:w-52 lg:h-80 lg:w-80 rounded-lg bg-gray-300 overflow-hidden relative mt-1 border">
+                            <img class="shadow-xl rounded-lg w-full h-full object-cover" data-default-src="{{ asset('storage/photos/basic.jpg') }}" src="{{ asset('storage/photos/basic.jpg') }}" alt="profile_image">
+                            <label for="photo-upload" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100 rounded-lg cursor-pointer">
+                                <span class="text-center text-sm">Zmeniť fotku</span>
                             </label>
-                            <input type="file" id="photo-upload" name="photo" class="hidden" accept="image/*" onchange="handleFileUpload(event)"/>
+                            <input type="file" id="photo-upload" name="photo" class="hidden" onchange="handleFileUpload(event)">
                         </div>
                     </div>
+                    
                 </div>
             </div>
                 
@@ -51,10 +51,16 @@ session()->forget('instructor_id');
                     {{-- <x-form.field>
                     <input type="file" name="photo" id="photo" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" accept="image/*">
                     </x-form.field> --}}
-            <x-form.field>
-            <x-form.input name="telephone" type="tel" title="Telefonné číslo" placeholder="Telefonné číslo"/>
-            </x-form.field>
-    
+                    <div class="mt-6 md:hidden">
+                        <x-form.input name="email" type="email" title="Email" placeholder="Email"/>
+                   </div>
+                    <div class="mt-6 lg:hidden">
+                        <x-form.input name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email"/>
+                    </div>
+           
+                   <div class="mt-6 lg:mt-0">
+                        <x-form.input class="" name="telephone" type="tel" title="Telefonné číslo" placeholder="Telefonné číslo"/>
+                      </div>  
             <x-form.field>
                 <x-form.input name="ulicacislo" type="text" title="Ulica a popisné číslo" placeholder="Ulica a popisné číslo"/>
                 </x-form.field>
@@ -116,8 +122,8 @@ session()->forget('instructor_id');
             <x-form.field>
                 <div id="selects-container">
                     <x-form.label name="academy_id" title="Pridať správu kurzov"/>
-                    <div class="selects-pair flex items-center justify-between mb-6" data-pair-id="1">
-                        <select name="academy_id[]" id="academy" class="academy-select bg-white border border-gray-300 rounded-md text-gray-700 p-2 flex-1 mr-2" data-pair-id="1"
+                    <div class="selects-pair flex items-center justify-between mb-4" data-pair-id="1">
+                        <select name="academy_id[]" id="academy" class="academy-select mt-1 flex-1 block  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100 disabled:text-gray-500 bg-white text-sm leading-5.6" data-pair-id="1"
                             >{{--setValue(this.value)--}}
                             <option value="" {{ old('academy_id') ? '' : 'selected' }}>Akadémia</option>
                             {{-- @php
@@ -129,7 +135,7 @@ session()->forget('instructor_id');
                                 old('academy_id.0')==$academ->id ? 'selected' : '' }}>{{ ucwords($academ->name) }}</option>
                             @endforeach
     
-                        </select><select name="coursetypes_id[]" id="coursetype" class="coursetype-select bg-white border border-gray-300 rounded-md text-gray-700 p-2 flex-1 mx-2" data-pair-id="1">
+                        </select><select name="coursetypes_id[]" id="coursetype" class="coursetype-select mt-1 flex-1 block  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100 disabled:text-gray-500 bg-white text-sm leading-5.6" data-pair-id="1">
                             <option value="" data-option="" {{ old('coursetype_id') ? '' : 'selected' }}>Typ kurzu
                             </option>
                             {{-- @php
@@ -141,8 +147,13 @@ session()->forget('instructor_id');
                             @endforeach
                         </select>
                      {{-- <button class="remove-selects-btn text-white bg-red-500 hover:bg-red-700 p-2 rounded ml-4" data-pair-id="1">Remove</button>  --}} 
-                     <button type="button" id="add-selects-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Add selects pair
+                     <button type="button" id="add-selects-btn" class="ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-200">
+                        <span class="hidden lg:inline">
+                            Pridať ďaľší pár
+                        </span>
+                        <span class="inline lg:hidden">
+                            +
+                        </span>
                     </button>
                     </div>
                 </div>
@@ -222,15 +233,14 @@ session()->forget('instructor_id');
                 </div>
             </x-form.field> --}}
     
-            <x-form.button>
+            <x-form.button class="mt-2 md:w-auto w-full sm:w-auto">
                 Odoslať
             </x-form.button>
         </form>
             </div>
         </div>
-            </x-slot:create>
-            <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
-                <form method="get" action="{{ route('admin.instructors.index') }}" class="flex flex-wrap items-end">
+    </x-slot:create>
+    <x-form.search action="{{ route('admin.instructors.index') }}" text="Zoradiť">
                 @csrf
 
                 @if(request()->filled('search'))
@@ -313,10 +323,7 @@ session()->forget('instructor_id');
                             @endforeach
                         </x-form.search-select>
                
-                    <x-form.button class="ml-2">Filtrovať a zoradiť</x-form.button>
-</form>
-           
-        <form method="get" action="{{ route('admin.instructors.index') }}" class="flex flex-wrap items-end">
+                        <x-slot:search>
                     @csrf
                     @if(request()->filled('orderBy'))
                     <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
@@ -328,74 +335,51 @@ session()->forget('instructor_id');
                     @elseif(request()->filled('academy_id'))
                     <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
                     @endif
-                    <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
-
-                        <input type="text" name="search" value="{{old('search')}}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"
-                            placeholder="Vyhľadávanie">
-                    </div>
-                    <x-form.button class="ml-2">Hľadať</x-form.button>
+                </x-slot:search>
+            </x-form.search>
         
-                </form>
-            </div>
-        
-            <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
-                <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8 ">
-                    <div class="overflow-x-auto relative rounded-lg shadow">
-                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
-                            <thead class="text-xs uppercase bg-gray-200">
-                            <tr>
+            <x-single-table>
+                <x-slot:head>
                                 <th scope="col" class="py-3 px-6">Fotka</th>
                                 <th scope="col" class="py-3 px-6">Meno</th>
                                 <th scope="col" class="py-3 px-6">Kurzy v správe</th>
                                 <th scope="col" class="py-3 px-6">Aktuálne triedy</th>
-                                <th scope="col" class="py-3 px-6 w-40">Akcie</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                                <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
+                            </x-slot:head>
                             @foreach ($instructors as $instructor)
                             <tr
-                                class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
+                            class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                 <td class="py-4 px-6">
-                                <img style="
-                                            width: 100px; 
-                                            height: 100px; 
-                                            object-fit: cover;
-                                            object-position: 25% 25%;" class="rounded-xl "
-                                                src="{{asset('storage/' . $instructor->photo)}}" alt="">
+                                    <div class="flex-shrink-0">
+                                        <div class="h-20 w-20 rounded-lg bg-gray-300 overflow-hidden relative">
+                                            <img class="shadow-xl rounded-lg w-full h-full object-cover"  src="{{asset('storage/' . $instructor->photo)}}" alt="profile_image">
+                                         
+                                        </div>
+                                    </div>
+                               
                                 </td>
-                                <td class="py-4 px-6">{{$instructor->name}} {{$instructor->lastname}}</td>
+                                <td class="py-4 px-6"><x-table.td url="instructors/{{ $instructor->id }}">{{$instructor->name}} {{$instructor->lastname}}</x-table.td></td>
                                 <td class="py-4 px-6">
-                                    @foreach($instructor->coursetypes as $coursetype)
+                                    @foreach($instructor->coursetypes as $coursetype) 
+                                     <x-table.td url="coursetypes/{{ $coursetype->id }}">
                                     {{$coursetype->name}} - {{$coursetype->type == '0' ? 'študentský' :
-                                    'inštruktorský'}}<br>
+                                    'inštruktorský'}}
+                                    </x-table.td><br>
                                     @endforeach
                                 </td>
                                 <td class="py-4 px-6">
                                     @foreach($instructor->classes as $class)
-                                    {{$class->name}}<br>
+                                    <x-table.td url="classes/{{ $class->id }}">
+                                    {{$class->name}}
+                                    </x-table.td>
+                                    <br>
                                     @endforeach
                                 </td>
-                                <td class="py-4 px-6 text-right">
-                                    <a href="/admin/instructors/{{ $instructor->id }}"
-                                        class="text-blue-600 hover:text-blue-700 hover:underline ">Upraviť</a>
-                                        &nbsp;
-                                    <form method="POST" action="/admin/instructors/{{ $instructor->id }}" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
-                                    </form>
-                                </td>
+                                <x-table.td-last url="instructors/{{ $instructor->id }}" edit=1 itemName="inštruktora {{$instructor->name}}" />
+                               
                             </tr>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
-    
-    
-    
-            </div>
-        </div>
+                        </x-single-table>
     
 
 </x-setting>

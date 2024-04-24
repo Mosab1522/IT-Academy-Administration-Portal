@@ -269,7 +269,7 @@
                                 {{$class->time== 2 ? 'Poobedný' : ''}} {{$class->time== 3 ? 'Nezáleží' : ''}}
                             </td>
                             <td class="py-4 px-6">{{$class->students->count()}}</td>
-                            <x-table.td-last url="classes/{{ $class->id }}" delete=1 itemName="triedu {{$class->name}}" />
+                            <x-table.td-last url="classes/{{ $class->id }}" edit=1 itemName="triedu {{$class->name}}" />
                             
                         </tr>
                         @endforeach

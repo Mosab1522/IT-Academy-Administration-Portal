@@ -9,7 +9,7 @@ if(request()->coursetype_id)
 $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
 }
 @endphp
-<x-setting heading="Prihlášky" etitle="Existujúcee prihlášky">
+<x-setting heading="Prihlášky" etitle="Existujúce prihlášky">
     <x-slot:create>
         <div class="flex flex-col">
             <div class="bg-white p-8 rounded-lg shadow-md mb-6">
@@ -61,24 +61,25 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                             </div>
                         
                             <!-- Right side with the table -->
-                            <div class="ml-8 w-1/2 -mt-1">
+                            <div class="ml-8 w-1/2 overflow-x-auto -mt-1">
                                 <div class="mb-2">
                                     <h2 class="uppercase font-bold text-sm text-gray-700">Návrhy</h2>
                                 </div>
-                                <div class="shadow overflow-hidden border-b border-gray-200 rounded-lg ">
-                                    <table class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
-                                        <thead class="bg-gray-50">
+                                <div class="relative rounded-lg shadow  align-middle ">
+                                    <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 ">
+                                        <thead class="text-xs uppercase bg-gray-200">
+                                        
                                             <tr>
                                                 <th class="py-3 px-6 text-left">Meno</th>
                                                 <th class="pr-16 text-left">Priezvisko</th>
                                                 <th class="pr-20 text-left">Email</th>
-                                                <th class="px-6 text-right">Doplňujúce informácie</th>
+                                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Doplňujúce informácie</th>
                                             </tr>
                                         </thead>
                                     </table>
-                                    <div class="max-h-40 overflow-auto">
-                                        <table class="bg-white min-w-full divide-y divide-gray-200 text-sm font-medium text-gray-900">
-                                            <tbody id="search-results" class="divide-y divide-gray-200">
+                                    <div class="max-h-40 ">
+                                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 ">
+                                            <tbody id="search-results" class="bg-white divide-y divide-gray-200">
                                                 <!-- JavaScript generated rows will go here -->
                                             </tbody>
                                         </table>
@@ -300,13 +301,13 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
 
                     <div class="flex mt-6">
                         <div class="block flex-1">
-                            <x-form.button  class="">
+                            <x-form.button class=" md:w-auto w-full sm:w-auto">
                                 Odoslať
                             </x-form.button>
                         </div>
                         @if(request()->student_id)
                         <a href="/admin/students"
-                            class='items-center mt-6 px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150'>Preskočiť</a>
+                            class='items-center  px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150'>Preskočiť</a>
                         @endif
                     </div>
                 </form>
@@ -316,8 +317,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
             </div>
         </div>
     </x-slot:create>
-    <div class="bg-white p-6 rounded-lg shadow mb-4 flex justify-between items-end">
-        <form method="get" action="{{ route('admin.applications.index') }}" class="flex flex-wrap items-end">
+    <x-form.search action="{{ route('admin.applications.index') }}" text="Filtrovať a zoradiť">
             @csrf
 
             @if(request()->filled('search'))
@@ -403,10 +403,9 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                                     @endforeach
                                 </x-form.search-select>
                        
-                            <x-form.button class="ml-2">Filtrovať a zoradiť</x-form.button>
-        </form>
-        
-        <form method="get" action="{{ route('admin.applications.index') }}" class="flex flex-wrap items-end">
+                            
+
+                            <x-slot:search>
                 @csrf
                 @if(request()->filled('orderBy'))
                 <input type="hidden" name="orderBy" value="{{request()->input('orderBy')}}" />
@@ -418,42 +417,30 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                 @elseif(request()->filled('academy_id'))
                 <input type="hidden" name="academy_id" value="{{request()->input('academy_id')}}" />
                 @endif
-                <div class="w-full md:w-auto md:mr-4 mt-4 md:mt-0">
-
-                    <input type="text" name="search" value="{{old('search')}}"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"
-                        placeholder="Vyhľadávanie">
-                </div>
-                <x-form.button class="ml-2">Hľadať</x-form.button>
+            </x-slot:search>
+        </x-form.search>
     
-            </form>
-        </div>
-    
-        <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
-        <div class="py-6 align-middle inline-block min-w-full sm:px-6 lg:px-8 ">
-            <div class="overflow-x-auto relative rounded-lg shadow">
-                <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 shadow-md">
-                    <thead class="text-xs uppercase bg-gray-200">
-                        <tr>
+        <x-single-table>
+            <x-slot:head>
                             <th scope="col" class="py-3 px-6">Meno študenta</th>
                             <th scope="col" class="py-3 px-6">Kurz</th>
-                            <th scope="col" class="py-3 px-6">Dni / čas</th>
+                            <th scope="col" class="py-3 px-6">Dni/čas</th>
                             <th scope="col" class="py-3 px-6">Potvrdená</th>
                             <th scope="col" class="py-3 px-6">Vytvorená</th>
                             <th scope="col" class="py-3 px-6 w-20">Akcie</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                        </x-slot:head>
                         @foreach ($applications as $application)
                         <tr
-                            class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
-                            <td class="py-4 px-6">{{$application->student->name}} {{$application->student->lastname}}
+                        class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
+                            <td class="py-4 px-6"><x-table.td url="students/{{ $application->student->id }}">{{$application->student->name}} {{$application->student->lastname}} </x-table.td>
                             </td>
                             <td class="py-4 px-6">
-
+                                <x-table.td url="coursetypes/{{ $application->coursetype->id }}">
                                 {{$application->coursetype->name}} - {{$application->coursetype->type == '0' ?
                                 'študentský' :
-                                'inštruktorský'}} ({{$application->academy->name}} akadémia)<br>
+                                'inštruktorský'}} ({{$application->academy->name}} akadémia)
+                                </x-table.td>
+                                <br>
 
                             </td>
                             <td class="py-4 px-6">
@@ -468,25 +455,14 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                             <td class="py-4 px-6">vytvorená
                                 {{ $application->created_at->diffForHumans()}}
                            
-                    </td>
-                            <td class="py-4 px-6 text-right">
+                        </td>
+                            
+                                <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku {{$application->student->name}}" />
 
-                                <form method="POST" action="/admin/applications/{{ $application->id }}" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
-                                </form>
-                            </td>
+                               
                         </tr>
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
+                    </x-single-table>
 
-
-
-        </div>
-    </div>
 
 </x-setting>

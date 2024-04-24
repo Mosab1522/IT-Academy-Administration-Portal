@@ -813,13 +813,15 @@ let pairsCount = 1;
 
 function addSelectsPair() {
   const pairWrapper = document.createElement('div');
-  pairWrapper.classList.add('selects-pair', 'flex', 'items-center', 'justify-between', 'mb-6'); // Tailwind classes for flex layout
+  pairWrapper.classList.add('selects-pair', 'flex', 'items-center', 'justify-between', 'mb-4'); // Tailwind classes for flex layout
   pairWrapper.dataset.pairId = ++pairsCount;
 
   const academySelect = document.createElement('select');
   academySelect.name = 'academy_id[]';
-  academySelect.classList.add('academy-select', 'bg-white', 'border', 'border-gray-300', 'rounded-md', 'text-gray-700', 'p-2', 'flex-1', 'mr-2'); // Tailwind classes for the select
+  academySelect.classList.add('academy-select', 'mt-1', 'flex-1', 'block', 'w-full','rounded-md', 'border-gray-300', 'shadow-sm', 'focus:border-indigo-300', 'focus:ring','focus:ring-indigo-200','focus:ring-opacity-50','disabled:bg-gray-100' ,'bg-white','text-sm','leading-5.6'); // Tailwind classes for the select
   academySelect.dataset.pairId = pairsCount;
+
+
 
   const firstAcademySelect = selectsContainer.querySelector('.academy-select');
   if (firstAcademySelect) {
@@ -829,13 +831,15 @@ function addSelectsPair() {
 
   const coursetypeSelect = document.createElement('select');
   coursetypeSelect.name = 'coursetypes_id[]';
-  coursetypeSelect.classList.add('coursetype-select', 'bg-white', 'border', 'border-gray-300', 'rounded-md', 'text-gray-700', 'p-2', 'flex-1', 'mx-2'); // Tailwind classes for the select
+  coursetypeSelect.classList.add('coursetype-select',  'mt-1', 'flex-1', 'block', 'w-full','rounded-md', 'border-gray-300', 'shadow-sm', 'focus:border-indigo-300', 'focus:ring','focus:ring-indigo-200','focus:ring-opacity-50','disabled:bg-gray-100' ,'bg-white','text-sm','leading-5.6'); // Tailwind classes for the select
   coursetypeSelect.dataset.pairId = pairsCount;
 
+  
+
   const removeBtn = document.createElement('button');
-  removeBtn.classList.add('remove-selects-btn', 'text-white', 'bg-red-500', 'hover:bg-red-700', 'p-2', 'rounded' ,'ml-4'); // Tailwind classes for button
+  removeBtn.classList.add('remove-selects-btn',  'ml-2',  'py-2', 'px-4', 'hover:bg-red-700', 'p-2', 'border' ,'border-transparent','shadow-sm','text-sm', 'font-medium', 'rounded-md' ,'text-white', 'bg-red-600' ,'hover:bg-red-700', 'focus:outline-none' ,'focus:ring-2', 'focus:ring-offset-2', 'focus:ring-red-200'); // Tailwind classes for button
   removeBtn.setAttribute('type', 'button');
-  removeBtn.textContent = 'Remove';
+  removeBtn.textContent = 'X';
   removeBtn.setAttribute('data-pair-id', pairsCount);
   removeBtn.addEventListener('click', removeSelectPair);
 
