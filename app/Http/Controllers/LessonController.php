@@ -7,6 +7,7 @@ use App\Models\CourseClass;
 use App\Models\Lesson;
 use App\Models\CourseType;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
@@ -174,4 +175,45 @@ class LessonController extends Controller
 
         return back()->with('success_d', 'Úspešne vymazané');
     }
+
+    public function all(Request $request)
+{
+    $lessons = Lesson::query()
+        ->with(['instructor', 'class.coursetype.academy'])
+        ->when($request->academy_id, function ($query, $academyId) {
+            $query->whereHas('class.coursetype.academy', function ($q) use ($academyId) {
+                $q->where('id', $academyId);
+            });
+        })
+        ->when($request->coursetype_id, function ($query, $coursetypeId) {
+            $query->whereHas('class.coursetype', function ($q) use ($coursetypeId) {
+                $q->where('id', $coursetypeId);
+            });
+        })
+        ->when($request->class_id, function ($query, $classId) {
+            $query->whereHas('class', function ($q) use ($classId) {
+                $q->where('id', $classId);
+            });
+        })
+        ->when($request->instructor_id, function ($query, $instructorId) {
+            $query->whereHas('instructor', function ($q) use ($instructorId) {
+                $q->where('id', $instructorId);
+            });
+        })
+        ->get(); // Assuming each lesson has an 'instructor' relationship
+
+    // Transform lessons into the required format for your calendar or application front-end.
+    $formattedLessons = $lessons->map(function ($lesson) {
+        $startTime = Carbon::parse($lesson->lesson_date);
+        $endTime = $startTime->copy()->addMinutes($lesson->duration);
+        return [
+            'title' => $lesson->title,
+            'start' => $startTime->format('Y-m-d H:i:s'),
+            'end' => $endTime->toDateTimeString(),
+        ];
+    });
+    return response()->json($formattedLessons);
+}
+    
+
 }

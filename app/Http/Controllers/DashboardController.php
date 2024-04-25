@@ -107,4 +107,12 @@ class DashboardController extends Controller
             'coursetypes' => $coursetypes
         ]);
     }
+    public function calendar(Request $request)
+
+    {
+        return view('admin.calendar-index', [
+           
+        ]);
+    }
+
 }

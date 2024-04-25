@@ -1,8 +1,8 @@
 
 <aside 
   x-data="{
-    activeSection: '{{ request()->is('admin/dashboard') ? 'overview' : (request()->is('admin/academies*') || request()->is('admin/coursetypes*') || request()->is('admin/classes*') || request()->is('admin/lessons*') || request()->is('admin/students*') || request()->is('admin/applications*') || request()->is('admin/instructors*') ? 'management' : '') }}',
-    activeSectionName: '{{ request()->is('admin/dashboard') ? 'Prehľad' : (request()->is('admin/academies*') || request()->is('admin/coursetypes*') || request()->is('admin/classes*') || request()->is('admin/lessons*') || request()->is('admin/students*') || request()->is('admin/applications*') || request()->is('admin/instructors*') ? 'Spravovanie' : '') }}'
+    activeSection: '{{ request()->is('admin/dashboard') || request()->is('admin/calendar') ? 'overview' : (request()->is('admin/academies*') || request()->is('admin/coursetypes*') || request()->is('admin/classes*') || request()->is('admin/lessons*') || request()->is('admin/students*') || request()->is('admin/applications*') || request()->is('admin/instructors*') ? 'management' : '') }}',
+    activeSectionName: '{{ request()->is('admin/dashboard') || request()->is('admin/calendar') ? 'Prehľad' : (request()->is('admin/academies*') || request()->is('admin/coursetypes*') || request()->is('admin/classes*') || request()->is('admin/lessons*') || request()->is('admin/students*') || request()->is('admin/applications*') || request()->is('admin/instructors*') ? 'Spravovanie' : '') }}'
   }" 
   class="w-full flex-shrink-0 bg-gray-800 text-white"
 >
@@ -80,7 +80,9 @@
                 <a href="/admin/dashboard"
                 class="{{ request()->is('admin/dashboard') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
                 Úvod</a>
-            
+                <a href="/admin/calendar"
+                class="{{ request()->is('admin/calendar') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
+                Kalendár</a>
             </div>
             <div x-show="activeSection === 'management'" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium" x-transition>
                 <a href="/admin/academies"

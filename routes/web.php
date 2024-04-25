@@ -46,6 +46,8 @@ Route::get('/application/verify/{token}', [ApplicationController::class, 'verify
 
 Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
+Route::get('admin/calendar', [DashboardController::class, 'calendar'])->name('admin.calendar.index');
+
 Route::get('admin/applications', [ApplicationController::class, 'index'])->name('admin.applications.index');
 
 
@@ -125,6 +127,9 @@ Route::get('admin/lessons/create', [LessonController::class, 'create']);
 Route::get('admin/lessons/{lesson:id}', [LessonController::class, 'show']);
 Route::post('admin/lessons/create', [LessonController::class, 'store']);
 Route::delete('admin/lessons/{lesson}', [LessonController::class, 'destroy']);
+
+Route::get('/lessons/all', [LessonController::class, 'all']);
+
 
 Route::post('admin/class-student', [Class_StudentController::class, 'store']);
 Route::delete('admin/class-student/{student}/{class}', [Class_StudentController::class, 'destroy']);

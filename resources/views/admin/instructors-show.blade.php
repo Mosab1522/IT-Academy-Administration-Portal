@@ -501,6 +501,7 @@
                     <div id="calendars" class="section flex-auto p-6"
                         style="display: none;">
                         <p class="text-sm font-semibold uppercase text-gray-700">Kalendár inštruktora</p>
+                        
                     <div id='calendar'></div>
                     </div>
 
@@ -577,14 +578,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,listWeek'
                 },
-                slotDuration: '00:15:00',
+                slotDuration: '00:30:00',
                 slotLabelInterval: '01:00',
-                slotMinTime: '00:00:00',
-                slotMaxTime: '24:00:00',
+                slotMinTime: '07:00:00',
+                slotMaxTime: '20:00:00',
                 scrollTime: '00:00:00',
                 firstDay: 1,
                 height: 'auto',  // Adjust height based on the events
-                contentHeight: 'auto',
+                contentHeight: '200',
                 slotLabelFormat: {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -595,6 +596,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     minute: '2-digit',
                     hour12: false
                 },
+                views: {
+        listWeek: { // or any other specific view you want to customize
+            noEventsText: "Žiadne hodiny na zobrazenie"
+        }
+    },
                 events: "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
                 /*events: "{{ url('/lessons/all') }}",*/
                 windowResize: function(view) {
@@ -628,6 +634,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 calendar.changeView('dayGridMonth');
             }
         });
+
+        document.getElementById('filterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const queryParams = new URLSearchParams(new FormData(form)).toString();
+    const newEventsUrl = `{{ url('/lessons/all') }}?${queryParams}`;
+
+    // Update the calendar's events source
+    window.myCalendar.removeAllEventSources(); // Remove the current event sources
+    window.myCalendar.addEventSource(newEventsUrl); // Add the new source with updated filters
+    window.myCalendar.refetchEvents(); // Optionally refetch events
+});
 
      
 
