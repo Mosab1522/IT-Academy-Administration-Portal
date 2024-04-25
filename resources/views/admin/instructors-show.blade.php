@@ -34,12 +34,14 @@
                                         class="hidden w-full flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
                                 </div>
                             </form> --}}
-                             <x-buttonsection>
+                    
+                            
+                             <x-buttonsection class="lg:w-3/12">
                     <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
                         <button
                         class="edit-button {{session('success_cc') || session('success_dd') || request()->has('pridat')  || request()->has('zmenit') || request()->has('vytvorit') ? 'hidden' : '' }} "
                         data-target="profile">
-                        <span style="display: inline;">Povoliť
+                        <span class="p-auto" style="display: inline;">Povoliť
                             úpravy</span>
                         <span style="display: none;">Zrušiť úpravy</span>
                     </button>
@@ -69,6 +71,23 @@
                 </button>
             </li>
             </x-buttonsection>
+            <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-3/12">
+                <div class="relative">
+                    <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5" role="tablist" nav-pills>
+                       
+                        <button 
+                            class="section w-full hidden text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-gray-100  shadow-sm rounded-lg" id="calendars">
+                            <span class="material-icons material-icons-custom" style="vertical-align: middle; font-size: 1.25rem;">calendar_today</span>
+                            <span style="vertical-align: middle;">Kalendár</span>
+                        </button>
+                        <button 
+                            class="section-button text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 shadow-sm rounded-lg" data-target="calendars">
+                            <span class="material-icons material-icons-custom" style="vertical-align: middle; font-size: 1.25rem;">calendar_today</span>
+                            <span style="vertical-align: middle;">Kalendár</span>
+                        </button>
+                    </ul>
+                </div>
+            </div>
             
                         
                         {{-- <div class="flex-none w-auto max-w-full px-3 my-auto">
@@ -148,7 +167,7 @@
                                             <span id="tlac2"
                                                 class="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} ml-2">Profil</span>
                                         </a> --}}
-                                        <x-buttonsection>
+                                        <x-buttonsection  class="lg:w-3/12">
                                             {{-- <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
                                                 <div class="relative">
                                                     <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5 shadow" role="tablist" nav-pills> --}}
@@ -169,6 +188,7 @@
                                             data-target="login">Login</button>
                                                         </li>
                                                     </x-buttonsection>
+                                                
                                         {{-- <button
                                             class="section-button {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }}  z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             data-target="profile">Profil</button>
@@ -274,7 +294,7 @@
                             </x-form.field>
 
                         </form>
-                        <div id='calendar'></div>
+                       
                     </div>
                     <div class="add-section" id="kurzyAdd"
                         style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
@@ -477,6 +497,11 @@
                             </x-form.field>
 
                         </form>
+                    </div>
+                    <div id="calendars" class="section flex-auto p-6"
+                        style="hidden">
+                        <p class="text-sm font-semibold uppercase text-gray-700">Kalendár inštruktora</p>
+                    <div id='calendar'></div>
                     </div>
 
 </x-setting>
