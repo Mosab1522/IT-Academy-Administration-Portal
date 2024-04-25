@@ -1,6 +1,6 @@
 <x-flash />
 <x-layout />
-<x-setting heading="Úvod" etitle="Všetky prihlášky akadémie">
+<x-setting heading="Kalendár" etitle="Kalendár akadémie">
    
     {{-- <div class="flex flex-col">
         <div class="flex">
