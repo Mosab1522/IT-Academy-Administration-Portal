@@ -50,7 +50,7 @@ class DashboardController extends Controller
         });
 
         $query->when($request->filled('coursetype_id'), function ($q) use ($request) {
-            $q->where('coursetype_id', $request->coursetype_id);
+            $q->where('id', $request->coursetype_id);
         });
 
         if ($request->input('orderBy') === 'most_applicants' || $request->input('orderBy') === 'less_applicants') {
