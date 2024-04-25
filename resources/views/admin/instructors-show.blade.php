@@ -69,6 +69,7 @@
                 </button>
             </li>
             </x-buttonsection>
+            
                         
                         {{-- <div class="flex-none w-auto max-w-full px-3 my-auto">
                             <div class="h-full">
@@ -265,8 +266,8 @@
                 
                 
                                     <!-- Reset Button -->
-                                    <button id="rese" type="reset"
-                                        class="hidden flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-md hover:bg-gray-500 transition-colors duration-200">
+                                    <button id="res" type="reset"
+                                        class="hidden flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors duration-200">
                                         Reset
                                     </button>
                                 </div>
@@ -337,7 +338,7 @@
                                         </div>
             
                                     </div>
-                                    <x-form.button class="mt-6">
+                                    <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                                         Odoslať
                                     </x-form.button>
                             {{-- <button type="button" id="setDefaults">Nastaviť predvolené hodnoty</button> --}}
@@ -346,11 +347,8 @@
                     <div id="kurzy" class="section flex-auto p-6"
                         style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Kurzy v správe</p>
-                        <div class="overflow-x-auto relative rounded-lg shadow mt-6 align-middle ">
-                            <table class="w-full text-sm text-left text-gray-800 dark:text-gray-800 ">
-                                <thead class="text-xs uppercase bg-gray-200">
-                                
-                                    <tr>
+                        <x-single-table>
+                            <x-slot:head>
                                         <th scope="col" class="py-3 px-6">Názov kurzu</th>
                                         <th scope="col" class="py-3 px-6">Akadémia</th>
                                         <th scope="col" class="py-3 px-6">Typ kurzu</th>
@@ -358,45 +356,40 @@
                                         <th scope="col" class="py-3 px-6">Inštruktori</th>
                                         <th scope="col" class="py-3 px-6">Triedy</th>
                                         <th scope="col" class="py-3 px-6">Počet prihlášok</th>
-                                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">
-                                            Akcie
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
+                                    </x-slot:head>
                                     @foreach ($instructor->coursetypes as $coursetype)
-                                    <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
-                                        <td class="py-4 px-6">{{$coursetype->name}}</td> 
-                                        <td class="py-4 px-6">{{$coursetype->academy->name}}</td>
+                                    <tr
+                                                        class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
+                                        <td class="py-4 px-6"><x-table.td url="coursetypes/{{ $coursetype->id }}">{{$coursetype->name}}</x-table.td></td> 
+                                        <td class="py-4 px-6"><x-table.td url="academies/{{ $coursetype->academy->id }}">{{$coursetype->academy->name}}</x-table.td></td>
                                         <td class="py-4 px-6">
                                             {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
                                         </td>
                                         <td class="py-4 px-6">{{$coursetype->min}} / {{$coursetype->max}}</td>
                                         <td class="py-4 px-6">
                                             @foreach($coursetype->instructors as $instructor)
-                                                {{$instructor->name}} {{$instructor->lastname}} <br>
+                                            <x-table.td url="instructors/{{ $instructor->id }}">
+                                                {{$instructor->name}} {{$instructor->lastname}}
+                                            </x-table.td>
+                                                <br>
                                             @endforeach
                                         </td>
                                         <td class="py-4 px-6">
                                             @foreach($coursetype->classes as $class)
-                                                {{$class->name}}<br>
+                                            <x-table.td url="classes/{{ $class->id }}">
+                                                {{$class->name}}
+                                            </x-table.td>
+                                                <br>
                                             @endforeach
                                         </td>
                                         <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                                       <td class="px-3 py-4 text-right text-sm font-medium lg:px-6 lg:py-4">
-                                            <a href="/admin/coursetypes/{{ $coursetype->id }}" class="text-blue-600 hover:text-blue-700 hover:underline ">Upraviť</a>
-                                            &nbsp;
-                                            <form method="POST" action="/admin/coursetypes/{{ $coursetype->id }}" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-700 hover:underline ">Vymazať</button>
-                                            </form>
-                                        </td>
+                                        <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz  {{$coursetype->name}}" />
+
+                                      
                                     </tr>
                                     @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                </x-single-table>
                     </div>
             
                     <div id="login" class="section flex-auto p-6"
@@ -469,16 +462,15 @@
 
                             <x-form.field>
                                 <div class="flex justify-end space-x-4 mt-6">
-                                    <x-form.button class=" {{request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }}  flex-1">
-                                        {{
-                                            $instructor->login ? 'Zmeniť' : 'Vytvoriť' }}
+                                    <x-form.button class=" hidden  flex-1">
+                                        Upraviť
                                     </x-form.button>
                                     <!-- Update Button -->
                 
                 
                                     <!-- Reset Button -->
                                     <button id="res" type="reset"
-                                        class="{{request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors duration-200">
+                                        class="hidden flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors duration-200">
                                         Reset
                                     </button>
                                 </div>

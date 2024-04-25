@@ -78,7 +78,7 @@
                                             </button>
                                         </li>
                                             </x-buttonsection>
-
+                                        
 
                                         {{--
                                     </ul>
@@ -109,6 +109,7 @@
                                                 data-target="kurzy">Prihlasky</button>
                                         </li>
                                             </x-buttonsection>
+
                                         {{-- <li class="hidden" class="z-30 flex-auto text-center">
                                             <a id="tr"
                                                 class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
@@ -409,7 +410,7 @@
                                         </form>
                                     </div>
 
-                                    <div class="add-section p-6" id="kurzyAdd"
+                                    <div class="add-section" id="kurzyAdd"
                                         style="{{ request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
                                         <p class="text-sm font-semibold uppercase text-gray-700">Vytvoriť prihlášku</p>
                                         <form action="/" method="POST">
