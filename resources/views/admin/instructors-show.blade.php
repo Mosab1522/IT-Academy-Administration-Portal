@@ -595,14 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     minute: '2-digit',
                     hour12: false
                 },
-                events: [
-                    // Define your events here
-                    {
-                        title: 'Sample Event',
-                        start: '2024-04-03T10:00:00',
-                        end: '2024-04-03T11:00:00'
-                    }
-                ],
+                events: "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
                 windowResize: function(view) {
                     if (window.innerWidth < 576) {
                         calendar.changeView('listWeek');
