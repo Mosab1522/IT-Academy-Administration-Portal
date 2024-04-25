@@ -10,88 +10,89 @@
                 {{-- <h3 class="block mt-2 mb-3 uppercase font-bold text-sm text-gray-700">Povinný údaj</h3>
                 <x-form.input name="email" type="email"/>
                 <h3 class="block mt-6 mb-3 uppercase font-bold text-sm text-gray-700">Voliteľné údaje</h3> --}}
-                <div class="items-center mt-6">
-                    <x-form.label name="status" title="Status" />
+                <p class="text-sm font-semibold uppercase text-gray-700 mt-6">Osobné informácie</p>
+                <div class="flex flex-col  md:grid md:grid-cols-2 lg:flex lg:flex-row  gap-6">
+                    <div class=" mt-6">
+                        <x-form.label name="status" title="Status" />
 
-                    <div class="flex items-center mt-1">
-                        <x-form.input-radio name="status" for="type_student" value="student">
-                            Študent
-                        </x-form.input-radio>
-                        
-                        <x-form.input-radio class="ml-6" name="status" for="type_nostudent" value="nestudent">
-                            Neštudent
-                        </x-form.input-radio>
-                       
-                    </div>
-                    
-                </div>
+                        <div class="flex items-center mt-1">
+                            <x-form.input-radio name="status" for="type_student" value="student">
+                                Študent
+                            </x-form.input-radio>
 
-                {{-- <div class="items-center mt-4">
-                    <x-form.label name="je:" />
-        
-                    <input class="mr-0.5" type="radio" id="student" name="status" value="student">
-                    <label for="student">Študent</label>
-        
-                    <input class="ml-2 mr-0.5" type="radio" id="nestudent" name="status" value="nestudent">
-                    <label for="nestudent">Neštudent</label>
-                    
-                    <input class="ml-2 mr-0.5" type="radio" id="neviem" name="status" value=NULL>
-                    <label for="nestudent">Neviem</label>
-        
-                </div> --}}
-        
-                <div class="space-y-4">
-                    <!-- University selection -->
-                    <div class="flex flex-col mt-3" id="ucm" style="display: none;">
-                        <x-form.label name="skola" title="Škola"/>
-                        <div class="flex mt-1">
-                            <div class="flex items-center mr-6">
-                                <input type="radio" id="ucmka" name="skola" value="ucm" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                <label for="ucmka" class="ml-2  text-gray-700">UCM</label>
+                            <x-form.input-radio class="ml-4" name="status" for="type_nostudent"
+                                value="nestudent">
+                                Neštudent
+                            </x-form.input-radio>
+
+                        </div>
+
+                    </div>
+            
+                        <!-- University selection -->
+                        <div class="flex flex-col mt-0 md:mt-6" id="ucm" style="display: none;">
+                            <x-form.label name="skola" title="Škola" />
+                            <div class="flex mt-1">
+                                <div class="flex items-center mr-4">
+                                    <input type="radio" id="ucmka" name="skola" value="ucm"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                    <label for="ucmka" class="ml-2  text-gray-700">UCM</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="inam" name="skola" value="ina"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                    <label for="inam" class="ml-2  text-gray-700">Iná</label>
+                                </div>
                             </div>
-                            <div class="flex items-center">
-                                <input type="radio" id="inam" name="skola" value="ina" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                <label for="inam" class="ml-2  text-gray-700">Iná</label>
+                           
+                        </div>
+
+                        <!-- Study type selection -->
+                        <div class="flex flex-col mt-0 lg:mt-6" id="ucmkari" style="display: none;">
+                            <x-form.label name="studium" title="Druh štúdia" />
+                            <div class="flex mt-1">
+                                <div class="flex items-center mr-4">
+                                    <input type="radio" id="option3" name="studium" value="interne"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                    <label for="option3" class="ml-2  text-gray-700">Interné</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="option4" name="studium" value="externe"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                    <label for="option4" class="ml-2  text-gray-700">Externé</label>
+                                </div>
                             </div>
                         </div>
-                        <div id="ina" class="mt-3" style="display: none;">
-                            <input type="text" class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500" name="ina" id="nu" placeholder="Názov školy" disabled>
+
+                        <!-- Program selection -->
+                        <div class="flex flex-col mt-0 lg:mt-6" id="ucmkari2" style="display: none;">
+                            <x-form.label name="program" title="Program" />
+                            <div class="flex lg:mt-1">
+                                <div class="flex items-center lg:items-baseline mr-4">
+                                    <input type="radio" id="option5" name="program" value="apin"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 mt-1">
+                                    <label for="option5" class="ml-2 lg:-mt-1  text-gray-700">Aplikovaná
+                                        informatika</label>
+                                </div>
+                                <div class="flex items-center lg:items-baseline">
+                                    <input type="radio" id="option6" name="program" value="iny"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 lg:mt-1">
+                                    <label for="option6" class="ml-2 lg:-mt-1  text-gray-700">Iný</label>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
-                
-                    <!-- Study type selection -->
-                    <div class="flex flex-col mt-3" id="ucmkari" style="display: none;">
-                        <x-form.label name="studium" title="Druh štúdia"/>
-                        <div class="flex mt-1">
-                            <div class="flex items-center mr-6">
-                                <input type="radio" id="option3" name="studium" value="interne" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                <label for="option3" class="ml-2  text-gray-700">Interné</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="radio" id="option4" name="studium" value="externe" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                <label for="option4" class="ml-2  text-gray-700">Externé</label>
-                            </div>
-                        </div>
+                    <div id="ina" class="mt-3" style="display: none;">
+                        <input type="text"
+                            class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500"
+                            name="ina" id="nu" placeholder="Názov školy" disabled>
                     </div>
-                
-                    <!-- Program selection -->
-                    <div class="flex flex-col mt-3" id="ucmkari2" style="display: none;">
-                        <x-form.label name="program" title="Program"/>
-                        <div class="flex mt-1">
-                            <div class="flex items-center mr-6">
-                                <input type="radio" id="option5" name="program" value="apin" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                <label for="option5" class="ml-2  text-gray-700">Aplikovaná informatika</label>
+                    <div id="iny" class="mt-3" style="display: none;">
+                                <input type="text"
+                                    class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500"
+                                    name="iny" id="ny" placeholder="Názov programu" disabled>
                             </div>
-                            <div class="flex items-center">
-                                <input type="radio" id="option6" name="program" value="iny" class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                <label for="option6" class="ml-2  text-gray-700">Iný</label>
-                            </div>
-                        </div>
-                        <div id="iny" class="mt-3" style="display: none;">
-                            <input type="text" class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500" name="iny" id="ny" placeholder="Názov programu" disabled>
-                        </div>
-                    </div>
-                </div>
                 
                 
                 <x-form.field>

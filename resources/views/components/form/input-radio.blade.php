@@ -11,7 +11,7 @@
         {{ $attributes->get('disabled') ? 'disabled' : '' }}
         {{ $attributes->get('checked') ? 'checked' : '' }}
     >
-    <label for="{{ $for }}" class="ml-1 sm:ml-2 block text-sm leading-5.6 text-gray-700">
+    <label for="{{ $for }}" class="ml-2 block text-sm leading-5.6 text-gray-700">
         {{ $slot }}
     </label>
 </div>
