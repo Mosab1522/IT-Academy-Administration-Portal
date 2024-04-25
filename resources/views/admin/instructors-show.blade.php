@@ -499,7 +499,7 @@
                         </form>
                     </div>
                     <div id="calendars" class="section flex-auto p-6"
-                        style="hidden">
+                        style="display: none;">
                         <p class="text-sm font-semibold uppercase text-gray-700">Kalendár inštruktora</p>
                     <div id='calendar'></div>
                     </div>
@@ -596,6 +596,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     hour12: false
                 },
                 events: "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
+                /*events: "{{ url('/lessons/all') }}",*/
                 windowResize: function(view) {
                     if (window.innerWidth < 576) {
                         calendar.changeView('listWeek');
