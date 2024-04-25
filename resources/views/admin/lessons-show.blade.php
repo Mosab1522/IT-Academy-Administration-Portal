@@ -15,7 +15,7 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
 <x-setting heading="{{$lesson->title}}">
 
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
-        <x-show-header name="{{$lesson->title}}" title="Hodina" src="{{ asset('storage/') }}" path="instructors/{{ $lesson->id }}"/>
+        <x-show-header name="{{$lesson->title}}" title="Hodina" />
 {{--   
     <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
