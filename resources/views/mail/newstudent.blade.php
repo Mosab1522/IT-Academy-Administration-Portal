@@ -1,20 +1,23 @@
-<x-mail::message>
-# Nová registrácia študenta - {{$coursename}} kurz
+<x-email-layout>
+ <h1>Nová registrácia študenta - {{$coursename}} kurz</h1>
 
-Notifikácia z UCM akadémie:<br>
-Registrácia nového študenta na Váš kurz:
+<h2>Notifikácia z UCM akadémie:</h2>
+<p>Registrácia nového študenta na Váš kurz:</p>
  
-Kurz: {{$coursename}} - {{$coursetype == 0 ? 'študentský' : 'inštruktorský'}} <br>
-Akadémia: {{$academyname}}
+<p>Kurz: {{$coursename}} - {{$coursetype == 0 ? 'študentský' : 'inštruktorský'}}</p>
+<p>Akadémia: {{$academyname}}</p>
 
-Nižšie nájdete základné informácie o študentovi:
+<h3>Nižšie nájdete základné informácie o študentovi:</h3>
 
-Meno: {{$name}} {{$lastname}}<br>
-E-mail: {{$email}}
+<p>Meno: {{$name}} {{$lastname}}</p>
+<p>E-mail: {{$email}}</p>
 
-Dátum registrácie: {{$date}}
+<p>Dátum registrácie: {{$date}}</p>
 
-Notifikačný systém UCM akadémie
+
+<x-slot:footer>
+             <p>Notifikačný systém UCM akadémie</p>
+</x-slot:footer>
 
 {{-- <x-mail::button :url="''">
 Button Text
