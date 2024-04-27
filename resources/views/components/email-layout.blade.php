@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;  }
     .email-container { max-width: 600px; margin: auto; background: #ffffff; padding: 20px; }
     .logo { text-align: center; margin-bottom: 20px; }
     .content { color: #333333; }
@@ -26,7 +26,7 @@
         {{$slot}}
 
         <div class="footer">
-           {{$footer}}
+           {{$footer ?? ''}}
             <p>Univerzita sv. Cyrila a Metoda v Trnave</p>
             <p>[telefónne číslo]</p>
             <p>[emailová adresa]</p>
