@@ -781,7 +781,11 @@ students.forEach(student => {
   // Click event for the whole row, excluding the More/Less info cell
   option.addEventListener('click', function(event) {
       if (event.target !== moreInfoIndicatorCell) {
-        document.querySelector('input[name="student_id"]').value = student.id;
+        if(document.querySelector('input[name="student_id"]'))
+        {
+           document.querySelector('input[name="student_id"]').value = student.id;
+        }
+       
           document.querySelector('input[name="name"]').value = student.name;
           document.querySelector('input[name="lastname"]').value = student.lastname;
           document.querySelector('input[name="email"]').value = student.email;
