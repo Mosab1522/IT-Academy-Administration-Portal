@@ -13,34 +13,46 @@
                     <input type="hidden" name="recipients" id="itemsInput">
                     <div class="flex items-center -mt-6">
                         <x-form.input-check name="sender" title="Uviesť odosielateľa?" />
-                    
+
                         <!-- Info Icon with Tooltip -->
                         <div class="relative mt-6 ml-2 flex items-center">
-                            <span class="material-icons info text-gray-500 hover:text-gray-700 cursor-pointer">info</span>
-                            <div  class="absolute hidden w-48 px-4 py-2 text-sm leading-tight text-white bg-black rounded-lg shadow-lg -left-12 top-6 z-10"
-                                 style="min-width: 150px;">
-                                 Ak nezaškrtnete túto možnosť. Ako odosielateľ bude uvedená UCM akadémia.
+                            <span
+                                class="material-icons info text-gray-500 hover:text-gray-700 cursor-pointer">info</span>
+                            <div class="absolute hidden w-48 px-4 py-2 text-sm leading-tight text-white bg-gray-800 rounded-lg shadow-lg -left-12 top-6 z-10"
+                                style="min-width: 150px;">
+                                Ak nezaškrtnete túto možnosť, ako odosielateľ bude uvedená UCM akadémia.
                             </div>
                         </div>
                     </div>
-                    
-                   
+
+
                     <div id="senderName" class="mt-2" style="display: none;">
                         <x-form.input type="text" name="sendername" value="{{ old('sendername') }}" title="Odosielateľ"
                             placeholder="Odosielateľ" />
                     </div>
-                    <div class="mt-6">
-                    <x-form.select name="who" title="Príjemcovia">
-                        <option value="" disabled selected hidden>Vyberte kategóriu príjemcov</option>
-                        <option value="6" {{old('who')==6 ? 'selected' : '' }}>Všetci</option>
-                        <option value="1" {{old('who')==1 ? 'selected' : '' }}>Konkrétny študent / študenti</option>
-                        <option value="2" {{old('who')==2 ? 'selected' : '' }}>Konkrétny inštruktor / inštruktori</option>
-                        <option value="3" {{old('who')==3 ? 'selected' : '' }}>Všetci študenti akadémie</option>
-                        <option value="4" {{old('who')==4 ? 'selected' : '' }}> Všetci študenti kurzu</option>
-                        <option value="5" {{old('who')==5 ? 'selected' : '' }}>Všetci študenti triedy</option>
+                    <div id="pick" class="mt-6">
+                        <x-form.select name="who" title="Príjemcovia">
+                            <option value="0" disabled selected hidden>Vyberte kategóriu príjemcov</option>
+                            <option value="6">Všetci</option>
+                            <option value="1">Konkrétny študent / študenti</option>
+                            <option value="3">Všetci študenti akadémie</option>
+                            <option value="4"> Všetci študenti kurzu</option>
+                            <option value="5">Všetci študenti triedy</option>
+                            <option value="2">Konkrétny inštruktor / inštruktori</option>
 
-                    </x-form.select>
-                </div>
+
+                        </x-form.select>
+                    </div>
+                    <div id="all" class="mt-6" style="display: none;">
+                        <x-form.select name="all_id" title="Všetci">
+
+                            <option value="1">Všetci študenti akadémie</option>
+                            <option value="2">Všetci inštruktori akadémie</option>
+                            <option value="3">Všetci študenti aj inštruktori akadémie</option>
+
+                        </x-form.select>
+                        <button type="button" class=" add-item-button" data-target="all_id">Pridať príjemcov</button>
+                    </div>
                     <div id="academy" class="mt-6" style="display: none;">
                         <x-form.select name="academy_id" title="Akadémia">
 
@@ -49,12 +61,13 @@
                             $academy = \App\Models\Academy::all();
                             @endphp
                             @foreach (\App\Models\Academy::all() as $academ)
-                            <option value="{{ $academ->id }}" {{old('academy_id')==$academ->id ? 'selected' : '' }} >{{
+                            <option value="{{ $academ->id }}">{{
                                 ucwords($academ->name) }}</option>
                             @endforeach
 
                         </x-form.select>
-                        <button type="button"  class=" add-item-button" data-target="academy_id">Pridať príjemcov</button>
+                        <button type="button" class=" add-item-button" data-target="academy_id">Pridať
+                            príjemcov</button>
                     </div>
 
                     <div id="class" class="mt-6" style="display: none;">
@@ -65,14 +78,14 @@
                             $class = \App\Models\CourseClass::all();
                             @endphp
                             @foreach (\App\Models\CourseClass::all() as $class)
-                            <option value="{{ $class->id }}" {{old('class_id')==$class->id ? 'selected' : '' }} >{{
+                            <option value="{{ $class->id }}">{{
                                 ucwords($class->name) }}</option>
                             @endforeach
 
                         </x-form.select>
-                        
-                    
-                    <button type="button"  class=" add-item-button" data-target="class_id">Pridať príjemcov</button>
+
+
+                        <button type="button" class=" add-item-button" data-target="class_id">Pridať príjemcov</button>
                     </div>
 
                     <div id="instructor" class="mt-6" style="display: none;">
@@ -83,8 +96,7 @@
                             $academy = \App\Models\Instructor::all();
                             @endphp
                             @foreach (\App\Models\Instructor::all() as $instrutor)
-                            <option value="{{ $instrutor->id }}" {{old('instrutor_id')==$instrutor->id ? 'selected' : ''
-                                }} >{{
+                            <option value="{{ $instrutor->id }}">{{
                                 ucwords($instrutor->name) }} {{
                                 ucwords($instrutor->lastname) }} - {{
                                 $instrutor->email }}</option>
@@ -92,18 +104,21 @@
 
                         </x-form.select>
                         <div>
-                            <button type="button"  class=" add-item-button" data-target="instructor_id">Pridať príjemcov</button>
+                            <button type="button" class=" add-item-button" data-target="instructor_id">Pridať
+                                príjemcu</button>
                         </div>
-                        
+
                     </div>
 
                     <div id="student" class="mt-6" style="display: none;">
+                        <input type="hidden" name="student_id" id="student_id">
                         <x-form.live-search />
-                        <button type="button"  class=" add-item-button" data-target="student_id">Pridať príjemcov</button>
+                        <button type="button" class=" add-item-button" data-target="student_id">Pridať
+                            príjemcov</button>
                     </div>
 
                     <div id="course" class="mt-6" style="display: none;">
-                        
+
                         <div class="items-center mt-6 ">
                             <x-form.label name="type" title="Typ kurzu" />
 
@@ -137,29 +152,31 @@
                             <div class="flex">
                                 <!-- First select for Academies -->
                                 <div class="w-1/2 mr-2">
-                                    <x-form.select name="academy_id" title="Akadémia" class="combo-a" data-nextcombo=".combo-b">
+                                    <x-form.select name="academy_id" title="Akadémia" class="combo-a"
+                                        data-nextcombo=".combo-b">
                                         <option value="" disabled selected hidden>Akadémia</option>
                                         @foreach (\App\Models\Academy::with(['coursetypes','applications'])->get() as $academ)
-                                            <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1">
-                                                {{ ucwords($academ->name) }}
-                                            </option>
+                                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1">
+                                            {{ ucwords($academ->name) }}
+                                        </option>
                                         @endforeach
                                     </x-form.select>
                                 </div>
-                        
+
                                 <!-- Second select for Course Types -->
                                 <div class="w-1/2 ml-2">
                                     <x-form.select name="coursetype_id" title="Kurz" class="combo-b" disabled>
                                         <option value="" disabled selected hidden>Typ kurzu</option>
-                                        @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1, 2])->get() as $type)
-                                            <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}">
-                                                {{ ucwords($type->name) }}
-                                            </option>
+                                        @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type',[1, 2])->get() as $type)
+                                        <option value="{{ $type->id }}" data-id="{{ $type->id }}"
+                                            data-option="{{ $type->academy_id }}">
+                                            {{ ucwords($type->name) }}
+                                        </option>
                                         @endforeach
                                     </x-form.select>
                                 </div>
                             </div>
-                        
+
                             <!-- Button below the selects -->
                             <div class="">
                                 <button type="button" class="add-item-button " data-target="coursetype_id">
@@ -167,87 +184,87 @@
                                 </button>
                             </div>
                         </div>
-                        
+
 
 
                         <div class="mt-6 hidden flex-col" id="stud">
                             <div class="flex">
-                            <div class="w-1/2 mr-2">
-                                <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3"
-                                    data-nextcombo=".combo-b3">
+                                <div class="w-1/2 mr-2">
+                                    <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3"
+                                        data-nextcombo=".combo-b3">
 
-                                    <!-- parent -->
+                                        <!-- parent -->
 
-                                    <option value="" disabled selected hidden>Akadémia</option>
-                                    {{-- @php
-                                    $academy = \App\Models\Academy::with(['coursetypes','applications'])
-                                    ->get();
-                                    @endphp --}}
-                                    @foreach (\App\Models\Academy::with(['coursetypes','applications'])
-                                    ->get() as $academ)
-                                    <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
-                                        {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
-                                        >{{
-                                        ucwords($academ->name)}}</option>
-                                    @endforeach
-                                    {{-- <option value="" disabled selected hidden>Akadémia</option>
-                                    <option value="1" data-id="1" data-option="-1">Cisco</option>
-                                    <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
-                                </x-form.select>
-                            </div>
-                            <div class="w-1/2 ml-2">
-                                <x-form.select name="coursetype_id2" title="Kurz" class="combo-b3" disabled>
-                                    <!-- child -->
-                                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
-                                        data-nextcombo=".combo-c" disabled>
+                                        <option value="" disabled selected hidden>Akadémia</option>
+                                        {{-- @php
+                                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                                        ->get();
+                                        @endphp --}}
+                                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])->get() as $academ)
+                                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
+                                            {{-- {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                                            >{{
+                                            ucwords($academ->name)}}</option>
+                                        @endforeach
+                                        {{-- <option value="" disabled selected hidden>Akadémia</option>
+                                        <option value="1" data-id="1" data-option="-1">Cisco</option>
+                                        <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                                    </x-form.select>
+                                </div>
+                                <div class="w-1/2 ml-2">
+                                    <x-form.select name="coursetype_id2" title="Kurz" class="combo-b3" disabled>
+                                        <!-- child -->
+                                        {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
+                                            data-nextcombo=".combo-c" disabled>
+                                            <option value="" disabled selected hidden>Typ kurzu</option>
+                                            <option value="1" data-id="1" data-option="1">Lahky</option>
+                                            <option value="2" data-id="2" data-option="1">Stredny</option>
+                                            <option value="3" data-id="3" data-option="2">Photoshop</option>
+                                            <option value="4" data-id="4" data-option="2">Illustrator</option>
+                                        </select> --}}
+
                                         <option value="" disabled selected hidden>Typ kurzu</option>
-                                        <option value="1" data-id="1" data-option="1">Lahky</option>
-                                        <option value="2" data-id="2" data-option="1">Stredny</option>
-                                        <option value="3" data-id="3" data-option="2">Photoshop</option>
-                                        <option value="4" data-id="4" data-option="2">Illustrator</option>
-                                    </select> --}}
-
-                                    <option value="" disabled selected hidden>Typ kurzu</option>
-                                    {{-- @php
-                                    $academy = \App\Models\CourseType::all();
-                                    @endphp --}}
-                                    @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type',
-                                    [0,
-                                    2])->get() as $type2)
-                                    <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
-                                        data-option="{{ $type2->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
-                                        'selected' : ''}} --}}
-                                        >{{
-                                        ucwords($type2->name) }}</option>
-                                    @endforeach
-                                </x-form.select>
-                            </div>
+                                        {{-- @php
+                                        $academy = \App\Models\CourseType::all();
+                                        @endphp --}}
+                                        @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type',[0,2])->get() as $type2)
+                                        <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
+                                            data-option="{{ $type2->academy_id }}" {{-- {{old('coursetype_id')==$type->
+                                            id ?
+                                            'selected' : ''}} --}}
+                                            >{{
+                                            ucwords($type2->name) }}</option>
+                                        @endforeach
+                                    </x-form.select>
+                                </div>
                             </div>
                             <div>
-                            <button type="button"  class=" add-item-button" data-target="coursetype_id2">Pridať príjemcov</button>
-                        </div>
+                                <button type="button" class=" add-item-button" data-target="coursetype_id2">Pridať
+                                    príjemcu</button>
+                            </div>
                         </div>
                     </div>
-                    
-                    <x-form.field>
-                        <x-form.label name="itemList" title="Vybraný príjemcovia"/>
-                         <ul id="itemsList" class="mt-4">
-                        <li id="default">Zatiaľ žiadny vybraný príjemcovia</li>
-                    </ul>
-                    </x-form.field>
-                   
-                    <x-form.field>
-                    <x-form.label name="emailText" title="Text emailu"/>
 
-                    <textarea id="emailText" name="emailText" rows="3"
-                        class="mt-1 block w-full p-2.5 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm resize-none overflow-hidden"
-                        placeholder="Napíšte text emailu..." oninput="autoExpand(this)"></textarea>
+                    <x-form.field>
+                        <x-form.label name="itemList" title="Vybraný príjemcovia" />
+                        <ul id="itemsList" class="mt-4">
+                            <li id="default">Zatiaľ žiadny vybraný príjemcovia</li>
+                        </ul>
                     </x-form.field>
 
+                    <x-form.field>
+                        <x-form.label name="emailText" title="Text emailu" />
 
-                    <div class="flex-shrink-0">
-                        <x-form.button class="md:mt-6 mt-2 sm:mt-6 w-full">Poslať</x-form.button>
-                    </div>
+                        <textarea id="emailText" name="emailText" rows="3"
+                            class="mt-1 block w-full p-2.5 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm resize-none overflow-hidden"
+                            value="{{old('emailText')}}" placeholder="Napíšte text emailu..."
+                            oninput="autoExpand(this)"></textarea>
+                    </x-form.field>
+
+
+                    <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
+                        Odoslať
+                    </x-form.button>
                 </form>
 
 
@@ -404,6 +421,9 @@ document.getElementById('who').addEventListener('change', function() {
         case '5': // Trieda / Triedy
             document.getElementById('class').style.display = 'block';
             break;
+            case '6': // Trieda / Triedy
+            document.getElementById('all').style.display = 'block';
+            break;
     }
 });
 
@@ -438,6 +458,8 @@ document.querySelectorAll('.add-item-button').forEach(function(button) {
             selectedText = 'Všetci študenti študentského kurzu: ' + select.options[select.selectedIndex].text;
         }else if (dataType  == 'class_id' ){
             selectedText = 'Všetci študenti triedy: ' + select.options[select.selectedIndex].text;
+        } else{
+            selectedText = select.options[select.selectedIndex].text;
         }
         
 
@@ -453,7 +475,7 @@ document.querySelectorAll('.add-item-button').forEach(function(button) {
         listItem.setAttribute('data-type', 'academy');
         listItem.classList.add('bg-white', 'flex', 'justify-between', 'items-center', 'px-4', 'py-1', 'mt-2', 'border', 'border-gray-300', 'rounded-md', 'shadow-sm');
         var deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
+        deleteBtn.textContent = 'Odstrániť';
         deleteBtn.setAttribute('type', 'button');
         deleteBtn.classList.add('ml-2',  'py-1', 'px-4', 'hover:bg-red-700', 'p-2', 'border' ,'border-transparent','shadow-sm','text-sm', 'font-medium', 'rounded-md' ,'text-white', 'bg-red-600' ,'hover:bg-red-700', 'focus:outline-none' ,'focus:ring-2', 'focus:ring-offset-2', 'focus:ring-red-200');
         deleteBtn.onclick = function() {
@@ -484,7 +506,37 @@ function hideOption(value, select, type) {
     if(document.getElementById('default').style.display != 'none') {
         document.getElementById('default').style.display = 'none'
     }
+    if (type == 'all_id') {
+        var option = document.getElementById('all').style.display='none';
+        if(value == 3)
+        {
+            var option = document.getElementById('pick').style.display='none';
+        }else if (value ==1){
+            const valuesToHide = ["1", "3", "4", "5","6"];
+valuesToHide.forEach(value => {
+    const option = document.getElementById('who').querySelector(`option[value="${value}"]`);
+    if (option) option.style.display = 'none';
+});
+var optionToSelect = document.getElementById('who').querySelector('option[value="0"]');
+
+if (optionToSelect) {
+    optionToSelect.selected = true;
 }
+        }
+        else if (value == 2) {
+            const valuesToHide = ["2","6"];
+valuesToHide.forEach(value => {
+    const option = document.getElementById('who').querySelector(`option[value="${value}"]`);
+    if (option) option.style.display = 'none';
+});
+
+var optionToSelect = document.getElementById('who').querySelector('option[value="0"]');
+
+if (optionToSelect) {
+    optionToSelect.selected = true;
+}
+    }
+}}
 
 // Function to show an option based on type
 function showOption(value, select, type) {
@@ -494,6 +546,33 @@ function showOption(value, select, type) {
     }
     if(addedItems.size == 0) {
         document.getElementById('default').style.display = 'block'
+    }
+    if (type == 'all_id') {
+        if(value == 3)
+        {
+            var option = document.getElementById('pick').style.display='block';
+            var optionToSelect = document.getElementById('who').querySelector('option[value="0"]');
+
+if (optionToSelect) {
+    optionToSelect.selected = true;
+}
+        }else if (value ==1){
+            const valuestoShow = ["1", "3", "4", "5","6"];
+valuestoShow.forEach(value => {
+    const option = document.getElementById('who').querySelector(`option[value="${value}"]`);
+    if (option) option.style.display = 'block';
+});
+
+        }
+        else if (value == 2) {
+            const valuestoShow = ["2","6"];
+valuestoShow.forEach(value => {
+    const option = document.getElementById('who').querySelector(`option[value="${value}"]`);
+    if (option) option.style.display = 'block';
+});
+
+
+    }
     }
 }
 

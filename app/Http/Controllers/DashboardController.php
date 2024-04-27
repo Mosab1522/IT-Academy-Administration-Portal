@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ConfirmationMail;
+use App\Mail\CustomMail;
 use App\Models\Application;
 use App\Models\Academy;
 use App\Models\CourseClass;
@@ -128,6 +129,13 @@ class DashboardController extends Controller
     public function send(Request $request)
 
     {
+        $attributes = request()->validate([
+            'sender' => ['in:on'],
+            'sendername' => ['required_if:sender,on','nullable', 'string', 'max:255'],
+            'recipients' => ['nullable', 'json'],
+            'emailText' => ['required', 'string']
+        ]);
+
         if (isset($_POST['recipients'])) {
             $recipients = json_decode($_POST['recipients'], true);  // Decode the JSON string back into an array
             $emails = [];
@@ -137,7 +145,7 @@ class DashboardController extends Controller
             $instructorsIds = [];
             $academiesIds = [];
             $icoursetypesIds = [];
-            $scoursetypesIds =[];
+            $scoursetypesIds = [];
 
             foreach ($recipients as $recipient) {
                 list($id, $type) = explode('-', $recipient);  // Split the string into id and type
@@ -157,19 +165,21 @@ class DashboardController extends Controller
                     case 'coursetype_id':
                         $icoursetypesIds[] = $id;
                         break;
-                        case 'coursetype_id2':
-                            $scoursetypesIds[] = $id;
-                            break;
+                    case 'coursetype_id2':
+                        $scoursetypesIds[] = $id;
+                        break;
                         // Add more cases as necessary
                 }
             }
             if (!empty($classIds)) {
                 foreach ($classIds as $classId) {
                     $class = CourseClass::find($classId);  // Correct usage of find method
-                    if ($class) {  // Check if class was found
-                        foreach ($class->students as $student) {
-                            if (!in_array($student->email, $emails)) {
-                                $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                    if ($class) {
+                        if ($class->students->count() > 0) { // Check if class was found
+                            foreach ($class->students as $student) {
+                                if (!in_array($student->email, $emails)) {
+                                    $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                                }
                             }
                         }
                     }
@@ -179,11 +189,10 @@ class DashboardController extends Controller
                 foreach ($studentsIds as $studentId) {
                     $student = Student::find($studentId);  // Correct usage of find method
                     if ($student) {  // Check if student was found
-                        
-                            if (!in_array($student->email, $emails)) {
-                                $emails[] = $student->email;  // Add the student's email if it's not already in the array
-                            }
-                        
+
+                        if (!in_array($student->email, $emails)) {
+                            $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                        }
                     }
                 }
             }
@@ -191,21 +200,30 @@ class DashboardController extends Controller
                 foreach ($instructorsIds as $instructorId) {
                     $instructor = Instructor::find($instructorId);  // Correct usage of find method
                     if ($instructor) {  // Check if instructor was found
-                       
-                            if (!in_array($instructor->email, $emails)) {
-                                $emails[] = $instructor->email;  // Add the student's email if it's not already in the array
-                            }
-                        
+
+                        if (!in_array($instructor->email, $emails)) {
+                            $emails[] = $instructor->email;  // Add the student's email if it's not already in the array
+                        }
                     }
                 }
             }
             if (!empty($academiesIds)) {
                 foreach ($academiesIds as $academyId) {
-                    $academy = Academy::find($academyId);  // Correct usage of find method
-                    if ($academy) {  // Check if academy was found
-                        foreach ($academy->students as $student) {
-                            if (!in_array($student->email, $emails)) {
-                                $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                    $academy = Academy::find($academyId);
+                    if ($academy->coursetypes->count() > 0) { // Correct usage of find method
+                        foreach ($academy->coursetypes as $coursetype) {
+                            if ($coursetype) {  // Check if coursetype was found
+                                if ($coursetype->classes->count() > 0) {
+                                    foreach ($coursetype->classes as $class) {
+                                        if ($class->students->count() > 0) {
+                                            foreach ($class->students as $student) {
+                                                if (!in_array($student->email, $emails)) {
+                                                    $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -215,9 +233,15 @@ class DashboardController extends Controller
                 foreach ($icoursetypesIds as $coursetypeId) {
                     $coursetype = CourseType::find($coursetypeId);  // Correct usage of find method
                     if ($coursetype) {  // Check if coursetype was found
-                        foreach ($coursetype->students as $student) {
-                            if (!in_array($student->email, $emails)) {
-                                $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                        if ($coursetype->classes->count() > 0) {
+                            foreach ($coursetype->classes as $class) {
+                                if ($class->students->count() > 0) {
+                                    foreach ($class->students as $student) {
+                                        if (!in_array($student->email, $emails)) {
+                                            $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -227,21 +251,40 @@ class DashboardController extends Controller
                 foreach ($scoursetypesIds as $coursetypeId) {
                     $coursetype = CourseType::find($coursetypeId);  // Correct usage of find method
                     if ($coursetype) {  // Check if coursetype was found
-                        foreach ($coursetype->students as $student) {
-                            if (!in_array($student->email, $emails)) {
-                                $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                        if ($coursetype->classes->count() > 0) {
+                            foreach ($coursetype->classes as $class) {
+                                if ($class->students->count() > 0) {
+                                    foreach ($class->students as $student) {
+                                        if (!in_array($student->email, $emails)) {
+                                            $emails[] = $student->email;  // Add the student's email if it's not already in the array
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            if(!empty($emails)) {
-                foreach ($emails as $email) {
-                    Mail::to($email)->send(new ConfirmationMail($emailData));
-                }
-
+            if ($attributes['sender'] ?? null) {
+                $emailData = [
+                    'sender' => $attributes['sendername'] + ' - Lektor UCM akadémie',
+                    'emailText' => $attributes['emailText']
+                ];
+            } else {
+                $emailData = [
+                    'sender' => 'UCM akadémia',
+                    'emailText' => $attributes['emailText']
+                ];
             }
-            
+
+
+            if (!empty($emails)) {
+                foreach ($emails as $email) {
+                    Mail::to($email)->send(new CustomMail($emailData));
+                }
+            }
+
+
             // Now, $items is an array you can iterate over or process
 
             // Process each item
