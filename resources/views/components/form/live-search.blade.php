@@ -2,7 +2,7 @@
     <!-- Left side with input fields -->
     <div class="w-1/2 space-y-6">
         <div>
-            
+            <input type="hidden" name="student_id" id="student_id">
             <x-form.input name="name" type="text" title="Meno" placeholder="Meno"/>
         </div>
         <div>

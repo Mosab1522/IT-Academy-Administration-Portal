@@ -48,6 +48,13 @@ Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admi
 
 Route::get('admin/calendar', [DashboardController::class, 'calendar'])->name('admin.calendar.index');
 
+Route::get('admin/email', [DashboardController::class, 'email'])->name('admin.dashboard.email');
+
+Route::post('admin/email', [DashboardController::class, 'send'])->name('admin.dashboard.send');
+
+Route::get('/lessons/all', [LessonController::class, 'all']);
+
+
 Route::get('admin/applications', [ApplicationController::class, 'index'])->name('admin.applications.index');
 
 
@@ -128,7 +135,7 @@ Route::get('admin/lessons/{lesson:id}', [LessonController::class, 'show']);
 Route::post('admin/lessons/create', [LessonController::class, 'store']);
 Route::delete('admin/lessons/{lesson}', [LessonController::class, 'destroy']);
 
-Route::get('/lessons/all', [LessonController::class, 'all']);
+
 
 
 Route::post('admin/class-student', [Class_StudentController::class, 'store']);

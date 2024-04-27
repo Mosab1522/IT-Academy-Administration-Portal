@@ -171,7 +171,7 @@
 </x-slot:head>                       
 
                         @foreach ($academies as $academy)
-                        <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
+                        <tr class="bg-white border-b  dark:border-b dark:bg-white border-gray-700  dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                            
                             <td class="py-4 px-6">
                                 <x-table.td url="academies/{{ $academy->id }}">
