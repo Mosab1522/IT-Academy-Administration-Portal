@@ -1,4 +1,4 @@
-@props(['name', 'value', 'for'])
+@props(['name', 'value', 'for','required' => false])
 
 <div {{ $attributes->merge(['class' => 'flex items-center']) }}>
     <input 
@@ -6,7 +6,10 @@
         type="radio" 
         name="{{ $name }}" 
         value="{{ $value }}" 
-        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 disabled:text-gray-500"
+        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 disabled:text-gray-500" @if($required)
+        required
+    
+    @endif
         {{ old($name) == $value ? 'checked' : '' }}
         {{ $attributes->get('disabled') ? 'disabled' : '' }}
         {{ $attributes->get('checked') ? 'checked' : '' }}

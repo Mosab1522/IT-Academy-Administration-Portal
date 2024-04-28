@@ -190,7 +190,7 @@
             <x-form.required class="hidden mt-1"/>
             <x-form.field>
                 <x-form.input
-                    value="{{$academy->name}}" name="name" type="text" title="Názov" placeholder="Názov" errorBag="updateAcademy"  disabled />
+                    value="{{$academy->name}}" name="name" type="text" title="Názov" placeholder="Názov" errorBag="updateAcademy" required="true" disabled />
             </x-form.field>
             {{-- <div class="flex flex-wrap -mx-3">
                 <div class="w-full max-w-full px-3 md:w-1/2">
@@ -229,23 +229,23 @@
             <input name="academy_id" value="{{$academy->id}}" hidden />
             <x-form.required class="mt-1"/>
             <x-form.field>
-                <x-form.input name="name" type="text" title="Názov" placeholder="Názov"/>
+                <x-form.input name="name" type="text" title="Názov" placeholder="Názov" required="true"/>
                 </x-form.field>
     
                 
                 <div class="items-center mt-6">
-                    <x-form.label name="type" title="Typ kurzu" />
+                    <x-form.label name="type" title="Typ kurzu" required="true" />
                 
                     <div class="flex flex-wrap items-center mt-1">
-                        <x-form.input-radio name="type" for="type_student" value="0" class="mb-2 sm:mb-0">
+                        <x-form.input-radio name="type" for="type_student" value="0" class="mb-2 sm:mb-0" required="true">
                             Študentský
                         </x-form.input-radio>
                         
-                        <x-form.input-radio class="ml-6 mb-2 sm:mb-0" name="type" for="type_instructor" value="1">
+                        <x-form.input-radio class="ml-6 mb-2 sm:mb-0" name="type" for="type_instructor" value="1" required="true">
                             Inštruktorský
                         </x-form.input-radio>
                         
-                        <x-form.input-radio class="w-full sm:w-auto sm:ml-6" name="type" for="type_both" value="2">
+                        <x-form.input-radio class="w-full sm:w-auto sm:ml-6" name="type" for="type_both" value="2" required="true">
                             Obidva
                         </x-form.input-radio>
                     </div>
@@ -253,10 +253,10 @@
                 </div>
                 
                     <x-form.field>
-                        <x-form.input name="min" type="number" title="Minimum študentov" placeholder="Minimum"/>
+                        <x-form.input name="min" type="number" title="Minimum študentov" placeholder="Minimum" required="true"/>
                         </x-form.field>
                         <x-form.field>
-                        <x-form.input name="max" type="number" title="Maximum študentov" placeholder="Maximum"/>
+                        <x-form.input name="max" type="number" title="Maximum študentov" placeholder="Maximum" required="true"/>
                         </x-form.field>
 
                         <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
