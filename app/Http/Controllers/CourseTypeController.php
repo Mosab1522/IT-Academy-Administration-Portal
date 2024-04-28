@@ -60,7 +60,7 @@ class CourseTypeController extends Controller
 
     public function store()
     {
-        
+        $validation = $this->messages();
         if(request()->type == 2)
         {
             $attributes = request()->validate([
@@ -69,14 +69,14 @@ class CourseTypeController extends Controller
                 'type' => ['required', 'integer', 'in:0,1,2'],
                 'min' => ['required', 'integer', 'lte:max'],
                 'max' => ['required', 'integer', 'gte:min'],
-            ]);
+            ] , $validation['messages']);
             $attributes = request()->validate([
                 'name' => 'required|max:255|unique:course_types,name,NULL,id,type,1',
                 'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
                 'type' => ['required', 'integer', 'in:0,1,2'],
                 'min' => ['required', 'integer', 'lte:max'],
                 'max' => ['required', 'integer', 'gte:min'],
-            ]);
+            ] , $validation['messages']);
             $attributes['type'] = 0;
             CourseType::create($attributes);
             $attributes['type'] = 1;
@@ -89,7 +89,7 @@ class CourseTypeController extends Controller
             'type' => ['required', 'integer', 'in:0,1,2'],
             'min' => ['required', 'integer', 'lte:max'],
             'max' => ['required', 'integer', 'gte:min'],
-        ]);
+        ] , $validation['messages']);
              CourseType::create($attributes);
         }
        
@@ -105,8 +105,8 @@ class CourseTypeController extends Controller
     public function update(Coursetype $coursetype)
     {
         
-        $academy = Academy::with(['coursetypes', 'applications'])
-        ->where('id', '=', request()->academy_id)->first();
+        // $academy = Academy::with(['coursetypes', 'applications'])
+        // ->where('id', '=', request()->academy_id)->first();
 
         // if ($academy == null) {
         //     dd(request()->all());
@@ -119,6 +119,7 @@ class CourseTypeController extends Controller
         request()->merge(['name'  => request()->cname]);
        }
         
+       $validation = $this->messages();
 
         $attributes = request()->validate([
             'name' => 'required|max:255|unique:course_types,name,' . $coursetype->id . ',id,type,' . request()->type,
@@ -126,7 +127,7 @@ class CourseTypeController extends Controller
             'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
             'min' => ['required', 'integer', 'lte:max'],
             'max' => ['required', 'integer', 'gte:min'],
-        ]);
+        ] , $validation['messages']);
 
         $coursetype->update($attributes); 
         
@@ -157,4 +158,28 @@ class CourseTypeController extends Controller
         
         return back()->with('success_dd', 'Úspešne vymazané');
     }
+
+    function messages()
+{
+    return [
+        'messages' => [
+            'name.required' => 'Názov je povinný.',
+            'name.max' => 'Názov kurzu nesmie mať viac ako 255 znakov.',
+            'name.unique' => 'Tento názov kurzu už existuje.',
+            'academy_id.required' => 'Vyberte akadémiu.',
+            'academy_id.integer' => 'ID akadémie musí byť číslo.',
+            'academy_id.exists' => 'Zadaná akadémia neexistuje.',
+            'type.required' => 'Typ kurzu je povinný.',
+            'type.integer' => 'Typ kurzu musí byť číselného typu.',
+            'type.in' => 'Neplatný typ kurzu. Povolené hodnoty sú študentský, inštruktorský alebo obidva.',
+            'min.required' => 'Minimálny počet študentov je povinný.',
+            'min.integer' => 'Minimálny počet študentov musí byť číslo.',
+            'min.lte' => 'Minimálny počet študentov musí byť menší alebo rovný maximálnemu počtu.',
+            'max.required' => 'Maximálny počet študentov je povinný.',
+            'max.integer' => 'Maximálny počet študentov musí byť číslo.',
+            'max.gte' => 'Maximálny počet študentov musí byť väčší alebo rovný minimálnemu počtu.'
+        ]
+    ];
+}
+
 }

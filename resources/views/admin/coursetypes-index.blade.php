@@ -27,9 +27,8 @@
                             <x-form.input-radio class="ml-2 sm:ml-6 " name="type" for="type_both" value="2">
                                 Obidva
                             </x-form.input-radio>
-
                         </div>
-
+                        <x-form.error name="type"/>
                     </div>
                     <x-form.field>
                         <x-form.select name="academy_id" title="Akadémia">

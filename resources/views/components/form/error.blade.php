@@ -1,4 +1,4 @@
-@props(['name'])
-@error($name)
-<p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+@props(['name','errorBag'])
+@error($name, $errorBag)
+    <span class="text-red-500 text-xs">{{ $message }}</span>
 @enderror

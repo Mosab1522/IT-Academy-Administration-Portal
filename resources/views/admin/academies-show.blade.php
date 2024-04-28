@@ -186,10 +186,11 @@
         <form id="formm" action="/admin/academies/{{$academy->id}}" method="post" enctype="multipart/form-data">
             @csrf
             @method('Patch')
-
+            
+            <x-form.required class="hidden mt-1"/>
             <x-form.field>
                 <x-form.input
-                    value="{{$academy->name}}" name="name" type="text" title="Názov" placeholder="Názov" disabled />
+                    value="{{$academy->name}}" name="name" type="text" title="Názov" placeholder="Názov" errorBag="updateAcademy"  disabled />
             </x-form.field>
             {{-- <div class="flex flex-wrap -mx-3">
                 <div class="w-full max-w-full px-3 md:w-1/2">
@@ -226,7 +227,7 @@
         <form action="/admin/coursetypes/create" method="POST">
             @csrf
             <input name="academy_id" value="{{$academy->id}}" hidden />
-
+            <x-form.required class="mt-1"/>
             <x-form.field>
                 <x-form.input name="name" type="text" title="Názov" placeholder="Názov"/>
                 </x-form.field>
@@ -248,6 +249,7 @@
                             Obidva
                         </x-form.input-radio>
                     </div>
+                    <x-form.error name="type" errorBag="default"/>
                 </div>
                 
                     <x-form.field>
@@ -267,6 +269,7 @@
         <p class="text-sm font-semibold uppercase text-gray-700">Kurzy pod touto akadémiou</p>
         <x-single-table>
             <x-slot:head>
+                        <th scope="col" class="py-3 px-6">Fotka</th>
                         <th scope="col" class="py-3 px-6">Názov kurzu</th>
                         <th scope="col" class="py-3 px-6">Typ kurzu</th>
                         <th scope="col" class="py-3 px-6">Min/max študentov</th>
@@ -350,6 +353,7 @@
 
              <x-single-table>
                     <x-slot:head>
+                            
                             <th scope="col" class="py-3 px-6">Meno študenta</th>
                             <th scope="col" class="py-3 px-6">Dni / čas</th>
                             <th scope="col" class="py-3 px-6">Potvrdená</th>

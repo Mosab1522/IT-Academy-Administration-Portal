@@ -143,7 +143,7 @@ let countdown;
     // Attach the actual deletion function
     window.confirmDeletion = function() {
         clearInterval(countdown);  // Stop the countdown
-        document.getElementById('deleteForm').action = url;  // Set the action URL dynamically
+        // document.getElementById('deleteForm').action = url;  // Set the action URL dynamically
         document.getElementById('deleteForm').submit();      // Submit the form
     }
 

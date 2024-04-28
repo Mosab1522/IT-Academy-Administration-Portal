@@ -11,19 +11,17 @@
                 <div class="flex flex-col">
                     <div class="bg-white p-8 rounded-lg shadow mb-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie akadémie</h3>
-                <form action="/admin/academies/create" method="post" class=" ">
-                    @csrf
-                    <x-form.field>
-                        <x-form.input name="name" type="text" title="Názov" placeholder="Názov" />
-                   </x-form.field>
-
-                  
-                        <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
-                            Odoslať
-                        </x-form.button>
-                   
-                   
-                </form>
+                        <form action="/admin/academies/create" method="post" class="">
+                            @csrf  
+                            <x-form.required class="-mt-3"/>
+                            <x-form.field>
+                                <x-form.input name="name" type="text" title="Názov" placeholder="Názov" required="true"/>
+                            </x-form.field>
+                          
+                            <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
+                                Odoslať
+                            </x-form.button>
+                        </form>
                     </div>
                 </div>
             </x-slot:create>

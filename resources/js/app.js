@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Hide edit span and show stop edit span
             console.log('tue');
             editSpan.style.display = 'none';
+            document.getElementById('required-info').style.display = 'block';
             stopEditSpan.style.display = 'inline';
             buttons.forEach(button => {
                 button.style.display = 'inline-block';
@@ -237,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('tus');
             editSpan.style.display = 'inline';
             stopEditSpan.style.display = 'none';
+            document.getElementById('required-info').style.display = 'none';
             buttons.forEach(button => {
                 button.style.display = 'none';
             });

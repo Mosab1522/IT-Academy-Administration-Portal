@@ -52,14 +52,10 @@ class AcademyController extends Controller
 
     public function store()
     {
-
+       
         $attributes = request()->validate([
             'name' => ['required', 'max:255', Rule::unique('academies', 'name')]
-        ], [
-            'name.required' => 'Názov je povinný.',
-            'name.max' => 'Názov nemôže mať viac ako 255 znakov.',
-            'name.unique' => 'Zadaný názov akadémie už existuje.'
-        ]);
+        ] , $this->messages()) ;
 
         Academy::create($attributes);
 
@@ -67,13 +63,12 @@ class AcademyController extends Controller
     }
     public function update(Academy $academy)
     {
-        $attributes = request()->validate([
-            'name' => ['required', 'max:255', Rule::unique('academies', 'name')->ignore($academy)]
-        ], [
-            'name.required' => 'Názov je povinný.',
-            'name.max' => 'Názov nemôže mať viac ako 255 znakov.',
-            'name.unique' => 'Zadaný názov akadémie už existuje.'
-        ]);
+        
+        $attributes = request()->validateWithBag('updateAcademy',[
+            'name' => ['required', 'max:255', Rule::unique('academies', 'name')->ignore($academy)],
+            // Add more validation rules if needed
+        ], $this->messages());
+        
         $academy->update($attributes);
 
         if (Str::endsWith(url()->previous(), '?pridat'))
@@ -90,5 +85,16 @@ class AcademyController extends Controller
         $academy->delete();
 
         return back()->with('success_d', 'Úspešne vymazané');
+    }
+
+    private function messages()
+    {
+        return [
+           
+                'name.required' => 'Názov je povinný.',
+                'name.max' => 'Názov nemôže mať viac ako 255 znakov.',
+                'name.unique' => 'Zadaný názov akadémie už existuje.'
+            
+        ];
     }
 }
