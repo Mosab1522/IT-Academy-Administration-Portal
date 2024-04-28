@@ -7,31 +7,32 @@
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie kurzu</h3>
                 <form action="/admin/coursetypes/create" method="post">
                     @csrf
+                    <x-form.required class="-mt-3"/>
                     <x-form.field>
-                        <x-form.input name="name" type="text" title="Názov" placeholder="Názov" />
+                        <x-form.input name="name" type="text" title="Názov" placeholder="Názov" required="true"/>
                     </x-form.field>
 
 
                     <div class="items-center mt-6 ">
-                        <x-form.label name="type" title="Typ kurzu" />
+                        <x-form.label name="type" title="Typ kurzu" required="true"/>
 
                         <div class="flex items-center mt-1">
-                            <x-form.input-radio name="type" for="type_student" value="0">
+                            <x-form.input-radio name="type" for="type_student" value="0" required="true">
                                 Študentský
                             </x-form.input-radio>
 
-                            <x-form.input-radio class="ml-2 sm:ml-6" name="type" for="type_instructor" value="1">
+                            <x-form.input-radio class="ml-2 sm:ml-6" name="type" for="type_instructor" value="1" required="true">
                                 Inštruktorský
                             </x-form.input-radio>
 
-                            <x-form.input-radio class="ml-2 sm:ml-6 " name="type" for="type_both" value="2">
+                            <x-form.input-radio class="ml-2 sm:ml-6 " name="type" for="type_both" value="2" required="true">
                                 Obidva
                             </x-form.input-radio>
                         </div>
-                        <x-form.error name="type"/>
+                        <x-form.error name="type" errorBag="default"/>
                     </div>
                     <x-form.field>
-                        <x-form.select name="academy_id" title="Akadémia">
+                        <x-form.select name="academy_id" title="Akadémia" required="true">
 
                             <option class="text-gray-500" value="" disabled selected hidden>Akadémie</option>
                             @php
@@ -45,10 +46,10 @@
                         </x-form.select>
                     </x-form.field>
                     <x-form.field>
-                        <x-form.input name="min" type="number" title="Minimum študentov" placeholder="Minimum" />
+                        <x-form.input name="min" type="number" title="Minimum študentov" placeholder="Minimum" required="true"/>
                     </x-form.field>
                     <x-form.field>
-                        <x-form.input name="max" type="number" title="Maximum študentov" placeholder="Maximum" />
+                        <x-form.input name="max" type="number" title="Maximum študentov" placeholder="Maximum" required="true"/>
                     </x-form.field>
                     <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                         Odoslať
