@@ -165,7 +165,7 @@ class CourseTypeController extends Controller
         'messages' => [
             'name.required' => 'Názov je povinný.',
             'name.max' => 'Názov kurzu nesmie mať viac ako 255 znakov.',
-            'name.unique' => 'Tento názov kurzu už existuje.',
+            'name.unique' => 'Tento názov kurzu už existuje s týmto typom kurzu.',
             'academy_id.required' => 'Vyberte akadémiu.',
             'academy_id.integer' => 'ID akadémie musí byť číslo.',
             'academy_id.exists' => 'Zadaná akadémia neexistuje.',

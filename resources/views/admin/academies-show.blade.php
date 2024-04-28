@@ -71,13 +71,13 @@
             <div class="relative">
                 <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5" role="tablist"
                     nav-pills> --}}
-                <x-buttonsection>
-                    <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
+                <x-buttonsection class="{{ session('success_d')  ? 'hidden' : ''}}">
+                    <li class="flex-1 {{ session('success_dd') || session('success_c')  ||  $errors->default->any() ? 'hidden' : '' }}">
                         <button
-                            class="edit-button  {{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : '' }} "
+                            class="edit-button  {{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat')  ||  $errors->default->any() ? 'hidden' : '' }} "
                             data-target="profile">
                             <span
-                                class="{{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : 'block' }}">Povoliť
+                                class="{{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat')  ||  $errors->default->any() ? 'hidden' : 'block' }}">Povoliť
                                 úpravy</span>
                             <span
                                 class="{{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'block' : 'hidden' }}">Zrušiť
@@ -85,13 +85,13 @@
                         </button>
                     </li>
                     <li
-                        class="flex-1 {{ session('success_c') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
+                        class="flex-1 {{ session('success_c') || session('success_dd') || request()->has('pridat')  ||  $errors->default->any() ? '' : 'hidden' }}">
                         <button
                             class="add-button "
                             data-target="kurzyAdd">
                             <span class="{{ session('success_c') || session('success_dd') ? '' : 'hidden' }}">Vytvoriť
                                 kurz</span>
-                            <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť
+                            <span class="{{request()->has('pridat')  ||  $errors->default->any() ? '' : 'hidden' }}">Zrušiť
                                 vytvorenie kurzu</span>
                         </button>
                     </li>
@@ -106,12 +106,12 @@
                 <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5 shadow" role="tablist" nav-pills> --}}
                     <li class="flex-auto pr-0.5">
                         <button
-                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? '' : 'hidden' }}  rounded-l-lg"
+                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat')  ||  $errors->default->any() ? '' : 'hidden' }}  rounded-l-lg"
                             data-target="profile">
                             Info
                         </button>
                         <button
-                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat') ? 'hidden' : '' }}  rounded-l-lg"
+                            class="section-button {{ session('success_c') || session('success_dd') || session('success_d') || request()->has('pridat')  ||  $errors->default->any() ? 'hidden' : '' }}  rounded-l-lg"
                             data-target="kurzy">
                             Kurzy
                         </button>
@@ -181,7 +181,7 @@
 
 
     <div id="profile"
-        class="section flex-auto p-6 {{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ? 'hidden' : '' }}">
+        class="section flex-auto p-6 {{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ||  $errors->default->any() ? 'hidden' : '' }}">
         <p class="text-sm font-semibold uppercase text-gray-700">Všeobecné informácie</p>
         <form id="formm" action="/admin/academies/{{$academy->id}}" method="post" enctype="multipart/form-data">
             @csrf
@@ -222,7 +222,7 @@
         </form>
     </div>
     <div class="add-section" id="kurzyAdd"
-        style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
+        style="{{request()->has('pridat')  ||  $errors->default->any() ? 'display:block;' : 'display: none;' }}">
         <p class="text-sm font-semibold uppercase text-gray-700">Vytvoriť kurz</p>
         <form action="/admin/coursetypes/create" method="POST">
             @csrf
@@ -265,7 +265,7 @@
         </form>
     </div>
     <div id="kurzy"
-        class="section {{session('success_c') || session('success_dd') || request()->has('pridat')  ? '' : 'hidden' }} flex-auto p-6 ">
+        class="section {{session('success_c') || session('success_dd') || request()->has('pridat')  ||  $errors->default->any()  ? '' : 'hidden' }} flex-auto p-6 ">
         <p class="text-sm font-semibold uppercase text-gray-700">Kurzy pod touto akadémiou</p>
         <x-single-table>
             <x-slot:head>
