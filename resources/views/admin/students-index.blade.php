@@ -125,7 +125,7 @@
             </div>
             </x-slot:create>
 
-            <x-form.search action="{{ route('admin.students.index') }}" text="Zoradiť">
+            <x-form.search action="{{ routesh('admin.students.index') }}" text="Zoradiť">
                     @csrf
                     
                     @if(request()->filled('search'))

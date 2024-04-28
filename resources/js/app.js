@@ -14,7 +14,7 @@ if (window.screen.width < 660) {
   if (lockOrientation) {
     lockOrientation('portrait').catch(function(error) {
       // Handle the error
-      console.warn("Orientation lock not allowed: ", error);
+      
     });
   }
 }
@@ -28,24 +28,28 @@ function swith() {
     if (switchFormLink) {
       switchFormLink.addEventListener("click", function (event) {
         event.preventDefault();
-
         loginForm.style.display = "block";
         registerForm.style.display = "none";
-        switchFormLink.style.color = "rgb(59, 130, 246)";
-        switchFormLink2.style.color = "rgb(55 65 81)";
 
-      });
+        switchFormLink.classList.remove('text-gray-500', 'border-transparent');
+        switchFormLink.classList.add('text-indigo-500', 'border-indigo-500');
+        
+        switchFormLink2.classList.remove('text-indigo-500', 'border-indigo-500');
+        switchFormLink2.classList.add('text-gray-500', 'border-transparent');
+    });
     }
     if (switchFormLink2) {
       switchFormLink2.addEventListener("click", function (event) {
         event.preventDefault();
-
-
         loginForm.style.display = "none";
         registerForm.style.display = "block";
-        switchFormLink2.style.color = "rgb(59, 130, 246)";
-        switchFormLink.style.color = "rgb(55 65 81)";
-      });
+
+        switchFormLink2.classList.remove('text-gray-500', 'border-transparent');
+        switchFormLink2.classList.add('text-indigo-500', 'border-indigo-500');
+        
+        switchFormLink.classList.remove('text-indigo-500', 'border-indigo-500');
+        switchFormLink.classList.add('text-gray-500', 'border-transparent');
+    });
     }
 
   });
@@ -805,9 +809,14 @@ students.forEach(student => {
   });
 }
 
-document.querySelector('input[name="name"]').addEventListener('input', debounce(searchStudents, 100));
-document.querySelector('input[name="lastname"]').addEventListener('input', debounce(searchStudents, 100));
+if(document.querySelector('input[name="name"]') && document.querySelector('input[name="lastname"]') &&  document.querySelector('input[name="email"]'))
+{
+  document.querySelector('input[name="name"]').addEventListener('input', debounce(searchStudents, 100));
+  document.querySelector('input[name="lastname"]').addEventListener('input', debounce(searchStudents, 100));
 document.querySelector('input[name="email"]').addEventListener('input', debounce(searchStudents, 100));
+}
+
+
 
 
 
@@ -864,9 +873,16 @@ function removeSelectPair(event) {
   const selectPair = document.querySelector(`.selects-pair[data-pair-id="${pairId}"]`);
   selectPair.remove();
 }
+if(
+  addSelectsBtn
+)
+{
+  addSelectsBtn.addEventListener('click', addSelectsPair);
+}
 
-addSelectsBtn.addEventListener('click', addSelectsPair);
-selectsContainer.addEventListener('change', event => {
+if(selectsContainer)
+{
+  selectsContainer.addEventListener('change', event => {
   const target = event.target;
   if (target.classList.contains('academy-select')) {
     const coursetypeSelect = target.parentNode.querySelector('.coursetype-select');
@@ -876,6 +892,8 @@ selectsContainer.addEventListener('change', event => {
     }
   }
 });
+}
+
 
 // function select(event) {
 //     const pairId = event.target.getAttribute('data-pair-id');
@@ -947,7 +965,7 @@ selectsContainer.addEventListener('change', event => {
 //         const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
 //         // const coursetypeOptions = coursetypeSelect.querySelectorAll("option");
 
-//         console.log(coursetypeSelect);
+//         co;nsole.log(coursetypeSelect);
 //         const setValue = function (newValue) {
 //             coursetypeSelect.innerHTML = null;
 //             for (let i = 0; i < coursetypeOptions.length; i++) {
@@ -958,43 +976,48 @@ selectsContainer.addEventListener('change', event => {
 //          setValue(academySelect.value);
 //     });
 const coursetype = document.querySelector("#coursetype");
-const coursetypeOptions = coursetype.querySelectorAll("option");
 
-$(document).ready(function () {
-  // Nastaviť default hodnoty pre selecty
-  if (oldInput['coursetype_id']) {
-    console.log(oldInput['coursetype_id'])
-  };
-  const academySelects = document.querySelectorAll('.academy-select');
-  academySelects.forEach(function (select) {
-    select.value = '';
-  });
-  const coursetypeSelects = document.querySelectorAll('.coursetype-select');
-  coursetypeSelects.forEach(function (select) {
-    select.innerHTML = '<option value="">Typ kurzu</option>';
-  });
-
-  const academies = document.querySelectorAll('.academy-select');
-  academies.forEach(function (academySelect) {
-    const pairId = academySelect.getAttribute('data-pair-id');
-    const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
-    const coursetypeOptions = coursetypeSelect.querySelectorAll("option");
-
-    const setValue = function (newValue) {
-      coursetypeSelect.innerHTML = '<option value="">Typ kurzu</option>';
-      for (let i = 0; i < coursetypeOptions.length; i++) {
-        if (coursetypeOptions[i].dataset.option === newValue) {
-          coursetypeSelect.appendChild(coursetypeOptions[i].cloneNode(true));
-        }
-      }
-    };
-    setValue(academySelect.value);
-  });
+if(coursetype){
+  const coursetypeOptions = coursetype.querySelectorAll("option");
+}
 
 
-  // Vypočítať zodpovedajúce typy kurzov pre default hodnoty
+// $(document).ready(function () {
+//   // Nastaviť default hodnoty pre selecty
+  
+//   if (oldInput['coursetype_id']) {
+//     console.log(oldInput['coursetype_id'])
+//   };
+//   const academySelects = document.querySelectorAll('.academy-select');
+//   academySelects.forEach(function (select) {
+//     select.value = '';
+//   });
+//   const coursetypeSelects = document.querySelectorAll('.coursetype-select');
+//   coursetypeSelects.forEach(function (select) {
+//     select.innerHTML = '<option value="">Typ kurzu</option>';
+//   });
 
-});
+//   const academies = document.querySelectorAll('.academy-select');
+//   academies.forEach(function (academySelect) {
+//     const pairId = academySelect.getAttribute('data-pair-id');
+//     const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
+//     const coursetypeOptions = coursetypeSelect.querySelectorAll("option");
+
+//     const setValue = function (newValue) {
+//       coursetypeSelect.innerHTML = '<option value="">Typ kurzu</option>';
+//       for (let i = 0; i < coursetypeOptions.length; i++) {
+//         if (coursetypeOptions[i].dataset.option === newValue) {
+//           coursetypeSelect.appendChild(coursetypeOptions[i].cloneNode(true));
+//         }
+//       }
+//     };
+//     setValue(academySelect.value);
+//   });
+
+
+//   // Vypočítať zodpovedajúce typy kurzov pre default hodnoty
+
+// });
 //   const coursetype = document.querySelector("#coursetype");
 // const coursetypeOptions = coursetype.querySelectorAll("option");
 

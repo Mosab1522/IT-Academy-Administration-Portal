@@ -55,6 +55,10 @@ class AcademyController extends Controller
 
         $attributes = request()->validate([
             'name' => ['required', 'max:255', Rule::unique('academies', 'name')]
+        ], [
+            'name.required' => 'Názov je povinný.',
+            'name.max' => 'Názov nemôže mať viac ako 255 znakov.',
+            'name.unique' => 'Zadaný názov akadémie už existuje.'
         ]);
 
         Academy::create($attributes);
@@ -65,6 +69,10 @@ class AcademyController extends Controller
     {
         $attributes = request()->validate([
             'name' => ['required', 'max:255', Rule::unique('academies', 'name')->ignore($academy)]
+        ], [
+            'name.required' => 'Názov je povinný.',
+            'name.max' => 'Názov nemôže mať viac ako 255 znakov.',
+            'name.unique' => 'Zadaný názov akadémie už existuje.'
         ]);
         $academy->update($attributes);
 
