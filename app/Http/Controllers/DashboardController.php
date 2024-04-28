@@ -139,6 +139,10 @@ class DashboardController extends Controller
 
         if (isset($_POST['recipients'])) {
             $recipients = json_decode($_POST['recipients'], true);  // Decode the JSON string back into an array
+            if(!$recipients)
+            {
+                throw ValidationException::withMessages(['recipients' => 'Vyberte príjmateľa.']);
+            }
             $allId=0;
             $formattedEmailText = nl2br(htmlspecialchars($_POST['emailText']));
             $emails = [];
@@ -338,10 +342,10 @@ class DashboardController extends Controller
                 ];
             }
 
-            
+            dd($emails);
             if (!empty($emails)) {
                 foreach ($emails as $email) {
-                    Mail::to($email)->send(new CustomMail($emailData));
+                    //Mail::to($email)->send(new CustomMail($emailData));
                 }
             }else{
                 dd($emails);

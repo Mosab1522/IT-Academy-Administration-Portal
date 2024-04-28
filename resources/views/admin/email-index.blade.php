@@ -251,14 +251,12 @@
                             <li id="default">Zatiaľ žiadny vybraný príjemcovia</li>
                         </ul>
                     </x-form.field>
+                    <x-form.error name="recipients"/>
 
                     <x-form.field>
-                        <x-form.label name="emailText" title="Text emailu" />
-
-                        <textarea id="emailText" name="emailText" rows="3"
-                            class="mt-1 block w-full p-2.5 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm resize-none overflow-hidden"
-                            value="{{old('emailText')}}" placeholder="Napíšte text emailu..."
-                            oninput="autoExpand(this)"></textarea>
+    
+                        <x-form.textarea name="emailText" title="Text emailu" placeholder="Napíšte text emailu..."/>
+     
                     </x-form.field>
 
 

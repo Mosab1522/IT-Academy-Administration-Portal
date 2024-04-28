@@ -6,13 +6,16 @@ use App\Models\Academy;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
 class AcademyController extends Controller
 {
     public function index(Request $request)
     {
          if ($request->filled('search')) {
-            $academies = Academy::with(['coursetypes', 'applications'])->where('name', 'like', '%' . $request->input('search') . '%');
+            $academies = Academy::with(['coursetypes', 'applications'])->where('name', 'like', '%' . $request->input('search') . '%')->orWhereHas('coursetypes', function (Builder $query) use ($request) {
+                $query->where('name', 'like', '%' . $request->input('search') . '%');
+            });
     
         } else {
             $academies = Academy::with(['coursetypes', 'applications']);
