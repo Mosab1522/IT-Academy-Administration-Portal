@@ -151,11 +151,11 @@ class CourseClassController extends Controller
          request()->merge(['name'  => request()->cname]);
         }
         
-        $attributes = request()->validate([
+        $attributes = request()->validateWithBag('updateClass',[
             'name' => ['required', 'max:255', Rule::unique('course_classes', 'name')->ignore($class)],
             'days' => ['required', 'integer', 'in:1,2,3'],
             'time' => ['required', 'integer', 'in:1,2,3']
-        ]);
+        ],$this->messages());
 
         $class->update($attributes);
 

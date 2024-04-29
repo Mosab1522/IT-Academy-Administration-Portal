@@ -46,9 +46,9 @@
                         <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
                             <x-show-header name="{{$class->name}}" title="Trieda" />
                             <x-buttonsection>
-                                <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
+                                <li class="flex-1 {{ session('success_d') || session('success_c') ||  $errors->default->any() || session('success_cc') || session('success_dd') ||  $errors->admin->any()  ? 'hidden' : '' }}">
                                     <button
-                                        class="edit-button {{session('success_c') || session('success_cc') || session('success_dd')  || session('success_d')  || request()->has('pridat') ||request()->has('vytvorit') ? 'hidden' : '' }} "
+                                        class="edit-button {{session('success_c') || session('success_cc') || session('success_dd')  || session('success_d')  || request()->has('pridat') ||request()->has('vytvorit') ||  $errors->default->any() ||  $errors->admin->any()  ? 'hidden' : '' }} "
                                         data-target="profile">
                                         <span style="display: inline;">Povoliť
                                             úpravy</span>
@@ -56,25 +56,25 @@
                                     </button>
                                 </li>
                                 <li
-                                    class="flex-1 {{ session('success_c') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
+                                    class="flex-1 {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->default->any()  ? '' : 'hidden' }}">
                                     <button
-                                        class="add-button z-30 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }} "
+                                        class="add-button z-30 {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->default->any() ? '' : 'hidden' }} "
                                         data-target="kurzyAdd">
                                         <span
-                                            class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Vytvoriť hodinu</span>
-                                        <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť vytvorenie
+                                            class="{{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Vytvoriť hodinu</span>
+                                        <span class="{{request()->has('pridat') ||  $errors->default->any()  ? '' : 'hidden' }}">Zrušiť vytvorenie
                                             hodiny</span>
                                     </button>
                                 </li>
                                 <li
-                                    class="flex-1 {{ session('success_c') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
+                                    class="flex-1 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ||  $errors->admin->any() ? '' : 'hidden' }}">
                                     <button
-                                        class="add-button z-30 {{ session('success_c') || session('success_d') || request()->has('vytvorit')  ? '' : 'hidden' }}"
+                                        class="add-button z-30 {{  session('success_cc') || session('success_dd') ||  $errors->admin->any() || request()->has('vytvorit')  ? '' : 'hidden' }}"
                                         data-target="loginAdd">
                                         <span
-                                            class="{{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Pridať
+                                            class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať
                                             študenta</span>
-                                        <span class="{{request()->has('vytvorit') ? '' : 'hidden' }}">Zrušiť
+                                        <span class="{{request()->has('vytvorit') ||  $errors->admin->any() ? '' : 'hidden' }}">Zrušiť
                                             pridanie študenta</span>
                                 </li>
                             </x-buttonsection>
@@ -139,19 +139,19 @@
                                             <x-buttonsection>
                                         <li class="flex-auto pr-0.5">
                                             <button
-                                                class="section-button {{session('success_c') || session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? '' : 'hidden' }} rounded-l-lg"
+                                                class="section-button {{session('success_c') || session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ||  $errors->default->any() ||  $errors->admin->any() ? '' : 'hidden' }} rounded-l-lg"
                                                 data-target="profile">Info</button>
                                             <button
-                                                class="section-button {{session('success_c') || session('success_cc') || session('success_d')  || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? 'hidden' : '' }} rounded-l-lg"
+                                                class="section-button {{session('success_c') || session('success_cc') || session('success_d')  || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ||  $errors->default->any() ||  $errors->admin->any() ? 'hidden' : '' }} rounded-l-lg"
                                                 data-target="kurzy">Hodiny</button>
                                         </li>
                                         <li class="flex-auto">
 
                                             <button
-                                                class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? '' : 'hidden' }} rounded-r-lg"
+                                                class="section-button {{  request()->has('vytvorit') || session('success_cc') || session('success_dd') ||  $errors->admin->any()  ? '' : 'hidden' }} rounded-r-lg"
                                                 data-target="kurzy">Hodiny</button>
                                             <button
-                                                class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? 'hidden' : '' }} rounded-r-lg"
+                                                class="section-button {{  request()->has('vytvorit') || session('success_cc') || session('success_dd') ||  $errors->admin->any()  ? 'hidden' : '' }} rounded-r-lg"
                                                 data-target="login">Študenti</button>
                                         </li>
                                         </x-buttonsection>
@@ -204,15 +204,16 @@
                             class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
                         --}}
                         <div id="profile" class="section flex-auto p-6"
-                            style="{{session('success_c') || session('success_cc') || session('success_d') || session('success_dd')  || request()->has('pridat') || request()->has('vytvorit') ? 'display: none;' : '' }}">
+                            style="{{session('success_c') || session('success_cc') || session('success_d') || session('success_dd')  || request()->has('pridat') || request()->has('vytvorit') ||  $errors->default->any() ||  $errors->admin->any()  ? 'display: none;' : '' }}">
                             <p class="text-sm font-semibold uppercase text-gray-700">Všeobecné informácie</p>
                             <form id="formm" action="/admin/classes/{{$class->id}}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('Patch')
+                                <x-form.required class=" hidden mt-1 "/>
                                 <x-form.field>
                                     <x-form.input value="{{$class->name}}" name="cname" type="text" title="Názov"
-                                        placeholder="Názov" disabled />
+                                        placeholder="Názov" errorBag="updateClass" disabled required="true"/>
                                 </x-form.field>
                                 {{-- <div class="w-full max-w-full px-3 shrink-0">
                                     <div class="mb-4">
@@ -231,7 +232,7 @@
                                 <div class="flex">
                                     <div class="mt-6 w-1/2 mr-2">
 
-                                        <x-form.select name="days" title="Dni" disabled>
+                                        <x-form.select name="days" title="Dni" required="true" errorBag="updateClass"  disabled>
 
                                             <option value="" disabled hidden>Dni výučby</option>
                                             <option value="1" {{$class->days==1 ? 'selected' : '' }}>Týždeň</option>
@@ -246,7 +247,7 @@
                                     </div>
 
                                     <div class="mt-6 w-1/2 ml-2">
-                                        <x-form.select name="time" title="Čas" disabled>
+                                        <x-form.select name="time" title="Čas" required="true" errorBag="updateClass"  disabled>
 
                                             <option value="" disabled hidden>Čas výučby</option>
                                             <option value="1" {{$class->time == 1 ? 'selected' : '' }}>Ranný</option>
@@ -373,11 +374,12 @@
                     </div>
 
                     <div class="add-section" id="kurzyAdd"
-                        style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
+                        style="{{request()->has('pridat') ||  $errors->default->any()  ? 'display:block;' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Vytvoriť hodinu</p>
 
                         <form action="/admin/lessons/create" method="post">
                             @csrf
+                            <x-form.required class="mt-1"/>
 
                             <input name="class_id" value="{{$class->id}}" hidden />
                             <x-form.field>
@@ -391,12 +393,17 @@
 
                                 </div>
                                 <div class="flex">
+                                    <div class="w-1/2 mr-2">
                                     <input type="datetime-local" name="lesson_date" value="{{ old('lesson_date')}}"
-                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" >
+                                        <x-form.error name="lesson_date" errorBag="default"/>
+                                    </div>
+                                    <div class="w-1/2 ml-2">
                                     <input type="time" name="duration"
-                                        class="mt-1 ml-4 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                         step="60" value="{{ old('duration', '00:45') }}">
-
+                                        <x-form.error name="duration" errorBag="default"/>
+                                    </div>
                                 </div>
 
                             </x-form.field>
@@ -408,7 +415,7 @@
                     </div>
 
                     <div id="kurzy" class="section flex-auto p-6"
-                        style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
+                        style="{{session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->default->any()  ? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Hodiny triedy</p>
                         <x-single-table>
                             <x-slot:head>
@@ -448,7 +455,7 @@
                                 </x-single-table>
                     </div>
                     <div class="add-section" id="loginAdd"
-                        style="{{request()->has('vytvorit') ? 'display:block;' : 'display: none;' }}">
+                        style="{{request()->has('vytvorit') ||  $errors->admin->any() ? 'display:block;' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Pridať študenta</p>
 
                         <form action="/admin/class-student" method="post">
@@ -473,7 +480,7 @@
                         </form>
                     </div>
                     <div id="login" class="section flex-auto p-6 "
-                        style="{{session('success_d') || session('success_c')  || request()->has('vytvorit')? '' : 'display: none;' }}">
+                        style="{{ request()->has('vytvorit') || session('success_cc') || session('success_dd') ||  $errors->admin->any() ? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700 mb-6">Študenti v triede</p>
                         <x-single-table>
                             <x-slot:head>
@@ -489,7 +496,7 @@
                                             </x-table.td></td>
                                         <td class="py-4 px-6">{{$student->email}}</td>
 
-                                        <x-table.td-last url="students/{{ $student->id }}" edit=1 itemName="študenta {{$student->name}}" />
+                                        <x-table.td-last url="class-student/{{ $student->id }}/{{$class->id}}" edit=1 itemName="študenta {{$student->name}}" />
                                        
                                     </tr>
                                     @endforeach

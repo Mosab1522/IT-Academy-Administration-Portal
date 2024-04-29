@@ -70,7 +70,7 @@ class LessonController extends Controller
             'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id' )],
             'lesson_date' => ['required', 'date'],
             'duration' => 'required|date_format:H:i'
-        ]);
+        ],$this->messages());
 
         list($hours, $minutes) = explode(':', $attributes['duration']);
 
@@ -213,6 +213,20 @@ class LessonController extends Controller
         ];
     });
     return response()->json($formattedLessons);
+}
+protected function messages()
+{
+    return  [
+        'title.required' => 'Názov je povinný.',
+        'title.max' => 'Názov nemôže byť dlhší ako 255 znakov.',
+        'class_id.required' => 'Pole triedy je povinné.',
+        'class_id.integer' => 'ID triedy musí byť celé číslo.',
+        'class_id.exists' => 'Vybraná trieda neexistuje.',
+        'lesson_date.required' => 'Dátum lekcie je povinný.',
+        'lesson_date.date' => 'Dátum lekcie musí byť platný dátum.',
+        'duration.required' => 'Trvanie je povinné.',
+        'duration.date_format' => 'Formát trvania musí byť HH:mm.',
+    ];
 }
     
 

@@ -649,7 +649,7 @@
                                                 {{ $application->created_at->diffForHumans()}}
 
                                             </td>
-                                            <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku {{$application->student->name}}" />
+                                            <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku študenta: {{$application->student->name}} {{$application->student->lastname}} na tento kurz?" />
                                           
                                         </tr>
                                         @endforeach

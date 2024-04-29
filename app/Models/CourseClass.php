@@ -30,6 +30,6 @@ class CourseClass extends Model
     
     public function lessons()
     {
-        return $this->hasMany(Lesson::class,'class_id');
+        return $this->hasMany(Lesson::class,'class_id')->orderBy('lesson_date', 'asc');;
     }
 }

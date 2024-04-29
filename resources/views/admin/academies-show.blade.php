@@ -384,7 +384,7 @@
                                    
                             </td>
 
-                            <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku študenta: {{$application->student->name}} {{$application->student->name}} na kurz: {{$application->coursetype->name}} tejto akadémie?" />
+                            <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku študenta: {{$application->student->name}} {{$application->student->lastname}} na kurz: {{$application->coursetype->name}} tejto akadémie?" />
 
                            
                         </tr>

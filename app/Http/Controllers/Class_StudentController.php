@@ -10,23 +10,24 @@ use App\Models\Student;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class Class_StudentController extends Controller
 {
     public function store()
     {
 
-        $attributes = request()->validate([
+        $attributes = request()->validateWithBag('admin',[
             'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id')],
             'student_id' => ['required_without_all:name,lastname,email', 'integer', Rule::exists('students', 'id')],
             'name' => ['required_without:student_id', 'max:255'],
             'lastname' => ['required_without:student_id', 'max:255'],
             'email' => ['required_without:student_id', 'email', 'max:255'],
-        ]);
+        ],$this->messages());
         $class = CourseClass::findOrFail($attributes['class_id']);
         if (isset($attributes['student_id'])) {
             if ($class->students()->where('student_id', $attributes['student_id'])->exists()) {
-                return back()->with('message', 'Student is already in the class.');
+                throw ValidationException::withMessages(['name' => 'Tento študent je už v triede.' ,'lastname' => 'Tento študent je už v triede.','email' => 'Tento študent je už v triede.'])->errorBag('admin');
             }
             $application = Application::where('student_id', $attributes['student_id'])
                 ->where('coursetype_id', $class->coursetype->id)
@@ -38,8 +39,21 @@ class Class_StudentController extends Controller
                 $query->where('email', $attributes['email'])
                     ->orWhere('sekemail', $attributes['email']);
             })->first();
+            if(!$student)
+            {
+                throw ValidationException::withMessages(['email' => 'Neevidujeme študenta pod týmto emailom.'])->errorBag('admin');
+            }
+           
+                if ($student['name'] != $attributes['name']) {
+                    throw ValidationException::withMessages(['name' => 'Tento email vedieme v systéme pod iným menom.'])->errorBag('admin');
+                }
+                if ($student['lastname'] != $attributes['lastname']) {
+                    throw ValidationException::withMessages(['lastname' => 'Tento email vedieme v systéme pod iným priezviskom.'])->errorBag('admin');
+                }
+            
+
             if ($class->students()->where('student_id', $student['id'])->exists()) {
-                return back()->with('message', 'Student is already in the class.');
+                throw ValidationException::withMessages(['name' => 'Tento študent je už v triede.' ,'lastname' => 'Tento študent je už v triede.','email' => 'Tento študent je už v triede.'])->errorBag('admin');
             }
             $application = Application::where('student_id', $student['id'])
                 ->where('coursetype_id', $class->coursetype->id)
@@ -120,5 +134,23 @@ class Class_StudentController extends Controller
         }
         // }
         return back()->with('success_dd', 'Úspešne vymazané');
+    }
+
+    protected function messages(){
+        return [
+            'class_id.required' => 'Pole ID triedy je povinné.',
+            'class_id.integer' => 'ID triedy musí byť celé číslo.',
+            'class_id.exists' => 'Vybraná trieda neexistuje.',
+            'student_id.required_without_all' => 'ID študenta je povinné, pokiaľ nie sú vyplnené polia meno, priezvisko a e-mail.',
+            'student_id.integer' => 'ID študenta musí byť celé číslo.',
+            'student_id.exists' => 'Vybraný študent neexistuje.',
+            'name.required_without' => 'Meno je povinné.',
+            'name.max' => 'Meno nemôže byť dlhšie ako 255 znakov.',
+            'lastname.required_without' => 'Priezvisko je povinné.',
+            'lastname.max' => 'Priezvisko nemôže byť dlhšie ako 255 znakov.',
+            'email.required_without' => 'E-mail je povinný.',
+            'email.email' => 'E-mail musí byť platná e-mailová adresa.',
+            'email.max' => 'E-mail nemôže byť dlhší ako 255 znakov.',
+        ];
     }
 }

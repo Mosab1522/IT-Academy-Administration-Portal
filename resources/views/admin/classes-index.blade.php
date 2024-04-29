@@ -270,7 +270,7 @@
                                 {{$class->time== 2 ? 'Poobedný' : ''}} {{$class->time== 3 ? 'Nezáleží' : ''}}
                             </td>
                             <td class="py-4 px-6">{{$class->students->count()}}</td>
-                            <x-table.td-last url="classes/{{ $class->id }}" edit=1 itemName="triedu {{$class->name}}" />
+                            <x-table.td-last url="classes/{{ $class->id }}" edit=1 itemName="triedu {{$class->name}}? Spolu s triedou sa vymažú aj jej hodiny. Študenti v triede sa naspäť vrátia medzi prihlásených študentov na kurz tejto triedy. V prípade ukončenia vyučovania využite možnosť Ukončenčiť triedu." />
                             
                         </tr>
                         @endforeach
