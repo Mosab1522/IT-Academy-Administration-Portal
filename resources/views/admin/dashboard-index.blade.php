@@ -130,6 +130,7 @@
          <x-single-table>
                 <x-slot:head>
                         <th scope="col" class="py-3 px-6">Meno študenta</th>
+                        <th scope="col" class="py-3 px-6">Email</th>
                         <th scope="col" class="py-3 px-6">Dni / čas</th>
                         <th scope="col" class="py-3 px-6">Potvrdená</th>
                         <th scope="col" class="py-3 px-6">Vytvorená</th>
@@ -143,6 +144,10 @@
                                         {{$application->student->name }}
                                         {{$application->student->lastname}}
                             </x-table.td>
+                               
+                        </td>
+                        <td class="py-4 px-6">
+                                        {{$application->student->email }}
                                
                         </td>
                         <td class="py-4 px-6">

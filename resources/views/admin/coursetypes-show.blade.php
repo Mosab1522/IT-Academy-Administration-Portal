@@ -6,10 +6,10 @@
         <x-show-header name="{{$coursetype->name}}" title="Kurz" src="{{ asset('storage/') }}"
             path="instructors/{{ $coursetype->id }}" />
         <x-buttonsection>
-            <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
+            <li class="flex-1 {{ session('success_c') || session('success_cc') || session('success_dd') || session('success_d') ||request()->has('vytvorit')   || request()->has('pridat') ||  $errors->admin->any()  ? 'hidden' : '' }}">
 
                 <button
-                    class="edit-button {{session('success_c') || session('success_cc') || session('success_dd')  || session('success_d')  || request()->has('pridat') ||request()->has('vytvorit') ? 'hidden' : '' }} "
+                    class="edit-button {{session('success_c') || session('success_cc') || session('success_dd')  || session('success_d')  || request()->has('pridat') ||request()->has('vytvorit') ||  $errors->admin->any() ? 'hidden' : '' }} "
                     data-target="profile">
                     <span style="display: inline;">Povoliť
                         úpravy</span>
@@ -18,25 +18,25 @@
 
             </li>
             <li
-                class="flex-1 {{ session('success_c') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
+                class="flex-1 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
                 <button
                     class="add-button {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}  "
                     data-target="kurzyAdd">
-                    <span class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať
+                    <span class="{{session('success_cc') || session('success_dd')  ? '' : 'hidden' }}">Pridať
                         inštruktora</span>
                     <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť pridanie
                         inštruktora</span>
                 </button>
             </li>
             <li
-                class="flex-1 {{ session('success_c') || session('success_d') || request()->has('vytvorit')  ? '' : 'hidden' }}">
+                class="flex-1 {{ session('success_c') || session('success_d') || request()->has('vytvorit') ||  $errors->admin->any()  ? '' : 'hidden' }}">
 
                 <button
-                    class="add-button {{ session('success_c') || session('success_d') || request()->has('vytvorit')  ? '' : 'hidden' }}  "
+                    class="add-button {{ session('success_c') || session('success_d') || request()->has('vytvorit') ||  $errors->admin->any()  ? '' : 'hidden' }}  "
                     data-target="loginAdd">
                     <span class="{{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Vytvoriť
                         prihlášku</span>
-                    <span class="{{request()->has('vytvorit') ? '' : 'hidden' }}">Zrušiť
+                    <span class="{{request()->has('vytvorit') ||  $errors->admin->any() ? '' : 'hidden' }}">Zrušiť
                         vytvorenie prihlášky</span>
                 </button>
             </li>
@@ -148,18 +148,18 @@
                                                             role="tablist" nav-pills> --}}
                                                             <li class="flex-auto pr-0.5">
                                                                 <button
-                                                                    class="section-button {{session('success_c') || session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? '' : 'hidden' }} rounded-l-lg "
+                                                                    class="section-button {{session('success_c') || session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ||  $errors->admin->any() ? '' : 'hidden' }} rounded-l-lg "
                                                                     data-target="profile">Info</button>
                                                                 <button
-                                                                    class="section-button {{session('success_c') || session('success_cc') || session('success_d')  || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? 'hidden' : '' }} rounded-l-lg "
+                                                                    class="section-button {{session('success_c') || session('success_cc') || session('success_d')  || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ||  $errors->admin->any() ? 'hidden' : '' }} rounded-l-lg "
                                                                     data-target="kurzy">Inštruktori</button>
                                                             </li>
                                                             <li class="flex-auto">
                                                                 <button
-                                                                    class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? '' : 'hidden' }} rounded-r-lg"
+                                                                    class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ||  $errors->admin->any() ? '' : 'hidden' }} rounded-r-lg"
                                                                     data-target="kurzy">Inštruktori</button>
                                                                 <button
-                                                                    class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ? 'hidden' : '' }} rounded-r-lg"
+                                                                    class="section-button {{session('success_c') || session('success_d') || request()->has('vytvorit') ||  $errors->admin->any() ? 'hidden' : '' }} rounded-r-lg"
                                                                     data-target="login">Prihlášky</button>
                                                             </li>
                                             </x-buttonsection>
@@ -202,15 +202,17 @@
                             class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
                         --}}
                         <div id="profile" class="section flex-auto p-6"
-                            style="{{session('success_c') || session('success_cc') || session('success_d') || session('success_dd')  || request()->has('pridat') || request()->has('vytvorit') ? 'display: none;' : '' }}">
+                            style="{{session('success_c') || session('success_cc') || session('success_d') || session('success_dd')  || request()->has('pridat') || request()->has('vytvorit') ||  $errors->admin->any() ? 'display: none;' : '' }}">
                             <p class="text-sm font-semibold uppercase text-gray-700">Všeobecné informácie</p>
                             <form id="formm" action="/admin/coursetypes/{{$coursetype->id}}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('Patch')
+                                <x-form.required class="hidden mt-1"/>
                                 <x-form.field>
                                     <x-form.input value="{{$coursetype->name}}" name="cname" type="text" title="Názov"
-                                        placeholder="Názov" disabled />
+                                        placeholder="Názov" disabled errorBag="updateCoursetype" />
+                                       
                                 </x-form.field>
 
                                 <div class="items-center mt-6">
@@ -227,16 +229,18 @@
                                             Inštruktorský
                                         </x-form.input-radio>
                                     </div>
+                                    <x-form.error name="type" errorBag="updateCoursetype"/>
                                 </div>
 
                                 <x-form.field>
-                                    <x-form.select name="academy_id" title="Akadémia" disabled>
+                                    <x-form.select name="academy_id" title="Akadémia" disabled errorBag="updateCoursetype">
 
                                         <option class="text-gray-500" value="" disabled selected hidden>Akadémie
                                         </option>
 
                                         @foreach (\App\Models\Academy::all() as $academ)
-                                        <option value="{{ $academ->id }}" {{old('academy_id')==$academ->id ? 'selected'
+                                        <option value="{{ $academ->id }}" 
+                                        {{old('academy_id')==$academ->id || $coursetype->academy->id == $academ->id ? 'selected'
                                             : '' }} >{{
                                             ucwords($academ->name) }}</option>
                                         @endforeach
@@ -245,12 +249,12 @@
                                 </x-form.field>
 
                                 <x-form.field>
-                                    <x-form.input name="min" type="number" title="Minimum študentov"
-                                        placeholder="Minimum" disabled />
+                                    <x-form.input name="min" type="number" title="Minimum študentov" value="{{ $coursetype->min }}"
+                                        placeholder="Minimum" disabled errorBag="updateCoursetype"/>
                                 </x-form.field>
                                 <x-form.field>
-                                    <x-form.input name="max" type="number" title="Maximum študentov"
-                                        placeholder="Maximum" disabled />
+                                    <x-form.input name="max" type="number" title="Maximum študentov" value="{{ $coursetype->max }}"
+                                        placeholder="Maximum" disabled errorBag="updateCoursetype"/>
                                 </x-form.field>
                                 {{--
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
@@ -376,9 +380,7 @@
 
                                         @if(!in_array($instructor->id, $assignedInstructors))
 
-                                        <option value="{{ $instructor->id }}" data-id="{{ $instructor->id }}"
-                                            data-option="-1" {{old('instructor_id')==$instructor->id ? 'selected' :
-                                            ''}}>Meno: {{
+                                        <option value="{{ $instructor->id }}" >Meno: {{
                                             ucwords($instructor->name)}} {{
                                             ucwords($instructor->lastname)}} Email: {{
                                             ucwords($instructor->email)}}</option>
@@ -436,15 +438,15 @@
                                         </x-table.td><br>
                                         @endforeach
                                     </td>
-                                    <x-table.td-last url="instructors/{{ $instructor->id }}" edit=1
-                                        itemName="inštruktora {{$instructor->name}}" />
+                                    <x-table.td-last url="coursetype_instructor/{{ $instructor->id }}/{{$coursetype->id}}" edit=1
+                                        itemName="inštruktora {{$instructor->name}} {{$instructor->lastname}} ako správcu tohto kurzu? Spolu s ním budú vymazané aj jeho triedy. Ak tomu chcete zabrániť zmeňte inštruktora týchto tried." />
 
                                 </tr>
                                 @endforeach
                             </x-single-table>
                         </div>
                         <div class="add-section" id="loginAdd"
-                            style="{{request()->has('vytvorit') ? 'display:block;' : 'display: none;' }}">
+                            style="{{request()->has('vytvorit') ||  $errors->admin->any() ? 'display:block;' : 'display: none;' }}">
                             <p class="text-sm font-semibold uppercase text-gray-700">Pridať študenta</p>
 
                             <form action="/" method="post">
@@ -550,7 +552,7 @@
 
                                 <x-form.field>
 
-                                    <x-form.select name="days" title="Dni">
+                                    <x-form.select name="days" title="Dni"  errorBag="admin">
 
                                         <option value="" disabled selected hidden>Dni výučby</option>
                                         <option value="1" {{old('days')==1 ? 'selected' : '' }}>Týždeň</option>
@@ -564,7 +566,7 @@
                                     </x-form.select>
                                 </x-form.field>
                                 <x-form.field>
-                                    <x-form.select name="time" title="Čas">
+                                    <x-form.select name="time" title="Čas"  errorBag="admin">
 
                                         <option value="" disabled selected hidden>Čas výučby</option>
                                         <option value="1" {{old('time')==1 ? 'selected' : '' }}>Ranný</option>
@@ -609,12 +611,12 @@
                             </form>
                         </div>
                         <div id="login" class="section flex-auto p-6"
-                            style="{{session('success_d') || session('success_c')  || request()->has('vytvorit')? '' : 'display: none;' }}">
+                            style="{{session('success_d') || session('success_c')  || request()->has('vytvorit') ||  $errors->admin->any() ? '' : 'display: none;' }}">
                             <p class="text-sm font-semibold uppercase text-gray-700 mb-6">Prihlášky študentov</p>
                             <x-single-table>
                                 <x-slot:head>
                                             <th scope="col" class="py-3 px-6">Meno študenta</th>
-
+                                            <th scope="col" class="py-3 px-6">Email</th>
                                             <th scope="col" class="py-3 px-6">Dni / čas</th>
                                             <th scope="col" class="py-3 px-6">Potvrdená</th>
                                             <th scope="col" class="py-3 px-6">Vytvorená</th>
@@ -625,6 +627,9 @@
                                         class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                             <td class="py-4 px-6"><x-table.td url="students/{{ $application->student->id }}">{{$application->student->name}}
                                                 {{$application->student->lastname}}</x-table.td>
+                                            </td>
+                                            <td class="py-4 px-6">{{$application->student->email}}
+                                              
                                             </td>
 
                                             <td class="py-4 px-6">

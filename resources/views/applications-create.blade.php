@@ -416,17 +416,17 @@
 
             @csrf
             <input type="hidden" name="typ" value="stary" />
-            <h3 class="block mt-5 mb-3 uppercase font-bold text-sm text-gray-700">Kurzy</h3>
+           
             <x-form.field>
 
                 <div class="items-center mt-6">
-                <x-form.label name="type" title="Typ kurzu" />
+                <x-form.label name="type2" title="Typ kurzu" />
 
                 <div class="flex items-center mt-1">
-                    <x-form.input-radio name="type" for="type_student" value="0">
+                    <x-form.input-radio name="type2" for="type_student" value="0">
                         Študentský
                     </x-form.input-radio>
-                    <x-form.input-radio class="ml-6" name="type" for="type_instructor" value="1">
+                    <x-form.input-radio class="ml-6" name="type2" for="type_instructor" value="1">
                         Inštruktorský
                     </x-form.input-radio>
                 </div>
@@ -443,7 +443,7 @@
 
                 </div> --}}
 
-                <div class="mt-6 hidden" id="inst">
+                <div class="mt-6 hidden" id="inst2">
 
                     <div class="w-1/2 mr-2">
                         <x-form.select name="academy_id" title="Akadémia" class=" combo-a" data-nextcombo=".combo-b">
@@ -497,7 +497,7 @@
                 </div>
 
 
-                <div class="mt-6 hidden" id="stud">
+                <div class="mt-6 hidden" id="stud2">
 
                     <div class="w-1/2 mr-2">
                         <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3" data-nextcombo=".combo-b3">

@@ -202,12 +202,17 @@
                             </td>
                             <td class="py-4 px-6">{{$coursetype->min}} / {{$coursetype->max}}</td>
                             <td class="py-4 px-6">
+                                @if($coursetype->instructors->count()>0)
                                 @foreach($coursetype->instructors as $instructor)
                                 <x-table.td url="instructors/{{ $instructor->id }}">
                                 {{$instructor->name}} {{$instructor->lastname}}
                                 </x-table.td>
                                 <br>
                                 @endforeach
+                                @else 
+                                <a href="/admin/coursetypes/{{ $coursetype->id }}?pridat"
+                                    class="text-blue-600 hover:text-blue-700 hover:underline">Pridať inštruktora</a>
+                                @endif
                             </td>
                             <td class="py-4 px-6">
                                 @foreach($coursetype->classes as $class)
@@ -217,7 +222,7 @@
                                 @endforeach
                             </td>
                             <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                            <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz {{$coursetype->name}}" />
+                            <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz {{$coursetype->name}}? Spolu s kurzom sa vymažú aj prihlášky a triedy kurzu." />
                             
                         </tr>
                         @endforeach

@@ -656,11 +656,15 @@ function jq_ChainCombo(el) {
   }
 
   var options2 = $(next_combo).data('store');
-  $(next_combo).empty().append(
-    options2.filter(function () {
-      return $(this).data('option') === selected;
-    })
-  );
+  // $(next_combo).empty().append(
+  //   options2.filter(function () {
+  //     return $(this).data('option') === selected;
+  //   })
+  // );
+  if (!$(next_combo).data('store')) {
+    $(next_combo).data('store', $(next_combo).find('option').clone());
+    console.log("Storing options:", $(next_combo).data('store'));
+  };
   $(next_combo).prop('disabled', false);
 
   // get default value

@@ -121,7 +121,7 @@ class CourseTypeController extends Controller
         
        $validation = $this->messages();
 
-        $attributes = request()->validate([
+        $attributes = request()->validateWithBag('updateCoursetype',[
             'name' => 'required|max:255|unique:course_types,name,' . $coursetype->id . ',id,type,' . request()->type,
             'type' => ['required', 'integer', 'in:0,1'],
             'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
@@ -159,7 +159,7 @@ class CourseTypeController extends Controller
         return back()->with('success_dd', 'Úspešne vymazané');
     }
 
-    function messages()
+    protected function messages()
 {
     return [
         'messages' => [

@@ -194,7 +194,7 @@
             </x-form.field>
             {{-- <div class="flex flex-wrap -mx-3">
                 <div class="w-full max-w-full px-3 md:w-1/2">
-                    <div class="mb-4">
+                <div class="mb-4">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Name</label>
                         <input disabled type="text" name="name" id="name" value="{{ $academy->name }}"
                             class=" block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
@@ -312,7 +312,7 @@
                                 @endforeach
                         </td>
                         <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                        <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz {{$coursetype->name}}" />
+                        <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz {{$coursetype->name}}? Spolu s kurzom sa vymažú aj prihlášky a triedy kurzu." />
                         
                     </tr>
                     @endforeach
@@ -358,7 +358,7 @@
                             <th scope="col" class="py-3 px-6">Dni / čas</th>
                             <th scope="col" class="py-3 px-6">Potvrdená</th>
                             <th scope="col" class="py-3 px-6">Vytvorená</th>
-                            <th scope="col" class="py-3 px-6 w-48"> <a href="/admin/coursetypes/{{ $coursetype->id }}"
+                            <th scope="col" class="py-3 px-6 w-48"> <a href="/admin/coursetypes/{{ $coursetype->id }}?vytvorit"
                                 class="text-blue-600 hover:text-blue-700 hover:underline">Pridať študenta</a></th>
                            </x-slot:head>
                         @foreach($coursetype->applications()->orderByDesc('created_at')->get() as $application)
@@ -384,7 +384,7 @@
                                    
                             </td>
 
-                            <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku {{$application->student->name}}" />
+                            <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku študenta: {{$application->student->name}} {{$application->student->name}} na kurz: {{$application->coursetype->name}} tejto akadémie?" />
 
                            
                         </tr>

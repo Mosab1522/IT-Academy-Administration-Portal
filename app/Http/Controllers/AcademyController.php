@@ -87,7 +87,7 @@ class AcademyController extends Controller
         return back()->with('success_d', 'Úspešne vymazané');
     }
 
-    private function messages()
+    protected function messages()
     {
         return [
            
