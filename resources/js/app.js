@@ -308,12 +308,16 @@ if(student)
       if (radio.value === '0' && radio.checked) {
         student.style.display = 'flex';
         instruktor.style.display = 'none';
-
-      } else {
+        
+        student.querySelector('select').disabled = false;
+         instruktor.querySelectorAll('select').forEach(select => select.disabled = true);// Disable the instruktor element
+    } else {
         instruktor.style.display = 'flex';
         student.style.display = 'none';
-
-      }
+        
+        instruktor.querySelector('select').disabled = false;
+        student.querySelectorAll('select').forEach(select => select.disabled = true);  // Disable the student element
+    }
     });
   });
 }
@@ -324,12 +328,16 @@ if(student2)
       if (radio.value === '0' && radio.checked) {
         student2.style.display = 'flex';
         instruktor2.style.display = 'none';
-
-      } else {
+        
+        student.querySelector('select').disabled = false;
+         instruktor1.querySelectorAll('select').forEach(select => select.disabled = true);
+    } else {
         instruktor2.style.display = 'flex';
         student2.style.display = 'none';
-
-      }
+        
+        instruktor.querySelector('select').disabled = false;
+    student2.querySelectorAll('select').forEach(select => select.disabled = true);   // Disable the student element
+    }
     });
   });
 }

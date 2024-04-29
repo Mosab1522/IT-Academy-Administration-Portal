@@ -72,7 +72,7 @@ class CourseClassController extends Controller
             'coursetype_id2' => ['required_if:type,0', 'integer', Rule::exists('course_types', 'id')],
             'days' => ['required', 'integer', 'in:1,2,3'],
             'time' => ['required', 'integer', 'in:1,2,3']
-        ]);
+        ],$this->messages());
 
         if ($attributes['type'] == 0) {
             $attributes['academy_id'] = $attributes['academy_id2'];
@@ -212,6 +212,34 @@ class CourseClassController extends Controller
         $class->update(['instructor_id' => $attributes['instructor_id']]);
     
     }
+
+    protected function messages()
+    {
+        return [ 'name.required' => 'Názov je povinný.',
+        'name.max' => 'Názov môže mať maximálne :max znakov.',
+        'name.unique' => 'Názov už existuje.',
+        'type.required' => 'Typ je povinný.',
+        'type.integer' => 'Typ musí byť celé číslo.',
+        'type.in' => 'Typ musí byť jedno z: :values.',
+        'academy_id.required_if' => 'Akadémia je povinná, keď je typ inštruktorský.',
+        'academy_id.integer' => 'Akadémia musí byť celé číslo.',
+        'academy_id.exists' => 'Vybraná akadémia neexistuje.',
+        'coursetype_id.required_if' => 'Typ kurzu je povinný, keď je typ inštruktorský.',
+        'coursetype_id.integer' => 'Typ kurzu musí byť celé číslo.',
+        'coursetype_id.exists' => 'Vybraný typ kurzu neexistuje.',
+        'academy_id2.required_if' => 'Akadémia je povinná, keď je typ študentský.',
+        'academy_id2.integer' => 'Akadémia musí byť celé číslo.',
+        'academy_id2.exists' => 'Vybraná akadémia neexistuje.',
+        'coursetype_id2.required_if' => 'Typ kurzu je povinný, keď je typ študentský.',
+        'coursetype_id2.integer' => 'Typ kurzu musí byť celé číslo.',
+        'coursetype_id2.exists' => 'Vybraný typ kurzu neexistuje.',
+        'days.required' => 'Dni sú povinné.',
+        'days.integer' => 'Dni musia byť celé číslo.',
+        'days.in' => 'Dni musia byť jedno z: :values.',
+        'time.required' => 'Čas je povinný.',
+        'time.integer' => 'Čas musí byť celé číslo.',
+        'time.in' => 'Čas musí byť jedno z: :values.'];
+}
 }
 
 
