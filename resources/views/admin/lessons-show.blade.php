@@ -306,36 +306,60 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
 
                         </form>
                     </div>
-
+                    @php
+                    $counter =0;
+                    @endphp
+                    @foreach ($lesson->class->students as $student)
+                    @if (!$lesson->students->contains('id', $student->id))
+                  @php
+                    $counter ++;
+                  @endphp
+                    @endif
+            @endforeach
                     <div class="add-section"  id="kurzyAdd"
                         style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Pridať študenta</p>
 
                         <form action="/admin/lesson-students" method="post">
                             @csrf
+                            <x-form.required class="mt-1"/>
                             <input type="hidden" name="lesson_id" value="{{$lesson->id}}" />
-                            <x-form.field> 
-                                <x-form.select name="who" title="Príjemcovia">
+                            <x-form.field>   
+                                @if($counter != 0)
+                                <x-form.select name="who" title="Príjemcovia" required="true">
+                                  
                                     <option value="0" disabled selected hidden>Výber zúčastnených študentov</option>
-                                   
-                                    <option value="1">Všetci študenti triedy</option>
+                                    
+                                    <option value="1">Všetci študenti triedy okrem už pridaných</option>
                                   
                                     <option value="2">Konkrétny študenti</option>
+                                    
+                                    
+                                   
                                 </x-form.select>
+                                @else
+                                <p class="bg-white flex items-center px-4 py-1 border border-gray-300 rounded-md shadow-sm text-sm leading-5.6">
+                                Všetci študenti triedy sú už zapísaný ako zúčastnení.
+                                </p>
+                             
+                                 @endif
 
             
 
                            
                             <div class="mt-6 hidden" id="students">
-                                <x-form.label name="students" title="Zúčastnený študenti" />
+                                <x-form.label name="students" title="Zúčastnený študenti" required="true"/>
                                 <ul id="itemsList" class="mt-1">
+                                    
                                     @foreach ($lesson->class->students as $student)
+                                    @if (!$lesson->students->contains('id', $student->id))
                                     <li class="bg-white flex items-center px-4 py-1 border border-gray-300 rounded-md shadow-sm">
                                       
 
                                          <input class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" type="checkbox" name="students[]" value="{{ $student->id }}" checked>
                                          <label for="students[]" class="ml-2 block text-gray-700 text-sm leading-5.6">{{$student->name}} {{$student->lastname}}</label>
                                     </li>
+                                    @endif
                                        
                                    
                             @endforeach
@@ -391,7 +415,7 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                                                 </x-table.td></td>
                                             <td class="py-4 px-6">{{$student->email}}</td>
                                            
-                                            <x-table.td-last url="students/{{ $student->id }}" edit=1 itemName="študenta {{$student->name}}" />
+                                            <x-table.td-last url="lesson-students/{{ $student->id }}/{{$lesson->id}}" edit=1 itemName="študenta {{$student->name}}" />
                                             
                                         </tr>
                                         @endforeach

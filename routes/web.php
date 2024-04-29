@@ -12,7 +12,8 @@ use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\LessonController;
-use App\Http\Controllers\Lesson_StudentsController;
+
+use App\Http\Controllers\LessonStudentsController;
 use App\Http\Controllers\PrihlaskyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
@@ -142,8 +143,8 @@ Route::delete('admin/lessons/{lesson}', [LessonController::class, 'destroy']);
 Route::post('admin/class-student', [Class_StudentController::class, 'store']);
 Route::delete('admin/class-student/{student}/{class}', [Class_StudentController::class, 'destroy']);
 
-Route::post('admin/lesson-students', [Lesson::class, 'store']);
-Route::delete('admin/lesson-students/{student}/{class}', [Lesson_StudentsController::class, 'destroy']);
+Route::post('admin/lesson-students', [LessonStudentsController::class, 'store']);
+Route::delete('admin/lesson-students/{student}/{lesson}', [LessonStudentsController::class, 'destroy']);
 
 Route::get('admin/reset', [NewPasswordController::class, 'create']);
 
