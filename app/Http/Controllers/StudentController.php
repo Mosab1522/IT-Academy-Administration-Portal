@@ -53,8 +53,8 @@ class StudentController extends Controller
         $attributes = request()->validate([
             'name' => ['required', 'max:255'],
             'lastname' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'sekemail' => ['nullable', 'email', 'max:255'],
+            'email' => ['required', 'email', 'different:sekemail' , 'max:255',Rule::unique('students', 'email'), Rule::unique('students', 'sekemail')],
+            'sekemail' => ['nullable','different:email' , 'email', 'max:255',Rule::unique('students', 'email'), Rule::unique('students', 'sekemail')],
             'status' => ['required', 'min:7', 'max:9'],
             'skola' => ['nullable', 'min:3', 'max:3', 'required_if:status,student'],
             'ina' => ['max:255', 'required_if:skola,ina',],
@@ -64,7 +64,7 @@ class StudentController extends Controller
             'ulicacislo' => ['required', 'min:3', 'max:255'],
             'mestoobec' => ['required', 'min:1', 'max:255'],
             'psc' => ['required', 'min:6', 'max:6'],
-        ]);
+        ],$this->messages());
         if ($attributes['status'] == "nestudent") {
             $student = Student::create([
                 'name' => $attributes['name'],
@@ -130,8 +130,8 @@ class StudentController extends Controller
         $attributes = request()->validate([
             'name' => ['required', 'max:255'],
             'lastname' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'sekemail' => ['nullable', 'email', 'max:255'],
+            'email' => ['required', 'email', 'different:sekemail' , 'max:255',Rule::unique('students', 'email')->ignore($student), Rule::unique('students', 'sekemail')->ignore($student)],
+            'sekemail' => ['nullable','different:email' , 'email', 'max:255',Rule::unique('students', 'email')->ignore($student), Rule::unique('students', 'sekemail')->ignore($student)],
             'status' => ['required', 'min:7', 'max:9'],
             'skola' => ['nullable', 'min:3', 'max:3', 'required_if:status,student'],
             'ina' => ['max:255', 'required_if:skola,ina',],
@@ -146,7 +146,7 @@ class StudentController extends Controller
             // 'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
             // 'days' => ['required', 'integer'],
             // 'time' => ['required', 'integer'],
-        ]);
+        ],$this->messages());
         if ($attributes['status'] == "nestudent") {
             if ($student['status'] == 'student') {
                 $student->update([
@@ -250,5 +250,48 @@ class StudentController extends Controller
 
 
         return response()->json($students);
+    }
+
+    protected function messages()
+    {
+        return [
+            'name.required' => 'Meno je povinné.',
+            'name.max' => 'Meno môže mať maximálne :max znakov.',
+            'lastname.required' => 'Priezvisko je povinné.',
+            'lastname.max' => 'Priezvisko môže mať maximálne :max znakov.',
+            'email.required' => 'E-mailová adresa je povinná.',
+            'email.email' => 'E-mailová adresa musí byť platná.',
+            'email.max' => 'E-mailová adresa môže mať maximálne :max znakov.',
+            'email.unique' => 'Tento e-mail už je zaregistrovaný.',
+            'sekemail.email' => 'Sekundárna e-mailová adresa musí byť platná.',
+            'sekemail.max' => 'Sekundárna e-mailová adresa môže mať maximálne :max znakov.',
+            'status.required' => 'Status je povinný.',
+            'sekemail.unique' => 'Tento e-mail už je zaregistrovaný.',
+            'status.min' => 'Status musí mať minimálne :min znakov.',
+            'status.max' => 'Status môže mať maximálne :max znakov.',
+            'skola.required_if' => 'Škola je povinná, keď je status študent.',
+            'skola.min' => 'Škola musí mať minimálne :min znakov.',
+            'skola.max' => 'Škola môže mať maximálne :max znakov.',
+            'ina.max' => 'Iná informácia môže mať maximálne :max znakov.',
+            'ina.required_if' => 'Iná informácia je povinná, keď je škola iná.',
+            'studium.min' => 'Štúdium musí mať minimálne :min znakov.',
+            'studium.max' => 'Štúdium môže mať maximálne :max znakov.',
+            'studium.required_if' => 'Štúdium je povinné, keď je škola UCM.',
+            'program.min' => 'Program musí mať minimálne :min znakov.',
+            'program.max' => 'Program môže mať maximálne :max znakov.',
+            'program.required_if' => 'Program je povinný, keď je škola UCM.',
+            'iny.max' => 'Iný program môže mať maximálne :max znakov.',
+            'iny.required_if' => 'Iný program je povinný, keď je program iný.',
+            'ulicacislo.required' => 'Ulica a číslo domu sú povinné.',
+            'ulicacislo.min' => 'Ulica a číslo domu musia mať minimálne :min znakov.',
+            'ulicacislo.max' => 'Ulica a číslo domu môžu mať maximálne :max znakov.',
+            'mestoobec.required' => 'Mesto/Obec je povinné.',
+            'mestoobec.min' => 'Mesto/Obec musí mať minimálne :min znakov.',
+            'mestoobec.max' => 'Mesto/Obec môže mať maximálne :max znakov.',
+            'psc.required' => 'PSČ je povinné.',
+            'psc.min' => 'PSČ musí mať minimálne :min znakov.',
+            'psc.max' => 'PSČ môže mať maximálne :max znakov.',
+        
+        ];
     }
 }

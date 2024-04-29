@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementsToShow: ['ucm'],
             elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
-            elementsToEnable: [],
+            elementsToEnable: ['ucmka' ,'inam'],
             elementsToDisable: [],
             radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
           },
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: [],
-            elementsToDisable: ['nu', 'ny'],
+            elementsToDisable: ['nu', 'ny','ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
             radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
           }
         ]
@@ -394,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementsToShow: ['ucmkari', 'ucmkari2'],
             elementsToHide: ['ina', 'iny','nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
-            elementsToEnable: [],
+            elementsToEnable: ['option3', 'option4', 'option5', 'option6'],
             elementsToDisable: ['nu'],
             radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
           },
@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny'],
             elementsToReset: ['ny'],
             elementsToEnable: ['nu'],
-            elementsToDisable: [],// Add this line to enable 'nu' when 'ina' is selected
+            elementsToDisable: ['option3', 'option4', 'option5', 'option6'],// Add this line to enable 'nu' when 'ina' is selected
             radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
           }
         ]
@@ -466,7 +466,7 @@ const radioMappings = [
         elementsToShow: ['ucm'],
         elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
-        elementsToEnable: [],
+        elementsToEnable: ['ucmka','inam'],
         elementsToDisable: [],
         radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
       },
@@ -476,7 +476,7 @@ const radioMappings = [
         elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
         elementsToEnable: [],
-        elementsToDisable: ['nu', 'ny'],
+        elementsToDisable: ['nu', 'ny','ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
         radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
       }
     ]
@@ -489,7 +489,7 @@ const radioMappings = [
         elementsToShow: ['ucmkari', 'ucmkari2'],
         elementsToHide: ['ina', 'iny','nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
-        elementsToEnable: [],
+        elementsToEnable: ['option3', 'option4', 'option5', 'option6'],
         elementsToDisable: ['nu'],
         radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
       },
@@ -499,7 +499,7 @@ const radioMappings = [
         elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny'],
         elementsToReset: ['ny'],
         elementsToEnable: ['nu'],
-        elementsToDisable: [],// Add this line to enable 'nu' when 'ina' is selected
+        elementsToDisable: ['option3', 'option4', 'option5', 'option6'],// Add this line to enable 'nu' when 'ina' is selected
         radiosToUncheck: ['option3', 'option4', 'option5', 'option6']
       }
     ]

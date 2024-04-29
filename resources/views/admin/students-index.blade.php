@@ -7,21 +7,22 @@
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie študenta</h3>
             <form action="/admin/students/create" method="post" enctype="multipart/form-data">
                 @csrf
+                <x-form.required class="-mt-3"/>
                 {{-- <h3 class="block mt-2 mb-3 uppercase font-bold text-sm text-gray-700">Povinný údaj</h3>
                 <x-form.input name="email" type="email"/>
                 <h3 class="block mt-6 mb-3 uppercase font-bold text-sm text-gray-700">Voliteľné údaje</h3> --}}
                 <p class="text-sm font-semibold uppercase text-gray-700 mt-6">Osobné informácie</p>
                 <div class="flex flex-col  md:grid md:grid-cols-2 lg:flex lg:flex-row  gap-6">
                     <div class=" mt-6">
-                        <x-form.label name="status" title="Status" />
+                        <x-form.label name="status" title="Status"  required="true"/>
 
                         <div class="flex items-center mt-1">
-                            <x-form.input-radio name="status" for="type_student" value="student">
+                            <x-form.input-radio name="status" for="type_student" value="student"  required="true" :checked="old('status') == 'student'" >
                                 Študent
                             </x-form.input-radio>
 
                             <x-form.input-radio class="ml-4" name="status" for="type_nostudent"
-                                value="nestudent">
+                                value="nestudent" :checked="old('status') == 'nestudent'"  required="true">
                                 Neštudent
                             </x-form.input-radio>
 
@@ -30,91 +31,111 @@
                     </div>
             
                         <!-- University selection -->
-                        <div class="flex flex-col mt-0 md:mt-6" id="ucm" style="display: none;">
-                            <x-form.label name="skola" title="Škola" />
+                        <div class="flex flex-col mt-0 md:mt-6 {{ old('skola') ? '' : 'hidden' }}" id="ucm">
+                            <x-form.label name="skola" title="Škola"  required="true"/>
                             <div class="flex mt-1">
                                 <div class="flex items-center mr-4">
-                                    <input type="radio" id="ucmka" name="skola" value="ucm"
-                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                    <label for="ucmka" class="ml-2  text-gray-700">UCM</label>
+                                    {{-- <input type="radio" id="ucmka" name="skola" value="ucm"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" disabled required>
+                                    <label for="ucmka" class="ml-2  text-gray-700">UCM</label> --}}
+
+                                    <x-form.input-radio name="skola" for="ucmka" value="ucm" :checked="old('skola') == 'ucm'" :disabled="old('status') != 'student'" required="true">
+                                        UCM
+                                    </x-form.input-radio>
+
                                 </div>
                                 <div class="flex items-center">
-                                    <input type="radio" id="inam" name="skola" value="ina"
-                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                    <label for="inam" class="ml-2  text-gray-700">Iná</label>
+                                    <x-form.input-radio name="skola" for="inam" value="ina" :checked="old('skola') == 'ina'" :disabled="old('status') != 'student'" required="true">
+                                        Iná
+                                    </x-form.input-radio>
+
+                                    {{-- <input type="radio" id="inam" name="skola" value="ina"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" disabled required>
+                                    <label for="inam" class="ml-2  text-gray-700">Iná</label> --}}
                                 </div>
                             </div>
                            
                         </div>
 
                         <!-- Study type selection -->
-                        <div class="flex flex-col mt-0 lg:mt-6" id="ucmkari" style="display: none;">
-                            <x-form.label name="studium" title="Druh štúdia" />
+                        <div class="flex flex-col mt-0 lg:mt-6 {{ old('skola') == 'ucm' ? '' : 'hidden' }}" id="ucmkari">
+                            <x-form.label name="studium" title="Druh štúdia"  required="true"/>
                             <div class="flex mt-1">
                                 <div class="flex items-center mr-4">
-                                    <input type="radio" id="option3" name="studium" value="interne"
-                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                    <label for="option3" class="ml-2  text-gray-700">Interné</label>
+                                    <x-form.input-radio name="studium" for="option3" value="interne" :checked=" old('studium') == 'interne'" required="true" :disabled=" old('skola') != 'ucm'">
+                                        Interné
+                                    </x-form.input-radio>
+
+                                    {{-- <input type="radio" id="option3" name="studium" value="interne"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" disabled required> 
+                                    <label for="option3" class="ml-2  text-gray-700">Interné</label> --}}
                                 </div>
                                 <div class="flex items-center">
-                                    <input type="radio" id="option4" name="studium" value="externe"
-                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
-                                    <label for="option4" class="ml-2  text-gray-700">Externé</label>
+                                    <x-form.input-radio name="studium" for="option4" value="externe" :checked=" old('studium') == 'externe'" required="true" :disabled=" old('skola') != 'ucm'">
+                                        Externé
+                                    </x-form.input-radio>
+
+                                    {{-- <input type="radio" id="option4" name="studium" value="externe"
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" disabled required>
+                                    <label for="option4" class="ml-2  text-gray-700">Externé</label> --}}
                                 </div>
                             </div>
                         </div>
 
                         <!-- Program selection -->
-                        <div class="flex flex-col mt-0 lg:mt-6" id="ucmkari2" style="display: none;">
-                            <x-form.label name="program" title="Program" />
+                        <div class="flex flex-col mt-0 lg:mt-6 {{ old('skola') == 'ucm' ? '' : 'hidden' }}" id="ucmkari2" >
+                            <x-form.label name="program" title="Program"  required="true"/>
                             <div class="flex lg:mt-1">
                                 <div class="flex items-center lg:items-baseline mr-4">
                                     <input type="radio" id="option5" name="program" value="apin"
-                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 mt-1">
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 mt-1" {{ old('skola') == 'ucm' ? '' : 'disabled' }} required {{
+                                            old('program') == 'apin' ? 'checked' : '' }}>
                                     <label for="option5" class="ml-2 lg:-mt-1  text-gray-700">Aplikovaná
                                         informatika</label>
                                 </div>
                                 <div class="flex items-center lg:items-baseline">
                                     <input type="radio" id="option6" name="program" value="iny"
-                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 lg:mt-1">
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 lg:mt-1" {{
+                                            old('program') == 'iny' ? 'checked' : '' }} {{ old('skola') == 'ucm' ? '' : 'disabled' }} required>
                                     <label for="option6" class="ml-2 lg:-mt-1  text-gray-700">Iný</label>
                                 </div>
                             </div>
                             
                         </div>
                     </div>
-                    <div id="ina" class="mt-3" style="display: none;">
+                    <div id="ina" class="mt-3 {{ old('skola') == 'ina'  ? '' : 'hidden' }}" >
                         <input type="text"
-                            class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500"
-                            name="ina" id="nu" placeholder="Názov školy" disabled>
+                            class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500" value="{{old('ina')}}"
+                            name="ina" id="nu" placeholder="Názov školy" {{ old('skola') == 'ina'  ? '' : 'disabled' }} required>
                     </div>
-                    <div id="iny" class="mt-3" style="display: none;">
+                    <div id="iny" class="mt-3 {{ old('program') == 'iny'  ? '' : 'hidden' }}" >
+                        
                                 <input type="text"
-                                    class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500"
-                                    name="iny" id="ny" placeholder="Názov programu" disabled>
+                                    class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500" value="{{old('iny')}}"
+                                    name="iny" id="ny" placeholder="Názov programu" {{ old('program') == 'iny'  ? '' : 'disabled' }}  required>
                             </div>
                 
                 
                 <x-form.field>
-                <x-form.input name="name" type="text" title="Meno" placeholder="Meno"/>
+                <x-form.input name="name" type="text" title="Meno" placeholder="Meno" required="true"/>
                 </x-form.field>
                 <x-form.field>
-                <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko"/>
+                <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko" required="true"/>
                 </x-form.field>
                 <x-form.field>
-                <x-form.input name="email" type="email" title="Email" placeholder="Email"/>
+                <x-form.input name="email" type="email" title="Email" placeholder="Email" required="true"/>
                 </x-form.field>
                 <x-form.field>
                 <x-form.input name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email"/>
                 </x-form.field>
                 <x-form.field>
-                <x-form.input name="ulicacislo" type="text" title="Ulica a popisné číslo" placeholder="Ulica a popisné číslo"/>
+                <x-form.input name="ulicacislo" type="text" title="Ulica a popisné číslo" placeholder="Ulica a popisné číslo" required="true"/>
                 </x-form.field>
                 <x-form.field>
-                <x-form.input name="mestoobec" type="text" title="Mesto / Obec" placeholder="Mesto / Obec"/></x-form.field>
+                <x-form.input name="mestoobec" type="text" title="Mesto / Obec" placeholder="Mesto / Obec" required="true"/></x-form.field>
                 <x-form.field>
 
-                <x-form.input name="psc" type="text" title="PSČ" placeholder="PSČ"/>
+                <x-form.input name="psc" type="text" title="PSČ" placeholder="PSČ" required="true"/>
                 </x-form.field>
         
                 <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
@@ -125,7 +146,7 @@
             </div>
             </x-slot:create>
 
-            <x-form.search action="{{ routesh('admin.students.index') }}" text="Zoradiť">
+            <x-form.search action="{{ route('admin.students.index') }}" text="Zoradiť">
                     @csrf
                     
                     @if(request()->filled('search'))

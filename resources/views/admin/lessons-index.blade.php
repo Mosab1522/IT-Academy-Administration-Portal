@@ -7,6 +7,7 @@
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie hodiny</h3>
                 <form action="/admin/lessons/create" method="post">
                     @csrf
+                    <x-form.required class="-mt-3"/>
                     {{--
                     <x-form.label name="Zapísať všetkých ktorý majú prihlášku na kurz?" />
                     <input type="checkbox" name="students"> --}}

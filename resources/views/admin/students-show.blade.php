@@ -246,7 +246,7 @@
                                                     </div>
                                                     <div class="flex items-center">
                                                         <x-form.input-radio name="studium" for="option4" value="externe" :checked=" $student->studium == 'externe'" disabled>
-                                                            Interné
+                                                            Externé
                                                         </x-form.input-radio>
                                                         {{-- <input type="radio" id="option4" name="studium" value="externe"
                                                             class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"  {{ $student->studium == 'externe' ? 'checked' : '' }} disabled>

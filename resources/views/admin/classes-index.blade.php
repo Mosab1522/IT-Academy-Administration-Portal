@@ -7,6 +7,7 @@
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie triedy</h3>
                 <form action="/admin/classes/create" method="post">
                     @csrf
+                    <x-form.required class="-mt-3"/>
                     <x-form.input-check name="students" title="Zapísať všetkých študentov ktorí majú
                     prihlášku na kurz"/>
                     <x-form.field>

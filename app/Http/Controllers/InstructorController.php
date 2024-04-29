@@ -160,7 +160,7 @@ class InstructorController extends Controller
                 'name' => ['required', 'max:255'],
                 'lastname' => ['required', 'max:255'],
                 'photo' => ['image'],
-                'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
+                'email' => ['required', 'email','different:sekemail', 'max:255', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
                 'sekemail' => ['email', 'nullable', 'different:email', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
                 'telephone' => [
                     'nullable',
