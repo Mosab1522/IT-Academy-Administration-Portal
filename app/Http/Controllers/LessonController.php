@@ -134,13 +134,13 @@ class LessonController extends Controller
         //     request()->merge(['name'  => request()->cname]);
         //    }
 
-        $attributes = request()->validate([
+        $attributes = request()->validateWithBag('updateLesson',[
             'title' => ['required', 'max:255'],
             'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id')],
             'instructor_id' => ['required', 'integer', Rule::exists('instructors', 'id')],
             'lesson_date' => ['required', 'date'],
             'duration' => 'required|date_format:H:i'
-        ]);
+        ],$this->messages());
 
         list($hours, $minutes) = explode(':', $attributes['duration']);
 
@@ -219,9 +219,12 @@ protected function messages()
     return  [
         'title.required' => 'Názov je povinný.',
         'title.max' => 'Názov nemôže byť dlhší ako 255 znakov.',
-        'class_id.required' => 'Pole triedy je povinné.',
+        'class_id.required' => 'Trieda je povinná.',
         'class_id.integer' => 'ID triedy musí byť celé číslo.',
         'class_id.exists' => 'Vybraná trieda neexistuje.',
+        'instructor_id.required' => 'Inštruktor je povinný.',
+        'instructor_id.integer' => 'ID inštruktora musí byť celé číslo.',
+        'instructor_id.exists' => 'Vybraný inštruktor neexistuje.',
         'lesson_date.required' => 'Dátum lekcie je povinný.',
         'lesson_date.date' => 'Dátum lekcie musí byť platný dátum.',
         'duration.required' => 'Trvanie je povinné.',

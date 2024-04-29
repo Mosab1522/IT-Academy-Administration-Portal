@@ -21,4 +21,8 @@ class Student extends Model
     {
         return $this->belongsToMany(CourseClass::class, 'class_students', 'student_id', 'class_id')->withPivot('application_id')->withTimestamps();
     }
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_students', 'lesson_id', 'student_id')->withTimestamps();
+    }
 }

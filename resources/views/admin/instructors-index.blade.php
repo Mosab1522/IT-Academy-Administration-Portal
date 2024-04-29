@@ -52,10 +52,10 @@ session()->forget('instructor_id');
                     <input type="file" name="photo" id="photo" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" accept="image/*">
                     </x-form.field> --}}
                     <div class="mt-6 md:hidden">
-                        <x-form.input name="email" type="email" title="Email" placeholder="Email"/>
+                        <x-form.input name="cemail" type="email" title="Email" placeholder="Email"/>
                    </div>
                     <div class="mt-6 lg:hidden">
-                        <x-form.input name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email"/>
+                        <x-form.input name="csekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email"/>
                     </div>
            
                    <div class="mt-6 lg:mt-0">
@@ -135,7 +135,7 @@ session()->forget('instructor_id');
                                 old('academy_id.0')==$academ->id ? 'selected' : '' }}>{{ ucwords($academ->name) }}</option>
                             @endforeach
     
-                        </select><select name="coursetypes_id[]" id="coursetype" class="coursetype-select mt-1 flex-1 block  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100 disabled:text-gray-500 bg-white text-sm leading-5.6" data-pair-id="1">
+                        </select><select name="coursetypes_id[]" id="coursetype" class="coursetype-select mt-1 flex-1 block  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100 disabled:text-gray-500 bg-white text-sm leading-5.6" data-pair-id="1" disabled>
                             <option value="" data-option="" {{ old('coursetype_id') ? '' : 'selected' }}>Typ kurzu
                             </option>
                             {{-- @php
@@ -388,8 +388,7 @@ session()->forget('instructor_id');
     function handleFileUpload(event) {
     var image = document.querySelector('img[alt="profile_image"]');
     var file = event.target.files[0];
-    const button = document.getElementById("photobutton");
-    const button_c = document.getElementById("photobutton-c");
+  
     var reader = new FileReader();
 
     if (file) {
@@ -397,29 +396,28 @@ session()->forget('instructor_id');
             image.src = reader.result;
         };
         reader.readAsDataURL(file);
-        button.style.display = "block";
-        button_c.style.display = "block";
+      
     }
     // If no file is selected, do nothing
 }
-document.getElementById("photobutton-c").addEventListener("click", function(event) {
-    // Prevent the default form reset behavior
-    event.preventDefault();
+// document.getElementById("photobutton-c").addEventListener("click", function(event) {
+//     // Prevent the default form reset behavior
+//     event.preventDefault();
 
-    // Clear the file input
-    var fileInput = document.getElementById("photo-upload");
-    fileInput.value = "";
+//     // Clear the file input
+//     var fileInput = document.getElementById("photo-upload");
+//     fileInput.value = "";
 
-    // Reset the image preview to the default image stored in `data-default-src`
-    var image = document.querySelector('img[alt="profile_image"]');
-    var defaultSrc = image.getAttribute('data-default-src'); // Get the default src
-    image.src = defaultSrc;
+//     // Reset the image preview to the default image stored in `data-default-src`
+//     var image = document.querySelector('img[alt="profile_image"]');
+//     var defaultSrc = image.getAttribute('data-default-src'); // Get the default src
+//     image.src = defaultSrc;
 
-    // Hide the buttons again
-    document.getElementById("photobutton").style.display = "none";
-    document.getElementById("photobutton-c").style.display = "none";
+//     // Hide the buttons again
+//     document.getElementById("photobutton").style.display = "none";
+//     document.getElementById("photobutton-c").style.display = "none";
 
-    // Manually reset other fields as needed
-});
+//     // Manually reset other fields as needed
+// });
     </script>
  

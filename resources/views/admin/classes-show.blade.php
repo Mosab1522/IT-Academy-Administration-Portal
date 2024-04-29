@@ -384,23 +384,23 @@
                             <input name="class_id" value="{{$class->id}}" hidden />
                             <x-form.field>
                                 <x-form.input name="title" type="text" title="Názov hodiny"
-                                    placeholder="Názov hodiny" />
+                                    placeholder="Názov hodiny" required="true"/>
                             </x-form.field>
 
                             <x-form.field>
                                 <div class="flex">
-                                    <x-form.label name="datetime-local" title="Dátum a trvanie hodiny" />
+                                    <x-form.label name="datetime-local" title="Dátum a trvanie hodiny" required="true"/>
 
                                 </div>
                                 <div class="flex">
                                     <div class="w-1/2 mr-2">
                                     <input type="datetime-local" name="lesson_date" value="{{ old('lesson_date')}}"
-                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" >
+                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
                                         <x-form.error name="lesson_date" errorBag="default"/>
                                     </div>
                                     <div class="w-1/2 ml-2">
                                     <input type="time" name="duration"
-                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required
                                         step="60" value="{{ old('duration', '00:45') }}">
                                         <x-form.error name="duration" errorBag="default"/>
                                     </div>

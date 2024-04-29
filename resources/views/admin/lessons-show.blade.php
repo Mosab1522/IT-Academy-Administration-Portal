@@ -82,23 +82,22 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                                             class="add-button {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}"
                                             data-target="kurzyAdd">
                                             <span
-                                                class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať
-                                                inštruktora</span>
-                                            <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť pridanie
-                                                inštruktora</span>
+                                                class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať zúčastnených študentov</span>
+                                            <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť
+                                                pridanie zúčastnených študentov</span>
                                         </button>
                                             </li>
-                                            <li
+                                            {{-- <li
                                             class="flex-1 {{ session('success_c') || session('success_d') || request()->has('vytvorit')  ? '' : 'hidden' }}">
                                         <button
                                             class="add-button {{ session('success_c') || session('success_d') || request()->has('vytvorit')  ? '' : 'hidden' }} "
                                             data-target="loginAdd">
                                             <span
-                                                class="{{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Pridať študenta</span>
+                                                class="{{ session('success_c') || session('success_d') ? '' : 'hidden' }}">Pridať zúčastnených študentov</span>
                                             <span class="{{request()->has('vytvorit') ? '' : 'hidden' }}">Zrušiť
-                                                pridanie študenta</span>
+                                                pridanie zúčastnených študentov</span>
                                         </button>
-                                    </li>
+                                    </li> --}}
                                 </x-buttonsection>
                         {{-- <div
                             class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
@@ -122,7 +121,7 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                                             data-target="profile">Info</button>
                                         <button
                                             class="section-button {{session('success_c') || session('success_cc') || session('success_d')  || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? 'hidden' : '' }} rounded-lg"
-                                            data-target="kurzy">Študenti</button>
+                                            data-target="kurzy">Zúčastnený študenti</button>
                                     </li>
                                     {{-- <li class="z-30 flex-auto text-center">
                                         {{-- <a id="tr"
@@ -157,30 +156,38 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                             enctype="multipart/form-data">
                             @csrf
                             @method('Patch')
+                            <x-form.required class=" hidden mt-1 "/>
                             <input type="hidden" name="class_id" value="{{$lesson->class->id}}">
                             <x-form.field>
                                 <x-form.input
-                                    value="{{$lesson->title}}" name="title" type="text" title="Názov" placeholder="Názov" disabled />
+                                    value="{{$lesson->title}}" name="title" type="text" title="Názov" placeholder="Názov" disabled errorBag="updateLesson" required="true"/>
                             </x-form.field>
                             <x-form.field>
                                 <div class="flex">
-                                    <x-form.label name="datetime-local" title="Dátum a trvanie hodiny" />
+                                    <x-form.label name="datetime-local" title="Dátum a trvanie hodiny" required="true"/>
         
                                 </div>
+                             
+
                                 <div class="flex">
-                                    <input type="datetime-local" name="lesson_date" value="{{$lesson->lesson_date}}"
-                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100 disabled:text-gray-500" disabled>
+                                    <div class="w-1/2 mr-2">
+                                    <input type="datetime-local" name="lesson_date" value="{{ $lesson->lesson_date }}"
+                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100 disabled:text-gray-500" disabled required>
+                                        <x-form.error name="lesson_date" errorBag="updateLesson"/>
+                                    </div>
+                                    <div class="w-1/2 ml-2">
                                     <input type="time" name="duration"
-                                        class="mt-1 ml-4 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100 disabled:text-gray-500"
-                                        step="60" value="{{$timeValue}}" disabled>
-        
+                                        class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100 disabled:text-gray-500"
+                                        step="60" value="{{ $timeValue }}" disabled required>
+                                        <x-form.error name="duration" errorBag="updateLesson"/>
+                                    </div>
                                 </div>
         
                             </x-form.field> 
                                
                             
                             <x-form.field>
-                                <x-form.select name="instructor_id" title="Inštruktor" disabled>
+                                <x-form.select name="instructor_id" title="Inštruktor" disabled errorBag="updateLesson" required="true">
                                                 <option style="color: gray;" value="" disabled selected hidden>Inštruktori</option>
                                                 @foreach (\App\Models\Instructor::orderBy('name')->get() as $instructor)
                                                 <option value="{{ $instructor->id }}" {{$lesson->instructor->id == $instructor->id
@@ -304,11 +311,37 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                         style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Pridať študenta</p>
 
-                        <form action="/admin/class-student" method="post">
+                        <form action="/admin/lesson-students" method="post">
                             @csrf
                             <input type="hidden" name="lesson_id" value="{{$lesson->id}}" />
-                            <x-form.field>
-                            <x-form.live-search/>
+                            <x-form.field> 
+                                <x-form.select name="who" title="Príjemcovia">
+                                    <option value="0" disabled selected hidden>Výber zúčastnených študentov</option>
+                                   
+                                    <option value="1">Všetci študenti triedy</option>
+                                  
+                                    <option value="2">Konkrétny študenti</option>
+                                </x-form.select>
+
+            
+
+                           
+                            <div class="mt-6 hidden" id="students">
+                                <x-form.label name="students" title="Zúčastnený študenti" />
+                                <ul id="itemsList" class="mt-1">
+                                    @foreach ($lesson->class->students as $student)
+                                    <li class="bg-white flex items-center px-4 py-1 border border-gray-300 rounded-md shadow-sm">
+                                      
+
+                                         <input class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" type="checkbox" name="students[]" value="{{ $student->id }}" checked>
+                                         <label for="students[]" class="ml-2 block text-gray-700 text-sm leading-5.6">{{$student->name}} {{$student->lastname}}</label>
+                                    </li>
+                                       
+                                   
+                            @endforeach
+                                </ul>
+                            </div>
+
                         </x-form.field>
                                     {{-- @php
                                     $academy = \App\Models\Academy::with(['coursetypes','applications'])
@@ -350,7 +383,7 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                                            
                                             <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
                                         </x-slot:head>
-                                        @foreach ($lesson->students as $student)
+                                       @foreach ($lesson->students as $student)
                                         <tr
                                     class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                             <td class="py-4 px-6">
@@ -503,3 +536,23 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
     </div> --}}
 
 </x-setting>
+
+<script>
+    document.getElementById('who').addEventListener('change', function() {
+    // Hide all sections initially
+   
+    document.getElementById('students').style.display = 'none';
+  
+
+    // Show the relevant section based on the selected value
+    switch (this.value) {
+        case '1': // Študent / Študenti
+            document.getElementById('students').style.display = 'none';
+            break;
+        case '2': // Inštruktor / Inštruktori
+            document.getElementById('students').style.display = 'block';
+            break;
+    
+    }
+});
+</script>

@@ -26,6 +26,14 @@
                                     Inštruktorský
                                 </x-form.input-radio>
                                 
+                                <div class="relative ml-4 flex items-center">
+                                    <span
+                                        class="material-icons info text-gray-500 hover:text-gray-700 cursor-pointer">info</span>
+                                    <div class="absolute hidden w-48 px-4 py-2 text-sm leading-tight text-white bg-gray-800 rounded-lg shadow-lg -left-12 top-6 z-10"
+                                        style="min-width: 150px;">
+                                        Ak nevidíte Vami požadovaný kurz, je to preto, že kurz musí mať aspoň jedného priradeného inštruktora na vytvorenie triedy.
+                                    </div>
+                                </div>
                                 
                             </div>
                             <x-form.error name="type" errorBag="default"/>
@@ -85,13 +93,15 @@
                                         {{-- @php
                                         $academy = \App\Models\CourseType::all();
                                         @endphp --}}
-                                        @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1,2])->get() as $type)
+                                        @foreach(\App\Models\CourseType::with(['academy', 'applications', 'instructors'])->whereIn('type', [1, 2])->get() as $type)
+                                        @if($type->instructors->count() > 0)
                                         <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                             data-option="{{ $type->academy_id }}" {{-- {{old('coursetype_id')==$type->id
                                             ?
                                             'selected' : ''}} --}}
                                             >{{
                                             ucwords($type->name) }}</option>
+                                            @endif
                                         @endforeach
                                 </x-form.select>
                             </div>
@@ -140,16 +150,17 @@
                                     {{-- @php
                                     $academy = \App\Models\CourseType::all();
                                     @endphp --}}
-                                    @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type',
-                                    [0,
-                                    2])->get() as $type2)
+                                    @foreach(\App\Models\CourseType::with(['academy', 'applications', 'instructors'])->whereIn('type', [1, 2])->get() as $type2)
+                                    @if($type2->instructors->count() > 0)
                                     <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
                                         data-option="{{ $type2->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
                                         'selected' : ''}} --}}
                                         >{{
                                         ucwords($type2->name) }}</option>
+                                        @endif
                                     @endforeach
                                 </x-form.select>
+                             
                             </div>
                         </div>
                     </x-form.field>

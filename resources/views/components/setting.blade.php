@@ -156,6 +156,55 @@ document.getElementById('deleteConfirmModal').addEventListener('click', function
 });
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    const infoIcons = document.querySelectorAll('.info');
+
+    infoIcons.forEach(function(infoIcon) {
+        const tooltip = infoIcon.nextElementSibling;
+        let isTooltipVisible = false;
+
+        const showTooltip = () => {
+            tooltip.style.display = 'block';
+            isTooltipVisible = true;
+        };
+
+        const hideTooltip = () => {
+            tooltip.style.display = 'none';
+            isTooltipVisible = false;
+        };
+
+        // Handle mouse hover for non-touch devices
+        infoIcon.addEventListener('mouseenter', showTooltip);
+        infoIcon.addEventListener('mouseleave', hideTooltip);
+
+        // Handle touch for touch devices
+        infoIcon.addEventListener('touchend', function (e) {
+            e.preventDefault(); // Prevent the mouse events from firing after touch
+            if (isTooltipVisible) {
+                hideTooltip();
+            } else {
+                showTooltip();
+            }
+            e.stopPropagation(); // Stop the event from bubbling up to other elements
+        });
+
+        // Hide tooltip when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!infoIcon.contains(e.target) && !tooltip.contains(e.target) && isTooltipVisible) {
+                hideTooltip();
+            }
+        });
+
+        // For touch screens, to ensure taps outside also hide the tooltip
+        document.addEventListener('touchend', function (e) {
+            if (!infoIcon.contains(e.target) && !tooltip.contains(e.target) && isTooltipVisible) {
+                e.preventDefault(); // Prevent additional mouse events
+                hideTooltip();
+            }
+        });
+    });
+});
+
 // Attach the actual deletion function
 
 

@@ -146,7 +146,14 @@ class InstructorController extends Controller
     public function store()
     {
         
-
+        if(request()->cemail && request()->cemail!= '')
+        {
+         request()->merge(['email'  => request()->cemail]);
+        }
+        if(request()->csekemail && request()->csekemail!= '')
+        {
+         request()->merge(['sekemail'  => request()->csekemail]);
+        }
 
         $attributes = request()->validate(
             [
@@ -167,7 +174,7 @@ class InstructorController extends Controller
                 'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
             ]
         );
-        dd(request()->all());
+        
         if (empty($attributes['telephone'])) {
             $attributes['telephone'] = NULL;
             

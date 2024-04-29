@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class CourseClassController extends Controller
 {
@@ -79,6 +80,26 @@ class CourseClassController extends Controller
             $attributes['coursetype_id'] = $attributes['coursetype_id2'];
         }
 
+        $instructors = CourseType::find($attributes['coursetype_id'])->instructors;
+        if ($instructors->count() > 1) {
+
+            dd(request()->all());
+            // foreach ($instructors as $instructor) {
+            //     $class->instructors()->save($instructor);
+            // }
+        }
+        else if($instructors->count() == 0) {
+            if($attributes['type'] == "1")
+            {
+                throw ValidationException::withMessages(['coursetype_id' => 'Kurz musí mať priradeného aspoň jedného inštruktora na vytvorenie triedy.']);
+            }
+            if($attributes['type'] == "0")
+            {
+                throw ValidationException::withMessages(['coursetype_id2' => 'Kurz musí mať priradeného aspoň jedného inštruktora na vytvorenie triedy.']);
+            }
+            
+        }
+
 
         $class = CourseClass::create([
             'name' => $attributes['name'],
@@ -105,21 +126,13 @@ class CourseClassController extends Controller
             }
         }
 
-        $instructors = CourseType::find($attributes['coursetype_id'])->instructors;
-        if ($instructors->count() > 1) {
-
-            dd(request()->all());
-            // foreach ($instructors as $instructor) {
-            //     $class->instructors()->save($instructor);
-            // }
-        }else if ($instructors->count() == 1)
+        if ($instructors->count() == 1)
         {
             $class->update(['instructor_id' => $instructors[0]['id']]);
         }
-        else{
-            dd(request()->all());
-        }
 
+        
+        
 
         if (Str::endsWith(url()->previous(), '?pridat')) {
             $trimmedUrl = substr(url()->previous(), 0, -7);

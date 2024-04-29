@@ -11,7 +11,7 @@
                     <x-form.label name="Zapísať všetkých ktorý majú prihlášku na kurz?" />
                     <input type="checkbox" name="students"> --}}
                     <x-form.field>
-                        <x-form.input name="title" type="text" title="Názov hodiny" placeholder="Názov hodiny" />
+                        <x-form.input name="title" type="text" title="Názov hodiny" placeholder="Názov hodiny" required="true"/>
                     </x-form.field>
                     <x-form.field>
 
@@ -21,7 +21,7 @@
 
 
                             <!-- parent -->
-                            <x-form.select name="class_id" title="Triedy">
+                            <x-form.select name="class_id" title="Triedy" required="true">
                                 <option style="color: gray;" value="" disabled selected hidden>Triedy</option>
                                 {{-- @php
                                 $academy = \App\Models\Academy::with(['coursetypes','applications'])
@@ -32,13 +32,13 @@
                                 @endphp --}}
                                 @foreach (\App\Models\CourseClass::with(['instructor'])->get() as $class)
 
-
+                                
 
                                 <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1"
                                     {{old('instructor_id')==$class->id ? 'selected' :
-                                    ''}}>Meno: {{
-                                    ucwords($class->name)}} {{
-                                    ucwords($class->coursetype->name)}}</option>
+                                    ''}}> {{
+                                    ucwords($class->name)}} - {{
+                                    ucwords($class->coursetype->name)}}  {{$class->coursetype->type=='0'? 'študentský' : 'inštruktorský'}} </option>
 
                                 @endforeach
                                 {{-- <option value="" disabled selected hidden>Akadémia</option>
@@ -49,16 +49,21 @@
                     </x-form.field>
                     <x-form.field>
                         <div class="flex">
-                            <x-form.label name="datetime-local" title="Dátum a trvanie hodiny" />
+                            <x-form.label name="datetime-local" title="Dátum a trvanie hodiny" required="true"/>
 
                         </div>
                         <div class="flex">
+                            <div class="w-1/2 mr-2">
                             <input type="datetime-local" name="lesson_date" value="{{ old('lesson_date')}}"
-                                class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                                <x-form.error name="lesson_date" errorBag="default"/>
+                            </div>
+                            <div class="w-1/2 ml-2">
                             <input type="time" name="duration"
-                                class="mt-1 ml-4 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required
                                 step="60" value="{{ old('duration', '00:45') }}">
-
+                                <x-form.error name="duration" errorBag="default"/>
+                            </div>
                         </div>
 
                     </x-form.field>
