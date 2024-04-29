@@ -17,7 +17,7 @@
                         <x-form.label name="status" title="Status"  required="true"/>
 
                         <div class="flex items-center mt-1">
-                            <x-form.input-radio name="status" for="type_student" value="student"  required="true" :checked="old('status') == 'student'" >
+                            <x-form.input-radio name="status" for="type_student" value="student"   :checked="old('status') == 'student'" required="true">
                                 Študent
                             </x-form.input-radio>
 
@@ -27,7 +27,7 @@
                             </x-form.input-radio>
 
                         </div>
-
+                        <x-form.error name="status" errorBag="default"/>
                     </div>
             
                         <!-- University selection -->
@@ -54,7 +54,7 @@
                                     <label for="inam" class="ml-2  text-gray-700">Iná</label> --}}
                                 </div>
                             </div>
-                           
+                            <x-form.error name="skola" errorBag="default"/>
                         </div>
 
                         <!-- Study type selection -->
@@ -80,6 +80,7 @@
                                     <label for="option4" class="ml-2  text-gray-700">Externé</label> --}}
                                 </div>
                             </div>
+                            <x-form.error name="studium" errorBag="default"/>
                         </div>
 
                         <!-- Program selection -->
@@ -100,19 +101,21 @@
                                     <label for="option6" class="ml-2 lg:-mt-1  text-gray-700">Iný</label>
                                 </div>
                             </div>
-                            
+                            <x-form.error name="program" errorBag="default"/>
                         </div>
                     </div>
                     <div id="ina" class="mt-3 {{ old('skola') == 'ina'  ? '' : 'hidden' }}" >
                         <input type="text"
                             class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500" value="{{old('ina')}}"
                             name="ina" id="nu" placeholder="Názov školy" {{ old('skola') == 'ina'  ? '' : 'disabled' }} required>
+                            <x-form.error name="ina" errorBag="default"/>
                     </div>
                     <div id="iny" class="mt-3 {{ old('program') == 'iny'  ? '' : 'hidden' }}" >
                         
                                 <input type="text"
                                     class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500" value="{{old('iny')}}"
                                     name="iny" id="ny" placeholder="Názov programu" {{ old('program') == 'iny'  ? '' : 'disabled' }}  required>
+                                    <x-form.error name="iny" errorBag="default"/>
                             </div>
                 
                 

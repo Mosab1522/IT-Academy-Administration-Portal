@@ -81,10 +81,12 @@ class ApplicationController extends Controller
 
 
     public function store()
-    {
+    {   
         if (request()->student_id) {
+            request()->validate([ 'student_id' => ['required', 'integer', Rule::exists('students', 'id')]]);
+            
             $student = Student::firstWhere('id', request()->student_id);
-
+        
             if (request()->type == 0) {
                 $rule = array('student_id' => 'unique:applications,student_id,NULL,id,student_id,' . $student['id'] . ',academy_id,' . request()->academy_id2 . ',coursetype_id,' . request()->coursetype_id2);
             } else if (request()->type == 1) {
@@ -96,22 +98,32 @@ class ApplicationController extends Controller
 
             if ($student->classes->count() > 0) {
                 foreach ($student->classes as $class) {
-                    if ($class->coursetype->id == request()->coursetype_id && request()->type2 == 1) {
+                    if ($class->coursetype->id == request()->coursetype_id && request()->type == 1) {
 
-                        throw ValidationException::withMessages(['email' => 'Žiak je zapísaný v triede tohoto kurzu.']);
+                        throw ValidationException::withMessages(['type' => 'Žiak je zapísaný v triede tohoto kurzu.','academy_id' => 'Žiak je zapísaný v triede tohoto kurzu.','coursetype_id' => 'Žiak je zapísaný v triede tohoto kurzu.'])->errorBag('admin');
                     }
 
-                    if ($class->coursetype->id == request()->coursetype_id2 && request()->type2 == 0) {
+                    if ($class->coursetype->id == request()->coursetype_id2 && request()->type == 0) {
 
-                        throw ValidationException::withMessages(['email' => 'Žiak je zapísaný v triede tohoto kurzu.']);
+                        throw ValidationException::withMessages(['type' => 'Žiak je zapísaný v triede tohoto kurzu.','academy_id2' => 'Žiak je zapísaný v triede tohoto kurzu.','coursetype_id2' => 'Žiak je zapísaný v triede tohoto kurzu.'])->errorBag('admin');
                     }
                 }
             }
             $validation = Validator($value, $rule);
             if ($validation->fails()) {
-                throw ValidationException::withMessages(['name' => 'Takáto prihláška už existuje']);
+                if (request()->type == 1)
+                {
+                     throw ValidationException::withMessages(['type' => 'Takáto prihláška už existuje.','academy_id' => 'Takáto prihláška už existuje.','coursetype_id' => 'Takáto prihláška už existuje.'])->errorBag('admin');
+                }
+                if (request()->type == 0)
+                {
+                    throw ValidationException::withMessages(['type' => 'Takáto prihláška už existuje.','academy_id2' => 'Takáto prihláška už existuje.','coursetype_id2' => 'Takáto prihláška už existuje.'])->errorBag('admin');
+                }
+               
+
+                
             } else {
-                $attributes = request()->validate([
+                $attributes = request()->validateWithBag('admin',[
 
                     'student_id' => ['required', 'integer', Rule::exists('students', 'id')],
                     // 'email' => 'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
@@ -122,7 +134,7 @@ class ApplicationController extends Controller
                     'coursetype_id2' => ['required_if:type,0', 'integer', Rule::exists('course_types', 'id')],
                     'days' => ['required', 'integer', 'in:1,2,3'],
                     'time' => ['required', 'integer', 'in:1,2,3']
-                ]);
+                ],$this->messages());
                 // dd(request()->all());
                 // $student = Student::firstWhere('email', $email['email']);
                 if ($attributes['type'] == 0) {
@@ -499,6 +511,9 @@ class ApplicationController extends Controller
     protected function messages()
     {
         return [
+            'student_id.required' => 'Študent je povinný',
+            'student_id.integer' => 'ID študenta musí byť celé číslo.',
+            'student_id.exists' => 'Takýto študent neexistuje.',
             'name.required' => 'Meno je povinné.',
             'name.max' => 'Meno môže mať maximálne :max znakov.',
             'lastname.required' => 'Priezvisko je povinné.',
@@ -515,7 +530,7 @@ class ApplicationController extends Controller
             'skola.min' => 'Škola musí mať minimálne :min znakov.',
             'skola.max' => 'Škola môže mať maximálne :max znakov.',
             'ina.max' => 'Iná informácia môže mať maximálne :max znakov.',
-            'ina.required_if' => 'Iná informácia je povinná, keď je škola iná.',
+            'ina.required_if' => 'Názov školy je povinný.',
             'studium.min' => 'Štúdium musí mať minimálne :min znakov.',
             'studium.max' => 'Štúdium môže mať maximálne :max znakov.',
             'studium.required_if' => 'Štúdium je povinné, keď je škola UCM.',
@@ -523,7 +538,7 @@ class ApplicationController extends Controller
             'program.max' => 'Program môže mať maximálne :max znakov.',
             'program.required_if' => 'Program je povinný, keď je škola UCM.',
             'iny.max' => 'Iný program môže mať maximálne :max znakov.',
-            'iny.required_if' => 'Iný program je povinný, keď je program iný.',
+            'iny.required_if' => 'Názov programu je povinný',
             'ulicacislo.required' => 'Ulica a číslo domu sú povinné.',
             'ulicacislo.min' => 'Ulica a číslo domu musia mať minimálne :min znakov.',
             'ulicacislo.max' => 'Ulica a číslo domu môžu mať maximálne :max znakov.',
@@ -539,16 +554,16 @@ class ApplicationController extends Controller
             'type2.required' => 'Typ je povinný.',
             'type2.integer' => 'Typ musí byť celé číslo.',
             'type2.in' => 'Typ musí byť jedno z: :values.',
-            'academy_id.required_if' => 'Akadémia je povinná, keď je typ 1.',
+            'academy_id.required_if' => 'Akadémia je povinná, keď je typ inštruktorský.',
             'academy_id.integer' => 'Akadémia musí byť celé číslo.',
             'academy_id.exists' => 'Vybraná akadémia neexistuje.',
-            'coursetype_id.required_if' => 'Typ kurzu je povinný, keď je typ 1.',
+            'coursetype_id.required_if' => 'Typ kurzu je povinný, keď je typ inštruktorský.',
             'coursetype_id.integer' => 'Typ kurzu musí byť celé číslo.',
             'coursetype_id.exists' => 'Vybraný typ kurzu neexistuje.',
-            'academy_id2.required_if' => 'Akadémia je povinná, keď je typ 0.',
+            'academy_id2.required_if' => 'Akadémia je povinná, keď je typ študentský.',
             'academy_id2.integer' => 'Akadémia musí byť celé číslo.',
             'academy_id2.exists' => 'Vybraná akadémia neexistuje.',
-            'coursetype_id2.required_if' => 'Typ kurzu je povinný, keď je typ 0.',
+            'coursetype_id2.required_if' => 'Typ kurzu je povinný, keď je typ študentský.',
             'coursetype_id2.integer' => 'Typ kurzu musí byť celé číslo.',
             'coursetype_id2.exists' => 'Vybraný typ kurzu neexistuje.',
             'days.required' => 'Dni sú povinné.',
