@@ -208,24 +208,24 @@
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('Patch')
-                                <x-form.required class="hidden mt-1"/>
+                                <x-form.required class=" hidden mt-1 "/>
                                 <x-form.field>
                                     <x-form.input value="{{$coursetype->name}}" name="cname" type="text" title="Názov"
-                                        placeholder="Názov" disabled errorBag="updateCoursetype" />
+                                        placeholder="Názov" disabled errorBag="updateCoursetype" required="true" />
                                        
                                 </x-form.field>
 
                                 <div class="items-center mt-6">
-                                    <x-form.label name="type" title="Typ kurzu" />
+                                    <x-form.label name="type" title="Typ kurzu" required="true"/>
 
                                     <div class="flex items-center mt-1">
                                         <x-form.input-radio name="type" for="type_student" value="0"
-                                            :checked="$coursetype->type == 0" :disabled="true">
+                                            :checked="$coursetype->type == 0" :disabled="true" required="true">
                                             Študentský
 
                                         </x-form.input-radio>
                                         <x-form.input-radio class="ml-6" name="type" for="type_instructor" value="1"
-                                            :checked="$coursetype->type == 1" :disabled="true">
+                                            :checked="$coursetype->type == 1" :disabled="true" required="true">
                                             Inštruktorský
                                         </x-form.input-radio>
                                     </div>
@@ -233,7 +233,7 @@
                                 </div>
 
                                 <x-form.field>
-                                    <x-form.select name="academy_id" title="Akadémia" disabled errorBag="updateCoursetype">
+                                    <x-form.select name="academy_id" title="Akadémia" disabled errorBag="updateCoursetype" required="true">
 
                                         <option class="text-gray-500" value="" disabled selected hidden>Akadémie
                                         </option>
@@ -250,11 +250,11 @@
 
                                 <x-form.field>
                                     <x-form.input name="min" type="number" title="Minimum študentov" value="{{ $coursetype->min }}"
-                                        placeholder="Minimum" disabled errorBag="updateCoursetype"/>
+                                        placeholder="Minimum" disabled errorBag="updateCoursetype" required="true"/>
                                 </x-form.field>
                                 <x-form.field>
                                     <x-form.input name="max" type="number" title="Maximum študentov" value="{{ $coursetype->max }}"
-                                        placeholder="Maximum" disabled errorBag="updateCoursetype"/>
+                                        placeholder="Maximum" disabled errorBag="updateCoursetype" required="true"/>
                                 </x-form.field>
                                 {{--
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
@@ -360,12 +360,12 @@
 
                             <form action="/admin/coursetype_instructor" method="POST">
                                 @csrf
-
+                                <x-form.required class="mt-1"/>
 
                                 <input name="coursetype_id" value="{{$coursetype->id}}" hidden />
 
                                 <x-form.field>
-                                    <x-form.select name="instructor_id" title="Inštruktor">
+                                    <x-form.select name="instructor_id" title="Inštruktor" required="true">
 
                                         <option class="text-gray-500" value="" disabled selected hidden>Inštruktori
                                         </option>
@@ -448,7 +448,7 @@
                         <div class="add-section" id="loginAdd"
                             style="{{request()->has('vytvorit') ||  $errors->admin->any() ? 'display:block;' : 'display: none;' }}">
                             <p class="text-sm font-semibold uppercase text-gray-700">Pridať študenta</p>
-
+                            <x-form.required class="mt-1"/>
                             <form action="/" method="post">
                                 @csrf
                                 <input type="hidden" name="typ" value="admin" />
@@ -458,6 +458,7 @@
                                 @endphp
                                 @endif
                                 @unless(session('student_id'))
+                                
                                 <x-form.field>
                                 <x-form.live-search/>
                             </x-form.field>
@@ -552,7 +553,7 @@
 
                                 <x-form.field>
 
-                                    <x-form.select name="days" title="Dni"  errorBag="admin">
+                                    <x-form.select name="days" title="Dni"  errorBag="admin" required="true">
 
                                         <option value="" disabled selected hidden>Dni výučby</option>
                                         <option value="1" {{old('days')==1 ? 'selected' : '' }}>Týždeň</option>
@@ -566,7 +567,7 @@
                                     </x-form.select>
                                 </x-form.field>
                                 <x-form.field>
-                                    <x-form.select name="time" title="Čas"  errorBag="admin">
+                                    <x-form.select name="time" title="Čas"  errorBag="admin" required="true">
 
                                         <option value="" disabled selected hidden>Čas výučby</option>
                                         <option value="1" {{old('time')==1 ? 'selected' : '' }}>Ranný</option>

@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Hide edit span and show stop edit span
             console.log('tue');
             editSpan.style.display = 'none';
-            document.getElementById('required-info').style.display = 'block';
+           form.querySelector('.required-info').style.display = 'block';
             stopEditSpan.style.display = 'inline';
             buttons.forEach(button => {
                 button.style.display = 'inline-block';
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('tus');
             editSpan.style.display = 'inline';
             stopEditSpan.style.display = 'none';
-            document.getElementById('required-info').style.display = 'none';
+           form.querySelector('.required-info').style.display = 'none';
             buttons.forEach(button => {
                 button.style.display = 'none';
             });
@@ -301,8 +301,9 @@ function handleTypeRadio() {
   const student2 = document.getElementById('stud2');
   const instruktor2 = document.getElementById('inst2');
 
-
-  favTypeRadios.forEach(radio => {
+if(student)
+{
+    favTypeRadios.forEach(radio => {
     radio.addEventListener('change', () => {
       if (radio.value === '0' && radio.checked) {
         student.style.display = 'flex';
@@ -315,6 +316,9 @@ function handleTypeRadio() {
       }
     });
   });
+}
+if(student2)
+{
   favTypeRadios2.forEach(radio => {
     radio.addEventListener('change', () => {
       if (radio.value === '0' && radio.checked) {
@@ -328,6 +332,8 @@ function handleTypeRadio() {
       }
     });
   });
+}
+  
 }
 handleTypeRadio();
 
