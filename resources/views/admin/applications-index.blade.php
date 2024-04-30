@@ -79,16 +79,17 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                         <x-form.field>
 
                             <div class="items-center mt-6">
-                            <x-form.label name="type" title="Typ kurzu" />
+                            <x-form.label name="type" title="Typ kurzu" required="true"/>
             
                             <div class="flex items-center mt-1">
-                                <x-form.input-radio name="type" for="type_student" value="0">
+                                <x-form.input-radio name="type" for="type_student" value="0"  required="true">
                                     Študentský
                                 </x-form.input-radio>
-                                <x-form.input-radio class="ml-6" name="type" for="type_instructor" value="1">
+                                <x-form.input-radio class="ml-6" name="type" for="type_instructor" value="1"  required="true">
                                     Inštruktorský
                                 </x-form.input-radio>
                             </div>
+                            <x-form.error name="type" errorBag="admin"/>
                             </div>
                             {{-- <div class="items-center">
                                 <x-form.label name="typ kurzu:" />
@@ -102,10 +103,10 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
             
                             </div> --}}
             
-                            <div class="mt-6 hidden" id="inst">
+                            <div class="mt-6 {{old('type') == '1' ? 'flex' : 'hidden'}}" id="inst">
             
                                 <div class="w-1/2 mr-2">
-                                    <x-form.select name="academy_id" title="Akadémia" class=" combo-a" data-nextcombo=".combo-b">
+                                    <x-form.select name="academy_id" title="Akadémia" class=" combo-a" data-nextcombo=".combo-b" :disabled="old('type') != '1'" errorBag="admin" required="true">
                                     <!-- parent -->
                                     {{-- <select name="academy_id" class="combo-a" data-nextcombo=".combo-b"> --}}
                                         <option value="" disabled selected hidden>Akadémia</option>
@@ -126,7 +127,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                                     </x-form.select>
                                 </div>
                                 <div class="w-1/2 ml-2">
-                                    <x-form.select name="coursetype_id" title="Kurz" class="combo-b" disabled>
+                                    <x-form.select name="coursetype_id" title="Kurz" class="combo-b" disabled errorBag="admin" required="true">
                                     
                                     <!-- child -->
                                     {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
@@ -156,10 +157,10 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                             </div>
             
             
-                            <div class="mt-6 hidden" id="stud">
+                            <div class="mt-6 {{old('type') == '0' ? 'flex' : 'hidden'}}" id="stud">
             
                                 <div class="w-1/2 mr-2">
-                                    <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3" data-nextcombo=".combo-b3">
+                                    <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3" data-nextcombo=".combo-b3" :disabled="old('type') != '0'" errorBag="admin" required="true">
             
                                     <!-- parent -->
                                     
@@ -181,7 +182,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                                     </x-form.select>
                                 </div>
                                 <div class="w-1/2 ml-2">
-                                    <x-form.select name="coursetype_id2" title="Kurz" class="combo-b3" disabled>
+                                    <x-form.select name="coursetype_id2" title="Kurz" class="combo-b3" disabled errorBag="admin" required="true">
                                     <!-- child -->
                                     {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
                                         disabled>
@@ -213,7 +214,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
 
                         <x-form.field>
                
-                            <x-form.select name="days" title="Dni">
+                            <x-form.select name="days" title="Dni" errorBag="admin" required="true">
                                 
                                     <option value="" disabled selected hidden>Dni výučby</option>
                                     <option value="1" {{old('days')==1 ? 'selected' : '' }}>Týždeň</option>
@@ -227,7 +228,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                             </x-form.select>
                                 </x-form.field>
                             <x-form.field>
-                                <x-form.select name="time" title="Čas">
+                                <x-form.select name="time" title="Čas" errorBag="admin" required="true">
                                 
                                     <option value="" disabled selected hidden>Čas výučby</option>
                                     <option value="1" {{old('time')==1 ? 'selected' : '' }}>Ranný</option>
