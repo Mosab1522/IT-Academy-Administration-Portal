@@ -12,17 +12,18 @@ session()->forget('instructor_id');
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie inštruktora</h3>
         <form action="/admin/instructors/create" method="post" enctype="multipart/form-data">
             @csrf
-            <div class="flex justify-between">
+            <x-form.required class="-mt-3"/>
+            <div class="flex justify-between mt-6">
                 <!-- Left side with input fields -->
                 <div class="w-full ">
                     
-                        <x-form.input name="name" type="text" title="Meno" placeholder="Meno"/>
+                        <x-form.input name="name" type="text" title="Meno" placeholder="Meno" required="true"/>
                     
                     <x-form.field>
-                        <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko"/>
+                        <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko" required="true"/>
                     </x-form.field>
                     <div class="mt-6 hidden md:block">
-                        <x-form.input name="email" type="email" title="Email" placeholder="Email"/>
+                        <x-form.input name="email" type="email" title="Email" placeholder="Email" required="true"/>
                     </div>
                     <div class="mt-6 hidden lg:block">
                         <x-form.input name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email"/>
