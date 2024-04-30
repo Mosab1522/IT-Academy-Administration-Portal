@@ -382,7 +382,7 @@ session()->forget('instructor_id');
                                     <br>
                                     @endforeach
                                 </td>
-                                <x-table.td-last url="instructors/{{ $instructor->id }}" edit=1 itemName="inštruktora {{$instructor->name}}" />
+                                <x-table.td-last url="instructors/{{ $instructor->id }}" edit=1 itemName="inštruktora {{$instructor->name}} {{$instructor->lastname}}? Spolu sním sa vymažú aj jeho triedy. Ak tomu chcete zabrániť, zmeňte inštruktora týmto triedam." />
                                
                             </tr>
                             @endforeach

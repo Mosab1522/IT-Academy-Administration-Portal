@@ -448,7 +448,7 @@
                                         <td class="py-4 px-6">
                                             {{ $lesson->lesson_date }} - {{ $lesson->duration }} minút
                                         </td>
-                                        <x-table.td-last url="lessons/{{ $lesson->id }}" edit=1 itemName="hodinu {{$lesson->title}}" />
+                                        <x-table.td-last url="lessons/{{ $lesson->id }}" edit=1 itemName="hodinu {{$lesson->title}} tejto triedy? Spolu s tým sa vymažú záznamy o absolvovaní tejto hodiny študentmi." />
                                       
                                     </tr>
                                     @endforeach
@@ -496,7 +496,7 @@
                                             </x-table.td></td>
                                         <td class="py-4 px-6">{{$student->email}}</td>
 
-                                        <x-table.td-last url="class-student/{{ $student->id }}/{{$class->id}}" edit=1 itemName="študenta {{$student->name}}" />
+                                        <x-table.td-last url="class-student/{{ $student->id }}/{{$class->id}}" edit=1 itemName="študenta {{$student->name}} {{$student->lastname}} z tejto triedy? Ak mal študent vytvorenú prihlášku vráti sa medzi prihlásených študentov kurzu tejto triedy. Vymaže sa aj jeho evidenia absolvovaných hodín triedy." />
                                        
                                     </tr>
                                     @endforeach

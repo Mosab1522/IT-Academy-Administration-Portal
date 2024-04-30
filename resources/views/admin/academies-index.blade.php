@@ -184,7 +184,7 @@
                                 <br>
                                 @endforeach
                             </td>
-                            <x-table.td-last url="academies/{{ $academy->id }}" edit=1 itemName="akadémiu {{$academy->name}}? Spolu s akadémiou sa vymažú aj všetky kurzy akadémie s prihláškami aj triedami. Ak tomu chcete predísť, zmeňte najskôr kurzom akadémiu." />
+                            <x-table.td-last url="academies/{{ $academy->id }}" edit=1 itemName="akadémiu {{$academy->name}}? Spolu s akadémiou sa vymažú aj všetky kurzy akadémie spolu s prihláškami aj triedami týchto kurzov." />
                             {{-- <td class="px-3 py-4 text-right text-sm font-medium lg:px-6 lg:py-4">
                                 <a href="/admin/academies/{{ $academy->id }}" class="text-blue-600 hover:text-blue-700 hover:underline">Upraviť</a>
                                 &nbsp;

@@ -361,11 +361,11 @@
                             <form action="/admin/coursetype_instructor" method="POST">
                                 @csrf
                                 <x-form.required class="mt-1"/>
-
+                                <input name="type" value="1" hidden />
                                 <input name="coursetype_id" value="{{$coursetype->id}}" hidden />
-
+                                <input name="academy_id" value="{{$coursetype->academy->id}}" hidden />
                                 <x-form.field>
-                                    <x-form.select name="instructor_id" title="Inštruktor" required="true">
+                                    <x-form.select name="instructor_id" title="Inštruktor" required="true" errorBag="createCI">
 
                                         <option class="text-gray-500" value="" disabled selected hidden>Inštruktori
                                         </option>

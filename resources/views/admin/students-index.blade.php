@@ -219,7 +219,7 @@
                                         'inštruktorský'}})</x-table.td><br>
                                         @endforeach
                                     </td>
-                                    <x-table.td-last url="students/{{ $student->id }}" edit=1 itemName="študenta {{$student->name}}" />
+                                    <x-table.td-last url="students/{{ $student->id }}" edit=1 itemName="študenta {{$student->name}} {{$student->lastname}}? Spolu sním sa vymažú všetky jeho prihlášky aj absolvované kurzy. Takisto sa odstráni z aktuálnych tried." />
                                     
                                 </tr>
                                 @endforeach

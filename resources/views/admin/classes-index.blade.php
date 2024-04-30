@@ -94,7 +94,7 @@
                                         {{-- @php
                                         $academy = \App\Models\CourseType::all();
                                         @endphp --}}
-                                        @foreach(\App\Models\CourseType::with(['academy', 'applications', 'instructors'])->whereIn('type', [1, 2])->get() as $type)
+                                        @foreach(\App\Models\CourseType::with(['academy', 'applications', 'instructors'])->whereIn('type', [1])->get() as $type)
                                         @if($type->instructors->count() > 0)
                                         <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                             data-option="{{ $type->academy_id }}" {{-- {{old('coursetype_id')==$type->id
@@ -151,7 +151,7 @@
                                     {{-- @php
                                     $academy = \App\Models\CourseType::all();
                                     @endphp --}}
-                                    @foreach(\App\Models\CourseType::with(['academy', 'applications', 'instructors'])->whereIn('type', [1, 2])->get() as $type2)
+                                    @foreach(\App\Models\CourseType::with(['academy', 'applications', 'instructors'])->whereIn('type', [0])->get() as $type2)
                                     @if($type2->instructors->count() > 0)
                                     <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
                                         data-option="{{ $type2->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
@@ -282,7 +282,7 @@
                                 {{$class->time== 2 ? 'Poobedný' : ''}} {{$class->time== 3 ? 'Nezáleží' : ''}}
                             </td>
                             <td class="py-4 px-6">{{$class->students->count()}}</td>
-                            <x-table.td-last url="classes/{{ $class->id }}" edit=1 itemName="triedu {{$class->name}}? Spolu s triedou sa vymažú aj jej hodiny. Študenti v triede sa naspäť vrátia medzi prihlásených študentov na kurz tejto triedy. V prípade ukončenia vyučovania využite možnosť Ukončenčiť triedu." />
+                            <x-table.td-last url="classes/{{ $class->id }}" edit=1 itemName="triedu {{$class->name}}? Spolu s triedou sa vymažú aj jej hodiny. Študenti v triede sa  vrátia naspäť medzi prihlásených študentov na kurz tejto triedy. V prípade ukončenia vyučovania využite možnosť Ukončenčiť triedu." />
                             
                         </tr>
                         @endforeach

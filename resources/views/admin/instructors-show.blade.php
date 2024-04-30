@@ -36,10 +36,10 @@
                             </form> --}}
                     
                             
-                             <x-buttonsection class="lg:w-3/12">
-                    <li class="flex-1 {{ session('success_d') ? 'hidden' : '' }}">
+                             <x-buttonsection>
+                    <li class="flex-1 {{ session('success_dd') || session('success_cc') ||  $errors->createCI->any() || session('success_c') || session('success_d')  || $errors->default->any() ? 'hidden' : '' }}">
                         <button
-                        class="edit-button {{session('success_cc') || session('success_dd') || request()->has('pridat')  || request()->has('zmenit') || request()->has('vytvorit') ? 'hidden' : '' }} "
+                        class="edit-button {{session('success_cc') || session('success_dd') || request()->has('pridat')  || request()->has('zmenit') || request()->has('vytvorit') ||  $errors->createCI->any() || session('success_c') || session('success_d') || $errors->default->any()  ? 'hidden' : '' }} "
                         data-target="profile">
                         <span class="p-auto" style="display: inline;">Povoliť
                             úpravy</span>
@@ -47,47 +47,30 @@
                     </button>
                     </li>
                     <li
-                        class="flex-1 {{ session('success_c') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
+                        class="flex-1 {{ session('success_cc') ||  $errors->createCI->any() || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
                         <button
-                                            class="add-button z-30 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}  "
+                                            class="add-button z-30 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ||  $errors->createCI->any() ? '' : 'hidden' }}  "
                                             data-target="kurzyAdd">
                                             <span
                                                 class="{{ session('success_cc') || session('success_dd') ? '' : 'hidden' }}">Pridať
                                                 kurz</span>
-                                            <span class="{{request()->has('pridat') ? '' : 'hidden' }}">Zrušiť
+                                            <span class="{{request()->has('pridat') ||  $errors->createCI->any() ? '' : 'hidden' }}">Zrušiť
                                                 pridanie kurzu</span>
                                         </button>
                     </li>
-                    <li class="flex-1 {{request()->has('zmenit') || request()->has('vytvorit') ? '' : 'hidden' }}">
+                    <li class="flex-1 {{session('success_c') || session('success_d')  ||  $errors->default->any()  ? '' : 'hidden' }}">
                     <button
-                    class="edit-button {{request()->has('zmenit') || request()->has('vytvorit') ? '' : 'hidden' }} "
-                    data-target="login">
+                    class="add-button {{session('success_c') || session('success_d')  ||  $errors->default->any()  ? '' : 'hidden' }} "
+                    data-target="loginAdd">
                     <span id="vytvaranie"
-                        style="{{request()->has('zmenit') || request()->has('vytvorit') ? 'display: none;' : 'display: inline;' }}">Povoliť
-                        úpravy</span>
+                        style="{{session('success_c') || session('success_d')   ? 'display: inline;' : 'display: none;' }}">Vytvoriť hodinu triede</span>
                     <span
-                        style="{{request()->has('zmenit') || request()->has('vytvorit') ? 'display: inline;' : 'display: none;' }}">Zrušiť
-                        úpravy</span>
+                        style="{{$errors->default->any() ? 'display: inline;' : 'display: none;' }}">Zrušiť
+                        vytvorenie hodiny</span>
                 </button>
             </li>
             </x-buttonsection>
-            <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-3/12">
-                <div class="relative">
-                    <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5" role="tablist" nav-pills>
-                       
-                        <button 
-                            class="section w-full hidden text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-gray-100  shadow-sm rounded-lg" id="calendars">
-                            <span class="material-icons material-icons-custom" style="vertical-align: middle; font-size: 1.25rem;">calendar_today</span>
-                            <span style="vertical-align: middle;">Kalendár</span>
-                        </button>
-                        <button 
-                            class="section-button text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 shadow-sm rounded-lg" data-target="calendars">
-                            <span class="material-icons material-icons-custom" style="vertical-align: middle; font-size: 1.25rem;">calendar_today</span>
-                            <span style="vertical-align: middle;">Kalendár</span>
-                        </button>
-                    </ul>
-                </div>
-            </div>
+        
             
                         
                         {{-- <div class="flex-none w-auto max-w-full px-3 my-auto">
@@ -167,16 +150,16 @@
                                             <span id="tlac2"
                                                 class="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} ml-2">Profil</span>
                                         </a> --}}
-                                        <x-buttonsection  class="lg:w-3/12">
+                                        <x-buttonsection >
                                             {{-- <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
                                                 <div class="relative">
                                                     <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5 shadow" role="tablist" nav-pills> --}}
                                                         <li class="flex-auto pr-0.5">
                                                             <button
-                                                            class="section-button {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }}  rounded-l-lg"
+                                                            class="section-button {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ||  $errors->createCI->any() ? '' : 'hidden' }}  rounded-l-lg"
                                                             data-target="profile">Profil</button>
                                                         <button
-                                                            class="section-button {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? 'hidden' : '' }} rounded-l-lg"
+                                                            class="section-button {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ||  $errors->createCI->any() ? 'hidden' : '' }} rounded-l-lg"
                                                             data-target="kurzy">Kurzy</button>
                                                         </li>
                                                         <li class="flex-auto">
@@ -185,7 +168,7 @@
                                             data-target="kurzy">Kurzy</button>
                                         <button
                                             class="section-button {{session('success_c') || session('success_uu') || request()->has('vytvorit') || request()->has('zmenit') ? 'hidden' : '' }} rounded-r-lg"
-                                            data-target="login">Login</button>
+                                            data-target="login">Triedy</button>
                                                         </li>
                                                     </x-buttonsection>
                                                 
@@ -225,49 +208,50 @@
                     </div>
                  
                     <div id="profile" class="section flex-auto p-6"
-                        style="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat')  || request()->has('vytvorit') || request()->has('zmenit') ? 'display: none;' : '' }}">
+                        style="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || session('success_d') || request()->has('pridat')  || request()->has('vytvorit') || request()->has('zmenit') ||  $errors->createCI->any()  ||  $errors->default->any()? 'display: none;' : '' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Všeobecné informácie</p>
                         <form id="formm" action="/admin/instructors/{{ $instructor->id }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             @method('Patch')
+                            <x-form.required class=" hidden mt-1 " />
                             <div class="flex mt-6">
                                 <div class="w-1/2 mr-2">
                                     <x-form.input
-                                        value="{{$instructor->name}}" name="name" type="text" title="Meno" placeholder="Meno" disabled />
+                                        value="{{$instructor->name}}" name="name" type="text" title="Meno" placeholder="Meno" disabled required="true" errorBag="updateInstructor"/>
                                </div>
                                   
                                                    <div  class="w-1/2 ml-2">
-                                                        <x-form.input value="{{$instructor->lastname}}" name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko"  disabled/>
+                                                        <x-form.input value="{{$instructor->lastname}}" name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko"  disabled required="true" errorBag="updateInstructor"/>
                                                    </div>
                             </div>
 
                             <div class="flex mt-6">
                                 <div class="w-1/2 mr-2">
-                        <x-form.input  value="{{$instructor->email}}" name="email" type="email" title="Email" placeholder="Email"  disabled/>
+                        <x-form.input  value="{{$instructor->email}}" name="email" type="email" title="Email" placeholder="Email"  disabled required="true" errorBag="updateInstructor"/>
                         </div>
                                   
                         <div  class="w-1/2 ml-2">
-                        <x-form.input value="{{$instructor->sekemail}}" name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email" disabled/>
+                        <x-form.input value="{{$instructor->sekemail}}" name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email" disabled errorBag="updateInstructor"/>
                         </div>
                     </div>
                         <p class="text-sm font-semibold uppercase text-gray-700 mt-6">Osobné informácie</p>
                         <x-form.field>
-                            <x-form.input  value="{{$instructor->telephone}}" name="telephone" type="tel" title="Telefonné číslo" placeholder="Telefonné číslo" disabled/>
+                            <x-form.input  value="{{$instructor->telephone}}" name="telephone" type="tel" title="Telefonné číslo" placeholder="Telefonné číslo" errorBag="updateInstructor" disabled/>
                             </x-form.field>
                     
                             <x-form.field>
-                                <x-form.input  value="{{$instructor->ulicaacislo}}" name="ulicacislo" type="text" title="Ulica a popisné číslo" placeholder="Ulica a popisné číslo" disabled/>
+                                <x-form.input  value="{{$instructor->ulicacislo}}" name="ulicacislo" type="text" title="Ulica a popisné číslo" errorBag="updateInstructor" placeholder="Ulica a popisné číslo" disabled/>
                                 </x-form.field>
 
                                 <div class="flex mt-6">
                                     <div class="w-1/2 mr-2">
-                                <x-form.input value="{{$instructor->mestoobec}}" name="mestoobec" type="text" title="Mesto / Obec" placeholder="Mesto / Obec" disabled/>
+                                <x-form.input value="{{$instructor->mestoobec}}" name="mestoobec" type="text" title="Mesto / Obec" errorBag="updateInstructor" placeholder="Mesto / Obec" disabled/>
                                 </div>
                                   
                                 <div  class="w-1/2 ml-2">
                 
-                                <x-form.input value="{{$instructor->psc}}" name="psc" type="text" title="PSČ" placeholder="PSČ" disabled/>
+                                <x-form.input value="{{$instructor->psc}}" name="psc" type="text" title="PSČ" placeholder="PSČ" errorBag="updateInstructor" disabled/>
                                 </div>
                             </div>
                             {{-- <x-form.field>
@@ -297,21 +281,111 @@
                        
                     </div>
                     <div class="add-section" id="kurzyAdd"
-                        style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
+                        style="{{request()->has('pridat') ||  $errors->createCI->any() ? 'display:block;' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Pridať kurz do správy</p>
                         <form action="/admin/coursetype_instructor" method="POST">
                             @csrf
-                           
+
 
                                     <input name="instructor_id" value="{{ $instructor->id }}" hidden />
 
-                                    <div class="mt-6 flex" id="inst">
+                                    <x-form.field>
 
-                                        <div class="w-1/2 mr-2">
-                                            <x-form.select name="academy_id" title="Akadémia" class=" combo-a"
-                                                data-nextcombo=".combo-b">
-                                                <!-- parent -->
-                                                {{-- <select name="academy_id" class="combo-a" data-nextcombo=".combo-b"> --}}
+                                        <div class="items-center mt-6 ">
+                                            <x-form.label name="type" title="Typ kurzu" required="true"/>
+                    
+                                            <div class="flex items-center mt-1">
+                                                <x-form.input-radio name="type" for="type_student" value="0" >
+                                                    Študentský
+                                                </x-form.input-radio>
+                    
+                                                <x-form.input-radio class="ml-6" name="type" for="type_instructor" value="1" >
+                                                    Inštruktorský
+                                                </x-form.input-radio>
+                                                
+                                                
+                                            </div>
+                                            <x-form.error name="type" errorBag="createCI"/>
+                    
+                                        </div>
+                                        {{-- <div class="items-center">
+                                            <x-form.label name="typ kurzu:" />
+                
+                                            <input class="mr-0.5" type="radio" name="type" value="0" {{old('type')=='0' ? 'checked' : ''
+                                                }}>
+                                            <label for="0">Študentský</label>
+                
+                                            <input class="ml-2 mr-0.5" type="radio" name="type" value="1" {{old('type')=='1' ? 'checked'
+                                                : '' }}>
+                                            <label for="1">Inštruktorský</label>
+                
+                                        </div> --}}
+                
+                                        <div class="mt-6  {{old('type') == '1' ? 'flex' : 'hidden'}} " id="inst">
+                
+                                            <div class="w-1/2 mr-2">
+                                                <x-form.select name="academy_id" title="Akadémia" class=" combo-a" required="true"
+                                                    data-nextcombo=".combo-b"  :disabled="old('type') != '1'" errorBag="createCI">
+                                                    <!-- parent -->
+                                                    {{-- <select name="academy_id" class="combo-a" data-nextcombo=".combo-b"> --}}
+                                                        <option value="" disabled selected hidden>Akadémia</option>
+                                                        {{-- @php
+                                                        $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                                                        ->get();
+                                                        @endphp --}}
+                                                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])
+                                                        ->get() as $academ)
+                                                        <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
+                                                            {{-- {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                                                            >{{
+                                                            ucwords($academ->name)}}</option>
+                                                        @endforeach
+                                                        {{-- <option value="" disabled selected hidden>Akadémia</option>
+                                                        <option value="1" data-id="1" data-option="-1">Cisco</option>
+                                                        <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                                                </x-form.select>
+                                            </div>
+                                            <div class="w-1/2 ml-2">
+                                                <x-form.select name="coursetype_id" title="Kurz" class="combo-b" disabled required="true"  errorBag="createCI">
+                
+                                                    <!-- child -->
+                                                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
+                                                        data-nextcombo=".combo-c" disabled>
+                                                        <option value="" disabled selected hidden>Typ kurzu</option>
+                                                        <option value="1" data-id="1" data-option="1">Lahky</option>
+                                                        <option value="2" data-id="2" data-option="1">Stredny</option>
+                                                        <option value="3" data-id="3" data-option="2">Photoshop</option>
+                                                        <option value="4" data-id="4" data-option="2">Illustrator</option>
+                                                    </select> --}}
+                                                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" disabled> --}}
+                                                        <option value="" disabled selected hidden>Typ kurzu</option>
+                                                        {{-- @php
+                                                        $academy = \App\Models\CourseType::all();
+                                                        @endphp --}}
+                                                        @foreach(\App\Models\CourseType::with(['academy', 'applications', 'instructors'])->whereIn('type', [1])->get() as $type)
+                                                        @if (!$instructor->coursetypes->contains('id', $type->id))
+                                                        <option value="{{ $type->id }}" data-id="{{ $type->id }}"
+                                                            data-option="{{ $type->academy_id }}" {{-- {{old('coursetype_id')==$type->id
+                                                            ?
+                                                            'selected' : ''}} --}}
+                                                            >{{
+                                                            ucwords($type->name) }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                </x-form.select>
+                                            </div>
+                
+                                        </div>
+                
+                
+                                        <div class="mt-6  {{old('type') == '0' ? 'flex' : 'hidden'}} " id="stud">
+                
+                                            <div class="w-1/2 mr-2">
+                                                <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3" errorBag="createCI"
+                                                    data-nextcombo=".combo-b3" required="true"  :disabled="old('type') != '0'" >
+                
+                                                    <!-- parent -->
+                
                                                     <option value="" disabled selected hidden>Akadémia</option>
                                                     {{-- @php
                                                     $academy = \App\Models\Academy::with(['coursetypes','applications'])
@@ -319,45 +393,46 @@
                                                     @endphp --}}
                                                     @foreach (\App\Models\Academy::with(['coursetypes','applications'])
                                                     ->get() as $academ)
-                                                    <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
-                                                        {{-- {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
+                                                    <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
+                                                        {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
                                                         >{{
                                                         ucwords($academ->name)}}</option>
                                                     @endforeach
                                                     {{-- <option value="" disabled selected hidden>Akadémia</option>
                                                     <option value="1" data-id="1" data-option="-1">Cisco</option>
                                                     <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
-                                            </x-form.select>
-                                        </div>
-                                        <div class="w-1/2 ml-2">
-                                            <x-form.select name="coursetype_id" title="Kurz" class="combo-b" disabled>
-            
-                                                <!-- child -->
-                                                {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
-                                                    data-nextcombo=".combo-c" disabled>
-                                                    <option value="" disabled selected hidden>Typ kurzu</option>
-                                                    <option value="1" data-id="1" data-option="1">Lahky</option>
-                                                    <option value="2" data-id="2" data-option="1">Stredny</option>
-                                                    <option value="3" data-id="3" data-option="2">Photoshop</option>
-                                                    <option value="4" data-id="4" data-option="2">Illustrator</option>
-                                                </select> --}}
-                                                {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" disabled> --}}
+                                                </x-form.select>
+                                            </div>
+                                            <div class="w-1/2 ml-2">
+                                                <x-form.select name="coursetype_id2" title="Kurz" class="combo-b3" required="true" disabled errorBag="createCI">
+                                                    <!-- child -->
+                                                    {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b"
+                                                        data-nextcombo=".combo-c" disabled>
+                                                        <option value="" disabled selected hidden>Typ kurzu</option>
+                                                        <option value="1" data-id="1" data-option="1">Lahky</option>
+                                                        <option value="2" data-id="2" data-option="1">Stredny</option>
+                                                        <option value="3" data-id="3" data-option="2">Photoshop</option>
+                                                        <option value="4" data-id="4" data-option="2">Illustrator</option>
+                                                    </select> --}}
+                
                                                     <option value="" disabled selected hidden>Typ kurzu</option>
                                                     {{-- @php
                                                     $academy = \App\Models\CourseType::all();
                                                     @endphp --}}
-                                                    @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1,2])->get() as $type)
-                                                    <option value="{{ $type->id }}" data-id="{{ $type->id }}"
-                                                        data-option="{{ $type->academy_id }}" {{-- {{old('coursetype_id')==$type->id
-                                                        ?
+                                                    @foreach(\App\Models\CourseType::with(['academy', 'applications', 'instructors'])->whereIn('type', [0])->get() as $type2)
+                                                    @if (!$instructor->coursetypes->contains('id', $type2->id))
+                                                    <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
+                                                        data-option="{{ $type2->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
                                                         'selected' : ''}} --}}
                                                         >{{
-                                                        ucwords($type->name) }}</option>
+                                                        ucwords($type2->name) }}</option>
+                                                    @endif
                                                     @endforeach
-                                            </x-form.select>
+                                                </x-form.select>
+                                             
+                                            </div>
                                         </div>
-            
-                                    </div>
+                                    </x-form.field>
                                     <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                                         Odoslať
                                     </x-form.button>
@@ -365,7 +440,7 @@
                         </form>
                     </div>
                     <div id="kurzy" class="section flex-auto p-6"
-                        style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'display: none;' }}">
+                        style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ||  $errors->createCI->any() ? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Kurzy v správe</p>
                         <x-single-table>
                             <x-slot:head>
@@ -404,15 +479,117 @@
                                             @endforeach
                                         </td>
                                         <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                                        <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz  {{$coursetype->name}}" />
+                                        <x-table.td-last url="coursetype_instructor/{{ $instructor->id }}/{{$coursetype->id}}" edit=1 itemName="kurz  {{$coursetype->name}} zo správy tohto inštruktora? Spolu s tým sa vymažú aj jeho triedy. Ak tomu chcete zabrániť, zmeňte inštruktora týmto triedam." />
 
                                       
                                     </tr>
                                     @endforeach
                                 </x-single-table>
                     </div>
-            
-                    <div id="login" class="section flex-auto p-6"
+                    <div class="add-section" id="loginAdd"
+                    style="{{ $errors->default->any()  ? 'display:block;' : 'display: none;' }}">
+                    <p class="text-sm font-semibold uppercase text-gray-700">Vytvoriť hodinu</p>
+
+                    <form action="/admin/lessons/create" method="post">
+                        @csrf
+                        <x-form.required class="mt-1"/>
+
+                        <x-form.field>
+                            <x-form.input name="title" type="text" title="Názov hodiny"
+                                placeholder="Názov hodiny" required="true"/>
+                        </x-form.field>
+                        <x-form.field>
+                        <x-form.select name="class_id" title="Triedy" required="true">
+                            <option style="color: gray;" value="" disabled selected hidden>Triedy</option>
+                            {{-- @php
+                            $academy = \App\Models\Academy::with(['coursetypes','applications'])
+                            ->get();
+                            @endphp --}}
+                            {{-- @php
+                            $assignedInstructors = $coursetype->instructors->pluck('id')->toArray();
+                            @endphp --}}
+                            @foreach ($instructor->classes as $class)
+
+                            
+
+                            <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1"
+                                {{old('instructor_id')==$class->id ? 'selected' :
+                                ''}}> {{
+                                ucwords($class->name)}} - {{
+                                ucwords($class->coursetype->name)}}  {{$class->coursetype->type=='0'? 'študentský' : 'inštruktorský'}} </option>
+
+                            @endforeach
+                            {{-- <option value="" disabled selected hidden>Akadémia</option>
+                            <option value="1" data-id="1" data-option="-1">Cisco</option>
+                            <option value="2" data-id="2" data-option="-1">Adobe</option> --}}
+                        </x-form.select>
+                        </x-form.field>
+                        <x-form.field>
+                            <div class="flex">
+                                <x-form.label name="datetime-local" title="Dátum a trvanie hodiny" required="true"/>
+
+                            </div>
+                            <div class="flex">
+                                <div class="w-1/2 mr-2">
+                                <input type="datetime-local" name="lesson_date" value="{{ old('lesson_date')}}"
+                                    class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                                    <x-form.error name="lesson_date" errorBag="default"/>
+                                </div>
+                                <div class="w-1/2 ml-2">
+                                <input type="time" name="duration"
+                                    class="mt-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                    step="60" value="{{ old('duration', '00:45') }}" required>
+                                    <x-form.error name="duration" errorBag="default"/>
+                                </div>
+                            </div>
+
+                        </x-form.field>
+
+                        <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
+                            Odoslať
+                        </x-form.button>
+                    </form>
+                </div>
+
+                <div id="login" class="section flex-auto p-6"
+                    style="{{session('success_c') || session('success_d')  ||  $errors->default->any()  ? '' : 'display: none;' }}">
+                    <p class="text-sm font-semibold uppercase text-gray-700">Triedy inštruktora</p>
+                    <x-single-table>
+                        <x-slot:head>
+                                <tr>
+                                    <th scope="col" class="py-3 px-6">Názov triedy</th>
+                            <th scope="col" class="py-3 px-6">Kurz</th>
+                          
+                            <th scope="col" class="py-3 px-6">Dni / čas</th>
+                            <th scope="col" class="py-3 px-6">Počet študentov</th>
+                            <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
+                </x-slot:head>
+                                <!-- Iterate over lessons in this class -->
+                                @foreach ($instructor->classes as $class)
+                                <tr
+                                    class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
+                                    <td class="py-4 px-6"><x-table.td url="classes/{{ $class->id }}">{{$class->name}}</x-table.td></td>
+                                    <td class="py-4 px-6">
+                                        <x-table.td url="coursetypes/{{ $class->coursetype->id }}">
+                                        {{$class->coursetype->name}} - {{$class->coursetype->type==0 ? 'študentský' :
+                                        'inštruktorský'}} ({{$class->academy->name}} akadémia)
+                                        </x-table.td>
+                                    </td>
+                                  
+                                    <td class="py-4 px-6">
+                                        {{$class->days== 1 ? 'Týždeň' : ''}} {{$class->days== 2 ? 'Víkend' : ''}}
+                                        {{$class->days== 3 ? 'Nezáleží' : ''}} / {{$class->time== 1 ? 'Ranný' : ''}}
+                                        {{$class->time== 2 ? 'Poobedný' : ''}} {{$class->time== 3 ? 'Nezáleží' : ''}}
+                                    </td>
+                                    <td class="py-4 px-6">{{$class->students->count()}}</td>
+                                    <x-table.td-last url="classes/{{ $class->id }}" edit=1 itemName="triedu {{$class->name}}? Spolu s triedou sa vymažú aj jej hodiny. Študenti v triede sa naspäť vrátia medzi prihlásených študentov na kurz tejto triedy. V prípade ukončenia vyučovania využite možnosť Ukončenčiť triedu." />
+                                    
+                                </tr>
+                                @endforeach
+                            </x-single-table>
+                </div>
+                    
+                    {{-- <div id="login" class="section flex-auto p-6"
                         style="{{ session('success_uu') || session('success_c') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700 mb-6">Prihlasovacie údaje</p>
                         <input name="instructor_id" value="{{ $instructor->id }}" hidden />
@@ -458,7 +635,7 @@
                                     </div>
                                 </div>
 
-                            
+                             --}}
 
                             {{-- <x-form.field>
                                 <button type="submit"
@@ -479,7 +656,7 @@
                                 </div>
 
                             </x-form.field> --}}
-
+{{-- 
                             <x-form.field>
                                 <div class="flex justify-end space-x-4 mt-6">
                                     <x-form.button class=" hidden  flex-1">
@@ -497,13 +674,13 @@
                             </x-form.field>
 
                         </form>
-                    </div>
-                    <div id="calendars" class="section flex-auto p-6"
+                    </div> --}}
+                    {{-- <div id="calendars" class="section flex-auto p-6"
                         style="display: none;">
                         <p class="text-sm font-semibold uppercase text-gray-700">Kalendár inštruktora</p>
                         
                     <div id='calendar'></div>
-                    </div>
+                    </div> --}}
 
 </x-setting>
 
@@ -635,17 +812,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        document.getElementById('filterForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const queryParams = new URLSearchParams(new FormData(form)).toString();
-    const newEventsUrl = `{{ url('/lessons/all') }}?${queryParams}`;
+    // document.getElementById('filterForm').addEventListener('submit', function(e) {
+    // e.preventDefault();
+    // const form = e.currentTarget;
+    // const queryParams = new URLSearchParams(new FormData(form)).toString();
+    // const newEventsUrl = `{{ url('/lessons/all') }}?${queryParams}`;
 
-    // Update the calendar's events source
-    window.myCalendar.removeAllEventSources(); // Remove the current event sources
-    window.myCalendar.addEventSource(newEventsUrl); // Add the new source with updated filters
-    window.myCalendar.refetchEvents(); // Optionally refetch events
-});
+    // // Update the calendar's events source
+    // window.myCalendar.removeAllEventSources(); // Remove the current event sources
+    // window.myCalendar.addEventSource(newEventsUrl); // Add the new source with updated filters
+    // window.myCalendar.refetchEvents(); // Optionally refetch events
+//   });
 
      
 

@@ -172,7 +172,7 @@ class InstructorController extends Controller
 
                 'coursetypes_id' => ['array',],
                 'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
-            ]
+            ],$this->messages()
         );
         
         if (empty($attributes['telephone'])) {
@@ -236,14 +236,14 @@ class InstructorController extends Controller
     }
 
     public function update(Instructor $instructor)
-    { 
+    {  
        
         if(request()->photo)
         {
-            $attributes = request()->validate(
+            $attributes = request()->validateWithBag('Photo',
                 [
                      'photo' => ['image']
-                ]
+                ],$this->messages()
                 );
                 $attributes['photo'] = request()->file('photo')->store('photos');
                 $instructor->update($attributes);
@@ -251,7 +251,7 @@ class InstructorController extends Controller
         }
 
         
-        $attributes = request()->validate(
+        $attributes = request()->validateWithBag('updateInstructor',
             [
                 'name' => ['required', 'max:255'],
                 'lastname' => ['required', 'max:255'],
@@ -265,8 +265,10 @@ class InstructorController extends Controller
                 'ulicacislo' => ['nullable', 'required_with:mestoobec,psc', 'min:3', 'max:255'],
                 'mestoobec' => ['nullable', 'required_with:ulicacislo,psc', 'min:1', 'max:255'],
                 'psc' => ['nullable', 'required_with:mestoobec,ulicacislo', 'min:6', 'max:6'],
-            ]
+            ],$this->messages()
         );
+        
+       
         if (empty($attributes['telephone'])) {
             $attributes['telephone'] = NULL;
         } else {
@@ -276,7 +278,7 @@ class InstructorController extends Controller
             $validation = Validator($attributes, $rule);
 
             if ($validation->fails()) {
-                throw ValidationException::withMessages(['telephone' => 'Toto telefonné číslo sa už používa.']);
+                throw ValidationException::withMessages(['telephone' => 'Toto telefonné číslo sa už používa.'])->errorBag('updateInstructor');
             }
         }
 
@@ -301,7 +303,7 @@ class InstructorController extends Controller
             $trimmedUrl = substr(url()->previous(), 0, -7);
             return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
         }
-
+       
         return back()->with('success_u', 'Úspešne aktualizované');
     }
 
@@ -343,6 +345,37 @@ public function lessonsForInstructor(Request $request, Instructor $instructor)
     });
 
     return response()->json($formattedLessons);
+}
+protected function messages()
+{
+    return [
+    'name.required' => 'Meno je povinné.',
+    'name.max' => 'Meno môže mať maximálne 255 znakov.',
+    'lastname.required' => 'Priezvisko je povinné.',
+    'lastname.max' => 'Priezvisko môže mať maximálne 255 znakov.',
+    'photo.image' => 'Súbor musí byť obrázok.',
+    'email.required' => 'Pole e-mail je povinné.',
+    'email.email' => 'E-mail musí byť platná e-mailová adresa.',
+    'email.different' => 'E-mail musí byť odlišný od sekundárneho e-mailu.',
+    'email.max' => 'E-mail môže mať maximálne 255 znakov.',
+    'email.unique' => 'Tento e-mail už je zaregistrovaný.',
+    'sekemail.email' => 'Sekundárny e-mail musí byť platná e-mailová adresa.',
+    'sekemail.different' => 'Sekundárny e-mail musí byť odlišný od hlavného e-mailu.',
+    'sekemail.unique' => 'Tento sekundárny e-mail už je zaregistrovaný.',
+    'telephone.regex' => 'Telefónne číslo musí byť v správnom formáte.',
+    'ulicacislo.required_with' => 'Ulica a číslo sú povinné, ak je zadané mesto alebo PSČ.',
+    'ulicacislo.min' => 'Ulica a číslo musia obsahovať aspoň 3 znaky.',
+    'ulicacislo.max' => 'Ulica a číslo môžu obsahovať najviac 255 znakov.',
+    'mestoobec.required_with' => 'Mesto je povinné, ak je zadaná ulica alebo PSČ.',
+    'mestoobec.min' => 'Mesto musí obsahovať aspoň 1 znak.',
+    'mestoobec.max' => 'Mesto môže obsahovať najviac 255 znakov.',
+    'psc.required_with' => 'PSČ je povinné, ak je zadaná ulica alebo mesto.',
+    'psc.min' => 'PSČ musí obsahovať medzeru - 6 znakov .',
+    'psc.max' => 'PSČ môže obsahovať medzeru - 6 znakov.',
+    'coursetypes_id.array' => 'Pole typov kurzov musí byť pole.',
+    'coursetypes_id.*.distinct' => 'Typy kurzov musia byť jedinečné.',
+    'coursetypes_id.*.exists' => 'Vybraný typ kurzu neexistuje.',
+    ];
 }
 
 }

@@ -144,8 +144,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                                         {{-- @php
                                         $academy = \App\Models\CourseType::all();
                                         @endphp --}}
-                                        @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1,
-                                        2])->get() as $type)
+                                        @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1])->get() as $type)
                                         <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                             data-option="{{ $type->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
                                             'selected' : ''}} --}}
@@ -198,8 +197,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                                         {{-- @php
                                         $academy = \App\Models\CourseType::all();
                                         @endphp --}}
-                                        @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [0,
-                                        2])->get() as $type2)
+                                        @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [0])->get() as $type2)
                                         <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
                                             data-option="{{ $type2->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
                                             'selected' : ''}} --}}
@@ -418,7 +416,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                            
                         </td>
                             
-                                <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku {{$application->student->name}}" />
+                                <x-table.td-last url="applications/{{ $application->id }}" edit=0 itemName="prihlášku študenta: {{$application->student->name}} {{$application->student->lastname}} na kurz: {{$application->coursetype->name}} akadémie {{$application->academy->name}}?" />
 
                                
                         </tr>

@@ -540,8 +540,7 @@
                                                             @endphp --}}
                                                            
                                                             @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type',
-                                                            [1,
-                                                            2])->get() as $type)
+                                                            [1])->get() as $type)
                                                             <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                                                 data-option="{{ $type->academy_id }}" {{--
                                                                 {{old('coursetype_id')==$type->id ?
@@ -611,8 +610,8 @@
                                                         @endphp --}}
                                                        
                                                          @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type',
-                                                        [0,
-                                                        2])->get() as $type2)
+                                                        [0
+                                                        ])->get() as $type2)
                                                         <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
                                                             data-option="{{ $type2->academy_id }}" {{--
                                                             {{old('coursetype_id')==$type->id ?
@@ -717,7 +716,7 @@
                                             </td>
 
                                             <x-table.td-last url="applications/{{ $application->id }}" edit=0
-                                                itemName="prihlášku {{$application->student->name}}" />
+                                                itemName="prihlášku študenta tohto študenta na kurz: {{$application->coursetype->name}} akadémie {{$application->academy->name}}?" />
 
 
                                         </tr>

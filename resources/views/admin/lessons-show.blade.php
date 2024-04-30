@@ -415,7 +415,7 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                                                 </x-table.td></td>
                                             <td class="py-4 px-6">{{$student->email}}</td>
                                            
-                                            <x-table.td-last url="lesson-students/{{ $student->id }}/{{$lesson->id}}" edit=1 itemName="študenta {{$student->name}}" />
+                                            <x-table.td-last url="lesson-students/{{ $student->id }}/{{$lesson->id}}" edit=1 itemName="študenta {{$student->name}} {{$student->lastname}} zo zoznamu zúčastnených študentov tejto hodiny?" />
                                             
                                         </tr>
                                         @endforeach
