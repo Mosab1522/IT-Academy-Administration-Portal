@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function () {
         mappings: [
           {
             value: 'student',
-            elementsToShow: ['ucm'],
+            elementsToShow: ['ucm','ucmka' ,'inam'],
             elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: ['ucmka' ,'inam'],
@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
           {
             value: 'nestudent',
             elementsToShow: [],
-            elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
+            elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny', 'ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: [],
             elementsToDisable: ['nu', 'ny','ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
         mappings: [
           {
             value: 'ucm',
-            elementsToShow: ['ucmkari', 'ucmkari2'],
+            elementsToShow: ['ucmkari', 'ucmkari2','option3', 'option4', 'option5', 'option6'],
             elementsToHide: ['ina', 'iny','nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: ['option3', 'option4', 'option5', 'option6'],
@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function () {
           {
             value: 'ina',
             elementsToShow: ['ina', 'nu'],
-            elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny'],
+            elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny','option3', 'option4', 'option5', 'option6'],
             elementsToReset: ['ny'],
             elementsToEnable: ['nu'],
             elementsToDisable: ['option3', 'option4', 'option5', 'option6'],// Add this line to enable 'nu' when 'ina' is selected
@@ -462,7 +462,7 @@ const radioMappings = [
     mappings: [
       {
         value: 'student',
-        elementsToShow: ['ucm'],
+        elementsToShow: ['ucm','ucmka' ,'inam'],
         elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
         elementsToEnable: ['ucmka','inam'],
@@ -472,7 +472,7 @@ const radioMappings = [
       {
         value: 'nestudent',
         elementsToShow: [],
-        elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
+        elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny','ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
         elementsToReset: ['nu', 'ny'],
         elementsToEnable: [],
         elementsToDisable: ['nu', 'ny','ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
@@ -485,7 +485,7 @@ const radioMappings = [
     mappings: [
       {
         value: 'ucm',
-        elementsToShow: ['ucmkari', 'ucmkari2'],
+        elementsToShow: ['ucmkari', 'ucmkari2','option3', 'option4', 'option5', 'option6'],
         elementsToHide: ['ina', 'iny','nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
         elementsToEnable: ['option3', 'option4', 'option5', 'option6'],
@@ -495,7 +495,7 @@ const radioMappings = [
       {
         value: 'ina',
         elementsToShow: ['ina', 'nu'],
-        elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny'],
+        elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny','option3', 'option4', 'option5', 'option6'],
         elementsToReset: ['ny'],
         elementsToEnable: ['nu'],
         elementsToDisable: ['option3', 'option4', 'option5', 'option6'],// Add this line to enable 'nu' when 'ina' is selected

@@ -211,7 +211,7 @@
                                                 <x-form.label name="skola" title="Škola" required="true"/>
                                                 <div class="flex mt-1">
                                                     <div class="flex items-center mr-4">
-                                                        <x-form.input-radio name="skola" for="ucmka" value="ucm"
+                                                        <x-form.input-radio :hidden="$student->status != 'student'" name="skola" for="ucmka" value="ucm"
                                                             :checked="$student->skola == 'ucm'" disabled required="true">
                                                             UCM
                                                         </x-form.input-radio>
@@ -222,7 +222,7 @@
                                                         <label for="ucmka" class="ml-2  text-gray-700">UCM</label> --}}
                                                     </div>
                                                     <div class="flex items-center">
-                                                        <x-form.input-radio name="skola" for="inam" value="ina"
+                                                        <x-form.input-radio name="skola" for="inam" value="ina" :hidden="$student->status != 'student'"
                                                             :checked="$student->skola !== 'ucm' && $student->skola !== null"
                                                             disabled required="true">
                                                             Iná
@@ -246,7 +246,7 @@
                                                 <x-form.label name="studium" title="Druh štúdia" required="true" />
                                                 <div class="flex mt-1">
                                                     <div class="flex items-center mr-4">
-                                                        <x-form.input-radio name="studium" for="option3" value="interne"
+                                                        <x-form.input-radio name="studium" for="option3" value="interne" :hidden="$student->skola != 'ucm'"
                                                             :checked=" $student->studium == 'interne'" disabled required="true">
                                                             Interné
                                                         </x-form.input-radio>
@@ -260,7 +260,7 @@
                                                         --}}
                                                     </div>
                                                     <div class="flex items-center">
-                                                        <x-form.input-radio name="studium" for="option4" value="externe"
+                                                        <x-form.input-radio name="studium" for="option4" value="externe" :hidden="$student->skola != 'ucm'"
                                                             :checked=" $student->studium == 'externe'" disabled required="true">
                                                             Externé
                                                         </x-form.input-radio>
@@ -284,7 +284,7 @@
                                                     <div class="flex items-center lg:items-baseline mr-4">
 
                                                         <input type="radio" id="option5" name="program" value="apin"
-                                                            class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 disabled:text-gray-500"
+                                                            class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 disabled:text-gray-500 {{ $student->skola == 'ucm' ? '' : 'hidden' }}" 
                                                             {{ $student->program == 'apin' ? 'checked' : '' }} disabled required>
                                                         <label for="option5"
                                                             class="ml-2 lg:-mt-2  text-gray-700">Aplikovaná
@@ -292,7 +292,7 @@
                                                     </div>
                                                     <div class="flex items-center lg:items-baseline">
                                                         <input type="radio" id="option6" name="program" value="iny"
-                                                            class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 disabled:text-gray-500"
+                                                            class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 disabled:text-gray-500 {{ $student->skola == 'ucm' ? '' : 'hidden' }}"
                                                             {{ $student->program == 'apin' || $student->program == null
                                                         ? ''
                                                         :
