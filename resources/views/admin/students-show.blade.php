@@ -137,19 +137,19 @@
                                         <x-form.required class=" hidden mt-1 " />
                                         <x-form.field>
                                             <x-form.input value="{{$student->name}}" name="name" type="text"
-                                                title="Meno" placeholder="Meno" disabled />
+                                                title="Meno" placeholder="Meno" disabled required="true"/>
                                         </x-form.field>
                                         <x-form.field>
                                             <x-form.input value="{{$student->lastname}}" name="lastname" type="text"
-                                                title="Priezvisko" placeholder="Priezvisko" disabled />
+                                                title="Priezvisko" placeholder="Priezvisko" disabled required="true"/>
                                         </x-form.field>
                                         <x-form.field>
                                             <x-form.input value="{{$student->email}}" name="email" type="email"
-                                                title="Email" placeholder="Email" disabled />
+                                                title="Email" placeholder="Email" disabled required="true"/>
                                         </x-form.field>
                                         <x-form.field>
                                             <x-form.input value="{{$student->sekemail}}" name="sekemail" type="email"
-                                                title="Sekunarny email" placeholder="Sekunarny email" disabled />
+                                                title="Sekunarny email" placeholder="Sekunarny email" disabled/>
                                         </x-form.field>
                                         {{-- <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                             <div class="mb-4">
@@ -187,17 +187,17 @@
                                         </p>
                                         <div class="flex flex-col  md:grid md:grid-cols-2 lg:flex lg:flex-row  gap-6">
                                             <div class=" mt-6">
-                                                <x-form.label name="status" title="Status" />
+                                                <x-form.label name="status" title="Status" required="true"/>
 
                                                 <div class="flex items-center mt-1">
                                                     <x-form.input-radio name="status" for="type_student" value="student"
-                                                        :checked="$student->status == 'student'" disabled>
+                                                        :checked="$student->status == 'student'" disabled required="true">
                                                         Študent
                                                     </x-form.input-radio>
 
                                                     <x-form.input-radio class="ml-4" name="status" for="type_nostudent"
                                                         value="nestudent" :checked="$student->status == 'nestudent'"
-                                                        disabled>
+                                                        disabled required="true">
                                                         Neštudent
                                                     </x-form.input-radio>
 
@@ -208,11 +208,11 @@
                                             <!-- University selection -->
                                             <div class="flex flex-col mt-0 md:mt-6 {{ $student->skola ? '' : 'hidden' }}"
                                                 id="ucm">
-                                                <x-form.label name="skola" title="Škola" />
+                                                <x-form.label name="skola" title="Škola" required="true"/>
                                                 <div class="flex mt-1">
                                                     <div class="flex items-center mr-4">
                                                         <x-form.input-radio name="skola" for="ucmka" value="ucm"
-                                                            :checked="$student->skola == 'ucm'" disabled>
+                                                            :checked="$student->skola == 'ucm'" disabled required="true">
                                                             UCM
                                                         </x-form.input-radio>
 
@@ -224,7 +224,7 @@
                                                     <div class="flex items-center">
                                                         <x-form.input-radio name="skola" for="inam" value="ina"
                                                             :checked="$student->skola !== 'ucm' && $student->skola !== null"
-                                                            disabled>
+                                                            disabled required="true">
                                                             Iná
                                                         </x-form.input-radio>
 
@@ -243,11 +243,11 @@
                                             <!-- Study type selection -->
                                             <div class="flex flex-col mt-0 lg:mt-6 {{ $student->skola == 'ucm' ? '' : 'hidden' }}"
                                                 id="ucmkari">
-                                                <x-form.label name="studium" title="Druh štúdia" />
+                                                <x-form.label name="studium" title="Druh štúdia" required="true" />
                                                 <div class="flex mt-1">
                                                     <div class="flex items-center mr-4">
                                                         <x-form.input-radio name="studium" for="option3" value="interne"
-                                                            :checked=" $student->studium == 'interne'" disabled>
+                                                            :checked=" $student->studium == 'interne'" disabled required="true">
                                                             Interné
                                                         </x-form.input-radio>
 
@@ -261,7 +261,7 @@
                                                     </div>
                                                     <div class="flex items-center">
                                                         <x-form.input-radio name="studium" for="option4" value="externe"
-                                                            :checked=" $student->studium == 'externe'" disabled>
+                                                            :checked=" $student->studium == 'externe'" disabled required="true">
                                                             Externé
                                                         </x-form.input-radio>
                                                         {{-- <input type="radio" id="option4" name="studium"
@@ -279,13 +279,13 @@
                                             <!-- Program selection -->
                                             <div class="flex flex-col mt-0 lg:mt-6 {{ $student->skola == 'ucm' ? '' : 'hidden' }}"
                                                 id="ucmkari2">
-                                                <x-form.label name="program" title="Program" />
+                                                <x-form.label name="program" title="Program" required="true"/>
                                                 <div class="flex lg:mt-1">
                                                     <div class="flex items-center lg:items-baseline mr-4">
 
                                                         <input type="radio" id="option5" name="program" value="apin"
                                                             class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 disabled:text-gray-500"
-                                                            {{ $student->program == 'apin' ? 'checked' : '' }} disabled>
+                                                            {{ $student->program == 'apin' ? 'checked' : '' }} disabled required>
                                                         <label for="option5"
                                                             class="ml-2 lg:-mt-2  text-gray-700">Aplikovaná
                                                             informatika</label>
@@ -296,7 +296,7 @@
                                                             {{ $student->program == 'apin' || $student->program == null
                                                         ? ''
                                                         :
-                                                        ' checked' }} disabled>
+                                                        ' checked' }} disabled required>
                                                         <label for="option6"
                                                             class="ml-2 lg:-mt-2  text-gray-700">Iný</label>
                                                     </div>
@@ -410,16 +410,16 @@
                                         <x-form.field>
                                             <x-form.input value="{{$student->ulicacislo}}" name="ulicacislo" type="text"
                                                 title="Ulica a popisné číslo" placeholder="Ulica a popisné číslo"
-                                                disabled />
+                                                disabled required="true"/>
                                         </x-form.field>
                                         <x-form.field>
                                             <x-form.input value="{{$student->mestoobec}}" name="mestoobec" type="text"
-                                                title="Mesto / Obec" placeholder="Mesto / Obec" disabled />
+                                                title="Mesto / Obec" placeholder="Mesto / Obec" disabled required="true"/>
                                         </x-form.field>
                                         <x-form.field>
 
                                             <x-form.input value="{{$student->psc}}" name="psc" type="text" title="PSČ"
-                                                placeholder="PSČ" disabled />
+                                                placeholder="PSČ" disabled required="true"/>
                                         </x-form.field>
                                         {{-- <x-form.field>
                                             <button type="submit"
@@ -459,11 +459,11 @@
                                                 <x-form.label name="type" title="Typ kurzu" required="true"/>
 
                                                 <div class="flex items-center mt-1">
-                                                    <x-form.input-radio name="type" for="type_student" value="0">
+                                                    <x-form.input-radio name="type" for="type_student" value="0" required="true">
                                                         Študentský
                                                     </x-form.input-radio>
                                                     <x-form.input-radio class="ml-6" name="type" for="type_instructor"
-                                                        value="1">
+                                                        value="1" required="true">
                                                         Inštruktorský
                                                     </x-form.input-radio>
                                                 </div>
@@ -486,7 +486,7 @@
 
                                                 <div class="w-1/2 mr-2">
                                                     <x-form.select name="academy_id" title="Akadémia" class=" combo-a"
-                                                        data-nextcombo=".combo-b" :disabled="old('type') != '1'" errorBag="admin">
+                                                        data-nextcombo=".combo-b" :disabled="old('type') != '1'" errorBag="admin" required="true">
                                                         <!-- parent -->
                                                         {{-- <select name="academy_id" class="combo-a"
                                                             data-nextcombo=".combo-b"> --}}
@@ -515,7 +515,7 @@
                                                 </div>
                                                 <div class="w-1/2 ml-2">
                                                     <x-form.select name="coursetype_id" title="Kurz" class="combo-b"
-                                                        disabled errorBag="admin">
+                                                        disabled errorBag="admin" required="true">
 
                                                         <!-- child -->
                                                         {{-- <select name="coursetype_id" id="coursetype_id"
@@ -559,7 +559,7 @@
 
                                                 <div class="w-1/2 mr-2">
                                                     <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3"
-                                                        data-nextcombo=".combo-b3" :disabled="old('type') != '0'" errorBag="admin">
+                                                        data-nextcombo=".combo-b3" :disabled="old('type') != '0'" errorBag="admin" required="true">
 
                                                         <!-- parent -->
 
@@ -589,7 +589,7 @@
                                                 </div>
                                                 <div class="w-1/2 ml-2">
                                                     <x-form.select name="coursetype_id2" title="Kurz" class="combo-b3"
-                                                        disabled errorBag="admin">
+                                                        disabled errorBag="admin" required="true">
                                                         <!-- child -->
                                                         {{-- <select name="coursetype_id" id="coursetype_id"
                                                             class="combo-b" data-nextcombo=".combo-c" disabled>
@@ -629,7 +629,7 @@
 
                                         <x-form.field>
 
-                                            <x-form.select name="days" title="Dni" errorBag="admin">
+                                            <x-form.select name="days" title="Dni" errorBag="admin" required="true">
 
                                                 <option value="" disabled selected hidden>Dni výučby</option>
                                                 <option value="1" {{old('days')==1 ? 'selected' : '' }}>Týždeň
@@ -646,7 +646,7 @@
                                             </x-form.select>
                                         </x-form.field>
                                         <x-form.field>
-                                            <x-form.select name="time" title="Čas" errorBag="admin">
+                                            <x-form.select name="time" title="Čas" errorBag="admin" required="true">
 
                                                 <option value="" disabled selected hidden>Čas výučby</option>
                                                 <option value="1" {{old('time')==1 ? 'selected' : '' }}>Ranný
