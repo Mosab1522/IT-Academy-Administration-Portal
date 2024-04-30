@@ -1,5 +1,5 @@
 <x-layout />
-<x-flash />
+
 <x-setting heading="{{$class->name}}">
     {{-- <a href="{{ url()->previous() }}"
         class="inline-flex items-center px-4 py-1 -ml-2 -mt-6 bg-blue-500 border border-transparent rounded-md font-light text-white hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">

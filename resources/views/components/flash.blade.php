@@ -1,70 +1,21 @@
-@if(session()->has('success_c'))
-<div 
-      x-data="{ show: true }" 
-      x-init="setTimeout(() => show = false, 4000)" 
-      x-show="show" 
-      class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white py-2 px-4 rounded-xl shadow-lg text-sm z-50"
-      style="transition: all 0.5s ease-in-out;">
-    <p>{{session('success_c')}}</p> {{--{{session()->get('success')}}--}}
-  </div>
-  @endif
-@if(session()->has('success_cc'))
-<div 
-      x-data="{ show: true }" 
-      x-init="setTimeout(() => show = false, 4000)" 
-      x-show="show" 
-      class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white py-2 px-4 rounded-xl shadow-lg text-sm z-50"
-      style="transition: all 0.5s ease-in-out;">
-    <p>{{session('success_cc')}}</p> {{--{{session()->get('success')}}--}}
-  </div>
-  @endif
-  @if(session()->has('success_u'))
-<div 
-      x-data="{ show: true }" 
-      x-init="setTimeout(() => show = false, 4000)" 
-      x-show="show" 
-      class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white py-2 px-4 rounded-xl shadow-lg text-sm z-50"
-      style="transition: all 0.5s ease-in-out;">
-    <p>{{session('success_u')}}</p> {{--{{session()->get('success')}}--}}
-  </div>
-  @endif
-  @if(session()->has('success_uu'))
-<div 
-      x-data="{ show: true }" 
-      x-init="setTimeout(() => show = false, 4000)" 
-      x-show="show" 
-      class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white py-2 px-4 rounded-xl shadow-lg text-sm z-50"
-      style="transition: all 0.5s ease-in-out;">
-    <p>{{session('success_uu')}}</p> {{--{{session()->get('success')}}--}}
-  </div>
-  @endif
-  @if(session()->has('success_d'))
-<div 
-      x-data="{ show: true }" 
-      x-init="setTimeout(() => show = false, 4000)" 
-      x-show="show" 
-      class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white py-2 px-4 rounded-xl shadow-lg text-sm z-50"
-      style="transition: all 0.5s ease-in-out;">
-    <p>{{session('success_d')}}</p> {{--{{session()->get('success')}}--}}
-  </div>
-  @endif
-  @if(session()->has('success_dd'))
-<div 
-      x-data="{ show: true }" 
-      x-init="setTimeout(() => show = false, 4000)" 
-      x-show="show" 
-      class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white py-2 px-4 rounded-xl shadow-lg text-sm z-50"
-      style="transition: all 0.5s ease-in-out;">
-    <p>{{session('success_dd')}}</p> {{--{{session()->get('success')}}--}}
-  </div>
-  @endif
-  @if(session()->has('success_email'))
-  <div 
-      x-data="{ show: true }" 
-      x-init="setTimeout(() => show = false, 4000)" 
-      x-show="show" 
-      class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white py-2 px-4 rounded-xl shadow-lg text-sm z-50"
-      style="transition: all 0.5s ease-in-out;">
-    <p>{{ session('success_email') }}</p>
-  </div>
-@endif
+@php
+$sessionKeys = ['success_c', 'success_cc', 'success_u', 'success_uu', 'success_d', 'success_dd', 'success_email'];
+@endphp
+
+@foreach($sessionKeys as $key)
+    @if(session()->has($key))
+    <div 
+        x-data="{ show: true }" 
+        x-init="setTimeout(() => show = false, 4000)"
+        x-show="show"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform scale-90"
+        x-transition:enter-end="opacity-100 transform scale-100"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 transform scale-100"
+        x-transition:leave-end="opacity-0 transform scale-90"
+        class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white py-2 px-4 rounded-md shadow-lg text-sm z-50">
+        <p>{{ session($key) }}</p>
+    </div>
+    @endif
+@endforeach

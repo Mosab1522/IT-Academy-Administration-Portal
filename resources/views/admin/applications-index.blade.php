@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout />
 @php
 session()->forget('student_id');

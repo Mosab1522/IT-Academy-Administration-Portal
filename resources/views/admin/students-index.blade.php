@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout/>
     <x-setting heading="Študenti" etitle="Existujúci študenti">
         <x-slot:create>

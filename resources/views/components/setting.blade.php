@@ -1,5 +1,5 @@
 @props(['heading', 'etitle',])
-
+<x-flash />
 <div class="flex h-screen bg-gray-100 overflow-hidden">
     <button
         class="menu-toggle bg-gray-800 opacity-80 rounded-md shadow fixed bottom-4 left-4 z-50 lg:hidden sm focus:outline-none focus:ring focus:border-blue-300"

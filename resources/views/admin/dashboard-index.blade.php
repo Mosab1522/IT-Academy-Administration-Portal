@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout />
 <x-setting heading="Úvod" etitle="Všetky prihlášky akadémie">
    

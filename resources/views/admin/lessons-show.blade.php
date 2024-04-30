@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout />
 @php
 // Assuming $lesson->duration contains the duration in minutes

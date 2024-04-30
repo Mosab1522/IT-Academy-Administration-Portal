@@ -799,7 +799,7 @@
                                 }
                                 @endphp
 </x-setting>
-<x-flash />
+
 
 <script>
     const studentData = {!! json_encode([

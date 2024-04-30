@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout />
 <x-setting heading="Triedy" etitle="Existujúce triedy">
     <x-slot:create>

@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout/>
 <x-setting heading="Vytvoriť akadémiu">
     <form action="/admin/academies/create" method="post">

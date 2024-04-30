@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout />
 <x-setting heading="Typy kurzov" etitle="Existujúce kurzy">
     <x-slot:create>

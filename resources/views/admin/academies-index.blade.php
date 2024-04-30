@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout />
 <x-setting heading="Akadémie" etitle="Existujúce akadémie">
 

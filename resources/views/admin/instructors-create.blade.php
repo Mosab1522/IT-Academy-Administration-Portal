@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout />
 <x-setting heading="Vytvoriť inštruktora">
     <form action="/admin/instructors/create" method="post" enctype="multipart/form-data">

@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout/>
 <x-setting heading="Vytvoriť typ kurzu">
     <form action="/admin/lessons/create" method="post">

@@ -3,7 +3,7 @@
 session()->forget('instructor_id');
 @endphp
 @endif
-<x-flash />
+
 <x-layout />
 <x-setting heading="Inštruktori" etitle="Existujúci inštruktori">
     <x-slot:create>
@@ -32,7 +32,7 @@ session()->forget('instructor_id');
                 </div>
             
                 <!-- Right Column for Profile Image -->
-                <div class="w-auto flex justify-center px-6">
+                <div class="w-auto flex justify-center pl-6 md:px-6">
                     <div class="flex-shrink-0"> 
                         <x-form.label name="photo" title="Profilová fotka"/>
                         <div class="h-32 w-32 md:h-52 md:w-52 lg:h-80 lg:w-80 rounded-lg bg-gray-300 overflow-hidden relative mt-1 border">
@@ -43,6 +43,12 @@ session()->forget('instructor_id');
                             <input type="file" id="photo-upload" name="photo" class="hidden" onchange="handleFileUpload(event)">
                         </div>
                     </div>
+                    
+                      
+                        <button id="photobutton-c" type="reset" class="hidden mt-6 ml-2 flex-none bg-gray-400 text-white text-xs uppercase py-1 px-3 md:px-1 rounded-md hover:bg-gray-500 transition-colors duration-200">
+                            <span class="hidden md:inline">Vymazať</span>
+                            <span  class="inline md:hidden">X</span>
+                        </button>
                     
                 </div>
             </div>
@@ -385,21 +391,39 @@ session()->forget('instructor_id');
 </x-setting>
 
 <script>
-    function handleFileUpload(event) {
-    var image = document.querySelector('img[alt="profile_image"]');
-    var file = event.target.files[0];
-  
-    var reader = new FileReader();
+   
+document.addEventListener('DOMContentLoaded', function() {
+    const image = document.querySelector('img[alt="profile_image"]');
+    const fileInput = document.getElementById("photo-upload");
+    const buttonC = document.getElementById("photobutton-c");
 
-    if (file) {
-        reader.onloadend = function () {
-            image.src = reader.result;
-        };
-        reader.readAsDataURL(file);
-      
-    }
-    // If no file is selected, do nothing
-}
+    // Handle file upload
+    fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        if (file) {
+            reader.onloadend = function () {
+                image.src = reader.result;
+                buttonC.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // Optional: handle the case where no file is selected, if needed
+        }
+    });
+
+    // Handle the clear action
+    buttonC.addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent the default form reset behavior
+
+        fileInput.value = ""; // Clear the file input
+        image.src = image.getAttribute('data-default-src'); // Reset the image preview
+        buttonC.style.display = "none"; // Hide the button
+    });
+});
+
+
 // document.getElementById("photobutton-c").addEventListener("click", function(event) {
 //     // Prevent the default form reset behavior
 //     event.preventDefault();

@@ -1,4 +1,4 @@
-<x-flash />
+
 <x-layout />
 <x-setting heading="Kalendár" etitle="Kalendár akadémie">
    

@@ -16,14 +16,22 @@
         <!-- Navigation Header with Dynamic Main Category Name -->
         <div class="-mt-4 sm:mt-0">
             <div class="flex items-center justify-center -mt-3 p-4 w-full height-breakpoint">
-                <span x-text="activeSectionName" class="text-lg lg:text-base font-medium"></span>
+                <span id="sectionName" class="text-lg lg:text-base font-medium">
+                    <span class="{{request()->is('admin/dashboard') || request()->is('admin/calendar') ||  request()->is('admin/email') ? '' : 'hidden'}}" id="overviewName">
+                        Prehľad
+                    </span>
+                    <span class="{{request()->is('admin/academies', 'admin/academies/*') ||  request()->is('admin/coursetypes', 'admin/coursetypes/*') || request()->is('admin/classes', 'admin/classes/*') ||  request()->is('admin/lessons', 'admin/lessons/*') ||  request()->is('admin/students', 'admin/students/*') || request()->is('admin/applications', 'admin/applications/*') || request()->is('admin/instructors', 'admin/instructors/*') ? '' : 'hidden'}}" id="managementName">
+                         Spravovanie
+                    </span>
+                 
+                </span>
             </div>
             <div class="grid grid-cols-2  items-center justify-center -mt-3 px-4 pt-4 sm:p-4 w-full">
+             
                 <!-- Icons here. Replace `template-icon` with actual icon classes or SVGs -->
                 <div class="flex justify-center">
                   <div class="icon-bg p-3 rounded-md">
-                    <button @click="activeSection = (activeSection === 'overview' ? null : 'overview'); activeSectionName = 'Prehľad'"
-                        :class="{ 'bg-indigo-600 border-indigo-600': activeSection === 'overview' }" class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
+                    <button id="overviewButton" class="toggle-btn flex items-center py-2 px-4 rounded-md border lg:border-0  transition-colors duration-200   {{request()->is('admin/dashboard') || request()->is('admin/calendar') ||  request()->is('admin/email') ? 'bg-indigo-600  border-indigo-600' : 'hover:bg-gray-700'  }}">
                     <span class="material-icons material-icons-custom">home</span>
                  
                     
@@ -33,8 +41,7 @@
                 </div>
                 <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
-                        <button @click="activeSection = (activeSection === 'management' ? null : 'management'); activeSectionName = 'Spravovanie'"
-                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'management' }" class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
+                        <button id="managementButton"  class="toggle-btn flex items-center py-2 px-4 rounded-md border lg:border-0 transition-colors duration-200 {{ request()->is('admin/academies', 'admin/academies/*') ||  request()->is('admin/coursetypes', 'admin/coursetypes/*') || request()->is('admin/classes', 'admin/classes/*') ||  request()->is('admin/lessons', 'admin/lessons/*') ||  request()->is('admin/students', 'admin/students/*') || request()->is('admin/applications', 'admin/applications/*') || request()->is('admin/instructors', 'admin/instructors/*') ? 'bg-indigo-600  border-indigo-600' : 'hover:bg-gray-700'}}">
                       <span class="material-icons material-icons-custom">settings</span>
                      
                         </button>
@@ -42,22 +49,21 @@
                   </div>
                   <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
-                        <button @click="activeSection = (activeSection === 'management' ? null : 'management'); activeSectionName = 'Spravovanie'"
-                        :class="{ ' bg-indigo-600  border-indigo-600': activeSection === 'calendar' }" class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
+                        <button class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
                       <span class="material-icons material-icons-custom">calendar_today</span>
                         </button>
                     </div>
                   </div>
                   <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
-                        <button @click="activeSection = (activeSection === 'management' ? null : 'management'); activeSectionName = 'Spravovanie'"
-                        :class="{ 'bg-indigo-600  border-indigo-600': activeSection === 'more' }" class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
+                        <button class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
                       <span class="material-icons material-icons-custom">calendar_today</span>
                         </button>
                     </div>
                   </div>
                 <!-- Repeat for other icons -->
               </div>
+           
             <!-- Main Section Links -->
             {{-- <nav class="flex flex-col space-y-2">
                 <button @click="activeSection = (activeSection === 'overview' ? null : 'overview'); activeSectionName = 'Prehľad'"
@@ -76,7 +82,8 @@
 
         <!-- Sub-sections displayed based on activeSection -->
         <div class="mt-2 sm:mt-4 height-breakpoint">
-            <div x-show="activeSection === 'overview'" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium" x-transition>
+            <div id="overviewSection" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium {{request()->is('admin/dashboard') || request()->is('admin/calendar') ||  request()->is('admin/email') ? '' : 'hidden'  }}">
+     
                 <a href="/admin/dashboard"
                 class="{{ request()->is('admin/dashboard') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
                 Úvod</a>
@@ -87,7 +94,8 @@
                 class="{{ request()->is('admin/email') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
                 Poslať email</a>
             </div>
-            <div x-show="activeSection === 'management'" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium" x-transition>
+            <div id="managementSection" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium {{ request()->is('admin/academies', 'admin/academies/*') ||  request()->is('admin/coursetypes', 'admin/coursetypes/*') || request()->is('admin/classes', 'admin/classes/*') ||  request()->is('admin/lessons', 'admin/lessons/*') ||  request()->is('admin/students', 'admin/students/*') || request()->is('admin/applications', 'admin/applications/*') || request()->is('admin/instructors', 'admin/instructors/*') ? '' :  'hidden'}}">
+           
                 <a href="/admin/academies"
                 class="{{ request()->is('admin/academies', 'admin/academies/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
                 Akadémie</a>
@@ -117,6 +125,75 @@
     </div>
 </aside>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var overviewButton = document.getElementById('overviewButton');
+        var managementButton = document.getElementById('managementButton');
+        var overviewSection = document.getElementById('overviewSection');
+        var managementSection = document.getElementById('managementSection');
+        var overviewName = document.getElementById('overviewName');
+        var managementName = document.getElementById('managementName');
+        var buttons = document.querySelectorAll('.toggle-btn'); 
+    
+        function hideSection(section) {
+            section.classList.remove('visible');
+            section.classList.add('hidden');
+        }
+    
+        function showSection(section) {
+            section.classList.remove('hidden');
+            setTimeout(() => {
+                section.classList.add('visible');
+            }, 10);
+        }
+    
+        function toggleSection(sectionName) {
+            // First, hide all sections
+            hideSection(overviewSection);
+            hideSection(managementSection);
+            hideName(); // Hide all names
+    
+            // Then, show the requested section and name
+            if (sectionName === 'overview') {
+                showSection(overviewSection);
+                overviewName.classList.remove('hidden');
+            } else if (sectionName === 'management') {
+                showSection(managementSection);
+                managementName.classList.remove('hidden');
+            }
+        }
+    
+        function hideName() {
+            overviewName.classList.add('hidden');
+            managementName.classList.add('hidden');
+        }
+    
+        function activateButton(button) {
+            // Deactivate all buttons first
+            buttons.forEach(function(btn) {
+                btn.classList.remove('bg-indigo-600', 'border-indigo-600');
+                btn.classList.add('hover:bg-gray-700');
+            });
+    
+            // Activate the clicked button
+            button.classList.add('bg-indigo-600', 'border-indigo-600');
+            button.classList.remove('hover:bg-gray-700');
+        }
+    
+        overviewButton.addEventListener('click', function() {
+            activateButton(overviewButton);
+            toggleSection('overview');
+        });
+    
+        managementButton.addEventListener('click', function() {
+            activateButton(managementButton);
+            toggleSection('management');
+        });
+    });
+    </script>
+    
+    
+{{-- 
 <aside class="w-48 flex-shrink-0 bg-gray-800 text-white">
     <div class="flex flex-col bg-gray-800 text-white h-screen p-4 justify-between">
         <!-- Navigation Header -->
@@ -184,4 +261,4 @@
        
         </nav>
     </div>
-</aside>
+</aside> --}}

@@ -1,5 +1,5 @@
 <x-layout />
-<x-flash />
+
 <x-setting heading="{{$academy->name}}">
 
 
