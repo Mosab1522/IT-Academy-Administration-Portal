@@ -34,11 +34,13 @@
                 </div>
             </div>
             <p class="text-sm font-semibold uppercase text-gray-700 mt-6">Kurzy</p>
+            <x-form.required class="mt-1"/>
         </x-form.field>
             <x-form.field>
+                
 
                 <div class="items-center mt-6">
-                <x-form.label name="type" title="Typ kurzu" />
+                <x-form.label name="type" title="Typ kurzu" required="true"/>
 
                 <div class="flex items-center mt-1">
                     <x-form.input-radio name="type" for="type_student" value="0">
@@ -48,6 +50,7 @@
                         Inštruktorský
                     </x-form.input-radio>
                 </div>
+                <x-form.error name="type" errorBag="novy"/>
                 </div>
                 {{-- <div class="items-center">
                     <x-form.label name="typ kurzu:" />
@@ -64,7 +67,7 @@
                 <div class="mt-6 hidden" id="inst">
 
                     <div class="w-1/2 mr-2">
-                        <x-form.select name="academy_id" title="Akadémia" class=" combo-a" data-nextcombo=".combo-b">
+                        <x-form.select name="academy_id" title="Akadémia" class=" combo-a" data-nextcombo=".combo-b" errorBag="novy" >
                         <!-- parent -->
                         {{-- <select name="academy_id" class="combo-a" data-nextcombo=".combo-b"> --}}
                             <option value="" disabled selected hidden>Akadémia</option>
@@ -85,7 +88,7 @@
                         </x-form.select>
                     </div>
                     <div class="w-1/2 ml-2">
-                        <x-form.select name="coursetype_id" title="Kurz" class="combo-b" disabled>
+                        <x-form.select name="coursetype_id" title="Kurz" class="combo-b" disabled  errorBag="novy">
                         
                         <!-- child -->
                         {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
@@ -118,7 +121,7 @@
                 <div class="mt-6 hidden" id="stud">
 
                     <div class="w-1/2 mr-2">
-                        <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3" data-nextcombo=".combo-b3">
+                        <x-form.select name="academy_id2" title="Akadémia" class=" combo-a3" data-nextcombo=".combo-b3"  errorBag="novy">
 
                         <!-- parent -->
                         
@@ -140,7 +143,7 @@
                         </x-form.select>
                     </div>
                     <div class="w-1/2 ml-2">
-                        <x-form.select name="coursetype_id2" title="Kurz" class="combo-b3" disabled>
+                        <x-form.select name="coursetype_id2" title="Kurz" class="combo-b3" disabled  errorBag="novy">
                         <!-- child -->
                         {{-- <select name="coursetype_id" id="coursetype_id" class="combo-b" data-nextcombo=".combo-c"
                             disabled>
@@ -172,7 +175,7 @@
 
             <x-form.field>
                
-                <x-form.select name="days" title="Dni">
+                <x-form.select name="days" title="Dni"  errorBag="novy">
                     
                         <option value="" disabled selected hidden>Dni výučby</option>
                         <option value="1" {{old('days')==1 ? 'selected' : '' }}>Týždeň</option>
@@ -186,7 +189,7 @@
                 </x-form.select>
                     </x-form.field>
                 <x-form.field>
-                    <x-form.select name="time" title="Čas">
+                    <x-form.select name="time" title="Čas" errorBag="novy">
                     
                         <option value="" disabled selected hidden>Čas výučby</option>
                         <option value="1" {{old('time')==1 ? 'selected' : '' }}>Ranný</option>
@@ -241,7 +244,7 @@
                         </x-form.input-radio>
 
                     </div>
-
+                    <x-form.error name="status" errorBag="novy"/>
                 </div>
         
                     <!-- University selection -->
@@ -259,7 +262,7 @@
                                 <label for="inam" class="ml-2  text-gray-700">Iná</label>
                             </div>
                         </div>
-                       
+                        <x-form.error name="skola" errorBag="novy"/>
                     </div>
 
                     <!-- Study type selection -->
@@ -277,6 +280,7 @@
                                 <label for="option4" class="ml-2  text-gray-700">Externé</label>
                             </div>
                         </div>
+                        <x-form.error name="studium" errorBag="novy"/>
                     </div>
 
                     <!-- Program selection -->
@@ -295,42 +299,44 @@
                                 <label for="option6" class="ml-2 lg:-mt-1  text-gray-700">Iný</label>
                             </div>
                         </div>
-                        
+                        <x-form.error name="program" errorBag="novy"/>
                     </div>
                 </div>
                 <div id="ina" class="mt-3" style="display: none;">
                     <input type="text"
                         class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500"
                         name="ina" id="nu" placeholder="Názov školy" disabled>
+                        <x-form.error name="ina" errorBag="novy"/>
                 </div>
                 <div id="iny" class="mt-3" style="display: none;">
                             <input type="text"
                                 class="t-1 flex-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-gray-500"
                                 name="iny" id="ny" placeholder="Názov programu" disabled>
+                                <x-form.error name="iny" errorBag="novy"/>
                         </div>
 
 
      
                         <x-form.field>
-                            <x-form.input name="name" type="text" title="Meno" placeholder="Meno"/>
+                            <x-form.input name="name" type="text" title="Meno" placeholder="Meno" errorBag="novy"/>
                             </x-form.field>
                             <x-form.field>
-                            <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko"/>
+                            <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko" errorBag="novy"/>
                             </x-form.field>
                             <x-form.field>
-                            <x-form.input name="email" type="email" title="Email" placeholder="Email"/>
+                            <x-form.input name="email" type="email" title="Email" placeholder="Email" errorBag="novy"/>
                             </x-form.field>
                             <x-form.field>
-                            <x-form.input name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email"/>
+                            <x-form.input name="sekemail" type="email" title="Sekundárny email" placeholder="Sekundárny email" errorBag="novy"/>
                             </x-form.field>
                             <x-form.field>
-                            <x-form.input name="ulicacislo" type="text" title="Ulica a popisné číslo" placeholder="Ulica a popisné číslo"/>
+                            <x-form.input name="ulicacislo" type="text" title="Ulica a popisné číslo" placeholder="Ulica a popisné číslo" errorBag="novy"/>
                             </x-form.field>
                             <x-form.field>
-                            <x-form.input name="mestoobec" type="text" title="Mesto / Obec" placeholder="Mesto / Obec"/></x-form.field>
+                            <x-form.input name="mestoobec" type="text" title="Mesto / Obec" placeholder="Mesto / Obec" errorBag="novy"/></x-form.field>
                             <x-form.field>
             
-                            <x-form.input name="psc" type="text" title="PSČ" placeholder="PSČ"/>
+                            <x-form.input name="psc" type="text" title="PSČ" placeholder="PSČ" errorBag="novy"/>
                             </x-form.field>
                     
                             <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
@@ -408,6 +414,7 @@
                 </div>
             </div>
             <p class="text-sm font-semibold uppercase text-gray-700 mt-6">Kurzy</p>
+            <x-form.required class="mt-1"/>
         </x-form.field>
 
       
@@ -420,7 +427,7 @@
             <x-form.field>
 
                 <div class="items-center mt-6">
-                <x-form.label name="type2" title="Typ kurzu" />
+                <x-form.label name="type2" title="Typ kurzu" required="true"/>
 
                 <div class="flex items-center mt-1">
                     <x-form.input-radio name="type2" for="type_student" value="0">

@@ -177,10 +177,19 @@ class ApplicationController extends Controller
         $rule4 = array('sekemail' => [ Rule::unique('students', 'sekemail')]);
         $validation4 = Validator($sekemail, $rule4);
       
-
+       
         if ($validation->fails() || $validation2->fails() || $validation3->fails() || $validation4->fails()) {
             if (request()->typ == "novy") {
-                throw ValidationException::withMessages(['email' => 'Tento email vedieme v systéme. Využite Zjednodušenú registráciu.'])->errorBag('novy');
+                if($email['email'] ?? null)
+                {
+throw ValidationException::withMessages(['email' => 'Tento email vedieme v systéme. Využite Zjednodušenú registráciu.'])->errorBag('novy');
+                }
+                if($sekemail['email'] ?? null)
+                {
+throw ValidationException::withMessages(['sekemail' => 'Tento email vedieme v systéme. Využite Zjednodušenú registráciu.'])->errorBag('novy');
+                }
+                throw ValidationException::withMessages(['email' => 'Email je povinný'])->errorBag('novy');
+                
             }
             if (request()->typ == "admin") {
                 request()->validateWithBag('admin',[
