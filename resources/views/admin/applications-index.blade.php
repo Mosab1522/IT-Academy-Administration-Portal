@@ -16,6 +16,7 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Vytvorenie prihlášky</h3>
                 <form action="/" method="post">
                     @csrf
+                    <x-form.required class="-mt-3 mb-6"/>
                     <input type="hidden" name="typ" value="admin" />
                     @if(request()->student_id)
                     @php
