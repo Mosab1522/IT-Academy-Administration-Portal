@@ -1021,10 +1021,10 @@ $(document).ready(function () {
   academies.forEach(function (academySelect) {
     const pairId = academySelect.getAttribute('data-pair-id');
     const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
-    // if(coursetypeSelect.disabled == true)
-    // {
-    //   coursetypeSelect.disabled = false;
-    // }
+    if(coursetypeSelect.disabled == true)
+    {
+      coursetypeSelect.disabled = false;
+    }
     const coursetypeOptions = coursetypeSelect.querySelectorAll("option");
 
     const setValue = function (newValue) {
@@ -1056,7 +1056,6 @@ $('#selects-container').on('change', '.academy-select', function (event) {
     for (let i = 0; i < coursetypeOptions.length; i++) {
       if (coursetypeOptions[i].dataset.option === newValue) {
         coursetypeSelect.appendChild(coursetypeOptions[i].cloneNode(true));
-        coursetypeSelect.disabled = false;
       }
     }
   };
