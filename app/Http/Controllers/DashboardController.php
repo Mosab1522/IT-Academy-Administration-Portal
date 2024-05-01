@@ -64,10 +64,7 @@ class DashboardController extends Controller
         if ($request->input('orderBy') === 'most_applicants' || $request->input('orderBy') === 'less_applicants') {
             $query->withCount('applications')
                 ->orderBy('applications_count', $request->input('orderBy') === 'most_applicants' ? 'desc' : 'asc');
-        }
-
-
-        if ($request->input('orderBy') === 'latest') {
+        }else if ($request->input('orderBy') === 'latest') {
             $query = $query->orderByDesc(function ($query) {
                 $query->select('created_at')
                     ->from('applications')
@@ -75,8 +72,7 @@ class DashboardController extends Controller
                     ->latest()
                     ->limit(1);
             });
-        }
-        if ($request->input('orderBy') === 'oldest') {
+        }else if ($request->input('orderBy') === 'oldest') {
             $query = $query->orderBy(function ($query) {
                 $query->select('created_at')
                     ->from('applications')
@@ -84,21 +80,6 @@ class DashboardController extends Controller
                     ->latest()
                     ->limit(1);
             });
-        }
-
-        $query->when($request->filled('search'), function ($q) use ($request) {
-            $q->where('name', 'like', "%{$request->search}%")  // Search in CourseType name
-                ->orWhereHas('academy', function ($query) use ($request) {
-                    $query->where('name', 'like', "%{$request->search}%");  // Search in related Academy name
-                })
-                ->orWhereHas('applications.student', function ($query) use ($request) {
-                    // Search in Student name and lastname related through Applications
-                    $query->where('name', 'like', "%{$request->search}%")
-                        ->orWhere('lastname', 'like', "%{$request->search}%");
-                });
-        });
-
-        if ($request->input('orderBy')) {
         } else {
             $query = $query->orderByDesc(function ($query) {
                 $query->select('created_at')
@@ -108,6 +89,17 @@ class DashboardController extends Controller
                     ->limit(1);
             });
         }
+        $query->when($request->filled('search'), function ($q) use ($request) {
+            $searchTerm = "%{$request->search}%";
+            $q->where('name', 'like', $searchTerm)  // Search in CourseType name
+              ->orWhereHas('academy', function ($query) use ($searchTerm) {
+                  $query->where('name', 'like', $searchTerm);  // Search in related Academy name
+              });
+            
+        });
+        
+
+     
 
         $coursetypes = $query->get();
 

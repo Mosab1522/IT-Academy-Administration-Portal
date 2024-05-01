@@ -35,9 +35,8 @@
                             <div> --}}
                                 <x-form.search-select name="academy_id" title="Akadémia" class=" combo-a4" data-nextcombo=".combo-b4">
                                     @php
-                                    $academy = \App\Models\Academy::with(['coursetypes','applications'])
-                                    ->get();
-                                    $coursetype = \App\Models\CourseType::with(['academy','applications'])->get();
+                                    $academy = \App\Models\Academy::all();
+                                    $coursetype = \App\Models\CourseType::all();
                                     @endphp
 
                                     <option value=""  data-id="-1">Všetky</option>

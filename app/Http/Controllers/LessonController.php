@@ -210,7 +210,7 @@ class LessonController extends Controller
         $startTime = Carbon::parse($lesson->lesson_date);
         $endTime = $startTime->copy()->addMinutes($lesson->duration);
         return [
-            'title' => $lesson->title,
+            'title' => $lesson->class->name,
             'start' => $startTime->format('Y-m-d H:i:s'),
             'end' => $endTime->toDateTimeString(),
         ];
