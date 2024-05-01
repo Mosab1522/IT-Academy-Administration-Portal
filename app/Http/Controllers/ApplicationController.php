@@ -82,6 +82,7 @@ class ApplicationController extends Controller
 
     public function store()
     {   
+       
         if (request()->student_id) {
             request()->validate([ 'student_id' => ['required', 'integer', Rule::exists('students', 'id')]]);
             
@@ -462,7 +463,7 @@ throw ValidationException::withMessages(['sekemail' => 'Tento email vedieme v sy
             $instructor->notify(new NewStudent($emailData));
         }
 
-        Mail::to($emailData['email'])->send(new ConfirmationMail($emailData));
+        //Mail::to($emailData['email'])->send(new ConfirmationMail($emailData));
 
         if (Str::endsWith(url()->previous(), '?vytvorit')) {
             $trimmedUrl = substr(url()->previous(), 0, -9);

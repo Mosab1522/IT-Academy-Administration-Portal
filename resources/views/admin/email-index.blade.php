@@ -59,8 +59,8 @@
                             <option class="text-gray-500" value="" disabled selected hidden>Akadémie</option>
                             @php
                             $academy = \App\Models\Academy::all();
-                            @endphp
-                            @foreach (\App\Models\Academy::all() as $academ)
+                            @endphp 
+                            @foreach ($academy as $academ)
                             <option value="{{ $academ->id }}">{{
                                 ucwords($academ->name) }}</option>
                             @endforeach
@@ -74,9 +74,9 @@
                         <x-form.select name="class_id" title="Trieda">
 
                             <option class="text-gray-500" value="" disabled selected hidden>Triedy</option>
-                            @php
+                            {{-- @php
                             $class = \App\Models\CourseClass::all();
-                            @endphp
+                            @endphp --}}
                             @foreach (\App\Models\CourseClass::all() as $class)
                             <option value="{{ $class->id }}">{{
                                 ucwords($class->name) }}</option>
@@ -92,9 +92,9 @@
                         <x-form.select name="instructor_id" title="Inštruktor">
 
                             <option class="text-gray-500" value="" disabled selected hidden>Inštruktor</option>
-                            @php
+                            {{-- @php
                             $academy = \App\Models\Instructor::all();
-                            @endphp
+                            @endphp --}}
                             @foreach (\App\Models\Instructor::all() as $instrutor)
                             <option value="{{ $instrutor->id }}">{{
                                 ucwords($instrutor->name) }} {{
@@ -155,7 +155,7 @@
                                     <x-form.select name="academy_id" title="Akadémia" class="combo-a"
                                         data-nextcombo=".combo-b">
                                         <option value="" disabled selected hidden>Akadémia</option>
-                                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])->get() as $academ)
+                                        @foreach ($academy as $academ)
                                         <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1">
                                             {{ ucwords($academ->name) }}
                                         </option>
@@ -167,7 +167,7 @@
                                 <div class="w-1/2 ml-2">
                                     <x-form.select name="coursetype_id" title="Kurz" class="combo-b" disabled>
                                         <option value="" disabled selected hidden>Typ kurzu</option>
-                                        @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type',[1, 2])->get() as $type)
+                                        @foreach(\App\Models\CourseType::with(['academy'])->where('type',1)->get() as $type)
                                         <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                             data-option="{{ $type->academy_id }}">
                                             {{ ucwords($type->name) }}
@@ -200,7 +200,7 @@
                                         $academy = \App\Models\Academy::with(['coursetypes','applications'])
                                         ->get();
                                         @endphp --}}
-                                        @foreach (\App\Models\Academy::with(['coursetypes','applications'])->get() as $academ)
+                                        @foreach ($academy as $academ)
                                         <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1"
                                             {{-- {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
                                             >{{
@@ -227,7 +227,7 @@
                                         {{-- @php
                                         $academy = \App\Models\CourseType::all();
                                         @endphp --}}
-                                        @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type',[0,2])->get() as $type2)
+                                        @foreach(\App\Models\CourseType::with(['academy'])->where('type',0)->get() as $type2)
                                         <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
                                             data-option="{{ $type2->academy_id }}" {{-- {{old('coursetype_id')==$type->
                                             id ?
@@ -576,12 +576,12 @@ valuestoShow.forEach(value => {
 
 var addedItems = new Set(); // Initialize a new Set to track added items uniquely
 
-
+/*
 document.getElementById('myForm').addEventListener('submit', function(event) {
     var addedItemsArray = Array.from(addedItems);  // Convert Set to Array
     var addedItemsJson = JSON.stringify(addedItemsArray);  // Convert Array to JSON String
     document.getElementById('itemsInput').value = addedItemsJson;  // Set the value of the hidden input
-});
+});*/
 
 
 

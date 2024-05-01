@@ -5,9 +5,9 @@
   
   <div class="relative py-3  sm:max-w-4xl sm:mx-auto">
     <div class="absolute  inset-0 bg-gradient-to-r from-indigo-300 to-indigo-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-lg"></div>
-    <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-lg sm:p-20">
+    <div class="relative px-6 py-10 bg-white shadow-lg sm:rounded-lg sm:px-16 sm:py-20">
         
-      <div class="max-w-3xl mx-auto">
+      <div class="max-w-4xl mx-auto">
         
         <div class="flex">
           <h1 class="text-xl font-semibold block w-2/3">{{ $heading }}</h1>

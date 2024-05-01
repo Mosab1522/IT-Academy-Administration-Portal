@@ -315,7 +315,10 @@ if(student)
         student.style.display = 'none';
         
         instruktor.querySelector('select').disabled = false;
-        student.querySelectorAll('select').forEach(select => select.disabled = true);  // Disable the student element
+
+        student.querySelectorAll('select').forEach(select => select.disabled = true);
+      
+          // Disable the student element
     }
     });
   });
@@ -328,13 +331,13 @@ if(student2)
         student2.style.display = 'flex';
         instruktor2.style.display = 'none';
         
-        student.querySelector('select').disabled = false;
-         instruktor1.querySelectorAll('select').forEach(select => select.disabled = true);
+        student2.querySelector('select').disabled = false;
+         instruktor2.querySelectorAll('select').forEach(select => select.disabled = true);
     } else {
         instruktor2.style.display = 'flex';
         student2.style.display = 'none';
         
-        instruktor.querySelector('select').disabled = false;
+        instruktor2.querySelector('select').disabled = false;
     student2.querySelectorAll('select').forEach(select => select.disabled = true);   // Disable the student element
     }
     });
@@ -1018,10 +1021,10 @@ $(document).ready(function () {
   academies.forEach(function (academySelect) {
     const pairId = academySelect.getAttribute('data-pair-id');
     const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
-    if(coursetypeSelect.disabled == true)
-    {
-      coursetypeSelect.disabled = false;
-    }
+    // if(coursetypeSelect.disabled == true)
+    // {
+    //   coursetypeSelect.disabled = false;
+    // }
     const coursetypeOptions = coursetypeSelect.querySelectorAll("option");
 
     const setValue = function (newValue) {
@@ -1053,6 +1056,7 @@ $('#selects-container').on('change', '.academy-select', function (event) {
     for (let i = 0; i < coursetypeOptions.length; i++) {
       if (coursetypeOptions[i].dataset.option === newValue) {
         coursetypeSelect.appendChild(coursetypeOptions[i].cloneNode(true));
+        coursetypeSelect.disabled = false;
       }
     }
   };

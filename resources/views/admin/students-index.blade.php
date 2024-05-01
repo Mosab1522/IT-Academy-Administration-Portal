@@ -86,19 +86,20 @@
                         <!-- Program selection -->
                         <div class="flex flex-col mt-0 lg:mt-6 {{ old('skola') == 'ucm' ? '' : 'hidden' }}" id="ucmkari2" >
                             <x-form.label name="program" title="Program"  required="true"/>
-                            <div class="flex lg:mt-1">
+                            <div class="flex ">
                                 <div class="flex items-center lg:items-baseline mr-4">
                                     <input type="radio" id="option5" name="program" value="apin"
                                         class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 mt-1" {{ old('skola') == 'ucm' ? '' : 'disabled' }} required {{
                                             old('program') == 'apin' ? 'checked' : '' }}>
-                                    <label for="option5" class="ml-2 lg:-mt-1  text-gray-700">Aplikovaná
+                                    <label for="option5" class="ml-2 block  text-gray-700 text-sm leading-5.6">Aplikovaná
                                         informatika</label>
                                 </div>
                                 <div class="flex items-center lg:items-baseline">
                                     <input type="radio" id="option6" name="program" value="iny"
-                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 lg:mt-1" {{
+                                        class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500  lg:mt-1" {{
                                             old('program') == 'iny' ? 'checked' : '' }} {{ old('skola') == 'ucm' ? '' : 'disabled' }} required>
-                                    <label for="option6" class="ml-2 lg:-mt-1  text-gray-700">Iný</label>
+                                    <label for="option6" class="ml-2  text-gray-700 text-sm leading-5.6 mt-0 lg:-mt-1">Iný</label>
+                                  
                                 </div>
                             </div>
                             <x-form.error name="program" errorBag="default"/>
