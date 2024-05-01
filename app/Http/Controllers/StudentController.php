@@ -11,25 +11,40 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
+        $students = Student::with('applications','classes');
+
+        // Combine search conditions into a single logical group
         if ($request->filled('search')) {
-            $students = Student::with('applications')->where('name', 'like', '%' . $request->input('search') . '%')->orWhere('lastname', 'like', '%' . $request->input('search') . '%')->orWhere('email', 'like', '%' . $request->input('search') . '%');
-        } else {
-            $students = Student::with('applications');
+            $search = '%' . $request->input('search') . '%';
+            $students->where(function ($query) use ($search) {
+                $query->where('name', 'like', $search)
+                      ->orWhere('lastname', 'like', $search)
+                      ->orWhere('email', 'like', $search);
+            });
         }
 
         // dd($request->input('search'));
         // spracovanie filtrov
 
         // zoradenie
-        if ($request->filled('orderBy')) {
+        if ($request->filled('orderBy') ) {
+            if($request->orderBy == 'applications_count')
+            {
+            $students->withCount('applications')  // Add a count of applications to each student
+            ->orderBy('applications_count', $request->input('orderDirection'));}
+            else{
             $orderBy = $request->input('orderBy');
             $orderDirection = $request->input('orderDirection');
             $students->orderBy($orderBy, $orderDirection);
-        } else {
+            
+         } 
+        }
+         else {
+            
             $students->orderBy('created_at', 'desc');
         }
 
-        $students = $students->get();
+        $students = $students->paginate(10); 
 
         return view('admin.students-index', [
             'students' => $students

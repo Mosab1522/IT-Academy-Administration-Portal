@@ -656,5 +656,43 @@
 
 <script>
     var oldInput = {!! json_encode(old()) !!};
+    function toggleForms() {
+  document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("novy");
+    const registerForm = document.getElementById("stary");
+    const switchToLogin = document.getElementById("switch-form");
+    const switchToRegister = document.getElementById("switch-form2");
 
+    function toggleDisplay(showLoginForm) {
+        loginForm.style.display = showLoginForm ? "block" : "none";
+        registerForm.style.display = showLoginForm ? "none" : "block";
+
+        switchToLogin.classList.toggle('text-indigo-500', showLoginForm);
+        switchToLogin.classList.toggle('border-indigo-500', showLoginForm);
+        switchToLogin.classList.toggle('text-gray-500', !showLoginForm);
+        switchToLogin.classList.toggle('border-transparent', !showLoginForm);
+
+        switchToRegister.classList.toggle('text-indigo-500', !showLoginForm);
+        switchToRegister.classList.toggle('border-indigo-500', !showLoginForm);
+        switchToRegister.classList.toggle('text-gray-500', showLoginForm);
+        switchToRegister.classList.toggle('border-transparent', showLoginForm);
+    }
+
+    if (switchToLogin) {
+      switchToLogin.addEventListener("click", function (event) {
+        event.preventDefault();
+        toggleDisplay(true);
+      });
+    }
+
+    if (switchToRegister) {
+      switchToRegister.addEventListener("click", function (event) {
+        event.preventDefault();
+        toggleDisplay(false);
+      });
+    }
+  });
+}
+
+toggleForms();
 </script>

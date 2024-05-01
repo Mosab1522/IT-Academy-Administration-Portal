@@ -76,15 +76,16 @@
             <input type="hidden" name="search" value="{{request()->input('search')}}" />
         @endif
         <x-form.search-select name="orderBy" title="Zoradiť podľa">
+            <option value="name" {{ request()->input('orderBy') == 'name' ? 'selected' : '' }}>Názvu</option>
             <option value="created_at" {{ request()->input('orderBy') == 'created_at' ? 'selected' : '' }}>Dátumu vytvorenia</option>
                <option value="updated_at" {{ request()->input('orderBy') == 'updated_at' ? 'selected' : '' }}>Dátumu poslednej úpravy</option>
        </x-form.search-select>
 
         <x-form.search-select name="orderDirection" title="Smer zoradenia">
-       <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
-       </option>
-       <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
-       </option>
+            <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Vzostupne
+            </option>
+            <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Zostupne
+            </option>
 </x-form.search-select>
 
         <x-slot:search>

@@ -157,16 +157,20 @@
                         <input type="hidden" name="search" value="{{request()->input('search')}}"/>
                     @endif
                     <x-form.search-select name="orderBy" title="Zoradiť podľa">
-                        <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu
-                            vytvorenia</option>
-                        <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu
-                            poslednej úpravy</option>
-            </x-form.search-select>
+                        <option value="name" {{ request()->input('orderBy') == 'name' ? 'selected' : '' }}>Mena</option>
+                        <option value="lastname" {{ request()->input('orderBy') == 'lastname' ? 'selected' : '' }}>Priezviska</option>
+                        <option value="applications_count" {{ request()->input('orderBy') == 'applications_count' ? 'selected' : '' }}>Počtu prihlášok</option>
+                        <option value="created_at" {{ request()->input('orderBy') == 'created_at' ? 'selected' : '' }}>Dátumu vytvorenia</option>
+                        <option value="updated_at" {{ request()->input('orderBy') == 'updated_at' ? 'selected' : '' }}>Dátumu poslednej úpravy</option>
+                        
+                    </x-form.search-select>
+                    
             <x-form.search-select name="orderDirection" title="Smer zoradenia">
-                <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
+                <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Vzostupne
                 </option>
-                <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
+                <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Zostupne
                 </option>
+                
         </x-form.search-select>
                         {{-- <div class="form-group">
                             <select class="form-control" id="filterBy" name="filterBy[]" multiple>
@@ -225,5 +229,5 @@
                                 </tr>
                                 @endforeach
                             </x-single-table>
-
+                            {{ $students->links() }}
     </x-setting>

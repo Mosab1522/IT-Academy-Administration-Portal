@@ -30,15 +30,16 @@
                             </x-form.input-radio>
                         </div>
                         <x-form.error name="type" errorBag="default"/>
-                    </div>
+                    </div> 
+                    @php
+                            $academy = \App\Models\Academy::all();
+                            @endphp
                     <x-form.field>
                         <x-form.select name="academy_id" title="Akadémia" required="true">
 
                             <option class="text-gray-500" value="" disabled selected hidden>Akadémie</option>
-                            @php
-                            $academy = \App\Models\Academy::all();
-                            @endphp
-                            @foreach (\App\Models\Academy::all() as $academ)
+                           
+                            @foreach ($academy as $academ)
                             <option value="{{ $academ->id }}" {{old('academy_id')==$academ->id ? 'selected' : '' }} >{{
                                 ucwords($academ->name) }}</option>
                             @endforeach
@@ -64,25 +65,24 @@
         @if(request()->filled('search'))
         <input type="hidden" name="search" value="{{request()->input('search')}}" />
         @endif
-        <x-form.search-select name="orderBy" title="Zoradiť podľa">
+        <x-form.search-select name="orderBy" title="Zoradiť podľa">   
+             <option value="name" {{ request()->input('orderBy') == 'name' ? 'selected' : '' }}>Názvu</option>
             <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu
                 vytvorenia</option>
             <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu
                 poslednej úpravy</option>
+          
+          
         </x-form.search-select>
         <x-form.search-select name="orderDirection" title="Smer zoradenia">
-            <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
+            <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Vzostupne
             </option>
-            <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
+            <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Zostupne
             </option>
         </x-form.search-select>
         <x-form.search-select name="academy_id" title="Akadémia">
             <option value="" disabled selected hidden>Akadémia</option>
-            @php
-            $academy = \App\Models\Academy::with(['coursetypes','applications'])
-            ->get();
-            $coursetype = \App\Models\CourseType::with(['academy','applications'])->get();
-            @endphp
+          
 
             <option value="" data-option="-1">Všetky</option>
 

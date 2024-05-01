@@ -3,7 +3,7 @@
 <div class="flex h-screen bg-gray-100 overflow-hidden">
     <button
         class="menu-toggle bg-gray-800 opacity-80 rounded-md shadow fixed bottom-4 left-4 z-50 lg:hidden sm focus:outline-none focus:ring focus:border-blue-300"
-        onclick="toggleMenu()">
+        >
         <svg class="h-12 w-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -58,7 +58,7 @@
         <h2 class="text-lg font-semibold text-gray-900">Potvrdiť vymazanie</h2>
         <p class="text-gray-700">Ste si istý že chcete vymazať <span id="itemToDeleteName"></span></p>
         <div class="flex justify-end space-x-4 mt-4">
-            <button onclick="closeModal()"
+            <button id="closeButton"
                 class="px-4 py-2 bg-gray-300 text-gray-900 rounded-md hover:bg-gray-400 ">Zrušiť</button>
             <button id="confirmButton" onclick="confirmDeletion()"
                 class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-gray-500"  disabled>Vymazať</button>
@@ -67,11 +67,11 @@
     </div>
 </div>
 
-</html>
+
 
 <script>
     // Inside your <script> tag to handle the responsive sidebar
-    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.content-overlay');
     const toggleButton = document.querySelector('.menu-toggle');
@@ -86,124 +86,161 @@
     toggleButton.addEventListener('click', toggleMenu);
 
     // Hide sidebar when overlay is clicked
-    overlay.addEventListener('click', function() {
-        sidebar.classList.add('-translate-x-full');
-        overlay.classList.add('hidden');
-    });
+    overlay.addEventListener('click', closeMenu);
 
-    // Check to initially hide the sidebar on smaller screens
-    if (window.innerWidth < 1024) {
+    function closeMenu() {
         sidebar.classList.add('-translate-x-full');
         overlay.classList.add('hidden');
     }
 
-    // Adjust sidebar visibility based on screen resize
-    window.addEventListener('resize', function() {
+    // Function to adjust sidebar based on screen width
+    function adjustMenuVisibility() {
         if (window.innerWidth >= 1024) {
-            // Ensure the sidebar is visible on larger screens
             sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
+            overlay.classList.add('hidden'); // Or possibly remove 'hidden' based on desired behavior
         } else {
-            // Hide sidebar on smaller screens
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
+            closeMenu();
         }
-    });
+    }
+
+    // Initial adjustment
+    adjustMenuVisibility();
+
+    // Debounce function to limit the rate at which a function is executed
+    function debounce(func, wait, immediate) {
+        let timeout;
+        return function() {
+            const context = this, args = arguments;
+            const later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            const callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
+
+    // Adjust sidebar visibility based on screen resize with debounce
+    window.addEventListener('resize', debounce(adjustMenuVisibility, 250));
 });
 
-let countdown;
 
 // Function to open the modal and start a countdown
 function confirmDelete(itemName, url) {
-    document.getElementById('itemToDeleteName').textContent = itemName;
-    document.getElementById('deleteConfirmModal').style.display = 'flex';  // Show the modal
-
+    const modal = document.getElementById('deleteConfirmModal');
+    const itemToDeleteName = document.getElementById('itemToDeleteName');
     const confirmButton = document.getElementById('confirmButton');
-    confirmButton.disabled = true; // Disable the button initially
-    let timeLeft = 10;  // 10 seconds countdown
-    confirmButton.textContent = `Vymazať (${timeLeft}s)`;
+    const closeButton = document.getElementById('closeButton'); // Assuming a close button is defined in your modal
+    const deleteForm = document.getElementById('deleteForm');
 
-    countdown = setInterval(() => {
+    // Update modal content and show it
+    itemToDeleteName.textContent = itemName;
+    modal.style.display = 'flex';  // Show the modal
+    confirmButton.disabled = true; // Disable the confirm button initially
+    confirmButton.textContent = `Vymazať (${10}s)`; // Initial button text with countdown start
+
+    // Initialize the countdown
+    let timeLeft = 10;  // 10 seconds countdown
+    const countdown = setInterval(() => {
         timeLeft--;
         confirmButton.textContent = `Vymazať (${timeLeft}s)`;
         if (timeLeft <= 0) {
-            clearInterval(countdown);  // Stop the countdown
-            confirmButton.disabled = false; // Enable the button
-            confirmButton.textContent = 'Vymazať'; // Change button text to 'Delete'
+            clearInterval(countdown);
+            confirmButton.disabled = false;
+            confirmButton.textContent = 'Vymazať';
         }
-    }, 1000); 
+    }, 1000);
 
-    window.confirmDeletion = function() { // Stop the countdown
-    document.getElementById('deleteForm').action = url;  // Set the action URL dynamically
-    document.getElementById('deleteForm').submit();      // Submit the form
-}
-}
-
-
-
-// Function to close the modal
-function closeModal() {
-    clearInterval(countdown);  // Ensure to clear the countdown if it's still running
-    document.getElementById('deleteConfirmModal').style.display = 'none';
-}
-
-// Attach click event listener to the modal overlay
-document.getElementById('deleteConfirmModal').addEventListener('click', function(event) {
-    if (event.target === this) {
-        clearInterval(countdown); 
-        closeModal();
+    // Function to clear the modal and reset
+    function closeModal() {
+        clearInterval(countdown);
+        modal.style.display = 'none';
     }
-});
+
+    // Close modal when the close button is clicked
+    closeButton.addEventListener('click', closeModal, { once: true });
+
+    // Stop the countdown and submit the form
+    confirmButton.onclick = function () {
+        clearInterval(countdown);
+        deleteForm.action = url;  // Set the action URL dynamically
+        deleteForm.submit();      // Submit the form
+    };
+
+    // Event listener for clicking outside the modal to close
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    }, { once: true });
+}
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    const infoIcons = document.querySelectorAll('.info');
+    const container = document.querySelector('body'); // Adjust if there's a more specific container
 
-    infoIcons.forEach(function(infoIcon) {
+    // Delegate mouse events
+    container.addEventListener('mouseenter', handleMouseEnter, true);
+    container.addEventListener('mouseleave', handleMouseLeave, true);
+
+    // Delegate touch events
+    container.addEventListener('touchend', handleTouchEnd, true);
+
+    // Delegate click outside to hide tooltip
+    container.addEventListener('click', handleClickOutside, true);
+
+    function handleMouseEnter(e) {
+        if (e.target.classList.contains('info')) {
+            showTooltip(e.target);
+        }
+    }
+
+    function handleMouseLeave(e) {
+        if (e.target.classList.contains('info')) {
+            hideTooltip(e.target);
+        }
+    }
+
+    function handleTouchEnd(e) {
+        if (e.target.classList.contains('info')) {
+            toggleTooltip(e.target);
+            e.preventDefault(); // Prevent mouse events
+            e.stopPropagation(); // Stop the event from bubbling
+        }
+    }
+
+    function handleClickOutside(e) {
+        document.querySelectorAll('.info').forEach(infoIcon => {
+            const tooltip = infoIcon.nextElementSibling;
+            if (!infoIcon.contains(e.target) && !tooltip.contains(e.target)) {
+                hideTooltip(infoIcon);
+            }
+        });
+    }
+
+    function showTooltip(infoIcon) {
         const tooltip = infoIcon.nextElementSibling;
-        let isTooltipVisible = false;
+        tooltip.style.display = 'block';
+        infoIcon.dataset.isTooltipVisible = 'true';
+    }
 
-        const showTooltip = () => {
-            tooltip.style.display = 'block';
-            isTooltipVisible = true;
-        };
+    function hideTooltip(infoIcon) {
+        const tooltip = infoIcon.nextElementSibling;
+        tooltip.style.display = 'none';
+        infoIcon.dataset.isTooltipVisible = 'false';
+    }
 
-        const hideTooltip = () => {
-            tooltip.style.display = 'none';
-            isTooltipVisible = false;
-        };
-
-        // Handle mouse hover for non-touch devices
-        infoIcon.addEventListener('mouseenter', showTooltip);
-        infoIcon.addEventListener('mouseleave', hideTooltip);
-
-        // Handle touch for touch devices
-        infoIcon.addEventListener('touchend', function (e) {
-            e.preventDefault(); // Prevent the mouse events from firing after touch
-            if (isTooltipVisible) {
-                hideTooltip();
-            } else {
-                showTooltip();
-            }
-            e.stopPropagation(); // Stop the event from bubbling up to other elements
-        });
-
-        // Hide tooltip when clicking outside
-        document.addEventListener('click', function (e) {
-            if (!infoIcon.contains(e.target) && !tooltip.contains(e.target) && isTooltipVisible) {
-                hideTooltip();
-            }
-        });
-
-        // For touch screens, to ensure taps outside also hide the tooltip
-        document.addEventListener('touchend', function (e) {
-            if (!infoIcon.contains(e.target) && !tooltip.contains(e.target) && isTooltipVisible) {
-                e.preventDefault(); // Prevent additional mouse events
-                hideTooltip();
-            }
-        });
-    });
+    function toggleTooltip(infoIcon) {
+        if (infoIcon.dataset.isTooltipVisible === 'true') {
+            hideTooltip(infoIcon);
+        } else {
+            showTooltip(infoIcon);
+        }
+    }
 });
+
 
 // Attach the actual deletion function
 

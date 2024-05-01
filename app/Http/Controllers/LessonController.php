@@ -17,22 +17,25 @@ class LessonController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->filled('search')) {
-            $lessons = Lesson::with(['class', 'instructor'])->where('title', 'like', '%' . $request->input('search') . '%')
-                ->orwhereHas('class', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%');
-                })->orwhereHas('instructor', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%');
-                });
-        } else {
-            $lessons = Lesson::with(['class', 'instructor']);
-        }
+        $lessons = Lesson::with(['class', 'instructor']);
 
-        // dd($request->input('search'));
-        // spracovanie filtrov
+        // Apply a generic search across multiple related models
+        if ($request->filled('search')) {
+            $search = '%' . $request->input('search') . '%';
+            $lessons->where(function ($query) use ($search) {
+                $query->where('title', 'like', $search)
+                      ->orWhereHas('class', function ($subQuery) use ($search) {
+                          $subQuery->where('name', 'like', $search);
+                      })
+                      ->orWhereHas('instructor', function ($subQuery) use ($search) {
+                          $subQuery->where('name', 'like', $search);
+                      });
+            });
+        }
+    
+        // Filter by class_id if provided
         if ($request->filled('class_id')) {
-            $filter = $request->input('class_id');
-            $lessons->where('class_id', $filter);
+            $lessons->where('class_id', $request->input('class_id'));
         }
 
         // zoradenie
@@ -41,7 +44,7 @@ class LessonController extends Controller
             $orderDirection = $request->input('orderDirection');
             $lessons->orderBy($orderBy, $orderDirection);
         } else {
-            $lessons->orderBy('lesson_date', 'asc');
+            $lessons->orderBy('lesson_date', 'desc');
         }
 
         $lessons = $lessons->get();

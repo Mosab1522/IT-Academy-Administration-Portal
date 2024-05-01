@@ -125,7 +125,10 @@ session()->forget('instructor_id');
                     </div>
                 </div>
             </x-form.field> --}}
-    
+            @php
+            $academy = \App\Models\Academy::all();
+        $coursetypes = \App\Models\CourseType::all();
+        @endphp
             <x-form.field>
                 <div id="selects-container">
                     <x-form.label name="academy_id" title="Pridať správu kurzov"/>
@@ -137,7 +140,7 @@ session()->forget('instructor_id');
                             $academy = \App\Models\Academy::with(['coursetypes','applications'])
                             ->get();
                             @endphp --}}
-                            @foreach (\App\Models\Academy::with(['coursetypes', 'applications'])->get() as $academ)
+                            @foreach ($academy as $academ)
                             <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{
                                 old('academy_id.0')==$academ->id ? 'selected' : '' }}>{{ ucwords($academ->name) }}</option>
                             @endforeach
@@ -148,7 +151,7 @@ session()->forget('instructor_id');
                             {{-- @php
                             $academy = \App\Models\CourseType::all();
                             @endphp --}}
-                            @foreach (\App\Models\CourseType::with(['academy', 'applications'])->get() as $type)
+                            @foreach ($coursetypes as $type)
                             <option value="{{ $type->id }}" data-id="{{ $type->id }}" data-option="{{ $type->academy_id }}"
                                 {{ old('coursetype_id.0')==$type->id ? 'selected' : '' }}>{{ ucwords($type->name) }}</option>
                             @endforeach
@@ -247,7 +250,7 @@ session()->forget('instructor_id');
             </div>
         </div>
     </x-slot:create>
-    <x-form.search action="{{ route('admin.instructors.index') }}" text="Zoradiť">
+    <x-form.search action="{{ route('admin.instructors.index') }}" text="Filtrovať a zoradiť">
                 @csrf
 
                 @if(request()->filled('search'))
@@ -276,19 +279,15 @@ session()->forget('instructor_id');
                     <x-form.search-select name="academy_id" title="Akadémia" class=" combo-a4" data-nextcombo=".combo-b4">
                                 
                         <!-- parent -->
-                        {{-- <select name="academy_id" class="combo-a" data-nextcombo=".combo-b"> --}}@php
-            $academy = \App\Models\Academy::with(['coursetypes','applications'])
-            ->get();
-            $coursetype = \App\Models\CourseType::with(['academy','applications'])->get();
-            @endphp
+                        {{-- <select name="academy_id" class="combo-a" data-nextcombo=".combo-b"> --}}
+            
                             
                             <option value="" data-option="-1" selected>Všetky</option>
                             {{-- @php
                             $academy = \App\Models\Academy::with(['coursetypes','applications'])
                             ->get();
                             @endphp --}}
-                            @foreach (\App\Models\Academy::with(['coursetypes','applications'])
-                            ->get() as $academ)
+                            @foreach ($academy as $academ)
                             <option value="{{ $academ->id }}" data-id="{{ $academ->id }}" data-option="-1" {{--
                                 {{old('academy_id')==$academ->id ? 'selected' : ''}} --}}
                                 >{{
@@ -301,7 +300,7 @@ session()->forget('instructor_id');
                     
                         <x-form.search-select name="coursetype_id" title="Kurz" class="combo-b4" disabled>
                             <option value=""  data-id="-1">Všetky</option>
-
+            
                             @foreach ($academy as $academ)
                         <option value="" data-option="{{$academ->id}}" {{request()->input('coursetype_id')==null
                             ? 'selected' : ''}}>Všetky</option>
@@ -320,8 +319,7 @@ session()->forget('instructor_id');
                             {{-- @php
                             $academy = \App\Models\CourseType::all();
                             @endphp --}}
-                            @foreach (\App\Models\CourseType::with(['academy','applications'])->whereIn('type', [1,
-                            2])->get() as $type)
+                            @foreach ($coursetypes as $type)
                             <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                 data-option="{{ $type->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
                                 'selected' : ''}} --}}

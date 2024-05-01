@@ -15,7 +15,9 @@
                         <x-form.input name="title" type="text" title="Názov hodiny" placeholder="Názov hodiny" required="true"/>
                     </x-form.field>
                     <x-form.field>
-
+                        @php
+                        $classes = \App\Models\CourseClass::with(['coursetype'])->get();
+                        @endphp
                         <div>
 
                             {{-- <input name="coursetype_id" value="{{$coursetype->id}}" hidden /> --}}
@@ -31,7 +33,7 @@
                                 {{-- @php
                                 $assignedInstructors = $coursetype->instructors->pluck('id')->toArray();
                                 @endphp --}}
-                                @foreach (\App\Models\CourseClass::with(['instructor'])->get() as $class)
+                                @foreach ($classes as $class)
 
                                 
 
@@ -83,22 +85,23 @@
             <input type="hidden" name="search" value="{{request()->input('search')}}" />
             @endif
             <x-form.search-select name="orderBy" title="Zoradiť podľa">
+                <option value="lesson_date" {{request()->input('orderBy')=='lesson_date' ? 'selected' : ''}}>Dátumu
+                    hodiny</option>
                 <option value="created_at" {{request()->input('orderBy')=='created_at' ? 'selected' : ''}}>Dátumu
                     vytvorenia</option>
                 <option value="updated_at" {{request()->input('orderBy')=='updated_at' ? 'selected' : ''}}>Dátumu
                     poslednej úpravy</option>
             </x-form.search-select>
             <x-form.search-select name="orderDirection" title="Smer zoradenia">
-                <option value="desc" {{request()->input('orderDirection')=='desc' ? 'selected' : ''}}>Od najnovšej
+                <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Vzostupne
                 </option>
-                <option value="asc" {{request()->input('orderDirection')=='asc' ? 'selected' : ''}}>Od najstaršej
+                <option value="desc" {{request()->input('orderDirection')=='asc' ? '' : 'selected'}}>Zostupne
+                </option>
                 </option>
             </x-form.search-select>
 
             <x-form.search-select name="class_id" title="Trieda">
-                @php
-                $classes = \App\Models\CourseClass::with(['instructor','students'])->get();
-                @endphp
+              
 
                 <option value="" data-option="-1">Všetky</option>
 

@@ -12,17 +12,17 @@ class AcademyController extends Controller
 {
     public function index(Request $request)
     {
-         if ($request->filled('search')) {
-            $academies = Academy::with(['coursetypes', 'applications'])->where('name', 'like', '%' . $request->input('search') . '%')->orWhereHas('coursetypes', function (Builder $query) use ($request) {
-                $query->where('name', 'like', '%' . $request->input('search') . '%');
-            });
+        $academies = Academy::with(['coursetypes']);
     
-        } else {
-            $academies = Academy::with(['coursetypes', 'applications']);
-        }
-
-        // dd($request->input('search'));
-        // spracovanie filtrov
+            if ($request->filled('search')) {
+                $search = $request->input('search');
+                $academies->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                          ->orWhereHas('coursetypes', function ($q) use ($search) {
+                              $q->where('name', 'like', '%' . $search . '%');
+                          });
+                });
+            }
 
         // zoradenie
         if ($request->filled('orderBy')) {
@@ -30,7 +30,7 @@ class AcademyController extends Controller
             $orderDirection = $request->input('orderDirection');
             $academies->orderBy($orderBy, $orderDirection);
         } else {
-            $academies->orderBy('created_at', 'desc');
+            $academies->orderBy('name', 'asc');
         }
 
         $academies = $academies->get();

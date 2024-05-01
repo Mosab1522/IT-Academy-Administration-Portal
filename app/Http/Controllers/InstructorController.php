@@ -16,104 +16,32 @@ class InstructorController extends Controller
 {
     public function index(Request $request)
     {
+        $instructors = Instructor::with(['coursetypes', 'login']);
+
         if ($request->filled('search')) {
-            $instructors = Instructor::with(['coursetypes', 'login'])
-                ->where(function ($query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%')
-                        ->orWhere('lastname', 'like', '%' . $request->input('search') . '%')
-                        ->orWhere('email', 'like', '%' . $request->input('search') . '%');
-                });
-            // ->where(function ($query) use ($request) {
-            //     if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
-            //         $filter = $request->input('coursetype_id');
-            //         $query->whereHas('coursetypes', function (Builder $query) use ($filter) {
-            //             $query->where('id', 'like', '%' . $filter . '%');
-            //         })
-            //             ->whereHas('coursetypes', function (Builder $query) {
-            //                 $query->has('instructors');
-            //             })
-            //             ->whereHas('coursetypes.academy', function (Builder $query) use ($request) {
-            //                 $query->where('id', 'like', '%' . $request->input('academy_id') . '%');
-            //             });
-            //     } else if ($request->filled('academy_id')) {
-            //         $filter = $request->input('academy_id');
-            //         $query->whereHas('coursetypes', function (Builder $query) use ($filter) {
-            //             $query->whereHas('academy', function ($query) use ($filter) {
-            //                 $query->where('id', 'like', '%' . $filter . '%');
-            //             });
-            //         })->whereHas('coursetypes', function (Builder $query) {
-            //             $query->has('instructors');
-            //         });
-            //     }
-            // });
-        } else {
-            $instructors = Instructor::with(['coursetypes', 'login']);
-            // if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
-            //     $filter = $request->input('coursetype_id');
-            //     $instructors = $instructors
-            //         ->whereHas('coursetypes', function (Builder $query) use ($filter) {
-            //             $query->where('id', 'like', '%' . $filter . '%');
-            //         })
-            //         ->whereHas('coursetypes', function (Builder $query) {
-            //             $query->has('instructors');
-            //         })
-            //         ->whereHas('coursetypes.academy', function (Builder $query) use ($request) {
-            //             $query->where('id', 'like', '%' . $request->input('academy_id') . '%');
-            //         });
-            // } else if ($request->filled('academy_id')) {
-            //     $filter = $request->input('academy_id');
-            //     $instructors = $instructors
-            //         ->whereHas('coursetypes', function (Builder $query) use ($filter) {
-            //             $query->whereHas('academy', function ($query) use ($filter) {
-            //                 $query->where('id', 'like', '%' . $filter . '%');
-            //             });
-            //         })
-            //         ->whereHas('coursetypes', function (Builder $query) {
-            //             $query->has('instructors');
-            //         });
-            // }
+            $searchTerm = '%' . $request->input('search') . '%';
+            $instructors->where(function ($query) use ($searchTerm) {
+                $query->where('instructors.name', 'like', $searchTerm)
+                      ->orWhere('instructors.lastname', 'like', $searchTerm)
+                      ->orWhere('instructors.email', 'like', $searchTerm);
+            });
         }
-
-        if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
-            $filter = $request->input('coursetype_id');
-            $instructors = $instructors
-                ->whereHas('coursetypes', function (Builder $query) use ($filter) {
-                    $query->where('id', 'like', '%' . $filter . '%');
-                })
-                ->whereHas('coursetypes', function (Builder $query) {
-                    $query->has('instructors');
-                })
-                ->whereHas('coursetypes.academy', function (Builder $query) use ($request) {
-                    $query->where('id', 'like', '%' . $request->input('academy_id') . '%');
+        
+        if ($request->filled('academy_id')) {
+            $academyId = $request->input('academy_id');
+            $coursetypeId = $request->input('coursetype_id', null);
+        
+            $instructors->whereHas('coursetypes', function ($query) use ($academyId, $coursetypeId) {
+                $query->whereHas('academy', function ($subQuery) use ($academyId) {
+                    $subQuery->where('academies.id', '=', $academyId); // Explicitly reference academies.id
                 });
-        } else if ($request->filled('academy_id')) {
-            $filter = $request->input('academy_id');
-            $instructors = $instructors
-                ->whereHas('coursetypes', function (Builder $query) use ($filter) {
-                    $query->whereHas('academy', function ($query) use ($filter) {
-                        $query->where('id', 'like', '%' . $filter . '%');
-                    });
-                })
-                ->whereHas('coursetypes', function (Builder $query) {
-                    $query->has('instructors');
-                });
+        
+                if (!is_null($coursetypeId)) {
+                    $query->where('course_types.id', '=', $coursetypeId); // Explicitly reference course_types.id
+                }
+            });
         }
-
-
-
-
-
-
-
-
-
-
-        //   dd($request->input('coursetype_id'));
-        // spracovanie filtrov
-        // $instructors = $instructors->get();
-
-        // dd($instructors);
-
+        
 
         // zoradenie
         if ($request->filled('orderBy')) {

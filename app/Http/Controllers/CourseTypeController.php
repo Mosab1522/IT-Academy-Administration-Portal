@@ -16,21 +16,24 @@ class CourseTypeController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->filled('search')) {
-            $coursetypes = CourseType::with(['academy', 'applications','instructors'])->where('name', 'like', '%' . $request->input('search') . '%')
-                ->orwhereHas('academy', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%');
-                });
-        } else {
-            $coursetypes = CourseType::with(['academy', 'applications','instructors']);
-        }
+        $coursetypes = CourseType::with(['academy', 'applications', 'instructors','classes']);
 
-        // dd($request->input('search'));
-        // spracovanie filtrov
-        if ($request->filled('academy_id')) {
-            $filter = $request->input('academy_id');
-            $coursetypes->where('academy_id', $filter);
-        }
+    // Search filter applied to multiple related fields
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $coursetypes->where(function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhereHas('academy', function ($q) use ($search) {
+                      $q->where('name', 'like', '%' . $search . '%');
+                  });
+        });
+    }
+
+    // Filter by academy_id if provided
+    if ($request->filled('academy_id')) {
+        $coursetypes->where('academy_id', $request->input('academy_id'));
+    }
+
 
         // zoradenie
         if ($request->filled('orderBy')) {
@@ -38,7 +41,7 @@ class CourseTypeController extends Controller
             $orderDirection = $request->input('orderDirection');
             $coursetypes->orderBy($orderBy, $orderDirection);
         } else {
-            $coursetypes->orderBy('created_at', 'desc');
+            $coursetypes->orderBy('name', 'asc');
         }
 
         $coursetypes = $coursetypes->get();

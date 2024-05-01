@@ -24,26 +24,36 @@ class ApplicationController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
-            $filter = $request->input('coursetype_id');
-            $applications = Application::with(['academy', 'coursetype', 'student'])->where('coursetype_id', $filter);
-        } else if ($request->filled('academy_id')) {
-            $filter = $request->input('academy_id');
-            $applications = Application::with(['academy', 'coursetype', 'student'])->where('academy_id', $filter);
-        } else {
-            $applications = Application::with(['academy', 'coursetype', 'student']);
-        }
+        $applications = Application::with(['academy', 'coursetype', 'student']);
 
-        //   dd($request);
+        // Check for academy_id and coursetype_id filters.
+        if ($request->filled('academy_id')) {
+            $academyId = $request->input('academy_id');
+            $coursetypeId = $request->input('coursetype_id', null);
+        
+            // Filter applications based on academy_id and optionally coursetype_id.
+            $applications->whereHas('coursetype', function ($query) use ($academyId, $coursetypeId) {
+                $query->where('academy_id', $academyId);
+                if (!is_null($coursetypeId)) {
+                    $query->where('id', $coursetypeId);
+                }
+            });
+        }
+        
+        // Apply search conditions if 'search' is provided.
         if ($request->filled('search')) {
-            $applications = $applications
-                ->whereHas('student', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%')->orWhere('lastname', 'like', '%' . $request->input('search') . '%')->orWhere('email', 'like', '%' . $request->input('search') . '%');
-                })->orWhereHas('academy', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%');
-                })->orWhereHas('coursetype', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%');
+            $searchTerm = '%' . $request->input('search') . '%';
+            $applications->where(function ($query) use ($searchTerm) {
+                $query->whereHas('student', function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('name', 'like', $searchTerm)
+                             ->orWhere('lastname', 'like', $searchTerm)
+                             ->orWhere('email', 'like', $searchTerm);
+                })->orWhereHas('academy', function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('name', 'like', $searchTerm);
+                })->orWhereHas('coursetype', function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('name', 'like', $searchTerm);
                 });
+            });
         }
 
         // dd($request->input('search'));
@@ -59,7 +69,7 @@ class ApplicationController extends Controller
         }
 
 
-        $applications = $applications->get();
+        $applications = $applications->paginate(10);
 
         // získanie prihlášok
 

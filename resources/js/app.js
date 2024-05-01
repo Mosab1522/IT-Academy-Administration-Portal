@@ -18,45 +18,8 @@ if (window.screen.width < 660) {
   }
 }
 
-function swith() {
-  document.addEventListener("DOMContentLoaded", function () {
-    const loginForm = document.getElementById("novy");
-    const registerForm = document.getElementById("stary");
-    const switchFormLink = document.getElementById("switch-form");
-    const switchFormLink2 = document.getElementById("switch-form2");
-    if (switchFormLink) {
-      switchFormLink.addEventListener("click", function (event) {
-        event.preventDefault();
-        loginForm.style.display = "block";
-        registerForm.style.display = "none";
+ // More descriptive function name
 
-        switchFormLink.classList.remove('text-gray-500', 'border-transparent');
-        switchFormLink.classList.add('text-indigo-500', 'border-indigo-500');
-        
-        switchFormLink2.classList.remove('text-indigo-500', 'border-indigo-500');
-        switchFormLink2.classList.add('text-gray-500', 'border-transparent');
-    });
-    }
-    if (switchFormLink2) {
-      switchFormLink2.addEventListener("click", function (event) {
-        event.preventDefault();
-        loginForm.style.display = "none";
-        registerForm.style.display = "block";
-
-        switchFormLink2.classList.remove('text-gray-500', 'border-transparent');
-        switchFormLink2.classList.add('text-indigo-500', 'border-indigo-500');
-        
-        switchFormLink.classList.remove('text-indigo-500', 'border-indigo-500');
-        switchFormLink.classList.add('text-gray-500', 'border-transparent');
-    });
-    }
-
-  });
-};
-
-
-
-swith();
 // $(document).ready(function() {
 //     // Nastaviť default hodnoty pre selecty
 
@@ -667,44 +630,53 @@ function jq_ChainCombo(el) {
   var selected = $(el).find(':selected').data('id');
   var next_combo = $(el).data('nextcombo');
 
-  if (!$(next_combo).data('store')) {
-    $(next_combo).data('store', $(next_combo).find('option'));
+  // Check if the next_combo element exists and has options stored
+  if (!$(next_combo).length || !$(next_combo).data('store')) {
+    if ($(next_combo).length && !$(next_combo).data('store')) {
+      $(next_combo).data('store', $(next_combo).find('option'));
+    } else {
+      return; // Exit if the next_combo does not exist or has no data-store
+    }
   }
 
   var options2 = $(next_combo).data('store');
-  $(next_combo).empty().append(
-    options2.filter(function () {
-      return $(this).data('option') === selected;
-    })
-  );
-  // if (!$(next_combo).data('store')) {
-  //   $(next_combo).data('store', $(next_combo).find('option').clone());
-  //   console.log("Storing options:", $(next_combo).data('store'));
-  // };
-  $(next_combo).prop('disabled', false);
-
-  // get default value
-  var defaultValue = $(next_combo).data('default');
-  if (defaultValue) {
-    $(next_combo).val(defaultValue); // set default value as selected
+  
+  // Check if options2 actually has data to filter
+  if (options2 && options2.length > 0) {
+    $(next_combo).empty().append(
+      options2.filter(function () {
+        return $(this).data('option') === selected;
+      })
+    );
+    $(next_combo).prop('disabled', false);
+  } else {
+    $(next_combo).prop('disabled', true); // Disable if no options match
   }
 
-  if ($(next_combo).data('nextcombo') !== undefined) {
+  // Handle default value
+  var defaultValue = $(next_combo).data('default');
+  if (defaultValue) {
+    $(next_combo).val(defaultValue);
+  }
+
+  // Recursive chaining
+  if ($(next_combo).data('nextcombo')) {
     jq_ChainCombo(next_combo);
   }
 }
 
-
-
-// quick little jquery plugin to apply jq_ChainCombo to all selects with a data-nextcombo on them
+// jQuery plugin to apply jq_ChainCombo to all selects with a data-nextcombo on them
 jQuery.fn.chainCombo = function () {
-  // find all divs with a data-nextcombo attribute
-  $('[data-nextcombo]').each(function (i, obj) {
-    $(this).change(function () {
-      jq_ChainCombo(this);
-    });
+  $(document).on('change', '[data-nextcombo]', function () {
+    jq_ChainCombo(this);
   });
-}();
+};
+
+// Initialize the plugin
+$(function() {
+  $.fn.chainCombo();
+});
+
 
 // $('#setDefaults').click(function () {
 //   // Získajte hodnoty predvolených hodnôt
@@ -1042,43 +1014,40 @@ $(document).ready(function () {
   // Vypočítať zodpovedajúce typy kurzov pre default hodnoty
 
 });
+if(document.querySelector("#coursetype"))
+{
+
+
   const coursetype = document.querySelector("#coursetype");
-
-const coursetypeOptions = coursetype.querySelectorAll("option");
-
-$('#selects-container').on('change', '.academy-select', function (event) {
-  const pairId = event.target.getAttribute('data-pair-id');
-  const academySelect = document.querySelector(`.academy-select[data-pair-id="${pairId}"]`);
-  const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
-
-  const setValue = function (newValue) {
-    coursetypeSelect.innerHTML = null;
-    for (let i = 0; i < coursetypeOptions.length; i++) {
-      if (coursetypeOptions[i].dataset.option === newValue) {
-        coursetypeSelect.appendChild(coursetypeOptions[i].cloneNode(true));
-      }
-    }
-  };
-
-  setValue(academySelect.value);
-  const allAcademySelects = document.querySelectorAll('.academy-select');
-  for (let i = 0; i < allAcademySelects.length; i++) {
-    const otherPairId = allAcademySelects[i].getAttribute('data-pair-id');
-    if (otherPairId !== pairId && allAcademySelects[i].value === academySelect.value) {
-      const otherCoursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${otherPairId}"]`);
-      if (academySelect.value === otherAcademySelect.value) {
-        // akadémie sú zhodné, tak nezmeniť prvý select
-        continue;
-      }
-      otherCoursetypeSelect.innerHTML = null;
-      for (let j = 0; j < coursetypeOptions.length; j++) {
-        if (coursetypeOptions[j].dataset.option === academySelect.value) {
-          otherCoursetypeSelect.appendChild(coursetypeOptions[j].cloneNode(true));
+  const coursetypeOptions = coursetype.querySelectorAll("option");
+  
+  $('#selects-container').on('change', '.academy-select', function (event) {
+    const pairId = event.target.getAttribute('data-pair-id');
+    const academySelect = document.querySelector(`.academy-select[data-pair-id="${pairId}"]`);
+    const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
+  
+    // Function to set new values to the coursetype select
+    const setValue = function (newValue, targetSelect) {
+      targetSelect.innerHTML = '';  // Clear the current options
+      coursetypeOptions.forEach(option => {
+        if (option.dataset.option === newValue) {
+          targetSelect.appendChild(option.cloneNode(true));  // Append a clone of the matching option
         }
+      });
+    };
+  
+    setValue(academySelect.value, coursetypeSelect);  // Set the value for the current pair's coursetype select
+  
+    // Iterate over all academy selects to adjust other coursetype selects if needed
+    document.querySelectorAll('.academy-select').forEach(otherAcademySelect => {
+      const otherPairId = otherAcademySelect.getAttribute('data-pair-id');
+      if (otherPairId !== pairId && otherAcademySelect.value === academySelect.value) {
+        const otherCoursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${otherPairId}"]`);
+        setValue(academySelect.value, otherCoursetypeSelect);
       }
-    }
-  }
-});
+    });
+  });
+}
 
 
 

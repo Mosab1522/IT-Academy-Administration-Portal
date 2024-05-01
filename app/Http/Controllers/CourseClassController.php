@@ -16,23 +16,46 @@ class CourseClassController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->filled('search')) {
-            $classes = CourseClass::with(['academy', 'coursetype', 'students'])->where('name', 'like', '%' . $request->input('search') . '%')
-                ->orwhereHas('academy', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%');
-                })->orwhereHas('coursetype', function (Builder $query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->input('search') . '%');
-                });
-        } else {
-            $classes = CourseClass::with(['academy', 'coursetype', 'students']);
-        }
+        $classes = CourseClass::with(['academy', 'coursetype', 'students', 'instructor']);
 
-        // dd($request->input('search'));
-        // spracovanie filtrov
-        if ($request->filled('academy_id')) {
-            $filter = $request->input('academy_id');
-            $classes->where('academy_id', $filter);
+        // Apply search filter across multiple relationships if search is provided
+        if ($request->filled('search')) {
+            $search = '%' . $request->input('search') . '%';
+            $classes->where(function ($query) use ($search) {
+                $query->where('name', 'like', $search)
+                      ->orWhereHas('coursetype', function ($q) use ($search) {
+                          $q->where('name', 'like', $search)
+                            ->orWhereHas('academy', function ($subQuery) use ($search) {
+                                $subQuery->where('name', 'like', $search);
+                            });
+                      })
+                      ->orWhereHas('instructor', function ($q) use ($search) {
+                          $q->where('name', 'like', $search)
+                            ->orWhere('lastname', 'like', $search);
+                      });
+            });
         }
+        
+        // Handle filtering by academy_id and coursetype_id
+        if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
+            $academyId = $request->input('academy_id');
+            $coursetypeId = $request->input('coursetype_id');
+        
+            // Filter by coursetype_id and its related academy_id
+            $classes->whereHas('coursetype', function ($query) use ($academyId, $coursetypeId) {
+                $query->where('id', $coursetypeId)
+                      ->whereHas('academy', function ($subQuery) use ($academyId) {
+                          $subQuery->where('id', $academyId);
+                      });
+            });
+        } elseif ($request->filled('academy_id')) {
+            $academyId = $request->input('academy_id');
+            // Filter by coursetype's related academy_id
+            $classes->whereHas('coursetype.academy', function ($query) use ($academyId) {
+                $query->where('id', $academyId);
+            });
+        }
+        
 
         // zoradenie
         if ($request->filled('orderBy')) {
