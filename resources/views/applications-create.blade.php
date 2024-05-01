@@ -43,10 +43,10 @@
                 <x-form.label name="type" title="Typ kurzu" required="true"/>
 
                 <div class="flex items-center mt-1">
-                    <x-form.input-radio name="type" for="type_student" value="0" required="true">
+                    <x-form.input-radio name="type" for="type" value="0" required="true">
                         Študentský
                     </x-form.input-radio>
-                    <x-form.input-radio class="ml-6" name="type" for="type_instructor" value="1" required="true">
+                    <x-form.input-radio class="ml-6" name="type" for="type" value="1" required="true">
                         Inštruktorský
                     </x-form.input-radio>
                 </div>
