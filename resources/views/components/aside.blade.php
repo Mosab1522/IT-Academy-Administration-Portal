@@ -101,7 +101,7 @@
                 Akadémie</a>
             <a href="/admin/coursetypes"
                 class="{{ request()->is('admin/coursetypes', 'admin/coursetypes/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
-                Typy kurzy</a>
+                Kurzy</a>
             <a href="/admin/classes"
                 class="{{ request()->is('admin/classes', 'admin/classes/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Triedy</a>

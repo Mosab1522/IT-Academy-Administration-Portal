@@ -1,5 +1,7 @@
 @props(['heading', 'etitle',])
 <x-flash />
+
+
 <div class="flex h-screen bg-gray-100 overflow-hidden">
     <button
         class="menu-toggle bg-gray-800 opacity-80 rounded-md shadow fixed bottom-4 left-4 z-50 lg:hidden sm focus:outline-none focus:ring focus:border-blue-300"
@@ -15,9 +17,38 @@
         <x-aside />
     </div>
     <section class="main-content flex-1 overflow-auto">
-        <header class="bg-gray-800 text-white shadow py-6 px-4">
-            <h1 class="text-xl font-semibold">{{ $heading }}</h1>
+        <header class="bg-gray-800 text-white shadow py-6 px-4 flex justify-between items-center">
+            <h1 class="text-xl font-semibold flex-1">{{ $heading }}</h1>
+            <div x-data="{ open: false }" class="relative mr-6">
+                <!-- Notification Icon -->
+                <button @click="open = !open" class="focus:outline-none">
+                    <span class="material-icons text-white text-3xl material-icons-header">notifications</span>
+                    <span class="absolute top-0 right-0 inline-flex items-center justify-center p-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">5</span>
+                </button>
+        
+                <!-- Notification Dropdown -->
+                <div x-show="open" x-cloak @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
+                    <div class="py-2">
+                        @foreach (App\Models\Instructor::all() as $instructor)
+                            @forelse($instructor->unreadNotifications as $notification)
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ $notification->data['message'] ?? 'You have a notification' }}
+                                </a>
+                            @empty
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    No new notifications
+                                </a>
+                            @endforelse
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <a href="/admin/profile" class="focus:outline-none relative">
+                <span class="material-icons text-white text-3xl material-icons-header">account_circle</span>
+            </a>
         </header>
+        
+        
         <div class="middle-content flex-1 overflow-auto">
 
             <main class="p-4 lg:p-12">

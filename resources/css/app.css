@@ -22,7 +22,12 @@
   .material-icons-custom {
     font-size: 1.25rem !important; /* back to default size on lg devices */
   }
-} 
+}
+
+.c {
+  font-size: 2.25rem !important; /* default size */
+}
+
 
 
 
