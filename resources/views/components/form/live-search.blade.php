@@ -1,14 +1,19 @@
+@props([
+   
+    'required' => true
+    // Default to the 'default' error bag
+])
 <div class="flex justify-between">
     <!-- Left side with input fields -->
     <div class="w-1/2 space-y-6">
         <div>
-            <x-form.input name="name" type="text" title="Meno" placeholder="Meno" errorBag="admin" required="true"/>
+            <x-form.input name="name" type="text" title="Meno" placeholder="Meno" errorBag="admin" :required="$required"/>
         </div>
         <div>
-            <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko"  errorBag="admin" required="true"/>
+            <x-form.input name="lastname" type="text" title="Priezvisko" placeholder="Priezvisko"  errorBag="admin" :required="$required"/>
         </div>
         <div>
-            <x-form.input name="email" type="email" title="Email" placeholder="Email"  errorBag="admin" required="true"/>
+            <x-form.input name="email" type="email" title="Email" placeholder="Email"  errorBag="admin" :required="$required"/>
         </div>
     </div>
 

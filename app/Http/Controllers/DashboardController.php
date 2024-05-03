@@ -145,6 +145,9 @@ class DashboardController extends Controller
             $academiesIds = [];
             $icoursetypesIds = [];
             $scoursetypesIds = [];
+            $academiesIds2 = [];
+            $icoursetypesIds2 = [];
+            $scoursetypesIds2 = [];
 
             foreach ($recipients as $recipient) {
                 list($id, $type) = explode('-', $recipient);  // Split the string into id and type
@@ -164,12 +167,21 @@ class DashboardController extends Controller
                     case 'academy_id':
                         $academiesIds[] = $id;
                         break;
+                        case 'academy_id2':
+                            $academiesIds2[] = $id;
+                            break;
                     case 'coursetype_id':
                         $icoursetypesIds[] = $id;
                         break;
                     case 'coursetype_id2':
                         $scoursetypesIds[] = $id;
                         break;
+                        case 'coursetype_id3':
+                            $icoursetypesIds2[] = $id;
+                            break;
+                        case 'coursetype_id4':
+                            $scoursetypesIds2[] = $id;
+                            break;
                         // Add more cases as necessary
                 }
                 if($allId == 3)
@@ -285,6 +297,20 @@ class DashboardController extends Controller
                     }
                 }
             }
+            if (!empty($academiesIds2) && $allId != 1) {
+                foreach ($academiesIds2 as $academyId) {
+                    $academy = Academy::find($academyId);
+                    if ($academy->applications->count() > 0) { // Correct usage of find method
+                        foreach ($academy->applications as $application) {
+                            
+                                                if (!in_array($application->student->email, $emails)) {
+                                                    $emails[] = $application->student->email;  // Add the student's email if it's not already in the array
+                                                }
+                                
+                        }
+                    }
+                }
+            }
             if (!empty($icoursetypesIds) && $allId != 1) {
                 foreach ($icoursetypesIds as $coursetypeId) {
                     $coursetype = CourseType::find($coursetypeId);  // Correct usage of find method
@@ -297,6 +323,22 @@ class DashboardController extends Controller
                                             $emails[] = $student->email;  // Add the student's email if it's not already in the array
                                         }
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (!empty($icoursetypesIds2) && $allId != 1) {
+                foreach ($icoursetypesIds2 as $coursetypeId) {
+                    $coursetype = CourseType::find($coursetypeId);  // Correct usage of find method
+                    if ($coursetype) {  // Check if coursetype was found
+                        if ($coursetype->applications->count() > 0) {
+                            foreach ($coursetype->applications as $application) {
+                                
+                                        if (!in_array($application->student->email, $emails)) {
+                                            $emails[] = $application->student->email;  // Add the student's email if it's not already in the array
+                                     
                                 }
                             }
                         }
@@ -321,7 +363,24 @@ class DashboardController extends Controller
                     }
                 }
             }
+        }   
+        if (!empty($scoursetypesIds2) && $allId != 1) {
+            foreach ($scoursetypesIds2 as $coursetypeId) {
+                $coursetype = CourseType::find($coursetypeId);  // Correct usage of find method
+                if ($coursetype) {  // Check if coursetype was found
+                    if ($coursetype->applications->count() > 0) {
+                        foreach ($coursetype->applications as $application) {
+                            
+                                    if (!in_array($application->student->email, $emails)) {
+                                        $emails[] = $application->student->email;  // Add the student's email if it's not already in the array
+                                 
+                            }
+                        }
+                    }
+                }
+            }
         }
+    
             if ($attributes['sender'] ?? null) {
                 $emailData = [
                     'sender' => $attributes['sendername'] . ' - Lektor UCM akadémie',

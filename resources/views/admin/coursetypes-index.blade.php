@@ -1,6 +1,6 @@
 
 <x-layout />
-<x-setting heading="Typy kurzov" etitle="Existujúce kurzy">
+<x-setting heading="Kurzy" etitle="Existujúce kurzy">
     <x-slot:create>
         <div class="flex flex-col">
             <div class="bg-white p-8 rounded-lg shadow-md mb-6">
