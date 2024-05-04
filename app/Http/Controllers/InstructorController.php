@@ -101,7 +101,7 @@ class InstructorController extends Controller
                 'coursetypes_id' => ['array',],
                 'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
             ],$this->messages()
-        );
+        );  
         
         if (empty($attributes['telephone'])) {
             $attributes['telephone'] = NULL;
@@ -258,22 +258,22 @@ class InstructorController extends Controller
     return $normalizedNumber;
 }
 
-public function lessonsForInstructor(Request $request, Instructor $instructor)
-{
-    $lessons = $instructor->lessons()->get();
+// public function lessonsForInstructor(Request $request, Instructor $instructor)
+// {
+//     $lessons = $instructor->lessons()->get();
     
-    $formattedLessons = $lessons->map(function ($lesson) {
-        $startTime = Carbon::parse($lesson->lesson_date);
-        $endTime = $startTime->copy()->addMinutes($lesson->duration);
-        return [
-            'title' => $lesson->title,
-            'start' => $startTime->format('Y-m-d H:i:s'),
-            'end' => $endTime->toDateTimeString(),
-        ];
-    });
+//     $formattedLessons = $lessons->map(function ($lesson) {
+//         $startTime = Carbon::parse($lesson->lesson_date);
+//         $endTime = $startTime->copy()->addMinutes($lesson->duration);
+//         return [
+//             'title' => $lesson->title,
+//             'start' => $startTime->format('Y-m-d H:i:s'),
+//             'end' => $endTime->toDateTimeString(),
+//         ];
+//     });
 
-    return response()->json($formattedLessons);
-}
+//     return response()->json($formattedLessons);
+// }
 protected function messages()
 {
     return [

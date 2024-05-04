@@ -4,6 +4,9 @@
 
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
         <x-show-header name="{{$student->name}} {{$student->lastname}}" title="Študent" />
+            <x-show-buttons calendarText="študenta {{$student->name}} {{$student->lastname}}" calendarWho="student_id={{$student->id}}" emailId="{{$student->id}}" emailType="student_id" emailText="Študent: {{$student->name}} {{$student->lastname}}">
+               
+            </x-show-buttons>
         {{-- <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
@@ -55,7 +58,7 @@
                                                 <span style="{{request()->has('pridat') ? '' : 'display: none;' }}"
                                                     id="nkk" class="ml-2">Zrušiť vytvorenie prihlášky</span>
                                             </a> --}}
-                                            <x-buttonsection>
+                                            <x-buttonsection class="{{ session('success_dd')  ? 'hidden' : ''}}">
                                         <li class="flex-1 {{session('success_c')|| session('success_d')|| request()->has('pridat') ||  $errors->admin->any() ? 'hidden' : '' }}">
                                             <button
                                                 class="edit-button {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->admin->any() ? 'hidden' : '' }} "
@@ -102,11 +105,23 @@
                                             <x-buttonsection>
                                         <li class="flex-auto pr-0.5">
                                             <button
-                                                class="section-button {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->admin->any() ? '' : 'hidden' }} rounded-lg"
+                                                class="section-button {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->admin->any() ||  session('success_dd') ? '' : 'hidden' }} rounded-l-lg"
                                                 data-target="profile">Profil</button>
                                             <button
-                                                class="section-button {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->admin->any() ? 'hidden' : '' }} rounded-lg"
+                                                class="section-button {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->admin->any() ||  session('success_dd') ? 'hidden' : '' }} rounded-l-lg"
                                                 data-target="kurzy">Prihlasky</button>
+                                        </li>
+                                        <li class="flex-auto">
+                                            <button
+                                                class="section-button {{  session('success_dd')  ? '' : 'hidden' }}  rounded-r-lg"
+                                                data-target="kurzy">
+                                                Prihlášky
+                                            </button>
+                                            <button
+                                                class="section-button {{ session('success_dd')  ? 'hidden' : '' }}  rounded-r-lg"
+                                                data-target="login">
+                                                Triedy
+                                            </button>
                                         </li>
                                         </x-buttonsection>
 
@@ -128,7 +143,7 @@
                                 </div>
 
                                 <div id="profile" class="section flex-auto p-6"
-                                    style="{{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->admin->any() ? 'display: none;' : '' }}">
+                                    style="{{ session('success_c') || session('success_d') || session('success_dd') || request()->has('pridat') ||  $errors->admin->any() ? 'display: none;' : '' }}">
                                     <p class="text-sm font-semibold uppercase text-gray-700">Všeobecné informácie</p>
                                     <form id="formm" action="/admin/students/{{ $student->id }}" method="post"
                                         enctype="multipart/form-data">
@@ -438,7 +453,7 @@
 
                                                 <!-- Reset Button -->
                                                 <button id="res" type="reset"
-                                                    class="hidden flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors duration-200">
+                                                    class="hidden flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md shadow-sm hover:bg-gray-500 transition-colors duration-200">
                                                     Reset
                                                 </button>
                                             </div>
@@ -722,6 +737,44 @@
                                         </tr>
                                         @endforeach
                                     </x-single-table>
+                                </div>
+                                <div id="login" class="section flex-auto p-6"
+                            style="{{session('success_dd')  ? '' : 'display: none;' }}">
+                            <p class="text-sm font-semibold uppercase text-gray-700 mb-6">Študentove triedy</p>
+                            <x-single-table>
+                                <x-slot:head>
+                                                
+                                                    <th scope="col" class="py-3 px-6">Názov triedy</th>
+                                                    <th scope="col" class="py-3 px-6">Kurz</th>
+                                                    <th scope="col" class="py-3 px-6">Inštruktor</th>
+                                                    <th scope="col" class="py-3 px-6">Dni / čas</th>
+                                                    
+                                                    <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
+                                                </x-slot:head>
+                                                @foreach ($student->classes as $class)
+                                                <tr
+                                                    class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
+                                                    <td class="py-4 px-6"><x-table.td url="classes/{{ $class->id }}">{{$class->name}}</x-table.td></td>
+                                                    <td class="py-4 px-6">
+                                                        <x-table.td url="coursetypes/{{ $class->coursetype->id }}">
+                                                        {{$class->coursetype->name}} - {{$class->coursetype->type==0 ? 'študentský' :
+                                                        'inštruktorský'}} ({{$class->academy->name}} akadémia)
+                                                        </x-table.td>
+                                                    </td>
+                                                    <td class="py-4 px-6"><x-table.td url="instructors/{{ $class->instructor->id }}">
+                                                        {{$class->instructor->name}} {{$class->instructor->lastname}}
+                                                        </x-table.td></td>
+                                                    <td class="py-4 px-6">
+                                                        {{$class->days== 1 ? 'Týždeň' : ''}} {{$class->days== 2 ? 'Víkend' : ''}}
+                                                        {{$class->days== 3 ? 'Nezáleží' : ''}} / {{$class->time== 1 ? 'Ranný' : ''}}
+                                                        {{$class->time== 2 ? 'Poobedný' : ''}} {{$class->time== 3 ? 'Nezáleží' : ''}}
+                                                    </td>
+                                                    
+                                                    <x-table.td-last url="class-student/{{$student->id}}/{{ $class->id }}" edit=1 itemName="tohto študenta z  triedy {{$class->name}}? Ak mal študent vytvorenú prihlášku vráti sa medzi prihlásených študentov kurzu tejto triedy. Vymaže sa aj jeho evidenia absolvovaných hodín triedy." />
+                                                    
+                                                </tr>
+                                                @endforeach
+                                            </x-single-table>
                                 </div>
                                 {{-- <div id="login" class="hidden flex-auto p-6">
                                     <p class="leading-normal uppercase  dark:opacity-60 text-sm">Login</p>

@@ -126,15 +126,24 @@ class DashboardController extends Controller
             'sender' => ['in:on'],
             'sendername' => ['required_if:sender,on','nullable', 'string', 'max:255'],
             'recipients' => ['nullable', 'json'],
+            'recipient' => ['nullable', 'string'],
             'emailText' => ['required', 'string']
         ]);
 
-        if (isset($_POST['recipients'])) {
+        if (isset($_POST['recipients']) || isset($_POST['recipient'])) {
+            if (isset($_POST['recipients'])) {
             $recipients = json_decode($_POST['recipients'], true);  // Decode the JSON string back into an array
-            if(!$recipients)
+           if(!$recipients)
             {
                 throw ValidationException::withMessages(['recipients' => 'Vyberte príjmateľa.']);
             }
+        }
+        if (isset($_POST['recipient'])) {
+            $recipients[] = $attributes['recipient'];
+        }
+
+
+            
             $allId=0;
             $formattedEmailText = nl2br(htmlspecialchars($_POST['emailText']));
             $emails = [];
@@ -400,7 +409,7 @@ class DashboardController extends Controller
                 }
             }else{
                 dd($emails);
-                throw ValidationException::withMessages(['recipients' => 'Vyberte príjmateľa.']);
+                throw ValidationException::withMessages(['recipients' => 'Vyberte príjmateľa.','recipient' => 'Vyberte príjmateľa.']);
             }
             
             return back()->with('success_email', 'Úspešne odoslané emaily.');
@@ -411,7 +420,7 @@ class DashboardController extends Controller
             // Process each item
 
         } else {
-            throw ValidationException::withMessages(['recipients' => 'Vyberte príjmateľa.']);
+            throw ValidationException::withMessages(['recipients' => 'Vyberte príjmateľa.', 'recipient' => 'Vyberte príjmateľa.']);
         }
     }
 }

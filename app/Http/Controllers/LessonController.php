@@ -181,8 +181,9 @@ class LessonController extends Controller
 
     public function all(Request $request)
 {
+   
     $lessons = Lesson::query()
-        ->with(['instructor', 'class.coursetype.academy'])
+        ->with(['instructor', 'class.coursetype.academy', 'class.students'])
         ->when($request->academy_id, function ($query, $academyId) {
             $query->whereHas('class.coursetype.academy', function ($q) use ($academyId) {
                 $q->where('id', $academyId);
@@ -201,6 +202,11 @@ class LessonController extends Controller
         ->when($request->instructor_id, function ($query, $instructorId) {
             $query->whereHas('instructor', function ($q) use ($instructorId) {
                 $q->where('id', $instructorId);
+            });
+        })
+        ->when($request->student_id, function ($query, $studentId) {
+            $query->whereHas('class.students', function ($q) use ($studentId) {
+                $q->where('students.id', $studentId); // Make sure you reference the student id correctly
             });
         })
         ->get(); // Assuming each lesson has an 'instructor' relationship

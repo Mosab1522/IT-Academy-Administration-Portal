@@ -5,6 +5,9 @@
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
         <x-show-header name="{{$coursetype->name}}" title="Kurz" src="{{ asset('storage/') }}"
             path="instructors/{{ $coursetype->id }}" />
+            <x-show-buttons calendarText="kurzu {{$coursetype->name}}" calendarWho="coursetype_id={{$coursetype->id}}" emailId="{{$coursetype->id}}" emailType="coursetype_id" emailText="Študenti kurzu {{$coursetype->name}}">
+          
+            </x-show-buttons>
         <x-buttonsection>
             <li class="flex-1 {{ session('success_c') || session('success_cc') || session('success_dd') || session('success_d') ||request()->has('vytvorit')   || request()->has('pridat') ||  $errors->admin->any()  ? 'hidden' : '' }}">
 
@@ -344,7 +347,7 @@
                     
                                         <!-- Reset Button -->
                                         <button id="res" type="reset"
-                                            class="hidden flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors duration-200">
+                                            class="hidden flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md shadow-sm hover:bg-gray-500 transition-colors duration-200">
                                             Reset
                                         </button>
                                     </div>

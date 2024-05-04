@@ -1,8 +1,6 @@
-<x-flash />
-@php
-session()->forget('success_c');
-@endphp
-@if(session('instructor_id')||request()->instructor_id);
+
+
+@if(session('instructor_id')||request()->instructor_id)
 @unless(session('instructor_id'))
 @php
 session(['instructor_id' => request()->instructor_id]);
@@ -63,5 +61,5 @@ session(['instructor_id' => request()->instructor_id]);
     </form>
 </x-setting>
 @else
-<script>window.location = "/admin/instructors";</script>
+<script>window.location = "/admin/instructors"</script>
 @endif

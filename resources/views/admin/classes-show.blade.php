@@ -45,6 +45,27 @@
                         </div> --}}
                         <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
                             <x-show-header name="{{$class->name}}" title="Trieda" />
+                                <x-show-buttons calendarText="triedy {{$class->name}}" calendarWho="class_id={{$class->id}}" emailId="{{$class->id}}" emailType="class_id" emailText="Študenti triedy {{$class->name}}">
+                                    <button title="Ukončenie hodiny" class="end-class-button text-gray-800 hover:text-gray-600">
+                                        <span class="material-icons material-icons-header">task_alt</span>
+                    
+                                    </button>
+                                </x-show-buttons>
+                                {{-- <div class="ml-auto mt-1.5 flex space-x-4">
+                                    <!-- Calendar Icon -->
+                                    <button title="Kalendár" class="text-gray-800 hover:text-gray-600" onclick="showCalendarModal('triedy {{$class->name}}','class_id={{$class->id}}')">
+                                        <span class="material-icons material-icons-header">event</span>
+                                    </button>
+                            
+                                    <!-- Email Icon -->
+                                    <button title="Poslať email" class="email-button text-gray-800 hover:text-gray-600" data-recipient-id="{{$class->id}}" data-type="class_id" data-text="Študenti triedy {{$class->name}}">
+                                        <span class="material-icons material-icons-header">email</span>
+                                    </button>
+                            
+                                    <!-- End Class Icon -->
+                                   
+                                </div>  --}}
+                             
                             <x-buttonsection>
                                 <li class="flex-1 {{ session('success_d') || session('success_c') ||  $errors->default->any() || session('success_cc') || session('success_dd') ||  $errors->admin->any()  ? 'hidden' : '' }}">
                                     <button
@@ -364,7 +385,7 @@
             
                                 <!-- Reset Button -->
                                 <button id="res" type="reset"
-                                    class="hidden flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors duration-200">
+                                    class="hidden flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md hover:bg-gray-500 transition-colors duration-200 shadow-sm">
                                     Reset
                                 </button>
                             </div>
@@ -504,3 +525,89 @@
                     </div>
 
 </x-setting>
+
+
+<div id="completeClassConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center">
+    <!-- Modal content -->
+    <div class="bg-white p-6 rounded-lg shadow max-w-md mx-4 my-8 relative">
+        <button type="button" class="absolute top-0 right-0 mt-3 mr-3 text-gray-800 hover:text-gray-600" id="XcloseCompleteClassModal">
+            <span class="material-icons">close</span>
+        </button>
+        <h2 class="text-lg font-semibold text-gray-900">Potvrdiť ukončenie triedy</h2>
+        <p class="text-gray-700">Ste si istý, že chcete ukončiť túto triedu {{$class->name}}? Označte tých študentov, ktorí úspešne absolvovali tento kurz a bol im udelený certifikát.</p>
+        <p class="my-2 text-sm font-semibold uppercase text-gray-700">Vyberte úspešných absolventov</p>
+        <form id="completeClassForm" method="POST" action="/path-to-complete-class"  >
+            <input type="hidden" name="class_id" id="completeClassId" value="">
+            <div class="overflow-y-auto" style="max-height: 400px;">
+                @foreach ($class->students as $student)
+                <li class="bg-white flex items-center px-4 py-1 border border-gray-300 rounded-md shadow-sm mb-0.5">
+                    <input class="w-6 h-6 lg:w-4 lg:h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" type="checkbox" name="students[]" value="{{ $student->id }}">
+                    <label for="students[]" class="ml-2 block text-gray-700 text-sm leading-5.6">{{$student->name}} {{$student->lastname}}</label>
+                </li>
+                @endforeach
+            </div>
+          
+            <div class="flex justify-end space-x-4 mt-4">
+                <button type="button" id="closeCompleteClassModal"
+                        class="flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md hover:bg-gray-500 transition-colors duration-200">Zrušiť</button>
+                <button type="submit" id="confirmCompleteButton"
+                        class="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-200 md:w-auto w-full sm:w-auto" disabled>Dokončiť kurz</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<script>
+function openCompleteClassModal(className, classId) {
+    const modal = document.getElementById('completeClassConfirmModal');
+    const itemToDeleteName = document.getElementById('itemToDeleteName');
+    const confirmButton = document.getElementById('confirmCompleteButton');
+    const closeButton = document.getElementById('closeCompleteClassModal');
+    const XButton = document.getElementById('XcloseCompleteClassModal');
+    
+    itemToDeleteName.textContent = className;
+    document.getElementById('completeClassId').value = classId;
+    modal.style.display = 'flex';  // Show the modal
+    confirmButton.disabled = true; // Disable the confirm button initially
+    confirmButton.textContent = 'Dokončiť kurz (15s)'; // Initial button text with countdown
+
+    // Initialize the countdown
+    let timeLeft = 15;  // 15 seconds countdown
+    const countdown = setInterval(() => {
+        timeLeft--;
+        confirmButton.textContent = `Dokončiť kurz (${timeLeft}s)`;
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            confirmButton.disabled = false;
+            confirmButton.textContent = 'Dokončiť kurz';
+        }
+    }, 1000);
+
+    // Function to clear the modal and reset
+    function closeModal() {
+        clearInterval(countdown);
+        modal.style.display = 'none';
+    }
+
+    closeButton.onclick = closeModal;
+    XButton.onclick = closeModal;
+
+  
+
+    confirmButton.onclick = function () {
+        clearInterval(countdown);
+        // Add actual submission logic here
+        alert('Kurz dokončený!');  // Placeholder for action
+    };
+}
+
+document.querySelectorAll('.end-class-button').forEach(button => {
+    button.addEventListener('click', function() {
+        openCompleteClassModal('Class Name', 123); // Example values
+    });
+});
+
+</script>

@@ -197,6 +197,7 @@ document.getElementById('filterForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const form = e.currentTarget;
     const queryParams = new URLSearchParams(new FormData(form)).toString();
+    console.log(queryParams);
     const newEventsUrl = `{{ url('/lessons/all') }}?${queryParams}`;
 
     // Update the calendar's events source

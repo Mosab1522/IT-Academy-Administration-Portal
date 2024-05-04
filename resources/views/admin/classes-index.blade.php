@@ -54,7 +54,7 @@
                         </div> --}}
                         @php
             $academy = \App\Models\Academy::all();
-            $coursetypes = \App\Models\CourseType::with(['instructors']);
+            $coursetypes = \App\Models\CourseType::all();
             @endphp
                         <div class="mt-6  {{old('type') == '1' ? 'flex' : 'hidden'}} " id="inst">
 
@@ -96,7 +96,7 @@
                                         {{-- @php
                                         $academy = \App\Models\CourseType::all();
                                         @endphp --}}
-                                        @foreach( $coursetypes->whereIn('type', [1])->get() as $type)
+                                        @foreach( $coursetypes->whereIn('type', [1]) as $type)
                                         @if($type->instructors->count() > 0)
                                         <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                             data-option="{{ $type->academy_id }}" {{-- {{old('coursetype_id')==$type->id
@@ -104,7 +104,7 @@
                                             'selected' : ''}} --}}
                                             >{{
                                             ucwords($type->name) }}</option>
-                                            @endif
+                                        @endif
                                         @endforeach
                                 </x-form.select>
                             </div>
@@ -152,14 +152,14 @@
                                     {{-- @php
                                     $academy = \App\Models\CourseType::all();
                                     @endphp --}}
-                                    @foreach( $coursetypes->whereIn('type', [0])->get() as $type2)
+                                    @foreach( $coursetypes->whereIn('type', [0]) as $type2)
                                     @if($type2->instructors->count() > 0)
                                     <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
                                         data-option="{{ $type2->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
                                         'selected' : ''}} --}}
                                         >{{
                                         ucwords($type2->name) }}</option>
-                                        @endif
+                                 @endif
                                     @endforeach
                                 </x-form.select>
                              
@@ -265,7 +265,7 @@
                 {{-- @php
                 $academy = \App\Models\CourseType::all();
                 @endphp --}}
-                @foreach (\App\Models\CourseType::all() as $type)
+                @foreach ($coursetypes as $type)
                 <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                     data-option="{{ $type->academy_id }}" {{-- {{old('coursetype_id')==$type->id ?
                     'selected' : ''}} --}}

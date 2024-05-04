@@ -24,8 +24,15 @@
   }
 }
 
-.c {
+.material-icons-header {
   font-size: 2.25rem !important; /* default size */
+}
+
+
+@media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
+  .material-icons-header {
+    font-size: 2.00rem !important; /* back to default size on lg devices */
+  }
 }
 
 
@@ -243,7 +250,8 @@
 /* Basic styling for the scrollbar */
 /* Basic styling for both vertical and horizontal scrollbars */
 .main-content::-webkit-scrollbar,
-.overflow-x-auto::-webkit-scrollbar {
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar {
   width: 4px;  /* Default narrow width suitable for mobile */
   height: 4px;  /* For horizontal scrollbar */
   background: transparent;  /* Transparent background */
@@ -251,13 +259,15 @@
 
 /* Styling for the track */
 .main-content::-webkit-scrollbar-track,
-.overflow-x-auto::-webkit-scrollbar-track {
+.overflow-x-auto::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track {
   background: #f3f3f3;  /* Light gray track */
 }
 
 /* Styling for the thumb */
 .main-content::-webkit-scrollbar-thumb,
-.overflow-x-auto::-webkit-scrollbar-thumb {
+.overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb {
   background-color: #4B5563; /* Dark gray thumb */
   border-radius: 3px;  /* Rounded corners on the thumb */
 }
@@ -265,15 +275,18 @@
 /* Hide scrollbar buttons/arrows */
 .main-content::-webkit-scrollbar-button,
 .overflow-x-auto::-webkit-scrollbar-button,
+.overflow-y-auto::-webkit-scrollbar-button,
 .main-content.scrolling::-webkit-scrollbar-button,
-.overflow-x-auto.scrolling::-webkit-scrollbar-button {
+.overflow-x-auto.scrolling::-webkit-scrollbar-button,
+.overflow-y-auto.scrolling::-webkit-scrollbar-button {
   display: none; /* Hide scrollbar buttons/arrows */
 }
 
 /* Responsive scrollbar width */
 @media (min-width: 768px) {
   .main-content::-webkit-scrollbar,
-  .overflow-x-auto::-webkit-scrollbar {
+  .overflow-x-auto::-webkit-scrollbar,
+  .overflow-y-auto::-webkit-scrollbar {
     width: 8px;  /* Wider scrollbar for larger screens */
     height: 4px;  /* For horizontal scrollbar */
   }
@@ -281,17 +294,52 @@
 
 /* Hide the scrollbar on smaller screens by default */
 .main-content.scrolling::-webkit-scrollbar,
-.overflow-x-auto.scrolling::-webkit-scrollbar {
+.overflow-x-auto.scrolling::-webkit-scrollbar,
+.overflow-y-auto.scrolling::-webkit-scrollbar {
   width: 4px;  /* Visible when scrolling */
   height: 4px;  /* For horizontal scrollbar */
 }
 
 .main-content.scrolling,
-.overflow-x-auto.scrolling {
+.overflow-x-auto.scrolling,
+.overflow-y-auto.scrolling {
   scrollbar-width: thin;  /* Show thin scrollbar in Firefox when scrolling */
   scrollbar-color: #4B5563 #f3f3f3;  /* Custom colors for the scrollbar */
 }
 
+.fixedSizeTextarea {
+ /* Fixed height */
+  resize: none;  /* Disable resizing */
+  /* Ensures a scrollbar if text exceeds the area */
+}
+
+#calendarModal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+#calendarModal .modal-content {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
+}
+
+#calendarModal #calendar {
+  flex-grow: 1; /* Allows the calendar to fill the space */
+  overflow-y: auto; /* Makes calendar scrollable if content overflows */
+  padding: 0px;
+}
 
 
 

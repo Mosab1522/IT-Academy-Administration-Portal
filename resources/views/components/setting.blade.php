@@ -17,13 +17,26 @@
         <x-aside />
     </div>
     <section class="main-content flex-1 overflow-auto">
+        @php
+        $instructors = App\Models\Instructor::all();
+        $count = 0;
+        @endphp
+        @foreach ($instructors as $i)
+        @forelse($i->unreadNotifications as $notification)
+        @php
+        $count++;
+        @endphp
+        @empty
+           
+        @endforelse
+    @endforeach
         <header class="bg-gray-800 text-white shadow py-6 px-4 flex justify-between items-center">
             <h1 class="text-xl font-semibold flex-1">{{ $heading }}</h1>
             <div x-data="{ open: false }" class="relative mr-6">
                 <!-- Notification Icon -->
-                <button @click="open = !open" class="focus:outline-none">
+                <button id="notificationButton" @click="open = !open" class="focus:outline-none">
                     <span class="material-icons text-white text-3xl material-icons-header">notifications</span>
-                    <span class="absolute top-0 right-0 inline-flex items-center justify-center p-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">5</span>
+                    <span class="absolute top-0 right-0 inline-flex items-center justify-center p-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">{{$count}}</span>
                 </button>
         
                 <!-- Notification Dropdown -->
@@ -35,9 +48,9 @@
                                     {{ $notification->data['message'] ?? 'You have a notification' }}
                                 </a>
                             @empty
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     No new notifications
-                                </a>
+                                </a> --}}
                             @endforelse
                         @endforeach
                     </div>
@@ -85,16 +98,90 @@
 <div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center"
     style="display: none;">
     <!-- Modal -->
-    <div class="bg-white p-6 rounded-lg shadow  max-w-sm">
+    <div class="bg-white p-6 rounded-lg shadow  max-w-sm relative mx-4 my-8"  >
+        <button type="button" onclick="this.closest('.fixed').style.display='none';" class="absolute top-0 right-0 mt-3 mr-3 text-gray-800 hover:text-gray-600">
+            <span class="material-icons">close</span>
+        </button>
         <h2 class="text-lg font-semibold text-gray-900">Potvrdiť vymazanie</h2>
         <p class="text-gray-700">Ste si istý že chcete vymazať <span id="itemToDeleteName"></span></p>
         <div class="flex justify-end space-x-4 mt-4">
             <button id="closeButton"
-                class="px-4 py-2 bg-gray-300 text-gray-900 rounded-md hover:bg-gray-400 ">Zrušiť</button>
+                class="flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md hover:bg-gray-500 transition-colors duration-200">Zrušiť</button>
             <button id="confirmButton" onclick="confirmDeletion()"
-                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-gray-500"  disabled>Vymazať</button>
+                class="px-4 py-2 bg-red-600 text-white rounded-md  text-sm font-medium hover:bg-red-700 disabled:bg-gray-500 md:w-auto w-full sm:w-auto"  disabled>Vymazať</button>
 
         </div>
+    </div>
+</div>
+
+<div id="emailModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center ">
+    <!-- Modal content -->
+    <div class="bg-white p-6 rounded-md shadow max-w-md mx-4 my-8 relative">
+        <button type="button" onclick="this.closest('.fixed').style.display='none';" class="absolute top-0 right-0 mt-3 mr-3 text-gray-800 hover:text-gray-600">
+    <span class="material-icons">close</span>
+</button>
+        <h2 class="text-lg font-semibold text-gray-900 mb-1.5">Odoslať Email</h2>
+        <div class="py-2 pl-4 mb-3 bg-gray-100 rounded-md">
+            <h3 class="text-base font-medium mb-2">Prijímateľia</h3>
+            <span id="recipientText"></span>
+        </div>
+        
+        <form id="emailForm" method="POST" action="{{ route('admin.dashboard.send') }}">
+            @csrf
+            <div class="flex items-center -mt-4">
+                <x-form.input-check name="sender" title="Uviesť odosielateľa?" />
+
+                <!-- Info Icon with Tooltip -->
+                <div class="relative mt-6 ml-2 flex items-center">
+                    <span
+                        class="material-icons info text-gray-500 hover:text-gray-700 cursor-pointer">info</span>
+                    <div class="absolute hidden w-48 px-4 py-2 text-sm leading-tight text-white bg-gray-800 rounded-lg shadow-lg -left-12 top-6 z-10"
+                        style="min-width: 150px;">
+                        Ak nezaškrtnete túto možnosť, ako odosielateľ bude uvedená UCM akadémia.
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="senderName" class="mt-2" style="display: none;">
+                <x-form.input type="text" name="sendername" value="{{ old('sendername') }}" title="Odosielateľ" required="true" disabled
+                    placeholder="Odosielateľ" />
+            </div>
+            <input type="hidden" name="recipient" id="emailRecipient" value="">
+            
+            <!-- Subject Line -->
+    
+
+            <!-- Email Body -->
+          
+                <x-form.field>
+    
+                 
+                    <x-form.label name="emailText" title="Text emailu"/>
+                    <textarea class="mt-1 block w-full p-2.5 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm resize-none overflow-y-auto" name="emailText" id="emailText" placeholder="Napíšte text emailu..."
+    
+                     rows="10" cols ="50">{{old('emailText')}}</textarea>
+                <x-form.error name="emailText" errorBag="default"/>
+ 
+                </x-form.field>
+           
+
+            <!-- Actions -->
+            <div class="flex justify-end space-x-4 mt-4">
+                <button type="button" class="flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md hover:bg-gray-500 transition-colors duration-200 " onclick="closeEmailModal()">Zrušiť</button>
+                <x-form.button class="ml-6 md:w-auto w-full sm:w-auto">
+                    Odoslať
+                </x-form.button>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="calendarModal">
+    <div class="modal-content shadow-md">
+        <button type="button" onclick="closeCalendarModal()" class="close-button absolute top-0 right-0 mt-3 mr-3 text-gray-800 hover:text-gray-600"><span class="material-icons">close</span></button>
+        <h2 class="text-lg font-semibold text-gray-900">Kalendár <span id="textCalendar"></span></h2>
+        
+        <div id="calendar" class="overflow-y-auto"></div>
     </div>
 </div>
 
@@ -272,8 +359,144 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.getElementById('sender').addEventListener('change', function() {
+    var senderNameDiv = document.getElementById('senderName');
+    if (this.checked) {
+        senderNameDiv.style.display = 'block';
+        document.getElementById('sendername').disabled=false;
+    } else {
+        senderNameDiv.style.display = 'none';
+        document.getElementById('sendername').disabled=true;
+    }
+});
 
+
+
+function openEmailModal(text,recipientId, type) {
+    // Build the recipient value dynamically based on passed parameters
+    const recipientValue = `${recipientId}-${type}`;
+    document.getElementById('emailRecipient').value = recipientValue;
+    document.getElementById('recipientText').textContent = text;
+    
+    // Display the modal
+    document.getElementById('emailModal').style.display = 'flex';
+}
+
+function closeEmailModal() {
+    document.getElementById('emailModal').style.display = 'none';
+}
+
+// Example usage:
+document.querySelectorAll('.email-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const recipientId = this.getAttribute('data-recipient-id');
+        const type = this.getAttribute('data-type');
+         const text = this.getAttribute('data-text');
+        openEmailModal(text,recipientId, type);
+    });
+});
 // Attach the actual deletion function
+
+function showCalendarModal(text,queryParams) {
+    const modal = document.getElementById('calendarModal');
+    modal.style.display = 'flex';  // Make modal visible
+    document.getElementById('textCalendar').textContent = text;
+    // Delay the initialization until after the modal is displayed
+    setTimeout(() => {
+        if (!window.calendarInitialized) {
+            const localeButtonText = {
+                'en-US': {
+                    today: 'Today',
+                    year: 'Year',
+                    month: 'Month',
+                    week: 'Week',
+                    day: 'Day',
+                    list: 'List'
+                },
+                'sk': {
+                    today: 'Dnes',
+                    year: 'Rok',
+                    month: 'Mesiac',
+                    week: 'Týždeň',
+                    day: 'Deň',
+                    list: 'Zoznam'
+                },
+            };
+
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'sk',
+                buttonText: localeButtonText['sk'],
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                },
+                slotDuration: '00:30:00',
+                slotLabelInterval: '01:00',
+                slotMinTime: '07:00:00',
+                slotMaxTime: '20:00:00',
+                scrollTime: '00:00:00',
+                firstDay: 1,
+                height: 'auto',  // Adjust height based on the events
+                contentHeight: '200',
+                slotLabelFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                views: {
+        listWeek: { // or any other specific view you want to customize
+            noEventsText: "Žiadne hodiny na zobrazenie"
+        }
+    },
+                events: `{{ url('/lessons/all') }}?${queryParams}`,
+                //events: "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
+                /*events: "{{ url('/lessons/all') }}",*/
+                windowResize: function(view) {
+                    if (window.innerWidth < 576) {
+                        calendar.changeView('listWeek');
+                    } else if (window.innerWidth < 768) {
+                        calendar.changeView('timeGridWeek');
+                    } else {
+                        calendar.changeView('dayGridMonth');
+                    }
+                }
+            });
+            calendar.render();
+
+            
+            // Set titles for accessibility and internationalization
+            const prevButton = calendarEl.querySelector('.fc-prev-button');
+            const nextButton = calendarEl.querySelector('.fc-next-button');
+            const todayButton = calendarEl.querySelector('.fc-today-button');
+
+            if (prevButton) prevButton.title = 'Predchádzajúci';
+            if (nextButton) nextButton.title = 'Ďalší';
+            if (todayButton) todayButton.title = 'Dnes';
+
+            // Initial check to set up the correct view on load based on current window size
+            if (window.innerWidth < 576) {
+                calendar.changeView('listWeek');
+            } else if (window.innerWidth < 768) {
+                calendar.changeView('timeGridWeek');
+            } else {
+                calendar.changeView('dayGridMonth');
+            }
+            window.myCalendar = calendar;
+        }
+    }, 10);  // Short delay to ensure the modal is visually rendered
+}
+
+function closeCalendarModal() {
+    const modal = document.getElementById('calendarModal');
+    modal.style.display = 'none';  
+}
 
 
 

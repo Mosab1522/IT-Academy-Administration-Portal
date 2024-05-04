@@ -44,6 +44,7 @@ Route::get('/email', function () {
     return new ConfirmationMail();
 });
 
+
 Route::get('/application/verify/{token}', [ApplicationController::class, 'verify'])->name('application.verify');
 
 Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
@@ -116,10 +117,13 @@ Route::delete('admin/instructors/{instructor}', [InstructorController::class, 'd
 
 Route::get('/instructors/{instructor}/lessons', [InstructorController::class, 'lessonsForInstructor']);
 
-
+Route::get('admin/classes/select-instructor', [CourseClassController::class, 'selectInstructor'])->name('classes.instructor.select');
 
 Route::get('admin/classes', [CourseClassController::class, 'index'])->name('admin.classes.index');
 Route::patch('admin/classes/{class}', [CourseClassController::class, 'update']);
+
+
+
 
 Route::get('admin/classes/create', [CourseClassController::class, 'create']);
 Route::get('admin/classes/{class:id}', [CourseClassController::class, 'show']);
@@ -127,6 +131,7 @@ Route::post('admin/classes/create', [CourseClassController::class, 'store']);
 Route::delete('admin/classes/{class}', [CourseClassController::class, 'destroy']);
 
 Route::post('admin/class-instructor', [CourseClassController::class, 'addinstructor']);
+
 
 
 Route::get('admin/lessons', [LessonController::class, 'index'])->name('admin.lessons.index');

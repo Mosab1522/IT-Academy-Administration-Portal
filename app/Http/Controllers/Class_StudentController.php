@@ -27,7 +27,7 @@ class Class_StudentController extends Controller
         $class = CourseClass::findOrFail($attributes['class_id']);
         if (isset($attributes['student_id'])) {
             if ($class->students()->where('student_id', $attributes['student_id'])->exists()) {
-                throw ValidationException::withMessages(['name' => 'Tento študent je už v triede.' ,'lastname' => 'Tento študent je už v triede.','email' => 'Tento študent je už v triede.'])->errorBag('admin');
+                throw ValidationException::withMessages(['name' => 'Tento študent je už v triede.' ,'lastname' => 'Tento študent je už v triede.','email' => 'Tento študent je už v triede.','class_id' => 'Tento študent je už v triede.'])->errorBag('admin');
             }
             $application = Application::where('student_id', $attributes['student_id'])
                 ->where('coursetype_id', $class->coursetype->id)

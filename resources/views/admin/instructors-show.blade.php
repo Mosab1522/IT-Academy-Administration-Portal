@@ -4,6 +4,8 @@
 
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
         <x-show-header name="{{$instructor->name}}" title="Inštruktor" src="{{ asset('storage/' . $instructor->photo) }}" path="instructors/{{ $instructor->id }}"/>
+            <x-show-buttons calendarText="inštruktora {{$instructor->name}} {{$instructor->lastname}}" calendarWho="instructor_id={{$instructor->id}}" emailId="{{$instructor->id}}" emailType="instructor_id" emailText="Inštruktor: {{$instructor->name}} {{$instructor->lastname}}">
+            </x-show-buttons>
                             {{-- <form id="form" action="/admin/instructors/{{ $instructor->id }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -34,8 +36,10 @@
                                         class="hidden w-full flex-none bg-gray-400 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-gray-500">Reset</button>
                                 </div>
                             </form> --}}
-                    
-                            
+{{--                     
+                            <button onclick="showCalendarModal('inštruktora {{$instructor->name}} {{$instructor->lastname}}')" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                Ope n Calendar
+                            </button> --}}
                              <x-buttonsection>
                     <li class="flex-1 {{ session('success_dd') || session('success_cc') ||  $errors->createCI->any() || session('success_c') || session('success_d')  || $errors->default->any() ? 'hidden' : '' }}">
                         <button
@@ -463,9 +467,9 @@
                                         </td>
                                         <td class="py-4 px-6">{{$coursetype->min}} / {{$coursetype->max}}</td>
                                         <td class="py-4 px-6">
-                                            @foreach($coursetype->instructors as $instructor)
-                                            <x-table.td url="instructors/{{ $instructor->id }}">
-                                                {{$instructor->name}} {{$instructor->lastname}}
+                                            @foreach($coursetype->instructors as $inst)
+                                            <x-table.td url="instructors/{{ $inst->id }}">
+                                                {{$inst->name}} {{$inst->lastname}}
                                             </x-table.td>
                                                 <br>
                                             @endforeach
@@ -565,6 +569,7 @@
                             <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
                 </x-slot:head>
                                 <!-- Iterate over lessons in this class -->
+                               
                                 @foreach ($instructor->classes as $class)
                                 <tr
                                     class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
@@ -675,11 +680,13 @@
 
                         </form>
                     </div> --}}
-                    {{-- <div id="calendars" class="section flex-auto p-6"
-                        style="display: none;">
-                        <p class="text-sm font-semibold uppercase text-gray-700">Kalendár inštruktora</p>
-                        
-                    <div id='calendar'></div>
+                    {{-- <div id="calendarModal">
+                        <div class="modal-content shadow-md">
+                            <button type="button" onclick="closeCalendarModal()" class="close-button absolute top-0 right-0 mt-3 mr-3 text-gray-800 hover:text-gray-600"><span class="material-icons">close</span></button>
+                            <h2 class="text-lg font-semibold text-gray-900">Kalendár <span id="textCalendar"></span></h2>
+                            
+                            <div id="calendar" class="overflow-y-auto"></div>
+                        </div>
                     </div> --}}
 
 </x-setting>
@@ -726,91 +733,91 @@ document.getElementById("photobutton-c").addEventListener("click", function(even
     // Manually reset other fields as needed
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-            const localeButtonText = {
-                'en-US': {
-                    today: 'Today',
-                    year: 'Year',
-                    month: 'Month',
-                    week: 'Week',
-                    day: 'Day',
-                    list: 'List'
-                },
-                'sk': {
-                    today: 'Dnes',
-                    year: 'Rok',
-                    month: 'Mesiac',
-                    week: 'Týždeň',
-                    day: 'Deň',
-                    list: 'Zoznam'
-                },
-            };
+// document.addEventListener('DOMContentLoaded', function() {
+//             const localeButtonText = {
+//                 'en-US': {
+//                     today: 'Today',
+//                     year: 'Year',
+//                     month: 'Month',
+//                     week: 'Week',
+//                     day: 'Day',
+//                     list: 'List'
+//                 },
+//                 'sk': {
+//                     today: 'Dnes',
+//                     year: 'Rok',
+//                     month: 'Mesiac',
+//                     week: 'Týždeň',
+//                     day: 'Deň',
+//                     list: 'Zoznam'
+//                 },
+//             };
 
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                locale: 'sk',
-                buttonText: localeButtonText['sk'],
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,listWeek'
-                },
-                slotDuration: '00:30:00',
-                slotLabelInterval: '01:00',
-                slotMinTime: '07:00:00',
-                slotMaxTime: '20:00:00',
-                scrollTime: '00:00:00',
-                firstDay: 1,
-                height: 'auto',  // Adjust height based on the events
-                contentHeight: '200',
-                slotLabelFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                },
-                eventTimeFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                },
-                views: {
-        listWeek: { // or any other specific view you want to customize
-            noEventsText: "Žiadne hodiny na zobrazenie"
-        }
-    },
-                events: "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
-                /*events: "{{ url('/lessons/all') }}",*/
-                windowResize: function(view) {
-                    if (window.innerWidth < 576) {
-                        calendar.changeView('listWeek');
-                    } else if (window.innerWidth < 768) {
-                        calendar.changeView('timeGridWeek');
-                    } else {
-                        calendar.changeView('dayGridMonth');
-                    }
-                }
-            });
-            calendar.render();
+//             var calendarEl = document.getElementById('calendar');
+//             var calendar = new FullCalendar.Calendar(calendarEl, {
+//                 locale: 'sk',
+//                 buttonText: localeButtonText['sk'],
+//                 headerToolbar: {
+//                     left: 'prev,next today',
+//                     center: 'title',
+//                     right: 'dayGridMonth,timeGridWeek,listWeek'
+//                 },
+//                 slotDuration: '00:30:00',
+//                 slotLabelInterval: '01:00',
+//                 slotMinTime: '07:00:00',
+//                 slotMaxTime: '20:00:00',
+//                 scrollTime: '00:00:00',
+//                 firstDay: 1,
+//                 height: 'auto',  // Adjust height based on the events
+//                 contentHeight: '200',
+//                 slotLabelFormat: {
+//                     hour: '2-digit',
+//                     minute: '2-digit',
+//                     hour12: false
+//                 },
+//                 eventTimeFormat: {
+//                     hour: '2-digit',
+//                     minute: '2-digit',
+//                     hour12: false
+//                 },
+//                 views: {
+//         listWeek: { // or any other specific view you want to customize
+//             noEventsText: "Žiadne hodiny na zobrazenie"
+//         }
+//     },
+//                 events: "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
+//                 /*events: "{{ url('/lessons/all') }}",*/
+//                 windowResize: function(view) {
+//                     if (window.innerWidth < 576) {
+//                         calendar.changeView('listWeek');
+//                     } else if (window.innerWidth < 768) {
+//                         calendar.changeView('timeGridWeek');
+//                     } else {
+//                         calendar.changeView('dayGridMonth');
+//                     }
+//                 }
+//             });
+//             calendar.render();
 
             
-            // Set titles for accessibility and internationalization
-            const prevButton = calendarEl.querySelector('.fc-prev-button');
-            const nextButton = calendarEl.querySelector('.fc-next-button');
-            const todayButton = calendarEl.querySelector('.fc-today-button');
+//             // Set titles for accessibility and internationalization
+//             const prevButton = calendarEl.querySelector('.fc-prev-button');
+//             const nextButton = calendarEl.querySelector('.fc-next-button');
+//             const todayButton = calendarEl.querySelector('.fc-today-button');
 
-            if (prevButton) prevButton.title = 'Predchádzajúci';
-            if (nextButton) nextButton.title = 'Ďalší';
-            if (todayButton) todayButton.title = 'Dnes';
+//             if (prevButton) prevButton.title = 'Predchádzajúci';
+//             if (nextButton) nextButton.title = 'Ďalší';
+//             if (todayButton) todayButton.title = 'Dnes';
 
-            // Initial check to set up the correct view on load based on current window size
-            if (window.innerWidth < 576) {
-                calendar.changeView('listWeek');
-            } else if (window.innerWidth < 768) {
-                calendar.changeView('timeGridWeek');
-            } else {
-                calendar.changeView('dayGridMonth');
-            }
-        });
+//             // Initial check to set up the correct view on load based on current window size
+//             if (window.innerWidth < 576) {
+//                 calendar.changeView('listWeek');
+//             } else if (window.innerWidth < 768) {
+//                 calendar.changeView('timeGridWeek');
+//             } else {
+//                 calendar.changeView('dayGridMonth');
+//             }
+//         });
 
     // document.getElementById('filterForm').addEventListener('submit', function(e) {
     // e.preventDefault();
@@ -823,6 +830,106 @@ document.addEventListener('DOMContentLoaded', function() {
     // window.myCalendar.addEventSource(newEventsUrl); // Add the new source with updated filters
     // window.myCalendar.refetchEvents(); // Optionally refetch events
 //   });
+// function showCalendarModal(text) {
+//     const modal = document.getElementById('calendarModal');
+//     modal.style.display = 'flex';  // Make modal visible
+//     document.getElementById('textCalendar').textContent = text;
+//     // Delay the initialization until after the modal is displayed
+//     setTimeout(() => {
+//         if (!window.calendarInitialized) {
+//             const localeButtonText = {
+//                 'en-US': {
+//                     today: 'Today',
+//                     year: 'Year',
+//                     month: 'Month',
+//                     week: 'Week',
+//                     day: 'Day',
+//                     list: 'List'
+//                 },
+//                 'sk': {
+//                     today: 'Dnes',
+//                     year: 'Rok',
+//                     month: 'Mesiac',
+//                     week: 'Týždeň',
+//                     day: 'Deň',
+//                     list: 'Zoznam'
+//                 },
+//             };
+
+//             var calendarEl = document.getElementById('calendar');
+//             var calendar = new FullCalendar.Calendar(calendarEl, {
+//                 locale: 'sk',
+//                 buttonText: localeButtonText['sk'],
+//                 headerToolbar: {
+//                     left: 'prev,next today',
+//                     center: 'title',
+//                     right: 'dayGridMonth,timeGridWeek,listWeek'
+//                 },
+//                 slotDuration: '00:30:00',
+//                 slotLabelInterval: '01:00',
+//                 slotMinTime: '07:00:00',
+//                 slotMaxTime: '20:00:00',
+//                 scrollTime: '00:00:00',
+//                 firstDay: 1,
+//                 height: 'auto',  // Adjust height based on the events
+//                 contentHeight: '200',
+//                 slotLabelFormat: {
+//                     hour: '2-digit',
+//                     minute: '2-digit',
+//                     hour12: false
+//                 },
+//                 eventTimeFormat: {
+//                     hour: '2-digit',
+//                     minute: '2-digit',
+//                     hour12: false
+//                 },
+//                 views: {
+//         listWeek: { // or any other specific view you want to customize
+//             noEventsText: "Žiadne hodiny na zobrazenie"
+//         }
+//     },
+//                 events: `{{ url('/lessons/all') }}?instructor_id=1`,
+//                 //events: "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
+//                 /*events: "{{ url('/lessons/all') }}",*/
+//                 windowResize: function(view) {
+//                     if (window.innerWidth < 576) {
+//                         calendar.changeView('listWeek');
+//                     } else if (window.innerWidth < 768) {
+//                         calendar.changeView('timeGridWeek');
+//                     } else {
+//                         calendar.changeView('dayGridMonth');
+//                     }
+//                 }
+//             });
+//             calendar.render();
+
+            
+//             // Set titles for accessibility and internationalization
+//             const prevButton = calendarEl.querySelector('.fc-prev-button');
+//             const nextButton = calendarEl.querySelector('.fc-next-button');
+//             const todayButton = calendarEl.querySelector('.fc-today-button');
+
+//             if (prevButton) prevButton.title = 'Predchádzajúci';
+//             if (nextButton) nextButton.title = 'Ďalší';
+//             if (todayButton) todayButton.title = 'Dnes';
+
+//             // Initial check to set up the correct view on load based on current window size
+//             if (window.innerWidth < 576) {
+//                 calendar.changeView('listWeek');
+//             } else if (window.innerWidth < 768) {
+//                 calendar.changeView('timeGridWeek');
+//             } else {
+//                 calendar.changeView('dayGridMonth');
+//             }
+//             window.myCalendar = calendar;
+//         }
+//     }, 10);  // Short delay to ensure the modal is visually rendered
+// }
+
+// function closeCalendarModal() {
+//     const modal = document.getElementById('calendarModal');
+//     modal.style.display = 'none';  
+// }
 
      
 

@@ -90,6 +90,7 @@ class CourseClassController extends Controller
             'students' => ['in:on'],
             'name' => ['required', 'max:255', Rule::unique('course_classes', 'name')],
             'type' => ['required', 'integer', 'in:0,1,2'],
+            'instructor_id' => ['nullable', 'integer', Rule::exists('instructors', 'id')],
             'academy_id' => ['required_if:type,1', 'integer', Rule::exists('academies', 'id')],
             'coursetype_id' => ['required_if:type,1', 'integer', Rule::exists('course_types', 'id')],
             'academy_id2' => ['required_if:type,0', 'integer', Rule::exists('academies', 'id')],
@@ -97,32 +98,68 @@ class CourseClassController extends Controller
             'days' => ['required', 'integer', 'in:1,2,3'],
             'time' => ['required', 'integer', 'in:1,2,3']
         ],$this->messages());
-
+        
+     
+        if(isset($attributes['instructor_id']))
+        {
+            $class = CourseClass::create([
+                'name' => $attributes['name'],
+                'academy_id' => $attributes['academy_id'],
+                'coursetype_id' => $attributes['coursetype_id'],
+                'instructor_id' => $attributes['instructor_id'],
+                'days' => $attributes['days'],
+                'time' => $attributes['time']
+            ]);
+            if (isset($attributes['students'])) {
+                $applications = CourseType::find($attributes['coursetype_id'])->applications;
+    
+                foreach ($applications as $application) {
+                    // Assuming Application model has a 'student' relationship defined
+                    $student = $application->student;
+    
+                    // Check if the student is not already in the class
+                    if (!$class->students->contains($student->id)) {
+                        // Attach the student to the class
+                        $class->students()->attach($student->id, ['application_id' => $application->id]);
+                        // Optionally, you might want to mark the application as processed or remove it
+                    }
+                    $application->delete();
+                }
+            }
+            if (Str::endsWith(url()->previous(), '?pridat')) {
+                $trimmedUrl = substr(url()->previous(), 0, -7);
+                return redirect($trimmedUrl)->with('success_c', 'Úspešne vytvorené');
+            }
+    
+            return back()->with('success_c', 'Úspešne vytvorené');
+        }
+       
         if ($attributes['type'] == 0) {
             $attributes['academy_id'] = $attributes['academy_id2'];
             $attributes['coursetype_id'] = $attributes['coursetype_id2'];
         }
 
-        $instructors = CourseType::find($attributes['coursetype_id'])->instructors;
-        if ($instructors->count() > 1) {
+        $coursetype = CourseType::with('instructors')->findOrFail($attributes['coursetype_id']);
 
-            dd(request()->all());
-            // foreach ($instructors as $instructor) {
-            //     $class->instructors()->save($instructor);
-            // }
+        if ($coursetype->instructors->isEmpty()) {
+            $field = $attributes['type'] == 1 ? 'coursetype_id' : 'coursetype_id2';
+            throw ValidationException::withMessages([$field => 'Kurz musí mať priradeného aspoň jedného inštruktora na vytvorenie triedy.']);
         }
-        else if($instructors->count() == 0) {
-            if($attributes['type'] == "1")
-            {
-                throw ValidationException::withMessages(['coursetype_id' => 'Kurz musí mať priradeného aspoň jedného inštruktora na vytvorenie triedy.']);
-            }
-            if($attributes['type'] == "0")
-            {
-                throw ValidationException::withMessages(['coursetype_id2' => 'Kurz musí mať priradeného aspoň jedného inštruktora na vytvorenie triedy.']);
-            }
-            
-        }
+        
+        // Redirect to the selection page if there are multiple instructors
+        if ($coursetype->instructors->count() > 1) {
+            // Store data in the session temporarily
+            session([
+                'class_attributes' => $attributes,
+                'coursetype_id' => $attributes['coursetype_id']
+            ]);
 
+          
+
+
+            // Redirect to the selection page
+            return redirect()->route('classes.instructor.select');
+        }
 
         $class = CourseClass::create([
             'name' => $attributes['name'],
@@ -149,9 +186,9 @@ class CourseClassController extends Controller
             }
         }
 
-        if ($instructors->count() == 1)
+        if ($coursetype->instructors->count() == 1)
         {
-            $class->update(['instructor_id' => $instructors[0]['id']]);
+            $class->update(['instructor_id' => $coursetype->instructors[0]['id']]);
         }
 
         
@@ -275,6 +312,17 @@ class CourseClassController extends Controller
         'time.required' => 'Čas je povinný.',
         'time.integer' => 'Čas musí byť celé číslo.',
         'time.in' => 'Čas musí byť jedno z: :values.'];
+}
+
+public function selectInstructor()
+{
+    $classAttributes = session('class_attributes');
+    $coursetypeId = session('coursetype_id');
+
+    session()->forget('class_attributes','coursetype_id');
+    $instructors = CourseType::with('instructors')->findOrFail($coursetypeId)->instructors;
+
+    return view('admin.classes-create', compact('instructors', 'classAttributes'));
 }
 }
 

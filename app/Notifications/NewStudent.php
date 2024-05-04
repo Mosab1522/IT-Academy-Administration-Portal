@@ -45,7 +45,11 @@ class NewStudent extends Notification
         return [
             'coursetype_id' => $this->data['id'],
             'application_id' => $this->data['application_id'],
-            'student_id' => $this->data['student_id']
+            'student_id' => $this->data['student_id'],
+            'message' => 'Do Vášho kurzu ' . $this->data['coursename'] . ' - ' . 
+            ($this->data['coursetype'] == 0 ? 'študentský' : 'inštruktorský') . 
+            ' sa prihlásil nový študent.'
+           
         ];
     }
 

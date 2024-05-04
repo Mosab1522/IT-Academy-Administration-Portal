@@ -5,6 +5,9 @@
 
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
         <x-show-header name="{{$academy->name}}" title="Akadémia" src="{{ asset('storage/') }}" path="instructors/{{ $academy->id }}"/>
+            <x-show-buttons calendarText="akadémie {{$academy->name}}" calendarWho="academy_id={{$academy->id}}" emailId="{{$academy->id}}" emailType="academy_id" emailText="Študenti akadémie {{$academy->name}}">
+          
+            </x-show-buttons>
         {{-- <div class="flex items-center space-x-4">
             <!-- Image Placeholder or Icon -->
             <div class="flex items-center space-x-4">
@@ -212,7 +215,7 @@
 
                     <!-- Reset Button -->
                     <button id="res" type="reset"
-                        class="hidden flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors duration-200">
+                        class="hidden flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md shadow-sm hover:bg-gray-500 transition-colors duration-200">
                         Reset
                     </button>
                 </div>

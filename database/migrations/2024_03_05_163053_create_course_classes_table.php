@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('academy_id')->constrained()->cascadeOnDelete();
             $table->foreignId('coursetype_id')->constrained('course_types')->cascadeOnDelete();
             $table->foreignId('instructor_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('instructor_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->boolean('ended')->default(false);
             $table->tinyInteger('days');
             $table->tinyInteger('time');
             $table->timestamps();
