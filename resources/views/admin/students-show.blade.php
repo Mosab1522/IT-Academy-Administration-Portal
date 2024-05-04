@@ -58,6 +58,7 @@
                                                 <span style="{{request()->has('pridat') ? '' : 'display: none;' }}"
                                                     id="nkk" class="ml-2">Zrušiť vytvorenie prihlášky</span>
                                             </a> --}}
+                                            <div class="w-full max-w-full px-3 mx-auto mt-4 md:mt-0 lg:mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-7/12 lg:flex" >
                                             <x-buttonsection class="{{ session('success_dd')  ? 'hidden' : ''}}">
                                         <li class="flex-1 {{session('success_c')|| session('success_d')|| request()->has('pridat') ||  $errors->admin->any() ? 'hidden' : '' }}">
                                             <button
@@ -102,7 +103,7 @@
                                                 <span id="tlac2"
                                                     class="{{session('success_c') || session('success_d')|| request()->has('pridat') ? '' : 'hidden' }}  ml-2">Profil</span>
                                             </a> --}}
-                                            <x-buttonsection>
+                                            <x-buttonsection class="md:mt-3 lg:mt-0">
                                         <li class="flex-auto pr-0.5">
                                             <button
                                                 class="section-button {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->admin->any() ||  session('success_dd') ? '' : 'hidden' }} rounded-l-lg"
@@ -124,6 +125,7 @@
                                             </button>
                                         </li>
                                         </x-buttonsection>
+                                    </div>
 
                                         {{-- <li class="hidden" class="z-30 flex-auto text-center">
                                             <a id="tr"
@@ -752,6 +754,7 @@
                                                     <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
                                                 </x-slot:head>
                                                 @foreach ($student->classes as $class)
+                                                @if($class->ended == false)
                                                 <tr
                                                     class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                                     <td class="py-4 px-6"><x-table.td url="classes/{{ $class->id }}">{{$class->name}}</x-table.td></td>
@@ -773,6 +776,7 @@
                                                     <x-table.td-last url="class-student/{{$student->id}}/{{ $class->id }}" edit=1 itemName="tohto študenta z  triedy {{$class->name}}? Ak mal študent vytvorenú prihlášku vráti sa medzi prihlásených študentov kurzu tejto triedy. Vymaže sa aj jeho evidenia absolvovaných hodín triedy." />
                                                     
                                                 </tr>
+                                                @endif
                                                 @endforeach
                                             </x-single-table>
                                 </div>

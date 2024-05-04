@@ -1,40 +1,36 @@
 @props(['name', 'title', 'path', 'src'])
 
-<div class="flex items-center space-x-4">
-    <!-- Image Placeholder or Icon -->
-    <div class="flex items-center space-x-4">
+<div class="items-center space-x-4 ">
+    <!-- Image and Form Section -->
+ 
         @if($path ?? null)
-        <form id="form" action="/admin/{{$path ?? ''}}"  method="post" enctype="multipart/form-data" class="m-0">
+        <form id="form" action="/admin/{{$path}}" method="post" enctype="multipart/form-data" class="w-full block relative">
             @csrf
             @method('Patch')
-            <div class="flex-shrink-0">
-                <div class="h-20 w-20 rounded-lg bg-gray-300 overflow-hidden relative">
-                    <img class="shadow-xl rounded-lg w-full h-full object-cover" data-default-src="{{$src ?? ''}}" src="{{$src ?? ''}}" alt="profile_image">
-                    <label for="photo-upload" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100 rounded-lg cursor-pointer">
-                        <span class="text-center text-sm">Zmeniť fotku</span>
-                    </label>
-                    <input type="file" id="photo-upload" name="photo" class="hidden" onchange="handleFileUpload(event)">
-                </div>
+            <div class="h-20 w-20 rounded-lg bg-gray-300 overflow-hidden">
+                <img class="shadow-xl rounded-lg w-full h-full object-cover" src="{{$src ?? ''}}" alt="profile_image">
+                <label for="photo-upload" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100 rounded-lg cursor-pointer">
+                    <span class="text-center text-sm">Zmeniť fotku</span>
+                </label>
+                <input type="file" id="photo-upload" name="photo" class="hidden" onchange="handleFileUpload(event)">
             </div>
-
-            <div class="flex flex-col space-y-2 mt-1">
-                <button id="photobutton" type="submit" class="hidden  text-xs justify-center py-1 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-200">
+            <div class="mt-1 space-y-2">
+                <button id="photobutton" type="submit" class="hidden text-xs py-1 px-4 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-200">
                     Zmeniť
                 </button>
-                <button id="photobutton-c" type="reset" class="hidden  flex-none bg-gray-400 text-white text-xs uppercase py-1 px-6 rounded-md hover:bg-gray-500 transition-colors duration-200">
+                <button id="photobutton-c" type="reset" class="hidden bg-gray-400 text-white text-xs py-1 px-6 rounded-md hover:bg-gray-500 transition-colors duration-200">
                     Zrušiť
                 </button>
             </div>
         </form>
         @endif
-
-        <!-- Text Description -->
-        <div class="flex-grow">
-            <h5 class="text-lg font-semibold text-gray-900">{{$name}}</h5>
-            <p class="text-sm text-gray-500">{{$title}}</p>
-        </div>
+ </div>  
+    <!-- Text Description -->
+    <div class="ml-2 sm:ml-4 my-auto">
+        <h5 class="text-lg font-semibold text-gray-900 -mt-1">{{$name}}</h5>
+        <p class="text-sm text-gray-500">{{$title}}</p>
     </div>
-</div>
+
 
 {{-- <form id="form" action="/admin/instructors/{{ $instructor->id }}" method="post" enctype="multipart/form-data">
     @csrf

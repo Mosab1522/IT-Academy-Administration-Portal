@@ -1,4 +1,4 @@
-@props(['heading', 'etitle',])
+@props(['heading', 'etitle','pick' => false])
 <x-flash />
 
 
@@ -36,16 +36,19 @@
                 <!-- Notification Icon -->
                 <button id="notificationButton" @click="open = !open" class="focus:outline-none">
                     <span class="material-icons text-white text-3xl material-icons-header">notifications</span>
+                    @if($count>0)
                     <span class="absolute top-0 right-0 inline-flex items-center justify-center p-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">{{$count}}</span>
+                    @endif
                 </button>
         
                 <!-- Notification Dropdown -->
-                <div x-show="open" x-cloak @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
+                @if($count>0)
+                <div x-show="open" x-cloak @click.away="open = false" class="origin-top-right max-h-80 overflow-y-auto absolute right-0 mt-2 w-64 sm:w-80 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
                     <div class="py-2">
                         @foreach (App\Models\Instructor::all() as $instructor)
                             @forelse($instructor->unreadNotifications as $notification)
                                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    {{ $notification->data['message'] ?? 'You have a notification' }}
+                                    {{ $notification->data['message'] ?? 'You have a notification' }} {{$notification->data['minimum'] ? 'Touto prihláškou sa naplnil počet študentov na otvorenie triedy.' : ''}}
                                 </a>
                             @empty
                                 {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -56,6 +59,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             <a href="/admin/profile" class="focus:outline-none relative">
                 <span class="material-icons text-white text-3xl material-icons-header">account_circle</span>
             </a>
@@ -64,7 +68,7 @@
         
         <div class="middle-content flex-1 overflow-auto">
 
-            <main class="p-4 lg:p-12">
+            <main class="p-6 lg:p-12">
 
                 {{ $create ?? '' }}
 
@@ -82,7 +86,7 @@
                 </div>
                 @endforeach --}}
                 <div class="flex flex-col">
-                    <div class="bg-white p-8 rounded-lg shadow mb-6">
+                    <div class="bg-white p-4 sm:p-8 rounded-lg shadow mb-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $etitle ?? '' }}</h3>
 
                         {{ $slot }}
@@ -121,13 +125,24 @@
     <span class="material-icons">close</span>
 </button>
         <h2 class="text-lg font-semibold text-gray-900 mb-1.5">Odoslať Email</h2>
+       
+        
+        <form id="emailForm" method="POST" action="{{ route('admin.dashboard.send') }}">
+            @csrf 
+            @if($pick)
+        <div class="py-2 mb-3">
+            <x-form.select name="who" title="Príjemcovia">
+                <option value="0" disabled selected hidden>Vyberte príjemcov </option>  
+                <option value="1">Všetci aktuálny študenti </option>
+                <option value="2">Všetci prihlásený študenti </option>
+            </x-form.select>
+        </div>
+        @else
         <div class="py-2 pl-4 mb-3 bg-gray-100 rounded-md">
             <h3 class="text-base font-medium mb-2">Prijímateľia</h3>
             <span id="recipientText"></span>
         </div>
-        
-        <form id="emailForm" method="POST" action="{{ route('admin.dashboard.send') }}">
-            @csrf
+        @endif
             <div class="flex items-center -mt-4">
                 <x-form.input-check name="sender" title="Uviesť odosielateľa?" />
 
@@ -372,11 +387,30 @@ document.getElementById('sender').addEventListener('change', function() {
 
 
 
-function openEmailModal(text,recipientId, type) {
+function openEmailModal(text,recipientId, type,pick) {
     // Build the recipient value dynamically based on passed parameters
+    
     const recipientValue = `${recipientId}-${type}`;
     document.getElementById('emailRecipient').value = recipientValue;
-    document.getElementById('recipientText').textContent = text;
+    if(pick)
+    {
+        const recipientSelector = document.getElementById('who');
+
+// Function to update option texts
+function updateOptionTexts(text) {
+    recipientSelector.querySelectorAll('option').forEach(option => {
+         // Make sure not to update the placeholder option
+            option.textContent = option.textContent.split(' - ')[0] + ' ' + text;
+        
+    });
+}
+
+// Example usage
+updateOptionTexts(text);   
+    }else{
+        document.getElementById('recipientText').textContent = text; 
+    }
+    
     
     // Display the modal
     document.getElementById('emailModal').style.display = 'flex';
@@ -392,7 +426,8 @@ document.querySelectorAll('.email-button').forEach(button => {
         const recipientId = this.getAttribute('data-recipient-id');
         const type = this.getAttribute('data-type');
          const text = this.getAttribute('data-text');
-        openEmailModal(text,recipientId, type);
+         const pick = this.getAttribute('data-pick');
+        openEmailModal(text,recipientId, type,pick);
     });
 });
 // Attach the actual deletion function
@@ -456,7 +491,7 @@ function showCalendarModal(text,queryParams) {
         }
     },
                 events: `{{ url('/lessons/all') }}?${queryParams}`,
-                //events: "{{ url('/instructors/' . $instructor->id . '/lessons') }}",
+             
                 /*events: "{{ url('/lessons/all') }}",*/
                 windowResize: function(view) {
                     if (window.innerWidth < 576) {

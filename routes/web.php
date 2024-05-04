@@ -121,6 +121,7 @@ Route::get('admin/classes/select-instructor', [CourseClassController::class, 'se
 
 Route::get('admin/classes', [CourseClassController::class, 'index'])->name('admin.classes.index');
 Route::patch('admin/classes/{class}', [CourseClassController::class, 'update']);
+Route::patch('admin/class/end/{class}', [CourseClassController::class, 'end']);
 
 
 

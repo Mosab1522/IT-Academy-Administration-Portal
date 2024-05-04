@@ -74,6 +74,8 @@
             <div class="relative">
                 <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5" role="tablist"
                     nav-pills> --}}
+                    <div class="w-full max-w-full px-3 mx-auto mt-4 md:mt-0 lg:mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-7/12 lg:flex" >
+                        
                 <x-buttonsection class="{{ session('success_d')  ? 'hidden' : ''}}">
                     <li class="flex-1 {{ session('success_dd') || session('success_c')  ||  $errors->default->any() ? 'hidden' : '' }}">
                         <button
@@ -103,7 +105,7 @@
             </div>
         </div> --}}
 
-        <x-buttonsection>
+        <x-buttonsection class="md:mt-3 lg:mt-0">
         {{-- <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
             <div class="relative">
                 <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5 shadow" role="tablist" nav-pills> --}}
@@ -132,6 +134,7 @@
                         </button>
                     </li>
                 </x-buttonsection>
+    </div>
                 {{-- </ul>
             </div>
         </div> --}}

@@ -66,6 +66,7 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                                                 class="ml-2">Zrušiť pridanie
                                                 inštruktora</span>
                                         </a> --}}
+                                        <div class="w-full max-w-full px-3 mx-auto mt-4 md:mt-0 lg:mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-7/12 lg:flex" >
                                         <x-buttonsection>
                                             <li class="flex-1 {{session('success_c') || session('success_cc') || session('success_dd')  || session('success_d')  || request()->has('pridat') ||request()->has('vytvorit') ? 'hidden' : '' }}">
                                         <button
@@ -114,7 +115,7 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                                             <span id="tlac2"
                                                 class="{{session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}  ml-2">Info</span>
                                         </a> --}}
-                                        <x-buttonsection>
+                                        <x-buttonsection class="md:mt-3 lg:mt-0">
                                             <li class="flex-auto pr-0.5">
                                         <button
                                             class="section-button {{session('success_c') || session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? '' : 'hidden' }} rounded-lg "
@@ -123,6 +124,7 @@ $timeValue = $formattedHours . ':' . $formattedMinutes;
                                             class="section-button {{session('success_c') || session('success_cc') || session('success_d')  || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? 'hidden' : '' }} rounded-lg"
                                             data-target="kurzy">Zúčastnený študenti</button>
                                     </li>
+                                </div>
                                     {{-- <li class="z-30 flex-auto text-center">
                                         {{-- <a id="tr"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-colors ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"

@@ -14,6 +14,7 @@
                     <x-form.field>
                         <x-form.input name="title" type="text" title="Názov hodiny" placeholder="Názov hodiny" required="true"/>
                     </x-form.field>
+                
                     <x-form.field>
                         @php
                         $classes = \App\Models\CourseClass::with(['coursetype'])->get();
@@ -34,7 +35,7 @@
                                 $assignedInstructors = $coursetype->instructors->pluck('id')->toArray();
                                 @endphp --}}
                                 @foreach ($classes as $class)
-
+                                @if($class->ended == false)
                                 
 
                                 <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1"
@@ -42,7 +43,7 @@
                                     ''}}> {{
                                     ucwords($class->name)}} - {{
                                     ucwords($class->coursetype->name)}}  {{$class->coursetype->type=='0'? 'študentský' : 'inštruktorský'}} </option>
-
+                                @endif
                                 @endforeach
                                 {{-- <option value="" disabled selected hidden>Akadémia</option>
                                 <option value="1" data-id="1" data-option="-1">Cisco</option>
@@ -70,6 +71,18 @@
                         </div>
 
                     </x-form.field>
+                    <x-form.input-check name="email" title="Poslať oznámenie o hodine študentom emailom" :checked="old('email')"/>
+                    <div id="emailDiv" class="mt-6 {{old('email') ? '' :'hidden'}}" >
+                        <x-form.select name="lessonType" title="Forma hodiny">
+                            <option value="0" disabled selected hidden>Vyberte formu hodiny</option> 
+                            <option {{old('lessonType')=='1' ? 'selected' :''}} value="1">Online</option> 
+                            <option {{old('lessonType')=='2' ? 'selected' :''}} value="2">Prezenčne</option>
+                        </x-form.select>
+                        <div id="onsiteDiv" class="{{old('onsite') ? '' : 'hidden'}} mt-6"><x-form.input name="onsite" type="text" title="Miestnosť" placeholder="Uveďte miestnosť vyučovania" /></div>
+                        <div id="onlineDiv" class="{{old('online') ? '' : 'hidden'}} mt-6">
+                        <x-form.input name="online" type="text" title="Link" placeholder="Uveďte link na hodinu"/>
+                        </div>
+                    </div>
 
                     <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                         Odoslať
@@ -191,3 +204,35 @@
 
 
 </x-setting>
+
+<script>
+    document.getElementById('email').addEventListener('change', function() {
+    var emailDiv = document.getElementById('emailDiv');
+    if (this.checked) {
+        emailDiv.style.display = 'block';
+       // document.getElementById('sendername').disabled=false;
+    } else {
+        emailDiv.style.display = 'none';
+       // document.getElementById('sendername').disabled=true;
+    }
+});
+
+document.getElementById('lessonType').addEventListener('change', function() {
+    // Hide all sections initially
+    document.getElementById('onsiteDiv').style.display = 'none';
+    document.getElementById('onlineDiv').style.display = 'none';
+   
+
+    // Show the relevant section based on the selected value
+    switch (this.value) {
+        case '1': // Študent / Študenti
+            document.getElementById('onlineDiv').style.display = 'block';
+            break;
+        case '2': // Inštruktor / Inštruktori
+            document.getElementById('onsiteDiv').style.display = 'block';
+            break;
+        
+          
+    }
+});
+</script>

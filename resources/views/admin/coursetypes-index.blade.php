@@ -216,9 +216,11 @@
                             </td>
                             <td class="py-4 px-6">
                                 @foreach($coursetype->classes as $class)
+                                @if($class->ended == false)
                                 <x-table.td url="classes/{{ $class->id }}">
                                 {{$class->name}}
                                 </x-table.td><br>
+                                @endif
                                 @endforeach
                             </td>
                             <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>

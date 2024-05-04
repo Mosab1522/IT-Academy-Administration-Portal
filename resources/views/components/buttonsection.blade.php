@@ -1,5 +1,5 @@
 <div
-class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12" 
+class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-full md:flex-none lg:w-6/12" 
 >
     <div class="relative">
         <ul 

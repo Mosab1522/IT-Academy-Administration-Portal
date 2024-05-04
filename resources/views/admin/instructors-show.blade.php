@@ -40,6 +40,7 @@
                             <button onclick="showCalendarModal('inštruktora {{$instructor->name}} {{$instructor->lastname}}')" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                                 Ope n Calendar
                             </button> --}}
+                            <div class="w-full max-w-full px-3 mx-auto mt-4 md:mt-0 lg:mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-7/12 lg:flex" >
                              <x-buttonsection>
                     <li class="flex-1 {{ session('success_dd') || session('success_cc') ||  $errors->createCI->any() || session('success_c') || session('success_d')  || $errors->default->any() ? 'hidden' : '' }}">
                         <button
@@ -154,7 +155,7 @@
                                             <span id="tlac2"
                                                 class="{{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }} ml-2">Profil</span>
                                         </a> --}}
-                                        <x-buttonsection >
+                                        <x-buttonsection class="md:mt-3 lg:mt-0">
                                             {{-- <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
                                                 <div class="relative">
                                                     <ul class="flex justify-center items-center bg-gray-300 rounded-xl py-0.5 px-0.5 shadow" role="tablist" nav-pills> --}}
@@ -175,7 +176,7 @@
                                             data-target="login">Triedy</button>
                                                         </li>
                                                     </x-buttonsection>
-                                                
+                                                </div>
                                         {{-- <button
                                             class="section-button {{session('success_cc') || session('success_dd') || session('success_uu') || session('success_c') || request()->has('pridat') || request()->has('vytvorit') || request()->has('zmenit') ? '' : 'hidden' }}  z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             data-target="profile">Profil</button>
@@ -513,7 +514,7 @@
                             $assignedInstructors = $coursetype->instructors->pluck('id')->toArray();
                             @endphp --}}
                             @foreach ($instructor->classes as $class)
-
+                            @if($class->ended == false)
                             
 
                             <option value="{{ $class->id }}" data-id="{{ $class->id }}" data-option="-1"
@@ -521,7 +522,7 @@
                                 ''}}> {{
                                 ucwords($class->name)}} - {{
                                 ucwords($class->coursetype->name)}}  {{$class->coursetype->type=='0'? 'študentský' : 'inštruktorský'}} </option>
-
+                            @endif
                             @endforeach
                             {{-- <option value="" disabled selected hidden>Akadémia</option>
                             <option value="1" data-id="1" data-option="-1">Cisco</option>
@@ -548,6 +549,20 @@
                             </div>
 
                         </x-form.field>
+                        <x-form.input-check name="email" title="Poslať oznámenie o hodine študentom emailom" :checked="old('email')"/>
+                        <div id="emailDiv" class="mt-6 {{old('email') ? '' :'hidden'}}" >
+                            <x-form.select name="lessonType" title="Forma hodiny">
+                                <option value="0" disabled selected hidden>Vyberte formu hodiny</option> 
+                                <option {{old('lessonType')=='1' ? 'selected' :''}} value="1">Online</option> 
+                                <option {{old('lessonType')=='2' ? 'selected' :''}} value="2">Prezenčne</option>
+                            </x-form.select>
+                            <div id="onsiteDiv" class="{{old('onsite') ? '' : 'hidden'}} mt-6"><x-form.input name="onsite" type="text" title="Miestnosť" placeholder="Uveďte miestnosť vyučovania" /></div>
+                            <div id="onlineDiv" class="{{old('online') ? '' : 'hidden'}} mt-6">
+                            <x-form.input name="online" type="text" title="Link" placeholder="Uveďte link na hodinu"/>
+                            </div>
+                        </div>
+
+                        
 
                         <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                             Odoslať
@@ -571,6 +586,7 @@
                                 <!-- Iterate over lessons in this class -->
                                
                                 @foreach ($instructor->classes as $class)
+                                @if($class->ended == false)
                                 <tr
                                     class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                     <td class="py-4 px-6"><x-table.td url="classes/{{ $class->id }}">{{$class->name}}</x-table.td></td>
@@ -590,6 +606,7 @@
                                     <x-table.td-last url="classes/{{ $class->id }}" edit=1 itemName="triedu {{$class->name}}? Spolu s triedou sa vymažú aj jej hodiny. Študenti v triede sa naspäť vrátia medzi prihlásených študentov na kurz tejto triedy. V prípade ukončenia vyučovania využite možnosť Ukončenčiť triedu." />
                                     
                                 </tr>
+                                @endif
                                 @endforeach
                             </x-single-table>
                 </div>
@@ -732,6 +749,41 @@ document.getElementById("photobutton-c").addEventListener("click", function(even
 
     // Manually reset other fields as needed
 });
+
+
+var loginAddContainer = document.getElementById('loginAdd');
+var emailInput = loginAddContainer.querySelector('#email');
+
+emailInput.addEventListener('change', function() {
+    var emailDiv = document.getElementById('emailDiv');
+    if (this.checked) {
+        emailDiv.style.display = 'block';
+       // document.getElementById('sendername').disabled=false;
+    } else {
+        emailDiv.style.display = 'none';
+       // document.getElementById('sendername').disabled=true;
+    }
+});
+
+document.getElementById('lessonType').addEventListener('change', function() {
+    // Hide all sections initially
+    document.getElementById('onsiteDiv').style.display = 'none';
+    document.getElementById('onlineDiv').style.display = 'none';
+   
+
+    // Show the relevant section based on the selected value
+    switch (this.value) {
+        case '1': // Študent / Študenti
+            document.getElementById('onlineDiv').style.display = 'block';
+            break;
+        case '2': // Inštruktor / Inštruktori
+            document.getElementById('onsiteDiv').style.display = 'block';
+            break;
+        
+          
+    }
+});
+
 
 // document.addEventListener('DOMContentLoaded', function() {
 //             const localeButtonText = {

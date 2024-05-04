@@ -7,6 +7,8 @@
 <p>Kurz: {{$coursename}} - {{$coursetype == 0 ? 'študentský' : 'inštruktorský'}}</p>
 <p>Akadémia: {{$academyname}}</p>
 
+@if($minimum)<h2>Touto registráciou študenta sa naplnil minimálny počet študentov na otvorenie triedy tohto kurzu.</h2>
+@endif
 <h3>Nižšie nájdete základné informácie o študentovi:</h3>
 
 <p>Meno: {{$name}} {{$lastname}}</p>

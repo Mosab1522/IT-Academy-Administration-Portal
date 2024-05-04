@@ -468,9 +468,16 @@ throw ValidationException::withMessages(['sekemail' => 'Tento email vedieme v sy
         // $application->save();
 
         $emailData = ['student_id' => $student['id'], 'email' => $student['email'], 'name' => $student['name'], 'lastname' => $student['lastname'], 'id' => $course['id'], 'coursename' => $course['name'], 'coursetype' => $course['type'], 'academyname' => $course->academy['name'], 'date' => Carbon::now(), 'application_id' => $application->id, 'verificationToken' => $application->verification_token];
-
+        if($course->applications->count() == $course->min)
+        {
+            $emailData['minimum'] =true;
+       }else{
+        $emailData['minimum'] =false;
+       }
         foreach ($course->instructors as $instructor) {
-            $instructor->notify(new NewStudent($emailData));
+           
+                $instructor->notify(new NewStudent($emailData));
+            
         }
 
         //Mail::to($emailData['email'])->send(new ConfirmationMail($emailData));

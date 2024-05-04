@@ -16,7 +16,10 @@ class CourseClassController extends Controller
 {
     public function index(Request $request)
     {
-        $classes = CourseClass::with(['academy', 'coursetype', 'students', 'instructor']);
+        $classes = CourseClass::with(['academy', 'coursetype', 'students', 'instructor'])
+        ->where(function ($query) {
+            $query->where('ended', false);
+        });
 
         // Apply search filter across multiple relationships if search is provided
         if ($request->filled('search')) {
@@ -272,6 +275,48 @@ class CourseClassController extends Controller
 
         return back()->with('success_d', 'Úspešne vymazané');
     }
+
+    public function end(CourseClass $class)
+    {
+
+        $attributes = request()->validateWithBag('endClass', [
+            'students' => ['array'],
+            'students.*' => 'distinct|exists:students,id',
+           
+        ], $this->messages());
+       
+        $class->update(['ended' =>true]);
+
+        $studentIds = collect(data_get($attributes, 'students', []));
+
+        foreach ($class->students as $student){
+            // $applicationId = $class->students()->where('student_id', $student->id)->first()->pivot->application_id; 
+            // if ($applicationId) {
+            //     $application = $application = Application::withTrashed()->find($applicationId);
+            //     if ($application) {
+            //         $application->forceDelete();// Delete the application
+            //     }
+            // }
+           
+            if (!$studentIds->contains($student->id))
+            {
+                
+                $class->students()->updateExistingPivot($student->id, ['ended' => '2']);
+            }else{
+                $class->students()->updateExistingPivot($student->id, ['ended' => '3']);
+            }
+            
+           
+        }
+       
+        if (Str::endsWith(url()->previous(), '?pridat')) {
+            $trimmedUrl = substr(url()->previous(), 0, -7);
+            return redirect($trimmedUrl)->with('success_end', 'Úspešne ukončnená trieda');
+        }
+
+        return back()->with('success_end', 'Úspešne ukončnená trieda');
+    }
+
     
     public function addinstructor()
     {

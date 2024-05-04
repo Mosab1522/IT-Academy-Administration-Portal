@@ -65,7 +65,8 @@
                                     <!-- End Class Icon -->
                                    
                                 </div>  --}}
-                             
+                                <div class="w-full max-w-full px-3 mx-auto mt-4 md:mt-0 lg:mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-7/12 lg:flex" >
+                                    
                             <x-buttonsection>
                                 <li class="flex-1 {{ session('success_d') || session('success_c') ||  $errors->default->any() || session('success_cc') || session('success_dd') ||  $errors->admin->any()  ? 'hidden' : '' }}">
                                     <button
@@ -157,7 +158,7 @@
                                     <ul class="relative flex flex-wrap p-1 list-none bg-gray-50 rounded-xl" nav-pills
                                         role="tablist">
                                         <li class="z-30 flex-auto text-center "> --}}
-                                            <x-buttonsection>
+                                            <x-buttonsection class="md:mt-3 lg:mt-0">
                                         <li class="flex-auto pr-0.5">
                                             <button
                                                 class="section-button {{session('success_c') || session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ||  $errors->default->any() ||  $errors->admin->any() ? '' : 'hidden' }} rounded-l-lg"
@@ -176,6 +177,7 @@
                                                 data-target="login">Študenti</button>
                                         </li>
                                         </x-buttonsection>
+                                    </div>
                                         {{-- <a id="ku"
                                             class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                             href="javascript:;">
@@ -428,6 +430,18 @@
                                 </div>
 
                             </x-form.field>
+                            <x-form.input-check name="cemail" title="Poslať oznámenie o hodine študentom emailom" :checked="old('cemail')"/>
+                            <div id="emailDiv" class="mt-6 {{old('email') ? '' :'hidden'}}" >
+                                <x-form.select name="lessonType" title="Forma hodiny">
+                                    <option value="0" disabled selected hidden>Vyberte formu hodiny</option> 
+                                    <option {{old('lessonType')=='1' ? 'selected' :''}} value="1">Online</option> 
+                                    <option {{old('lessonType')=='2' ? 'selected' :''}} value="2">Prezenčne</option>
+                                </x-form.select>
+                                <div id="onsiteDiv" class="{{old('onsite') ? '' : 'hidden'}} mt-6"><x-form.input name="onsite" type="text" title="Miestnosť" placeholder="Uveďte miestnosť vyučovania" /></div>
+                                <div id="onlineDiv" class="{{old('online') ? '' : 'hidden'}} mt-6">
+                                <x-form.input name="online" type="text" title="Link" placeholder="Uveďte link na hodinu"/>
+                                </div>
+                            </div>
 
                             <x-form.button class="mt-6 md:w-auto w-full sm:w-auto">
                                 Odoslať
@@ -450,6 +464,9 @@
                                         <th scope="col" class="py-3 px-6">
                                             Dátum a trvanie
                                         </th>
+                                        <th scope="col" class="py-3 px-6">
+                                            Absencie
+                                        </th>
                                         <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
                     </x-slot:head>
                                     <!-- Iterate over lessons in this class -->
@@ -468,6 +485,15 @@
                                         </td>
                                         <td class="py-4 px-6">
                                             {{ $lesson->lesson_date }} - {{ $lesson->duration }} minút
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            @if(\Carbon\Carbon::parse($lesson->lesson_date)->addMinutes($lesson->duration) < \Carbon\Carbon::now())
+                                            @foreach($lesson->class->students as $student)
+                                            @if (!$lesson->students->contains('id', $student->id))
+                                            {{ $student->name }} {{ $student->lastname }} <br>
+                                            @endif
+                                            @endforeach
+                                            @endif
                                         </td>
                                         <x-table.td-last url="lessons/{{ $lesson->id }}" edit=1 itemName="hodinu {{$lesson->title}} tejto triedy? Spolu s tým sa vymažú záznamy o absolvovaní tejto hodiny študentmi." />
                                       
@@ -507,6 +533,7 @@
                             <x-slot:head>
                                         <th scope="col" class="py-3 px-6">Meno</th>
                                         <th scope="col" class="py-3 px-6">Email</th>
+                                        <th scope="col" class="py-3 px-6">Absencie</th>
                                         <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
                                     </x-slot:head>
                                     @foreach ($class->students as $student)
@@ -516,6 +543,17 @@
                                             {{$student->name}} {{$student->lastname}}
                                             </x-table.td></td>
                                         <td class="py-4 px-6">{{$student->email}}</td>
+                                        <td class="py-4 px-6">
+                                            @foreach($class->lessons as $les)
+                                            @if(\Carbon\Carbon::parse($les->lesson_date)->addMinutes($les->duration) < \Carbon\Carbon::now())
+                                           
+                                            @if (!$les->students->contains('id', $student->id))
+                                            {{ $les->title}} <br>
+                                            @endif
+                                           
+                                            @endif
+                                            @endforeach
+                                        </td>
 
                                         <x-table.td-last url="class-student/{{ $student->id }}/{{$class->id}}" edit=1 itemName="študenta {{$student->name}} {{$student->lastname}} z tejto triedy? Ak mal študent vytvorenú prihlášku vráti sa medzi prihlásených študentov kurzu tejto triedy. Vymaže sa aj jeho evidenia absolvovaných hodín triedy." />
                                        
@@ -536,7 +574,9 @@
         <h2 class="text-lg font-semibold text-gray-900">Potvrdiť ukončenie triedy</h2>
         <p class="text-gray-700">Ste si istý, že chcete ukončiť túto triedu {{$class->name}}? Označte tých študentov, ktorí úspešne absolvovali tento kurz a bol im udelený certifikát.</p>
         <p class="my-2 text-sm font-semibold uppercase text-gray-700">Vyberte úspešných absolventov</p>
-        <form id="completeClassForm" method="POST" action="/path-to-complete-class"  >
+        <form id="completeClassForm" method="POST" action="/admin/class/end/{{$class->id}}"  >
+            @csrf
+            @method('Patch')
             <input type="hidden" name="class_id" id="completeClassId" value="">
             <div class="overflow-y-auto" style="max-height: 400px;">
                 @foreach ($class->students as $student)
@@ -608,6 +648,37 @@ document.querySelectorAll('.end-class-button').forEach(button => {
     button.addEventListener('click', function() {
         openCompleteClassModal('Class Name', 123); // Example values
     });
+});
+
+
+    document.getElementById('cemail').addEventListener('change', function() {
+    var emailDiv = document.getElementById('emailDiv');
+    if (this.checked) {
+        emailDiv.style.display = 'block';
+       // document.getElementById('sendername').disabled=false;
+    } else {
+        emailDiv.style.display = 'none';
+       // document.getElementById('sendername').disabled=true;
+    }
+});
+
+document.getElementById('lessonType').addEventListener('change', function() {
+    // Hide all sections initially
+    document.getElementById('onsiteDiv').style.display = 'none';
+    document.getElementById('onlineDiv').style.display = 'none';
+   
+
+    // Show the relevant section based on the selected value
+    switch (this.value) {
+        case '1': // Študent / Študenti
+            document.getElementById('onlineDiv').style.display = 'block';
+            break;
+        case '2': // Inštruktor / Inštruktori
+            document.getElementById('onsiteDiv').style.display = 'block';
+            break;
+        
+          
+    }
 });
 
 </script>

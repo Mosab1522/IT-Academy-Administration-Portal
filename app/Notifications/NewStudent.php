@@ -27,7 +27,7 @@ class NewStudent extends Notification
      */
     public function via(object $notifiable): array
     {
-       // return ['mail', 'database'];
+        //return ['mail', 'database'];
        return ['database'];
     }
 
@@ -37,7 +37,7 @@ class NewStudent extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $data = $this->data;
-        return (new MailMessage)->subject('Nová registrácia študenta - kurz ' . $data['coursename'])->markdown('mail.newstudent',['coursename' => $data['coursename'], 'coursetype' =>$data['coursetype'], 'academyname' => $data['academyname'] , 'name' => $data['name'], 'lastname' => $data['lastname'], 'email' => $data['email'] , 'date' => $data['date']]);
+        return (new MailMessage)->subject('Nová registrácia študenta - kurz ' . $data['coursename'])->markdown('mail.newstudent',['coursename' => $data['coursename'], 'coursetype' =>$data['coursetype'], 'academyname' => $data['academyname'] , 'name' => $data['name'], 'lastname' => $data['lastname'], 'email' => $data['email'] , 'date' => $data['date'] , 'minimum' => $data['minimum']] );
     }
 
     public function toDatabase($notifiable)
@@ -48,7 +48,8 @@ class NewStudent extends Notification
             'student_id' => $this->data['student_id'],
             'message' => 'Do Vášho kurzu ' . $this->data['coursename'] . ' - ' . 
             ($this->data['coursetype'] == 0 ? 'študentský' : 'inštruktorský') . 
-            ' sa prihlásil nový študent.'
+            ' sa prihlásil nový študent.',
+            'minimum' => $this->data['minimum']
            
         ];
     }

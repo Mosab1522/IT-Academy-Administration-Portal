@@ -1,13 +1,22 @@
 
 <x-layout />
-<x-setting heading="{{$coursetype->name}}">
-
+<x-setting heading="{{$coursetype->name}}" :pick="true">
+@if($coursetype->type == "1")
+@php
+$type = "- inštruktorský";
+@endphp
+@else
+@php
+$type = "- študentský";
+@endphp
+@endif
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
-        <x-show-header name="{{$coursetype->name}}" title="Kurz" src="{{ asset('storage/') }}"
+        <x-show-header name="{{$coursetype->name}}" title="Kurz {{$type}}" src="{{ asset('storage/') }}"
             path="instructors/{{ $coursetype->id }}" />
-            <x-show-buttons calendarText="kurzu {{$coursetype->name}}" calendarWho="coursetype_id={{$coursetype->id}}" emailId="{{$coursetype->id}}" emailType="coursetype_id" emailText="Študenti kurzu {{$coursetype->name}}">
+            <x-show-buttons calendarText="kurzu {{$coursetype->name}} {{$type}}" calendarWho="coursetype_id={{$coursetype->id}}" emailId="{{$coursetype->id}}" emailType="coursetype_id" emailText="kurzu" :pick="true">
           
             </x-show-buttons>
+            <div class="w-full max-w-full px-3 mx-auto mt-4 md:mt-0 lg:mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-7/12 lg:flex" >
         <x-buttonsection>
             <li class="flex-1 {{ session('success_c') || session('success_cc') || session('success_dd') || session('success_d') ||request()->has('vytvorit')   || request()->has('pridat') ||  $errors->admin->any()  ? 'hidden' : '' }}">
 
@@ -143,7 +152,7 @@
                                                 <span id="tlac2"
                                                     class="{{session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}  ml-2">Info</span>
                                             </a> --}}
-                                            <x-buttonsection>
+                                            <x-buttonsection class="md:mt-3 lg:mt-0">
                                                 {{-- <div
                                                     class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
                                                     <div class="relative">
@@ -166,6 +175,7 @@
                                                                     data-target="login">Prihlášky</button>
                                                             </li>
                                             </x-buttonsection>
+                                        </div>
                                             {{-- <button
                                                 class="section-button {{session('success_c') || session('success_cc') || session('success_d') || session('success_dd') || request()->has('pridat') || request()->has('vytvorit') ? '' : 'hidden' }} z-30  items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg bg-inherit text-slate-700 hover:bg-white"
                                                 data-target="profile">Info</button>
