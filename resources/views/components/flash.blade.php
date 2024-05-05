@@ -1,5 +1,5 @@
 @php
-$sessionKeys = ['success_c', 'success_cc', 'success_u', 'success_uu', 'success_d', 'success_dd', 'success_email'];
+$sessionKeys = ['success_c', 'success_cc', 'success_u', 'success_uu', 'success_d', 'success_dd', 'success_email','success_end'];
 @endphp
 
 @foreach($sessionKeys as $key)

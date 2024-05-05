@@ -309,12 +309,9 @@ class CourseClassController extends Controller
            
         }
        
-        if (Str::endsWith(url()->previous(), '?pridat')) {
-            $trimmedUrl = substr(url()->previous(), 0, -7);
-            return redirect($trimmedUrl)->with('success_end', 'Úspešne ukončnená trieda');
-        }
-
-        return back()->with('success_end', 'Úspešne ukončnená trieda');
+      
+        return redirect('/admin/history/classes')->with('success_end', 'Úspešne ukončnená trieda');
+    
     }
 
     

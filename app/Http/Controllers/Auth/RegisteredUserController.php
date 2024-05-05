@@ -23,9 +23,9 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(Instructor $instructor): View
     {
-        return view('auth.register');
+        return view('auth.register', ['instructor' => $instructor]);
     }
 
     /**

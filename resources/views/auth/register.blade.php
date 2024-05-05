@@ -1,23 +1,30 @@
 
 
-@if(session('instructor_id')||request()->instructor_id)
-@unless(session('instructor_id'))
+@if(session('instructor_id') || $instructor)
+@if(session('instructor_id'))
 @php
-session(['instructor_id' => request()->instructor_id]);
+$instructor = \App\Models\Instructor::find(session('instructor_id'));
+session()->forget('instructor_id');
 @endphp
-@endunless
+@endif
 <x-layout/>
-<x-setting heading="Vytvoriť login">
+<x-setting heading="Login" etitle="Nastavenie loginu inštruktora {{$instructor->name}} {{$instructor->lastname}}">
     {{-- {{dd(session('instructor_id'))}} --}}
-    <form method="POST" action="/admin/login/create">
+    <form method="POST" action="/admin/login/{{ $instructor->login ? 'update' : 'create' }}">
         @csrf
-    
+        @if ($instructor->login)
+        @method('Patch')
+        <input name="user_id" value="{{ $instructor->login->id }}" hidden />
+        @else
+        <input name="instructor_id" value="{{ $instructor->id }}" hidden />
+        @endif
         <!-- Name -->
-        <div>
-            <x-input-label for="nickname" :value="__('Nickname')" />
-            <x-text-input id="nickname" class="block mt-1 w-full" type="text" name="nickname" :value="old('nickname')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('nickname')" class="mt-2" />
-        </div>
+        <label for="nickname"
+        class="block text-sm font-medium text-gray-700">Prihlasovacie meno</label>
+    <input  type="text" name="nickname"
+    value="{{ $instructor->login->nickname ?? '' }}" required autofocus
+    autocomplete="name"
+    class="mt-1 flex-1  block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 placeholder-gray-500 disabled:bg-gray-100 disabled:text-gray-500 bg-white text-sm leading-5.6" />
 
         {{-- <!-- Email Address -->
         <div class="mt-4">
@@ -27,37 +34,35 @@ session(['instructor_id' => request()->instructor_id]);
         </div> --}}
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="flex mt-6">
+            <div class="w-1/2 mr-2">
+                <label for="password"
+                    class="block text-sm font-medium text-gray-700">Heslo</label>
+                <input  type="password" name="password" autocomplete="new-password" class="mt-1 flex-1  block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 placeholder-gray-500 disabled:bg-gray-100 disabled:text-gray-500 bg-white text-sm leading-5.6"
+                 />
+                </div>
+          
+                <div  class="w-1/2 ml-2">
+    
+                <label for="password_confirmation"
+                    class="block text-sm font-medium text-gray-700">Potvrdiť heslo</label>
+                <input type="password" name="password_confirmation"
+                autocomplete="new-password"
+                class="mt-1 flex-1  block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 placeholder-gray-500 disabled:bg-gray-100 disabled:text-gray-500 bg-white text-sm leading-5.6" />
+            </div>
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        <x-form.field>
+            <div class="flex justify-end space-x-4 mt-6">
+                <x-form.button class=" flex-1">{{
+                $instructor->login ? 'Zmeniť' : 'Vytvoriť' }}
+                </x-form.button>
+            <a href="/admin/instructors"  id="res1" 
+                class="flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md hover:bg-gray-500 transition-colors duration-200 shadow-sm">Preskočiť</a>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
-
-        <div class="flex items-center mt-4">
-            {{-- <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a> --}}
-            <a href="/admin/instructors" class = ' items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150'>Preskočiť</a>
-            <x-primary-button class="ml-4">
-                {{ __('Vytvoriť login') }}
-            </x-primary-button>
-        </div>
+        </x-form.field>
+        
     </form>
 </x-setting>
 @else

@@ -5,6 +5,11 @@
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
         <x-show-header name="{{$instructor->name}}" title="Inštruktor" src="{{ asset('storage/' . $instructor->photo) }}" path="instructors/{{ $instructor->id }}"/>
             <x-show-buttons calendarText="inštruktora {{$instructor->name}} {{$instructor->lastname}}" calendarWho="instructor_id={{$instructor->id}}" emailId="{{$instructor->id}}" emailType="instructor_id" emailText="Inštruktor: {{$instructor->name}} {{$instructor->lastname}}">
+                <a href="/admin/login/{{$instructor->id}}" title="Login" class="end-class-button inline-block mt-4 pt-0.5 text-gray-800 hover:text-gray-600">
+                    <span class="material-icons material-icons-header">login</span>
+
+                </a>
+                
             </x-show-buttons>
                             {{-- <form id="form" action="/admin/instructors/{{ $instructor->id }}" method="post"
                                 enctype="multipart/form-data">
@@ -276,7 +281,7 @@
                 
                                     <!-- Reset Button -->
                                     <button id="res" type="reset"
-                                        class="hidden flex-none bg-gray-400 text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors duration-200">
+                                        class="hidden flex-none bg-gray-400 text-white text-sm font-medium py-2 px-6 rounded-md shadow-sm hover:bg-gray-500 transition-colors duration-200">
                                         Reset
                                     </button>
                                 </div>

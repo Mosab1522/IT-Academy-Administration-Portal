@@ -160,7 +160,8 @@ class InstructorController extends Controller
 
         session(['instructor_id' => $instructor['id']]);
 
-        return redirect('/admin/login/create')->with('success_c', 'Úspešne vytvorené');
+        
+        return redirect('/admin/login/'.$instructor['id'])->with('success_c', 'Úspešne vytvorené');
     }
 
     public function update(Instructor $instructor)
