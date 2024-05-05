@@ -21,7 +21,7 @@ class CourseClass extends Model
     }
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'class_students', 'class_id', 'student_id')->withPivot('application_id')->withTimestamps();
+        return $this->belongsToMany(Student::class, 'class_students', 'class_id', 'student_id')->withPivot('application_id','ended')->withTimestamps();
     }
     public function instructor()
     {

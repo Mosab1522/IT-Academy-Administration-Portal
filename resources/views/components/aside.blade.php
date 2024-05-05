@@ -1,8 +1,8 @@
 
 <aside 
   x-data="{
-    activeSection: '{{ request()->is('admin/dashboard') || request()->is('admin/calendar') || request()->is('admin/email') ? 'overview' : (request()->is('admin/academies*') || request()->is('admin/coursetypes*') || request()->is('admin/classes*') || request()->is('admin/lessons*') || request()->is('admin/students*') || request()->is('admin/applications*') || request()->is('admin/instructors*') ? 'management' : '') }}',
-    activeSectionName: '{{ request()->is('admin/dashboard') || request()->is('admin/calendar') || request()->is('admin/email') ? 'Prehľad' : (request()->is('admin/academies*') || request()->is('admin/coursetypes*') || request()->is('admin/classes*') || request()->is('admin/lessons*') || request()->is('admin/students*') || request()->is('admin/applications*') || request()->is('admin/instructors*') ? 'Spravovanie' : '') }}'
+    activeSection: '{{ request()->is('admin/dashboard') || request()->is('admin/calendar') || request()->is('admin/email') ? 'overview' : (request()->is('admin/academies*') || request()->is('admin/coursetypes*') || request()->is('admin/classes*') || request()->is('admin/lessons*') || request()->is('admin/students*') || request()->is('admin/applications*') || request()->is('admin/instructors*') ? 'management' : (request()->is('admin/history/certificates', 'admin/history/classes') ? 'history' : '')) }}',
+    activeSectionName: '{{ request()->is('admin/dashboard') || request()->is('admin/calendar') || request()->is('admin/email') ? 'Prehľad' : (request()->is('admin/academies*') || request()->is('admin/coursetypes*') || request()->is('admin/classes*') || request()->is('admin/lessons*') || request()->is('admin/students*') || request()->is('admin/applications*') || request()->is('admin/instructors*') ? 'Spravovanie' :  (request()->is('admin/history/certificates', 'admin/history/classes') ? 'História' : '')) }}'
   }" 
   class="w-full flex-shrink-0 bg-gray-800 text-white"
 >
@@ -23,6 +23,10 @@
                     <span class="{{request()->is('admin/academies', 'admin/academies/*') ||  request()->is('admin/coursetypes', 'admin/coursetypes/*') || request()->is('admin/classes', 'admin/classes/*') ||  request()->is('admin/lessons', 'admin/lessons/*') ||  request()->is('admin/students', 'admin/students/*') || request()->is('admin/applications', 'admin/applications/*') || request()->is('admin/instructors', 'admin/instructors/*') ? '' : 'hidden'}}" id="managementName">
                          Spravovanie
                     </span>
+                    <span class="{{ request()->is('admin/history/certificates', 'admin/history/classes')  ? '' : 'hidden'}}" id="historyName">
+                        História
+                    </span>
+                    
                  
                 </span>
             </div>
@@ -49,15 +53,16 @@
                   </div>
                   <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
-                        <button class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
-                      <span class="material-icons material-icons-custom">calendar_today</span>
-                        </button>
+                        <button id="historyButton"  class="toggle-btn flex items-center py-2 px-4 rounded-md border lg:border-0 transition-colors duration-200 {{ request()->is('admin/history/certificates', 'admin/history/classes')  ? 'bg-indigo-600  border-indigo-600' : 'hover:bg-gray-700'}}">
+                            <span class="material-icons material-icons-custom">history</span>
+                           
+                              </button>
                     </div>
                   </div>
                   <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
                         <button class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
-                      <span class="material-icons material-icons-custom">calendar_today</span>
+                      <span class="material-icons material-icons-custom">schedule</span>
                         </button>
                     </div>
                   </div>
@@ -119,6 +124,16 @@
                 Inštruktori</a>
             </div>
         </div>
+        <div id="historySection" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium {{request()->is('admin/history/certificates') || request()->is('admin/history/classes')  ? '' : 'hidden'  }}">
+     
+            <a href="/admin/history/certificates"
+            class="{{ request()->is('admin/history/certificates') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
+            Udelené certifikáty</a>
+            <a href="/admin/history/classes"
+            class="{{ request()->is('admin/history/classes') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
+            Ukončené hodiny</a>
+          
+        </div>
         <a href="/" class="text-blue-300 hover:text-blue-400 mb-20 lg:mb-0 fixed bottom-2 left-4">
             <span class="text-sm">Nová prihláška</span>
         </a>
@@ -129,10 +144,13 @@
     document.addEventListener('DOMContentLoaded', function() {
         var overviewButton = document.getElementById('overviewButton');
         var managementButton = document.getElementById('managementButton');
+        var historyButton = document.getElementById('historyButton');
         var overviewSection = document.getElementById('overviewSection');
         var managementSection = document.getElementById('managementSection');
+        var historySection = document.getElementById('historySection');
         var overviewName = document.getElementById('overviewName');
         var managementName = document.getElementById('managementName');
+        var historyName = document.getElementById('historyName');
         var buttons = document.querySelectorAll('.toggle-btn'); 
     
         function hideSection(section) {
@@ -151,6 +169,7 @@
             // First, hide all sections
             hideSection(overviewSection);
             hideSection(managementSection);
+            hideSection(historySection);
             hideName(); // Hide all names
     
             // Then, show the requested section and name
@@ -161,11 +180,16 @@
                 showSection(managementSection);
                 managementName.classList.remove('hidden');
             }
+            else if (sectionName === 'history') {
+                showSection(historySection);
+                historyName.classList.remove('hidden');
+            }
         }
     
         function hideName() {
             overviewName.classList.add('hidden');
             managementName.classList.add('hidden');
+            historyName.classList.add('hidden');
         }
     
         function activateButton(button) {
@@ -188,6 +212,11 @@
         managementButton.addEventListener('click', function() {
             activateButton(managementButton);
             toggleSection('management');
+        });
+
+        historyButton.addEventListener('click', function() {
+            activateButton(historyButton);
+            toggleSection('history');
         });
     });
     </script>

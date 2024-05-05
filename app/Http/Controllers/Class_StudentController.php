@@ -11,12 +11,112 @@ use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use stdClass;
 
 class Class_StudentController extends Controller
-{
+
+{   public function index(Request $request)
+    {
+        $query = CourseClass::with(['academy', 'coursetype', 'students', 'instructor']) ->where(function ($query) {
+            $query->where('ended', true);
+        });
+
+        // Apply search filter across multiple relationships if search is provided
+        if ($request->filled('search')) {
+            $search = '%' . $request->input('search') . '%';
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', $search)
+                      ->orWhereHas('coursetype', function ($q) use ($search) {
+                          $q->where('name', 'like', $search)
+                            ->orWhereHas('academy', function ($subQuery) use ($search) {
+                                $subQuery->where('name', 'like', $search);
+                            });
+                      })
+                      ->orWhereHas('instructor', function ($q) use ($search) {
+                          $q->where('name', 'like', $search)
+                            ->orWhere('lastname', 'like', $search);
+                      });
+            });
+        }
+        
+        // Handle filtering by academy_id and coursetype_id
+        if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
+            $academyId = $request->input('academy_id');
+            $coursetypeId = $request->input('coursetype_id');
+        
+            // Filter by coursetype_id and its related academy_id
+            $query->whereHas('coursetype', function ($query) use ($academyId, $coursetypeId) {
+                $query->where('id', $coursetypeId)
+                      ->whereHas('academy', function ($subQuery) use ($academyId) {
+                          $subQuery->where('id', $academyId);
+                      });
+            });
+        } elseif ($request->filled('academy_id')) {
+            $academyId = $request->input('academy_id');
+            // Filter by coursetype's related academy_id
+            $query->whereHas('coursetype.academy', function ($query) use ($academyId) {
+                $query->where('id', $academyId);
+            });
+        }
+        
+
+        // zoradenie
+        if ($request->filled('orderBy')) {
+            $orderBy = $request->input('orderBy');
+            $orderDirection = $request->input('orderDirection');
+            $query->orderBy($orderBy, $orderDirection);
+        } else {
+            $query->orderBy('updated_at', 'desc');
+        }
+        $query=$query->get();
+        
+        $classstudents = collect();
+
+        foreach ($query as $class) {
+            foreach ($class->students as $student) {
+                
+                if($student->pivot->ended == 3)
+                {
+                     $structuredClass = new stdClass;
+                $structuredClass->class = new stdClass;
+    
+                // Assign class properties
+                $structuredClass->class->id = $class->id;
+                $structuredClass->class->name = $class->name;
+                $structuredClass->class->coursetype_id = $class->coursetype->id ?? null;
+                $structuredClass->class->coursetype_name = $class->coursetype->name ?? null;
+                $structuredClass->class->coursetype_type = $class->coursetype->type ?? null;
+                $structuredClass->class->academy_name = $class->coursetype->academy->name ?? null;
+                $structuredClass->class->instructor_id = $class->instructor->id ?? null;
+                $structuredClass->class->instructor_name = $class->instructor->name ?? null;
+                $structuredClass->class->instructor_lastname = $class->instructor->lastname ?? null;
+    
+                // Add student with detailed pivot data
+                $structuredStudent = new stdClass;
+                $structuredStudent->id = $student->id;
+                $structuredStudent->name = $student->name;
+                $structuredStudent->lastname = $student->lastname;
+                $structuredStudent->application_id = $student->pivot->application_id;
+                $structuredStudent->ended = $student->pivot->ended;
+                $structuredStudent->pivot_created_at = $student->pivot->created_at->toDateTimeString();
+                $structuredStudent->pivot_updated_at = $student->pivot->updated_at->toDateTimeString();
+    
+                $structuredClass->student = $structuredStudent; // Assign the student object to the structured class object.
+    
+                $classstudents->push($structuredClass); 
+                }
+               // Push this structured object into the collection.
+            }
+        }
+    
+        return view('admin.history-certificates', [
+            'classstudents' => $classstudents
+        ]);
+    }
+
     public function store()
     {
-
+   
         $attributes = request()->validateWithBag('admin',[
             'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id')],
             'student_id' => ['required_without_all:name,lastname,email', 'integer', Rule::exists('students', 'id')],
@@ -24,7 +124,7 @@ class Class_StudentController extends Controller
             'lastname' => ['required_without:student_id', 'max:255'],
             'email' => ['required_without:student_id', 'email', 'max:255'],
         ],$this->messages());
-        $class = CourseClass::findOrFail($attributes['class_id']);
+        $class = CourseClass::findOrFail($attributes['class_id']);   
         if (isset($attributes['student_id'])) {
             if ($class->students()->where('student_id', $attributes['student_id'])->exists()) {
                 throw ValidationException::withMessages(['name' => 'Tento študent je už v triede.' ,'lastname' => 'Tento študent je už v triede.','email' => 'Tento študent je už v triede.','class_id' => 'Tento študent je už v triede.'])->errorBag('admin');
@@ -33,7 +133,7 @@ class Class_StudentController extends Controller
                 ->where('coursetype_id', $class->coursetype->id)
                 ->first();
             // Attempt to retrieve an application for the student
-
+  
         } else {
             $student = Student::where(function ($query) use ($attributes) {
                 $query->where('email', $attributes['email'])
@@ -66,13 +166,14 @@ class Class_StudentController extends Controller
 
         // Check if the student is already attached to the class
 
-
+        
         // Prepare the pivot data, conditionally include application_id if application exists
         $pivotData = [];
         if ($application) {
             $pivotData['application_id'] = $application->id;
             $application->delete();
         }
+        $pivotData['ended'] = 1;
 
         // Attach the student to the class, with application_id if available
         if (isset($attributes['student_id'])) {

@@ -133,6 +133,10 @@ Route::delete('admin/classes/{class}', [CourseClassController::class, 'destroy']
 
 Route::post('admin/class-instructor', [CourseClassController::class, 'addinstructor']);
 
+Route::get('admin/history/classes', [CourseClassController::class, 'history'])->name('admin.classes.history');
+
+Route::get('admin/history/certificates', [Class_StudentController::class, 'index'])->name('admin.certificates.index');
+
 
 
 Route::get('admin/lessons', [LessonController::class, 'index'])->name('admin.lessons.index');

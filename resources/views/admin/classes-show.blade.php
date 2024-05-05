@@ -640,7 +640,7 @@ function openCompleteClassModal(className, classId) {
     confirmButton.onclick = function () {
         clearInterval(countdown);
         // Add actual submission logic here
-        alert('Kurz dokončený!');  // Placeholder for action
+ // Placeholder for action
     };
 }
 

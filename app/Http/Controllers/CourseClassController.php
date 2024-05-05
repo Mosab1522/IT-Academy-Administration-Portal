@@ -182,7 +182,7 @@ class CourseClassController extends Controller
                 // Check if the student is not already in the class
                 if (!$class->students->contains($student->id)) {
                     // Attach the student to the class
-                    $class->students()->attach($student->id, ['application_id' => $application->id]);
+                    $class->students()->attach($student->id, ['application_id' => $application->id, 'ended' => '1']);
                     // Optionally, you might want to mark the application as processed or remove it
                 }
                 $application->delete();
@@ -369,6 +369,67 @@ public function selectInstructor()
 
     return view('admin.classes-create', compact('instructors', 'classAttributes'));
 }
+public function history(Request $request)
+    {
+        $classes = CourseClass::with(['academy', 'coursetype', 'students', 'instructor'])
+        ->where(function ($query) {
+            $query->where('ended', true);
+        });
+
+        // Apply search filter across multiple relationships if search is provided
+        if ($request->filled('search')) {
+            $search = '%' . $request->input('search') . '%';
+            $classes->where(function ($query) use ($search) {
+                $query->where('name', 'like', $search)
+                      ->orWhereHas('coursetype', function ($q) use ($search) {
+                          $q->where('name', 'like', $search)
+                            ->orWhereHas('academy', function ($subQuery) use ($search) {
+                                $subQuery->where('name', 'like', $search);
+                            });
+                      })
+                      ->orWhereHas('instructor', function ($q) use ($search) {
+                          $q->where('name', 'like', $search)
+                            ->orWhere('lastname', 'like', $search);
+                      });
+            });
+        }
+        
+        // Handle filtering by academy_id and coursetype_id
+        if ($request->filled('academy_id') && $request->filled('coursetype_id')) {
+            $academyId = $request->input('academy_id');
+            $coursetypeId = $request->input('coursetype_id');
+        
+            // Filter by coursetype_id and its related academy_id
+            $classes->whereHas('coursetype', function ($query) use ($academyId, $coursetypeId) {
+                $query->where('id', $coursetypeId)
+                      ->whereHas('academy', function ($subQuery) use ($academyId) {
+                          $subQuery->where('id', $academyId);
+                      });
+            });
+        } elseif ($request->filled('academy_id')) {
+            $academyId = $request->input('academy_id');
+            // Filter by coursetype's related academy_id
+            $classes->whereHas('coursetype.academy', function ($query) use ($academyId) {
+                $query->where('id', $academyId);
+            });
+        }
+        
+
+        // zoradenie
+        if ($request->filled('orderBy')) {
+            $orderBy = $request->input('orderBy');
+            $orderDirection = $request->input('orderDirection');
+            $classes->orderBy($orderBy, $orderDirection);
+        } else {
+            $classes->orderBy('updated_at', 'desc');
+        }
+
+        $classes = $classes->get();
+
+        return view('admin.history-classes', [
+            'classes' => $classes
+        ]);
+    }
 }
 
 
