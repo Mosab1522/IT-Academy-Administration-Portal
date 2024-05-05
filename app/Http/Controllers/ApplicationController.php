@@ -18,13 +18,24 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationController extends Controller
 {
 
     public function index(Request $request)
     {
-        $applications = Application::with(['academy', 'coursetype', 'student']);
+        if(Gate::denies('admin'))
+        {
+            $authInstructorId = auth()->user()->user_id;
+            $applications = Application::with(['academy', 'coursetype', 'student'])->whereHas('coursetype.instructors', function ($query) use ($authInstructorId) {
+                $query->where('instructors.id', $authInstructorId);
+            });
+        }else{
+           $applications = Application::with(['academy', 'coursetype', 'student']); 
+        }
+        
 
         // Check for academy_id and coursetype_id filters.
         if ($request->filled('academy_id')) {

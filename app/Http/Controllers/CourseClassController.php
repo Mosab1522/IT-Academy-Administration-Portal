@@ -11,15 +11,29 @@ use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CourseClassController extends Controller
 {
     public function index(Request $request)
     {
-        $classes = CourseClass::with(['academy', 'coursetype', 'students', 'instructor'])
-        ->where(function ($query) {
+        if(Gate::denies('admin')){
+            $authInstructorId = auth()->user()->user_id;
+            $classes = CourseClass::with(['academy', 'coursetype', 'students', 'instructor'])
+            ->where(function ($query) {
+                $query->where('ended', false);
+            })->whereHas('instructor', function ($query) use ($authInstructorId) {
+                $query->where('id', $authInstructorId);
+            });
+
+        }else{
+             $classes = CourseClass::with(['academy', 'coursetype', 'students', 'instructor'])->where(function ($query) {
             $query->where('ended', false);
         });
+        }
+
+       
 
         // Apply search filter across multiple relationships if search is provided
         if ($request->filled('search')) {
@@ -77,7 +91,12 @@ class CourseClassController extends Controller
     }
 
     public function show(CourseClass $class)
-    {
+    {   
+        if(auth()->user()->user_id != $class->instructor_id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+        
         return view('admin.classes-show', ['class' => $class]);
     }
 
@@ -102,7 +121,23 @@ class CourseClassController extends Controller
             'time' => ['required', 'integer', 'in:1,2,3']
         ],$this->messages());
         
-     
+        if(Gate::denies('admin'))
+        {
+            if(isset(request()->instructor_id))
+            {
+                if(request()->instructor_id != auth()->user()->user_id)
+                {
+                    abort(Response::HTTP_FORBIDDEN);
+                }
+            }else{
+                abort(Response::HTTP_FORBIDDEN);
+            }
+            if ($attributes['type'] == 0) {
+                $attributes['academy_id'] = $attributes['academy_id2'];
+                $attributes['coursetype_id'] = $attributes['coursetype_id2'];
+            }
+        }
+        
         if(isset($attributes['instructor_id']))
         {
             $class = CourseClass::create([
@@ -207,7 +242,11 @@ class CourseClassController extends Controller
 
     public function update(CourseClass $class)
     {
-
+        if(auth()->user()->user_id != $class->instructor_id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+        
         // $academy = Academy::with(['class', 'applications'])
         // ->where('id', '=', request()->academy_id)->first();
 
@@ -249,6 +288,11 @@ class CourseClassController extends Controller
 
     public function destroy(CourseClass $class)
     {
+        if(auth()->user()->user_id != $class->instructor_id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
         if ($class->students->count() > 0) {
             
             foreach ($class->students as $student) {
@@ -278,6 +322,10 @@ class CourseClassController extends Controller
 
     public function end(CourseClass $class)
     {
+        if(auth()->user()->user_id != $class->instructor_id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
 
         $attributes = request()->validateWithBag('endClass', [
             'students' => ['array'],
@@ -315,18 +363,18 @@ class CourseClassController extends Controller
     }
 
     
-    public function addinstructor()
-    {
-        $attributes = request()->validate([
-            'instructor_id' => ['required', 'integer', Rule::exists('instructors', 'id')],
-            'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id')],
-        ]);
+    // public function addinstructor()
+    // {
+    //     $attributes = request()->validate([
+    //         'instructor_id' => ['required', 'integer', Rule::exists('instructors', 'id')],
+    //         'class_id' => ['required', 'integer', Rule::exists('course_classes', 'id')],
+    //     ]);
 
-        $class = CourseClass::firstWhere('id', $attributes['class_id']);
+    //     $class = CourseClass::firstWhere('id', $attributes['class_id']);
 
-        $class->update(['instructor_id' => $attributes['instructor_id']]);
+    //     $class->update(['instructor_id' => $attributes['instructor_id']]);
     
-    }
+    // }
 
     protected function messages()
     {
@@ -368,15 +416,25 @@ public function selectInstructor()
 }
 public function history(Request $request)
     {
-        $classes = CourseClass::with(['academy', 'coursetype', 'students', 'instructor'])
-        ->where(function ($query) {
-            $query->where('ended', true);
-        });
+        if(Gate::denies('admin')){
+            $authInstructorId = auth()->user()->user_id;
+            $query = CourseClass::with(['academy', 'coursetype', 'students', 'instructor']) ->where(function ($query) {
+                $query->where('ended', true);
+            })->whereHas('instructor', function ($query) use ($authInstructorId) {
+                $query->where('id', $authInstructorId);
+            });
+    
+        }else{
+              $query = CourseClass::with(['academy', 'coursetype', 'students', 'instructor']) ->where(function ($query) {
+                $query->where('ended', true);
+            });
+    
+        }
 
         // Apply search filter across multiple relationships if search is provided
         if ($request->filled('search')) {
             $search = '%' . $request->input('search') . '%';
-            $classes->where(function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
                 $query->where('name', 'like', $search)
                       ->orWhereHas('coursetype', function ($q) use ($search) {
                           $q->where('name', 'like', $search)
@@ -397,7 +455,7 @@ public function history(Request $request)
             $coursetypeId = $request->input('coursetype_id');
         
             // Filter by coursetype_id and its related academy_id
-            $classes->whereHas('coursetype', function ($query) use ($academyId, $coursetypeId) {
+            $query->whereHas('coursetype', function ($query) use ($academyId, $coursetypeId) {
                 $query->where('id', $coursetypeId)
                       ->whereHas('academy', function ($subQuery) use ($academyId) {
                           $subQuery->where('id', $academyId);
@@ -406,7 +464,7 @@ public function history(Request $request)
         } elseif ($request->filled('academy_id')) {
             $academyId = $request->input('academy_id');
             // Filter by coursetype's related academy_id
-            $classes->whereHas('coursetype.academy', function ($query) use ($academyId) {
+            $query->whereHas('coursetype.academy', function ($query) use ($academyId) {
                 $query->where('id', $academyId);
             });
         }
@@ -416,12 +474,12 @@ public function history(Request $request)
         if ($request->filled('orderBy')) {
             $orderBy = $request->input('orderBy');
             $orderDirection = $request->input('orderDirection');
-            $classes->orderBy($orderBy, $orderDirection);
+            $query->orderBy($orderBy, $orderDirection);
         } else {
-            $classes->orderBy('updated_at', 'desc');
+            $query->orderBy('updated_at', 'desc');
         }
 
-        $classes = $classes->get();
+        $classes = $query->get();
 
         return view('admin.history-classes', [
             'classes' => $classes

@@ -13,6 +13,8 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
@@ -49,8 +51,17 @@ class DashboardController extends Controller
 
         // $academies = Academy::all();
 
+        if(Gate::denies('admin')){
+            $authInstructorId = auth()->user()->user_id;
+            $query = CourseType::with(['academy', 'applications'])
+            ->whereHas('instructors', function ($query) use ($authInstructorId) {
+                $query->where('instructors.id', $authInstructorId);
+            });
+        }else{
+            $query = CourseType::with(['academy', 'applications']);
+        }
+        
 
-        $query = CourseType::with(['academy', 'applications']);
 
 
         $query->when($request->filled('academy_id'), function ($q) use ($request) {
@@ -113,7 +124,6 @@ class DashboardController extends Controller
     }
 
     public function email(Request $request)
-
     {
         return view('admin.email-index', []);
     }

@@ -1,3 +1,4 @@
+
 <x-layout />
 
 <x-setting heading="{{$class->name}}">

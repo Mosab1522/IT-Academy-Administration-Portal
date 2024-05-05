@@ -1,6 +1,15 @@
 
 <x-layout />
-<x-setting heading="Kalendár" etitle="Kalendár akadémie">
+@php
+$text= "Váš kalendár";
+$basequeryParams='instructor_id='.auth()->user()->user_id;
+if(auth()->user()->can('admin'))
+{
+    $text= "Kalendár akadémie";
+    $basequeryParams="";
+}
+@endphp
+<x-setting heading="Kalendár" etitle="{{$text}}">
    
     {{-- <div class="flex flex-col">
         <div class="flex">
@@ -14,9 +23,27 @@
                             <!-- parent -->
                             {{-- <select name="academy_id" class="combo-a" data-nextcombo=".combo-b"> --}}
                                 @php
+                                if(auth()->user()->can('admin'))
+                                {
                                 $academy = \App\Models\Academy::all();
-                            $coursetypes = \App\Models\CourseType::all();
-                            @endphp
+                                $coursetypes = \App\Models\CourseType::all();
+                                }else{
+                                    $authInstructorId = auth()->user()->user_id;
+                                $academy = \App\Models\Academy::whereHas('coursetypes.instructors', function ($query) use ($authInstructorId) {
+        $query->where('instructors.id', $authInstructorId);
+    })->with([
+        'coursetypes' => function ($query) use ($authInstructorId) {
+            $query->whereHas('instructors', function ($q) use ($authInstructorId) {
+                $q->where('instructors.id', $authInstructorId);
+            });
+        }
+    ])->get();
+                                $coursetypes = \App\Models\CourseType::whereHas('instructors', function ($query) use ($authInstructorId) {
+        $query->where('instructors.id', $authInstructorId);
+    })->get();
+                                }
+                                
+                                @endphp
                                 
                                 <option value="" data-option="-1" selected>Všetky</option>
                                 {{-- @php
@@ -66,17 +93,28 @@
                 
                     <x-form.search-select name="class_id" title="Trieda">
                         @php
+                          if(auth()->user()->can('admin'))
+                                {
                         $classes = \App\Models\CourseClass::all();
+                                }
+                                else {
+                                      $classes = \App\Models\CourseClass::whereHas('instructor', function ($query) use ($authInstructorId) {
+                $query->where('id', $authInstructorId);
+            })->get();
+                                }
+                      
                         @endphp
                         <option value="">Všetky</option>
                         @foreach ($classes as $class)
+                    
                             <option value="{{ $class->id }}" {{ request()->input('class_id') == $class->id ? 'selected' : '' }}>
                                 {{ $class->name }}
                             </option>
+                           
                         @endforeach
                         
                     </x-form.search-select>
-                
+                    @if(auth()->user()->can('admin'))
                     <x-form.search-select name="instructor_id" title="Inštruktor">
                         @php
                         $instructors = \App\Models\Instructor::all();
@@ -88,7 +126,9 @@
                             </option>
                         @endforeach
                     </x-form.search-select>
-                    
+                    @else
+                    <input type="hidden" name="instructor_id" value="{{ auth()->user()->user_id }}" required/>
+                    @endif
                     </x-form.search>
 
 </x-slot:create>
@@ -156,7 +196,8 @@ document.addEventListener('DOMContentLoaded', function() {
             noEventsText: "Žiadne hodiny na zobrazenie"
         }
     },
-        events: "{{ url('/lessons/all') }}",
+        events: `{{ url('/lessons/all') }}?{{$basequeryParams}}`,
+      
         /*events: "{{ url('/lessons/all') }}",*/
         windowResize: function(view) {
             if (window.innerWidth < 576) {

@@ -1,6 +1,15 @@
 
 <x-layout />
 <x-setting heading="{{$coursetype->name}}" :pick="true">
+    @php
+    
+    $deleteedit = false;
+    if(auth()->user()->can('admin'))
+    {
+        $deleteedit = true;
+    }
+    
+    @endphp
 @if($coursetype->type == "1")
 @php
 $type = "- inštruktorský";
@@ -29,6 +38,7 @@ $type = "- študentský";
                 </button>
 
             </li>
+            @admin
             <li
                 class="flex-1 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
                 <button
@@ -40,6 +50,7 @@ $type = "- študentský";
                         inštruktora</span>
                 </button>
             </li>
+            @endadmin
             <li
                 class="flex-1 {{ session('success_c') || session('success_d') || request()->has('vytvorit') ||  $errors->admin->any()  ? '' : 'hidden' }}">
 
@@ -366,7 +377,7 @@ $type = "- študentský";
 
                             </form>
                         </div>
-
+                        @admin
                         <div class="add-section" id="kurzyAdd"
                             style="{{request()->has('pridat') ? 'display:block;' : 'display: none;' }}">
                             <p class="text-sm font-semibold uppercase text-gray-700">Pridať inštruktora</p>
@@ -410,6 +421,7 @@ $type = "- študentský";
                                 </x-form.button>
                             </form>
                         </div>
+                        @endadmin
 
 
                         <div id="kurzy" class="section flex-auto p-6"
@@ -451,7 +463,7 @@ $type = "- študentský";
                                         </x-table.td><br>
                                         @endforeach
                                     </td>
-                                    <x-table.td-last url="coursetype_instructor/{{ $instructor->id }}/{{$coursetype->id}}" edit=1
+                                    <x-table.td-last url="coursetype_instructor/{{ $instructor->id }}/{{$coursetype->id}}" edit={{$deleteedit}} :delete="$deleteedit"
                                         itemName="inštruktora {{$instructor->name}} {{$instructor->lastname}} ako správcu tohto kurzu? Spolu s ním budú vymazané aj jeho triedy. Ak tomu chcete zabrániť zmeňte inštruktora týchto tried." />
 
                                 </tr>

@@ -8,6 +8,10 @@
                 <form action="/admin/classes/create" method="post">
                     @csrf
                     <x-form.required class="-mt-3"/>
+                    @if(auth()->user()->can('admin'))
+                    @else
+                    <input type="hidden" name="instructor_id" value="{{ auth()->user()->user_id }}" required/>
+                    @endif
                     <x-form.input-check name="students" title="Zapísať všetkých študentov ktorí majú
                     prihlášku na kurz"/>
                     <x-form.field>
@@ -53,8 +57,25 @@
 
                         </div> --}}
                         @php
-            $academy = \App\Models\Academy::all();
-            $coursetypes = \App\Models\CourseType::all();
+             if(auth()->user()->can('admin'))
+                                {
+                                $academy = \App\Models\Academy::all();
+                                $coursetypes = \App\Models\CourseType::all();
+                                }else{
+                                    $authInstructorId = auth()->user()->user_id;
+                                $academy = \App\Models\Academy::whereHas('coursetypes.instructors', function ($query) use ($authInstructorId) {
+        $query->where('instructors.id', $authInstructorId);
+    })->with([
+        'coursetypes' => function ($query) use ($authInstructorId) {
+            $query->whereHas('instructors', function ($q) use ($authInstructorId) {
+                $q->where('instructors.id', $authInstructorId);
+            });
+        }
+    ])->get();
+                                $coursetypes = \App\Models\CourseType::whereHas('instructors', function ($query) use ($authInstructorId) {
+        $query->where('instructors.id', $authInstructorId);
+    })->get();
+                                }
             @endphp
                         <div class="mt-6  {{old('type') == '1' ? 'flex' : 'hidden'}} " id="inst">
 
@@ -294,7 +315,9 @@
                         
                             <th scope="col" class="py-3 px-6">Názov triedy</th>
                             <th scope="col" class="py-3 px-6">Kurz</th>
+                            @admin
                             <th scope="col" class="py-3 px-6">Inštruktor</th>
+                            @endadmin
                             <th scope="col" class="py-3 px-6">Dni / čas</th>
                             <th scope="col" class="py-3 px-6">Počet študentov</th>
                             <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
@@ -309,9 +332,11 @@
                                 'inštruktorský'}} ({{$class->academy->name}} akadémia)
                                 </x-table.td>
                             </td>
+                            @admin
                             <td class="py-4 px-6"><x-table.td url="instructors/{{ $class->instructor->id }}">
                                 {{$class->instructor->name}} {{$class->instructor->lastname}}
                                 </x-table.td></td>
+                                @endadmin
                             <td class="py-4 px-6">
                                 {{$class->days== 1 ? 'Týždeň' : ''}} {{$class->days== 2 ? 'Víkend' : ''}}
                                 {{$class->days== 3 ? 'Nezáleží' : ''}} / {{$class->time== 1 ? 'Ranný' : ''}}

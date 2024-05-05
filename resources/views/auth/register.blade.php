@@ -1,17 +1,18 @@
 
 
 @if(session('instructor_id') || $instructor)
-@if(session('instructor_id'))
+@unless($instructor)
 @php
 $instructor = \App\Models\Instructor::find(session('instructor_id'));
 session()->forget('instructor_id');
 @endphp
 @endif
+
 <x-layout/>
 <x-setting heading="Login" etitle="Nastavenie loginu inštruktora {{$instructor->name}} {{$instructor->lastname}}">
     {{-- {{dd(session('instructor_id'))}} --}}
     <form method="POST" action="/admin/login/{{ $instructor->login ? 'update' : 'create' }}">
-        @csrf
+     @csrf
         @if ($instructor->login)
         @method('Patch')
         <input name="user_id" value="{{ $instructor->login->id }}" hidden />

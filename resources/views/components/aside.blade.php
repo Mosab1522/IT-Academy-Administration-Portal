@@ -59,13 +59,13 @@
                               </button>
                     </div>
                   </div>
-                  <div class="flex justify-center">
+                  {{-- <div class="flex justify-center">
                     <div class="icon-bg p-3 rounded-md">
                         <button class="flex items-center py-2 px-4 rounded-md border lg:border-0 hover:bg-gray-700 transition-colors duration-200">
                       <span class="material-icons material-icons-custom">schedule</span>
                         </button>
                     </div>
-                  </div>
+                  </div> --}}
                 <!-- Repeat for other icons -->
               </div>
            
@@ -100,10 +100,11 @@
                 Poslať email</a>
             </div>
             <div id="managementSection" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium {{ request()->is('admin/academies', 'admin/academies/*') ||  request()->is('admin/coursetypes', 'admin/coursetypes/*') || request()->is('admin/classes', 'admin/classes/*') ||  request()->is('admin/lessons', 'admin/lessons/*') ||  request()->is('admin/students', 'admin/students/*') || request()->is('admin/applications', 'admin/applications/*') || request()->is('admin/instructors', 'admin/instructors/*') ? '' :  'hidden'}}">
-           
+                @admin
                 <a href="/admin/academies"
                 class="{{ request()->is('admin/academies', 'admin/academies/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200 ">
                 Akadémie</a>
+                @endadmin
             <a href="/admin/coursetypes"
                 class="{{ request()->is('admin/coursetypes', 'admin/coursetypes/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Kurzy</a>
@@ -119,9 +120,11 @@
             <a href="/admin/applications"
                 class="{{ request()->is('admin/applications', 'admin/applications/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Prihlášky</a>
+                @admin
             <a href="/admin/instructors"
                 class="{{ request()->is('admin/instructors', 'admin/instructors/*') ? 'text-indigo-300' : 'hover:text-gray-300' }} flex items-center sm:py-2 py-1.5 px-3 rounded-md  hover:bg-gray-700 transition-colors duration-200">
                 Inštruktori</a>
+                @endadmin
             </div>
         </div>
         <div id="historySection" class="mx-8  lg:mx-2 space-y-0.5 text-base lg:text-sm font-medium {{request()->is('admin/history/certificates') || request()->is('admin/history/classes')  ? '' : 'hidden'  }}">

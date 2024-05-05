@@ -17,7 +17,16 @@
                 
                     <x-form.field>
                         @php
+                        if(auth()->user()->can('admin'))
+                                {
                         $classes = \App\Models\CourseClass::with(['coursetype'])->get();
+                                }else{
+                                    $authInstructorId = auth()->user()->user_id;
+                                     $classes = \App\Models\CourseClass::with(['coursetype'])->whereHas('instructor', function ($query) use ($authInstructorId) {
+                $query->where('id', $authInstructorId);
+            })->get();
+                                }
+                       
                         @endphp
                         <div>
 
@@ -166,9 +175,11 @@
                                 <th scope="col" class="py-3 px-6">
                                     Názov hodiny
                                 </th>
+                                @admin
                                 <th scope="col" class="py-3 px-6">
                                     Inštruktor
                                 </th>
+                                @endadmin
                                 <th scope="col" class="py-3 px-6">
                                     Dátum a trvanie
                                 </th>
@@ -184,11 +195,13 @@
                                     {{ $lesson->title }}
                                     </x-table.td>
                                 </td>
+                                @admin
                                 <td class="py-4 px-6">
                                     <x-table.td url="instructors/{{ $lesson->instructor->id }}">
                                     {{ $lesson->instructor->name }} {{ $lesson->instructor->lastname }}
                                     </x-table.td>
                                 </td>
+                                @endadmin
                                 <td class="py-4 px-6">
                                     {{ $lesson->lesson_date }} - {{ $lesson->duration }} minút
                                 </td>

@@ -7,7 +7,7 @@ use App\Models\Instructor;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Registered;  
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,7 +66,7 @@ class RegisteredUserController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $user = User::find(request()->user_id);
-        
+       
         $validated = $request->validate( [
             'user_id' => ['required', 'integer', Rule::exists('users', 'id')],
             'nickname' => ['required', 'string', 'max:255', Rule::unique('users', 'nickname')->ignore($user)],

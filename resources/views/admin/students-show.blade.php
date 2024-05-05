@@ -498,6 +498,28 @@
                                                 <label for="1">Inštruktorský</label>
 
                                             </div> --}}
+                                            @php
+                                            if(auth()->user()->can('admin'))
+                                            {
+                                            $academy = \App\Models\Academy::all();
+                                            $coursetypes = \App\Models\CourseType::all();
+                                            }else{
+                                                $authInstructorId = auth()->user()->user_id;
+                                            $academy = \App\Models\Academy::whereHas('coursetypes.instructors', function ($query) use ($authInstructorId) {
+                    $query->where('instructors.id', $authInstructorId);
+                })->with([
+                    'coursetypes' => function ($query) use ($authInstructorId) {
+                        $query->whereHas('instructors', function ($q) use ($authInstructorId) {
+                            $q->where('instructors.id', $authInstructorId);
+                        });
+                    }
+                ])->get();
+                                            $coursetypes = \App\Models\CourseType::whereHas('instructors', function ($query) use ($authInstructorId) {
+                    $query->where('instructors.id', $authInstructorId);
+                })->get();
+                                            }
+                                            
+                                            @endphp
 
                                             <div class="mt-6 {{old('type') == '1' ? 'flex' : 'hidden'}}" id="inst">
 
@@ -514,7 +536,7 @@
                                                             \App\Models\Academy::with(['coursetypes','applications'])
                                                             ->get();
                                                             @endphp --}}
-                                                            @foreach(\App\Models\Academy::with(['coursetypes','applications'])->get() as $academ)
+                                                            @foreach($academy as $academ)
                                                             <option value="{{ $academ->id }}"
                                                                 data-id="{{ $academ->id }}" data-option="-1" {{--
                                                                 {{old('academy_id')==$academ->id ? 'selected' : ''}}
@@ -556,8 +578,9 @@
                                                             $academy = \App\Models\CourseType::all();
                                                             @endphp --}}
                                                            
-                                                            @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type',
-                                                            [1])->get() as $type)
+                                                            @foreach($coursetypes->whereIn('type',
+                                                            [1
+                                                            ]) as $type)
                                                             <option value="{{ $type->id }}" data-id="{{ $type->id }}"
                                                                 data-option="{{ $type->academy_id }}" {{--
                                                                 {{old('coursetype_id')==$type->id ?
@@ -586,8 +609,7 @@
                                                         ->get();
                                                         @endphp --}}
                                                         
-                                                        @foreach(\App\Models\Academy::with(['coursetypes','applications'])
-                                                        ->get() as $academ)
+                                                        @foreach($academy as $academ)
                                                         <option value="{{ $academ->id }}" data-id="{{ $academ->id }}"
                                                             data-option="-1" {{-- {{old('academy_id')==$academ->id ?
                                                             'selected' : ''}}
@@ -626,9 +648,9 @@
                                                         $academy = \App\Models\CourseType::all();
                                                         @endphp --}}
                                                        
-                                                         @foreach(\App\Models\CourseType::with(['academy','applications'])->whereIn('type',
+                                                         @foreach($coursetypes->whereIn('type',
                                                         [0
-                                                        ])->get() as $type2)
+                                                        ]) as $type2)
                                                         <option value="{{ $type2->id }}" data-id="{{ $type2->id }}"
                                                             data-option="{{ $type2->academy_id }}" {{--
                                                             {{old('coursetype_id')==$type->id ?
@@ -688,7 +710,13 @@
                                 </div>
                                 <div id="kurzy"
                                     class="section {{ session('success_c') || session('success_d') || request()->has('pridat') ||  $errors->admin->any() ? '' : 'hidden' }} flex-auto p-6">
-                                    <p class="text-sm font-semibold uppercase text-gray-700">Prihlášky tohto študenta
+                                    <p class="text-sm font-semibold uppercase text-gray-700">
+                                        @if(auth()->user()->can('admin'))
+                                        Prihlášky tohto študenta
+                                @else
+                               Prihlášky tohto študenta na spravované kurzy
+                                @endif
+                                        
                                     </p>
                                     <x-single-table>
                                         <x-slot:head>
@@ -702,6 +730,7 @@
                                                 Akcie</th>
                                         </x-slot:head>
                                         @foreach ($student->applications as $application)
+                                        @if(($application->coursetype->instructors->contains('id',auth()->user()->user_id)) ||  auth()->user()->can('admin'))
                                         <tr
                                             class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
 
@@ -737,12 +766,17 @@
 
 
                                         </tr>
+                                        @endif
                                         @endforeach
                                     </x-single-table>
                                 </div>
                                 <div id="login" class="section flex-auto p-6"
                             style="{{session('success_dd')  ? '' : 'display: none;' }}">
-                            <p class="text-sm font-semibold uppercase text-gray-700 mb-6">Študentove triedy</p>
+                            <p class="text-sm font-semibold uppercase text-gray-700 mb-6">   @if(auth()->user()->can('admin'))
+                                Študentove triedy
+                        @else
+                     Študentove vaše triedy
+                        @endif</p>
                             <x-single-table>
                                 <x-slot:head>
                                                 
@@ -755,6 +789,7 @@
                                                 </x-slot:head>
                                                 @foreach ($student->classes as $class)
                                                 @if($class->ended == false)
+                                                @if(auth()->user()->user_id == $class->instructor_id ||  auth()->user()->can('admin'))
                                                 <tr
                                                     class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                                     <td class="py-4 px-6"><x-table.td url="classes/{{ $class->id }}">{{$class->name}}</x-table.td></td>
@@ -776,6 +811,7 @@
                                                     <x-table.td-last url="class-student/{{$student->id}}/{{ $class->id }}" edit=1 itemName="tohto študenta z  triedy {{$class->name}}? Ak mal študent vytvorenú prihlášku vráti sa medzi prihlásených študentov kurzu tejto triedy. Vymaže sa aj jeho evidenia absolvovaných hodín triedy." />
                                                     
                                                 </tr>
+                                                @endif
                                                 @endif
                                                 @endforeach
                                             </x-single-table>

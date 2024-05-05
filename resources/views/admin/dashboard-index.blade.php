@@ -1,6 +1,15 @@
 
 <x-layout />
-<x-setting heading="Úvod" etitle="Všetky prihlášky akadémie">
+@php
+$text= "Všetky prihlášky spravovaných kurzov";
+if(auth()->user()->can('admin'))
+{
+    $text= "Všetky prihlášky akadémie";
+}
+@endphp
+<x-setting heading="Úvod" etitle=" {{$text}}">
+
+
    
     {{-- <div class="flex flex-col">
         <div class="flex">
@@ -13,7 +22,7 @@
                     @if(request()->filled('search'))
                     <input type="hidden" name="search" value="{{request()->input('search')}}" />
                     @endif
-                   
+                  
                     <x-form.search-select name="orderBy" title="Zoradiť podľa">
                             <option value="latest" {{ request()->get('sort_by') == 'latest' ? 'selected' : ''
                                 }}>Najnovšie
@@ -28,6 +37,7 @@
                                 }}>
                                 Najmenej prihlásených</option>
                     </x-form.search-select>
+                    
                     {{-- </div>
                     <div class="px-6">
                         <x-form.label name="Filtrovať podľa" />
@@ -35,8 +45,26 @@
                             <div> --}}
                                 <x-form.search-select name="academy_id" title="Akadémia" class=" combo-a4" data-nextcombo=".combo-b4">
                                     @php
+                                    if(auth()->user()->can('admin'))
+                                    {
                                     $academy = \App\Models\Academy::all();
                                     $coursetype = \App\Models\CourseType::all();
+                                    }else{
+                                        $authInstructorId = auth()->user()->user_id;
+                                    $academy = \App\Models\Academy::whereHas('coursetypes.instructors', function ($query) use ($authInstructorId) {
+            $query->where('instructors.id', $authInstructorId);
+        })->with([
+            'coursetypes' => function ($query) use ($authInstructorId) {
+                $query->whereHas('instructors', function ($q) use ($authInstructorId) {
+                    $q->where('instructors.id', $authInstructorId);
+                });
+            }
+        ])->get();
+                                    $coursetype = \App\Models\CourseType::whereHas('instructors', function ($query) use ($authInstructorId) {
+            $query->where('instructors.id', $authInstructorId);
+        })->get();
+                                    }
+                                    
                                     @endphp
 
                                     <option value=""  data-id="-1">Všetky</option>
@@ -104,7 +132,10 @@
     @endphp 
    
     @foreach ($coursetypes as $coursetype)
+    
+    
     @if ($coursetype->applications->count() > 0)
+    
     @php
     $cnt = $cnt +1;
     @endphp 
@@ -170,6 +201,7 @@
                     @endforeach
                </x-single-table>
     </div>
+ 
     @endif
     @endforeach
     @if ($cnt ==0)

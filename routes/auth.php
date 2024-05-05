@@ -11,35 +11,39 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+Route::middleware('can:admin')->group(function () {
+ Route::post('admin/login/create', [RegisteredUserController::class, 'store']);
+});
+
+    
+    
 Route::middleware('guest')->group(function () {
-
-    Route::get('admin/login/{instructor:id}', [RegisteredUserController::class, 'create'])
-                ->name('register');
-
-    Route::post('admin/login/create', [RegisteredUserController::class, 'store']);
-
-    Route::patch('admin/login/update', [RegisteredUserController::class, 'update'])
-    ->name('update');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-                ->name('password.request');
+    // Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    //             ->name('password.request');
 
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-                ->name('password.email');
+    // Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+    //             ->name('password.email');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-                ->name('password.reset');
+    // Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+    //             ->name('password.reset');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.store');
+    // Route::post('reset-password', [NewPasswordController::class, 'store'])
+    //             ->name('password.store');
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('admin/login/{instructor:id}', [RegisteredUserController::class, 'create'])
+    ->name('register');
+Route::patch('admin/login/update', [RegisteredUserController::class, 'update'])
+->name('update'); 
+
+
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 

@@ -10,13 +10,24 @@ use Illuminate\Database\Eloquent\Builder;
 use PhpParser\Node\Stmt\Else_;
 use Illuminate\Support\Facades\Request as IlluminateRequest;
 use Illuminate\Support\Str;
-
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CourseTypeController extends Controller
 {
     public function index(Request $request)
     {
+        if(Gate::denies('admin')){
+        $authInstructorId = auth()->user()->user_id;
+        $coursetypes = \App\Models\CourseType::with(['academy', 'applications', 'instructors','classes'])->whereHas('instructors', function ($query) use ($authInstructorId) {
+            $query->where('instructors.id', $authInstructorId);
+        });
+    }else{
         $coursetypes = CourseType::with(['academy', 'applications', 'instructors','classes']);
+    }
+        
+        
+
 
     // Search filter applied to multiple related fields
     if ($request->filled('search')) {
@@ -52,7 +63,12 @@ class CourseTypeController extends Controller
     }
 
     public function show(Coursetype $coursetype)
-    {
+    {   
+        if((!$coursetype->instructors->contains('id',auth()->user()->user_id)) && Gate::denies('admin'))
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
         return view('admin.coursetypes-show', ['coursetype' => $coursetype]);
     }
 
@@ -107,7 +123,10 @@ class CourseTypeController extends Controller
     }
     public function update(Coursetype $coursetype)
     {
-        
+        if((!$coursetype->instructors->contains('id',auth()->user()->user_id)) && Gate::denies('admin'))
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
         // $academy = Academy::with(['coursetypes', 'applications'])
         // ->where('id', '=', request()->academy_id)->first();
 

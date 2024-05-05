@@ -1,6 +1,17 @@
 
 <x-layout />
+@php
+$text= "Kurzy v správe";
+$delete = false;
+if(auth()->user()->can('admin'))
+{
+    $delete = true;
+    $text= "Existujúce kurzy";
+}
+
+@endphp
 <x-setting heading="Kurzy" etitle="Existujúce kurzy">
+    @admin
     <x-slot:create>
         <div class="flex flex-col">
             <div class="bg-white p-8 rounded-lg shadow-md mb-6">
@@ -59,6 +70,26 @@
             </div>
         </div>
     </x-slot:create>
+    @endadmin
+    @php
+    if(auth()->user()->can('admin'))
+    {
+    
+    }else{
+        $authInstructorId = auth()->user()->user_id;
+    $academy = \App\Models\Academy::whereHas('coursetypes.instructors', function ($query) use ($authInstructorId) {
+$query->where('instructors.id', $authInstructorId);
+})->with([
+'coursetypes' => function ($query) use ($authInstructorId) {
+$query->whereHas('instructors', function ($q) use ($authInstructorId) {
+$q->where('instructors.id', $authInstructorId);
+});
+}
+])->get();
+   
+    }
+    
+    @endphp
     <x-form.search action="{{ route('admin.coursetypes.index') }}" text="Filtrovať a zoradiť">
         @csrf
 
@@ -186,7 +217,12 @@
                             <th scope="col" class="py-3 px-6">Typ kurzu</th>
                             <th scope="col" class="py-3 px-6">Min/max študentov</th>
                             <th scope="col" class="py-3 px-6">Inštruktori</th>
+                            @if(auth()->user()->can('admin'))
                             <th scope="col" class="py-3 px-6">Triedy</th>
+                            @else
+                            <th scope="col" class="py-3 px-6">Vaše triedy</th>
+                            <th scope="col" class="py-3 px-6">Ostatné triedy kurzu</th>
+                            @endif
                             <th scope="col" class="py-3 px-6">Počet prihlášok</th>
                             <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">
                                 Akcie
@@ -204,27 +240,58 @@
                             <td class="py-4 px-6">
                                 @if($coursetype->instructors->count()>0)
                                 @foreach($coursetype->instructors as $instructor)
+                                @if(auth()->user()->can('admin'))
                                 <x-table.td url="instructors/{{ $instructor->id }}">
                                 {{$instructor->name}} {{$instructor->lastname}}
                                 </x-table.td>
+                                @else
+                                {{$instructor->name}} {{$instructor->lastname}}
+                                @endif 
                                 <br>
+                                
                                 @endforeach
                                 @else 
                                 <a href="/admin/coursetypes/{{ $coursetype->id }}?pridat"
                                     class="text-blue-600 hover:text-blue-700 hover:underline">Pridať inštruktora</a>
                                 @endif
                             </td>
+                            @if(auth()->user()->can('admin'))
                             <td class="py-4 px-6">
                                 @foreach($coursetype->classes as $class)
                                 @if($class->ended == false)
                                 <x-table.td url="classes/{{ $class->id }}">
                                 {{$class->name}}
-                                </x-table.td><br>
+                                </x-table.td>
+                                <br>
                                 @endif
                                 @endforeach
                             </td>
+                            @else
+                            <td class="py-4 px-6">
+                                @foreach($coursetype->classes as $class)
+                                @if($class->ended == false)
+                                @if($class->instructor_id == auth()->user()->user_id)
+                                <x-table.td url="classes/{{ $class->id }}">
+                                {{$class->name}}
+                                </x-table.td>
+                                <br>
+                                @endif
+                                @endif
+                                @endforeach
+                            </td>
+                            <td class="py-4 px-6">
+                                @foreach($coursetype->classes as $class)
+                                @if($class->ended == false)
+                                @if($class->instructor_id != auth()->user()->user_id)
+                                {{$class->name}}
+                                <br>
+                                @endif
+                                @endif
+                                @endforeach
+                            </td>
+                            @endif
                             <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                            <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 itemName="kurz {{$coursetype->name}}? Spolu s kurzom sa vymažú aj prihlášky a triedy kurzu." />
+                            <x-table.td-last url="coursetypes/{{ $coursetype->id }}" edit=1 :delete="$delete" itemName="kurz {{$coursetype->name}}? Spolu s kurzom sa vymažú aj prihlášky a triedy kurzu." />
                             
                         </tr>
                         @endforeach

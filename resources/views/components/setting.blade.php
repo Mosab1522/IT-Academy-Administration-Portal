@@ -1,6 +1,14 @@
 @props(['heading', 'etitle','pick' => false])
 <x-flash />
 
+@php
+$inst='instructor_id='.auth()->user()->user_id;
+if(auth()->user()->can('admin'))
+{
+  
+    $inst="";
+}
+@endphp
 
 <div class="flex h-screen bg-gray-100 overflow-hidden">
     <button
@@ -18,10 +26,28 @@
     </div>
     <section class="main-content flex-1 overflow-auto">
         @php
-        $instructors = App\Models\Instructor::all();
         $count = 0;
+        if(auth()->user()->can('admin'))
+        {
+        $instructors = App\Models\Instructor::all();
+        foreach ($instructors as $i) {
+            if($i->unreadNotifications->count() > 0)
+            {
+                  foreach ($i->unreadNotifications as $notification) {
+                $count++;
+            }
+            }
+          
+        }
+        }else{
+            $i=App\Models\Instructor::find(auth()->user()->user_id);
+            foreach ($i->unreadNotifications as $notification) {
+                $count++;
+            }
+        }
+
         @endphp
-        @foreach ($instructors as $i)
+        {{-- @foreach ($instructors as $i)
         @forelse($i->unreadNotifications as $notification)
         @php
         $count++;
@@ -29,7 +55,7 @@
         @empty
            
         @endforelse
-    @endforeach
+    @endforeach --}}
         <header class="bg-gray-800 text-white shadow py-6 px-4 flex justify-between items-center">
             <h1 class="text-xl font-semibold flex-1">{{ $heading }}</h1>
             <div x-data="{ open: false }" class="relative mr-6">
@@ -42,11 +68,12 @@
                 </button>
         
                 <!-- Notification Dropdown -->
-                @if($count>0)
+                @if($count > 0)
                 <div x-show="open" x-cloak @click.away="open = false" class="origin-top-right max-h-80 overflow-y-auto absolute right-0 mt-2 w-64 sm:w-80 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
                     <div class="py-2">
-                        @foreach (App\Models\Instructor::all() as $instructor)
-                            @forelse($instructor->unreadNotifications as $notification)
+                        @if(auth()->user()->can('admin'))
+                        @foreach ($instructors as $i)
+                            @forelse($i->unreadNotifications as $notification)
                                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     {{ $notification->data['message'] ?? 'You have a notification' }} {{$notification->data['minimum'] ? 'Touto prihláškou sa naplnil počet študentov na otvorenie triedy.' : ''}}
                                 </a>
@@ -56,13 +83,29 @@
                                 </a> --}}
                             @endforelse
                         @endforeach
+                        @else
+                        @forelse($i->unreadNotifications as $notification)
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ $notification->data['message'] ?? 'You have a notification' }} {{$notification->data['minimum'] ? 'Touto prihláškou sa naplnil počet študentov na otvorenie triedy.' : ''}}
+                        </a>
+                    @empty
+                        {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            No new notifications
+                        </a> --}}
+                    @endforelse
+                    @endif
                     </div>
                 </div>
             </div>
             @endif
-            <a href="/admin/profile" class="focus:outline-none relative">
+            @if(auth()->user()->can('admin'))
+            
+            @else
+            <a href="/admin/profile" class="focus:outline-none relative ml-4">
                 <span class="material-icons text-white text-3xl material-icons-header">account_circle</span>
             </a>
+            @endif
+            
         </header>
         
         
@@ -490,7 +533,8 @@ function showCalendarModal(text,queryParams) {
             noEventsText: "Žiadne hodiny na zobrazenie"
         }
     },
-                events: `{{ url('/lessons/all') }}?${queryParams}`,
+            
+                events: `{{ url('/lessons/all') }}?${queryParams}&{{$inst}}`,
              
                 /*events: "{{ url('/lessons/all') }}",*/
                 windowResize: function(view) {
@@ -504,7 +548,7 @@ function showCalendarModal(text,queryParams) {
                 }
             });
             calendar.render();
-
+            console.log(queryParams);
             
             // Set titles for accessibility and internationalization
             const prevButton = calendarEl.querySelector('.fc-prev-button');

@@ -15,15 +15,28 @@ use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class LessonController extends Controller
 {
     public function index(Request $request)
     {
-        $lessons = Lesson::with(['class', 'instructor'])
+        if(Gate::denies('admin')){
+            $authInstructorId = auth()->user()->user_id;
+            $lessons = Lesson::with(['class', 'instructor'])
+            ->whereHas('class', function($query) {
+                $query->where('ended', false);
+            })->whereHas('instructor', function ($query) use ($authInstructorId) {
+                $query->where('id', $authInstructorId);
+            });
+        }else{
+             $lessons = Lesson::with(['class', 'instructor'])
         ->whereHas('class', function($query) {
             $query->where('ended', false);
         });
+        }
+       
 
         // Apply a generic search across multiple related models
         if ($request->filled('search')) {
@@ -62,6 +75,10 @@ class LessonController extends Controller
 
     public function show(Lesson $lesson)
     {
+        if(auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
         return view('admin.lessons-show', ['lesson' => $lesson]);
     }
 
@@ -87,6 +104,15 @@ class LessonController extends Controller
             'onsite' => ['nullable', 'string', 'max:30'],
             'online' => 'nullable|url',
         ], $this->messages());
+
+        if(Gate::denies('admin')) 
+        {
+        $class=CourseClass::find($attributes['class_id']);
+        if(auth()->user()->user_id != $class->instructor_id) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+        }
 
         list($hours, $minutes) = explode(':', $attributes['duration']);
 
@@ -181,7 +207,10 @@ class LessonController extends Controller
 
     public function update(Lesson $lesson)
     {
-
+        if(auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
         // $academy = Academy::with(['class', 'applications'])
         // ->where('id', '=', request()->academy_id)->first();
 
@@ -227,7 +256,11 @@ class LessonController extends Controller
 
     public function destroy(Lesson $lesson)
     {
-        
+        if(auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
         $lesson->delete();
 
         if (Str::endsWith(url()->previous(), '?pridat')) {
@@ -241,7 +274,19 @@ class LessonController extends Controller
 
     public function all(Request $request)
     {
-
+        if(Gate::denies('admin'))
+        {
+            if(isset($request->instructor_id))
+            {
+                if($request->instructor_id != auth()->user()->user_id)
+                {
+                    abort(Response::HTTP_FORBIDDEN);
+                }
+            }else{
+                abort(Response::HTTP_FORBIDDEN);
+            }
+        }
+        
         $lessons = Lesson::query()
             ->with(['instructor', 'class.coursetype.academy', 'class.students'])
             ->when($request->academy_id, function ($query, $academyId) {

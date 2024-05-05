@@ -9,7 +9,16 @@ if(request()->coursetype_id)
 $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
 }
 @endphp
-<x-setting heading="Prihlášky" etitle="Existujúce prihlášky">
+@php
+$text= "Prihlášky na vaše kurzy";
+
+if(auth()->user()->can('admin'))
+{
+    $text= "Existujúce prihlášky";
+   
+}
+@endphp
+<x-setting heading="Prihlášky" etitle="{{$text}}">
     <x-slot:create>
         <div class="flex flex-col">
             <div class="bg-white p-8 rounded-lg shadow-md mb-6">
@@ -77,10 +86,27 @@ $coursetype = \App\Models\CourseType::find(request()->coursetype_id);
                         @endif
 
                         @php
-                         $academy = \App\Models\Academy::all();
-                     $coursetypes = \App\Models\CourseType::all();
-                     @endphp
-
+                        if(auth()->user()->can('admin'))
+                        {
+                        $academy = \App\Models\Academy::all();
+                        $coursetypes = \App\Models\CourseType::all();
+                        }else{
+                            $authInstructorId = auth()->user()->user_id;
+                        $academy = \App\Models\Academy::whereHas('coursetypes.instructors', function ($query) use ($authInstructorId) {
+$query->where('instructors.id', $authInstructorId);
+})->with([
+'coursetypes' => function ($query) use ($authInstructorId) {
+    $query->whereHas('instructors', function ($q) use ($authInstructorId) {
+        $q->where('instructors.id', $authInstructorId);
+    });
+}
+])->get();
+                        $coursetypes = \App\Models\CourseType::whereHas('instructors', function ($query) use ($authInstructorId) {
+$query->where('instructors.id', $authInstructorId);
+})->get();
+                        }
+                        
+                        @endphp
                         <x-form.field>
 
                             <div class="items-center mt-6">

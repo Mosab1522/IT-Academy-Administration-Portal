@@ -12,15 +12,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use stdClass;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 
 class Class_StudentController extends Controller
 
 {   public function index(Request $request)
-    {
+    {   if(Gate::denies('admin')){
+        $authInstructorId = auth()->user()->user_id;
         $query = CourseClass::with(['academy', 'coursetype', 'students', 'instructor']) ->where(function ($query) {
+            $query->where('ended', true);
+        })->whereHas('instructor', function ($query) use ($authInstructorId) {
+            $query->where('id', $authInstructorId);
+        });
+
+    }else{
+          $query = CourseClass::with(['academy', 'coursetype', 'students', 'instructor']) ->where(function ($query) {
             $query->where('ended', true);
         });
 
+    }
+      
         // Apply search filter across multiple relationships if search is provided
         if ($request->filled('search')) {
             $search = '%' . $request->input('search') . '%';

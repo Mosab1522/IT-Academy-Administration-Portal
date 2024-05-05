@@ -2,8 +2,26 @@
 <x-layout />
 <x-setting heading="Certifikáty" etitle="Udelené certifikáty">
     @php
+    if(auth()->user()->can('admin'))
+    {
     $academy = \App\Models\Academy::all();
     $coursetypes = \App\Models\CourseType::all();
+    }else{
+        $authInstructorId = auth()->user()->user_id;
+    $academy = \App\Models\Academy::whereHas('coursetypes.instructors', function ($query) use ($authInstructorId) {
+$query->where('instructors.id', $authInstructorId);
+})->with([
+'coursetypes' => function ($query) use ($authInstructorId) {
+$query->whereHas('instructors', function ($q) use ($authInstructorId) {
+$q->where('instructors.id', $authInstructorId);
+});
+}
+])->get();
+    $coursetypes = \App\Models\CourseType::whereHas('instructors', function ($query) use ($authInstructorId) {
+$query->where('instructors.id', $authInstructorId);
+})->get();
+    }
+    
     @endphp
     <x-form.search action="{{ route('admin.certificates.index') }}" text="Filtrovať a zoradiť">
         @csrf

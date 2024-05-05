@@ -200,8 +200,14 @@
                     <x-slot:head>
                                     <th scope="col" class="py-3 px-6">Meno</th>
                                     <th scope="col" class="py-3 px-6">Email</th>
+                                    @if(auth()->user()->can('admin'))
                                     <th scope="col" class="py-3 px-6">Prihlášky</th>
                                     <th scope="col" class="py-3 px-6">Aktuálne triedy</th>
+                            @else
+                            <th scope="col" class="py-3 px-6">Prihlášky na spravované kurzy</th>
+                                    <th scope="col" class="py-3 px-6">Aktuálne vaše triedy</th>
+                            @endif
+                                    
                                     <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
                                 </x-slot:head>
                                 @foreach ($students as $student)
@@ -213,16 +219,20 @@
                                     <td class="py-4 px-6">{{$student->email}}</td>
                                     <td class="py-4 px-6">
                                         @foreach($student->applications as $application)
+                                        @if(($application->coursetype->instructors->contains('id',auth()->user()->user_id)) ||  auth()->user()->can('admin'))
                                         {{$application->coursetype->name}} - {{$application->coursetype->type == '0' ? 'študentský' :
                                         'inštruktorský'}} ({{$application->academy->name}} akadémia)<br>
+                                        @endif
                                         @endforeach
                                     </td>
                                     <td class="py-4 px-6">
                                         @foreach($student->classes as $class)
                                         @if($class->ended == false)
+                                        @if(auth()->user()->user_id == $class->instructor_id ||  auth()->user()->can('admin'))
                                         <x-table.td url="classes/{{ $class->id }}">
                                         {{$class->name}} ({{$class->coursetype->name}} - {{$class->coursetype->type == '0' ? 'študentský' :
                                         'inštruktorský'}})</x-table.td><br>
+                                        @endif
                                         @endif
                                         @endforeach
                                     </td>
