@@ -232,7 +232,11 @@ $q->where('instructors.id', $authInstructorId);
                         @foreach ($coursetypes as $coursetype)
                         <tr class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                             <td class="py-4 px-6"><x-table.td url="coursetypes/{{ $coursetype->id }}">{{$coursetype->name}}</x-table.td></td>
-                            <td class="py-4 px-6"><x-table.td url="academies/{{ $coursetype->academy->id }}">{{$coursetype->academy->name}}</x-table.td></td>
+                            <td class="py-4 px-6">  @if(auth()->user()->can('admin'))
+                                <x-table.td url="academies/{{ $coursetype->academy->id }}">{{$coursetype->academy->name}}</x-table.td>
+                                @else
+                                {{$coursetype->academy->name}}
+                                @endif</td>
                             <td class="py-4 px-6">
                                 {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
                             </td>

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -19,6 +20,12 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        DB::table('users')->insert([
+            'nickname' => 'adminuser',
+            'password' => '$argon2id$v=19$m=2048,t=4,p=3$WFR5Nk9MTWNJTWtnSEszZg$P+tsg9QBWTpBNeb2NGcMOdPnGkql8TuDs6OkZbcTIBE',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     /**

@@ -49,7 +49,8 @@ class NewStudent extends Notification
             'message' => 'Do Vášho kurzu ' . $this->data['coursename'] . ' - ' . 
             ($this->data['coursetype'] == 0 ? 'študentský' : 'inštruktorský') . 
             ' sa prihlásil nový študent.',
-            'minimum' => $this->data['minimum']
+            'minimum' => $this->data['minimum'],
+            'admin' => false
            
         ];
     }

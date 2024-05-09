@@ -22,6 +22,7 @@ use App\Http\Controllers\TypkurzuController;
 use App\Mail\ConfirmationMail;
 use App\Models\Application;
 use App\Models\CourseClass;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -44,6 +45,19 @@ use Illuminate\Support\Facades\Request;
 //     return new ConfirmationMail();
 // });
 
+// Route::get('/foo', function () {
+//     Artisan::call('migrate:fresh --force');
+// });
+Route::get('/optimize', function () {
+    Artisan::call('config:cache');
+    Artisan::call('event:cache');
+    Artisan::call('route:cache');
+    Artisan::call('view:cache');
+    Artisan::call('optimize');
+    Artisan::call('storage:link');
+    
+    return 'Database migrated and caches optimized';
+     });
 
 Route::get('/', [ApplicationController::class, 'create']);
 Route::post('/', [ApplicationController::class, 'store']);
@@ -106,6 +120,10 @@ Route::delete('admin/class-student/{student}/{class}', [Class_StudentController:
 
 Route::post('admin/lesson-students', [LessonStudentsController::class, 'store']);
 Route::delete('admin/lesson-students/{student}/{lesson}', [LessonStudentsController::class, 'destroy']);
+
+Route::post('/notifications/mark-accessed', [ApplicationController::class, 'notifications'])->name('notifications.mark-accessed');
+
+Route::get('admin/instructors/{instructor:id}', [InstructorController::class, 'show']);
 });
 
 Route::middleware('can:admin')->group(function () {
@@ -123,7 +141,7 @@ Route::post('admin/coursetype_instructor', [CourseType_InstructorController::cla
 Route::delete('admin/coursetype_instructor/{instructor}/{coursetype}', [CourseType_InstructorController::class, 'destroy'])->name('your.route.name');
 
 Route::get('admin/instructors', [InstructorController::class, 'index'])->name('admin.instructors.index');
-Route::get('admin/instructors/{instructor:id}', [InstructorController::class, 'show']);
+
 Route::post('admin/instructors/create', [InstructorController::class, 'store']);
 Route::delete('admin/instructors/{instructor}', [InstructorController::class, 'destroy']);
 

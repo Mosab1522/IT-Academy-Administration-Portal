@@ -612,4 +612,12 @@ throw ValidationException::withMessages(['sekemail' => 'Tento email vedieme v sy
             'time.in' => 'Čas musí byť jedno z: :values.',
         ];
     }
+
+    public function notifications(Request $request)
+    {
+        // Set session flag
+        $request->session()->put('notifications_accessed', true);
+
+        return response()->json(['message' => 'Notifications marked as accessed'], 200);
+    }
 }

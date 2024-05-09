@@ -1,10 +1,18 @@
 
 <x-layout />
+@php
+$delete = false;
+if(auth()->user()->can('admin'))
+{
+    $delete = true;
+}
+
+@endphp
 <x-setting heading="{{ $instructor->name }}">
 
     <div class="flex flex-wrap px-6 pb-10 border-b border-gray-200">
         <x-show-header name="{{$instructor->name}}" title="Inštruktor" src="{{ asset('storage/' . $instructor->photo) }}" path="instructors/{{ $instructor->id }}"/>
-            <x-show-buttons calendarText="inštruktora {{$instructor->name}} {{$instructor->lastname}}" calendarWho="instructor_id={{$instructor->id}}" emailId="{{$instructor->id}}" emailType="instructor_id" emailText="Inštruktor: {{$instructor->name}} {{$instructor->lastname}}">
+            <x-show-buttons calendarText="inštruktora {{$instructor->name}} {{$instructor->lastname}}" calendarWho="instructor_id={{$instructor->id}}" emailId="{{$instructor->id}}" emailType="instructor_id" emailText="Inštruktor: {{$instructor->name}} {{$instructor->lastname}}" :email="$delete">
                 <a href="/admin/login/{{$instructor->id}}" title="Login" class="end-class-button inline-block mt-4 pt-0.5 text-gray-800 hover:text-gray-600">
                     <span class="material-icons material-icons-header">login</span>
 
@@ -56,6 +64,7 @@
                         <span style="display: none;">Zrušiť úpravy</span>
                     </button>
                     </li>
+                    @admin
                     <li
                         class="flex-1 {{ session('success_cc') ||  $errors->createCI->any() || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
                         <button
@@ -68,6 +77,7 @@
                                                 pridanie kurzu</span>
                                         </button>
                     </li>
+                    @endadmin
                     <li class="flex-1 {{session('success_c') || session('success_d')  ||  $errors->default->any()  ? '' : 'hidden' }}">
                     <button
                     class="add-button {{session('success_c') || session('success_d')  ||  $errors->default->any()  ? '' : 'hidden' }} "
@@ -290,6 +300,7 @@
                         </form>
                        
                     </div>
+                    @admin
                     <div class="add-section" id="kurzyAdd"
                         style="{{request()->has('pridat') ||  $errors->createCI->any() ? 'display:block;' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Pridať kurz do správy</p>
@@ -449,6 +460,7 @@
                             {{-- <button type="button" id="setDefaults">Nastaviť predvolené hodnoty</button> --}}
                         </form>
                     </div>
+                    @endadmin
                     <div id="kurzy" class="section flex-auto p-6"
                         style="{{session('success_cc') || session('success_dd') || request()->has('pridat') ||  $errors->createCI->any() ? '' : 'display: none;' }}">
                         <p class="text-sm font-semibold uppercase text-gray-700">Kurzy v správe</p>
@@ -459,7 +471,12 @@
                                         <th scope="col" class="py-3 px-6">Typ kurzu</th>
                                         <th scope="col" class="py-3 px-6">Min/max študentov</th>
                                         <th scope="col" class="py-3 px-6">Inštruktori</th>
-                                        <th scope="col" class="py-3 px-6">Triedy</th>
+                                        @if(auth()->user()->can('admin'))
+                            <th scope="col" class="py-3 px-6">Triedy</th>
+                            @else
+                            <th scope="col" class="py-3 px-6">Vaše triedy</th>
+                            <th scope="col" class="py-3 px-6">Ostatné triedy kurzu</th>
+                            @endif
                                         <th scope="col" class="py-3 px-6">Počet prihlášok</th>
                                         <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider lg:px-6 lg:py-3">Akcie</th>
                                     </x-slot:head>
@@ -467,35 +484,79 @@
                                     <tr
                                                         class="bg-white border-b dark:bg-white dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                                         <td class="py-4 px-6"><x-table.td url="coursetypes/{{ $coursetype->id }}">{{$coursetype->name}}</x-table.td></td> 
-                                        <td class="py-4 px-6"><x-table.td url="academies/{{ $coursetype->academy->id }}">{{$coursetype->academy->name}}</x-table.td></td>
+                                        <td class="py-4 px-6">
+                                            @if(auth()->user()->can('admin'))
+                                            <x-table.td url="academies/{{ $coursetype->academy->id }}">{{$coursetype->academy->name}}</x-table.td>
+                                            @else
+                                            {{$coursetype->academy->name}}
+                                            @endif
+                                        </td>
                                         <td class="py-4 px-6">
                                             {{$coursetype->type=='0'? 'študentský' : 'inštruktorský'}}
                                         </td>
                                         <td class="py-4 px-6">{{$coursetype->min}} / {{$coursetype->max}}</td>
                                         <td class="py-4 px-6">
-                                            @foreach($coursetype->instructors as $inst)
-                                            <x-table.td url="instructors/{{ $inst->id }}">
-                                                {{$inst->name}} {{$inst->lastname}}
+                                            @if($coursetype->instructors->count()>0)
+                                            @foreach($coursetype->instructors as $instructor)
+                                            @if(auth()->user()->can('admin'))
+                                            <x-table.td url="instructors/{{ $instructor->id }}">
+                                            {{$instructor->name}} {{$instructor->lastname}}
                                             </x-table.td>
-                                                <br>
+                                            @else
+                                            {{$instructor->name}} {{$instructor->lastname}}
+                                            @endif 
+                                            <br>
+                                            
+                                            @endforeach
+                                            @else 
+                                            <a href="/admin/coursetypes/{{ $coursetype->id }}?pridat"
+                                                class="text-blue-600 hover:text-blue-700 hover:underline">Pridať inštruktora</a>
+                                            @endif
+                                        </td>
+                                        @if(auth()->user()->can('admin'))
+                                        <td class="py-4 px-6">
+                                            @foreach($coursetype->classes as $class)
+                                            @if($class->ended == false)
+                                            <x-table.td url="classes/{{ $class->id }}">
+                                            {{$class->name}}
+                                            </x-table.td>
+                                            <br>
+                                            @endif
+                                            @endforeach
+                                        </td>
+                                        @else
+                                        <td class="py-4 px-6">
+                                            @foreach($coursetype->classes as $class)
+                                            @if($class->ended == false)
+                                            @if($class->instructor_id == auth()->user()->user_id)
+                                            <x-table.td url="classes/{{ $class->id }}">
+                                            {{$class->name}}
+                                            </x-table.td>
+                                            <br>
+                                            @endif
+                                            @endif
                                             @endforeach
                                         </td>
                                         <td class="py-4 px-6">
                                             @foreach($coursetype->classes as $class)
-                                            <x-table.td url="classes/{{ $class->id }}">
-                                                {{$class->name}}
-                                            </x-table.td>
-                                                <br>
+                                            @if($class->ended == false)
+                                            @if($class->instructor_id != auth()->user()->user_id)
+                                            {{$class->name}}
+                                            <br>
+                                            @endif
+                                            @endif
                                             @endforeach
                                         </td>
+                                        @endif
                                         <td class="py-4 px-6">{{$coursetype->applications->count()}}</td>
-                                        <x-table.td-last url="coursetype_instructor/{{ $instructor->id }}/{{$coursetype->id}}" edit=1 itemName="kurz  {{$coursetype->name}} zo správy tohto inštruktora? Spolu s tým sa vymažú aj jeho triedy. Ak tomu chcete zabrániť, zmeňte inštruktora týmto triedam." />
+                                        <x-table.td-last url="coursetype_instructor/{{ $instructor->id }}/{{$coursetype->id}}" edit=1 :delete="$delete" itemName="kurz  {{$coursetype->name}} zo správy tohto inštruktora? Spolu s tým sa vymažú aj jeho triedy. Ak tomu chcete zabrániť, zmeňte inštruktora týmto triedam." edit=0/>
 
                                       
                                     </tr>
                                     @endforeach
                                 </x-single-table>
                     </div>
+                    
                     <div class="add-section" id="loginAdd"
                     style="{{ $errors->default->any()  ? 'display:block;' : 'display: none;' }}">
                     <p class="text-sm font-semibold uppercase text-gray-700">Vytvoriť hodinu</p>

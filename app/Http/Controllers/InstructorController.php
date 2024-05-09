@@ -10,6 +10,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 
 
 class InstructorController extends Controller
@@ -63,6 +65,11 @@ class InstructorController extends Controller
     }
     public function show(Instructor $instructor)
     {
+        if(auth()->user()->user_id != $instructor->id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+        
         return view('admin.instructors-show', ['instructor' => $instructor]);
     }
 
@@ -166,7 +173,11 @@ class InstructorController extends Controller
 
     public function update(Instructor $instructor)
     {  
-       
+        if(auth()->user()->user_id != $instructor->id && Gate::denies('admin')) 
+        {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
         if(request()->photo)
         {
             $attributes = request()->validateWithBag('Photo',
