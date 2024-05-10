@@ -12,8 +12,7 @@
                     @else
                     <input type="hidden" name="instructor_id" value="{{ auth()->user()->user_id }}" required/>
                     @endif
-                    <x-form.input-check name="students" title="Zapísať všetkých študentov ktorí majú
-                    prihlášku na kurz"/>
+                    <x-form.input-check name="students" title="Zapísať všetkých študentov ktorí majúprihlášku na kurz"/>
                     <x-form.field>
                         <x-form.input name="name" type="text" title="Názov" placeholder="Názov" required="true"/>
                     </x-form.field>

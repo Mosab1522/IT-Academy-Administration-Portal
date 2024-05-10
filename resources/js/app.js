@@ -11,14 +11,14 @@ if (window.screen.width < 660) {
   const lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation || screen.orientation.lock;
 
   if (lockOrientation) {
-    lockOrientation('portrait').catch(function(error) {
+    lockOrientation('portrait').catch(function (error) {
       // Handle the error
-      
+
     });
   }
 }
 
- // More descriptive function name
+// More descriptive function name
 
 // $(document).ready(function() {
 //     // Nastaviť default hodnoty pre selecty
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const sections = document.querySelectorAll('.section');
   const editButtons = document.querySelectorAll('.edit-button');
   const addButtons = document.querySelectorAll('.add-button');
-  
+
 
   // Function to toggle sections
   function resetEditingAndAddingStates() {
@@ -63,12 +63,12 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       form.querySelectorAll('select').forEach(select => {
         select.disabled = true;
+      });
     });
-    });
-    
+
     document.querySelectorAll('.section button[type="submit"]:not(.delete-button),.section button[type="reset"]').forEach(button => {
       button.style.display = 'none';
-  });
+    });
 
     // Reset button texts to defaults
     if (editButtons) {
@@ -116,8 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to show relevant buttons for the active section
   function showRelevantButtons(activeSectionId) {
     // Hide all buttons initially
-    editButtons.forEach(button => { button.style.display = 'none'; button.parentNode.style.display = 'none'; button.parentNode.parentNode.style.display = 'none';});
-    addButtons.forEach(button => { button.style.display = 'none'; button.parentNode.style.display = 'none'; button.parentNode.parentNode.style.display = 'none';} );
+    editButtons.forEach(button => { button.style.display = 'none'; button.parentNode.style.display = 'none'; button.parentNode.parentNode.style.display = 'none'; });
+    addButtons.forEach(button => { button.style.display = 'none'; button.parentNode.style.display = 'none'; button.parentNode.parentNode.style.display = 'none'; });
 
     // Show edit and add buttons that are relevant to the active section
     document.querySelectorAll(`.edit-button[data-target="${activeSectionId}"], .add-button[data-target="${activeSectionId}Add"]`).forEach(button => {
@@ -145,69 +145,62 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         button.style.display = 'none'
       }
-      // if (button.dataset.target === activeSectionId) {
-      //     // Hide the button for the active section
-      //     button.style.display = 'none';
-      // } else {
-      //     // Show the button for all other sections
-      //     button.style.display = 'inline-block';
-      // }
+
     });
   }
   let isEditing = false;
   const vytvaranie = document.getElementById('vytvaranie')
-  if(vytvaranie)
-  {
-     if(vytvaranie.style.display === 'none') {
-    isEditing = true;
-    console.log('haha');
+  if (vytvaranie) {
+    if (vytvaranie.style.display === 'none') {
+      isEditing = true;
+      console.log('haha');
+    }
   }
-  }
- 
+
   function enableEditing(button) {
     const targetForm = document.querySelector(`#${button.dataset.target}`);
     console.log('tu');
     if (targetForm) {
-        const form = targetForm.querySelector('form');
-        console.log('tu');
-        // const isEditing = Array.from(targetForm.querySelectorAll('input:not([type="hidden"])')).some(input => input.disabled);
-        isEditing = !isEditing;
-        // Toggle the disabled state of input elements based on the current editing state
-        targetForm.querySelectorAll('input:not([type="hidden"]):not(.hidden)').forEach(input => {
-          input.disabled = !isEditing;
+      const form = targetForm.querySelector('form');
+      console.log('tu');
+      // const isEditing = Array.from(targetForm.querySelectorAll('input:not([type="hidden"])')).some(input => input.disabled);
+      isEditing = !isEditing;
+      // Toggle the disabled state of input elements based on the current editing state
+      targetForm.querySelectorAll('input:not([type="hidden"]):not(.hidden)').forEach(input => {
+        input.disabled = !isEditing;
       });
-        targetForm.querySelectorAll('select').forEach(select => {
-          select.disabled = !isEditing;
+      targetForm.querySelectorAll('select').forEach(select => {
+        select.disabled = !isEditing;
       });
-        console.log('tu');
-        const buttons = targetForm.querySelectorAll('button');
+      console.log('tu');
+      const buttons = targetForm.querySelectorAll('button');
 
-        // Toggle the visibility of span elements based on the editing state
-        const editSpan = button.querySelector('span:first-child');
-        const stopEditSpan = button.querySelector('span:last-child');
-        console.log('tu');
-        if (isEditing) {
-            // Hide edit span and show stop edit span
-            console.log('tue');
-            editSpan.style.display = 'none';
-           form.querySelector('.required-info').style.display = 'block';
-            stopEditSpan.style.display = 'inline';
-            buttons.forEach(button => {
-                button.style.display = 'inline-block';
-            });
-        } else {
-            // Show edit span and hide stop edit span
-            console.log('tus');
-            editSpan.style.display = 'inline';
-            stopEditSpan.style.display = 'none';
-           form.querySelector('.required-info').style.display = 'none';
-            buttons.forEach(button => {
-                button.style.display = 'none';
-            });
-            form.reset(); // Reset the form when ending editing
-        }
+      // Toggle the visibility of span elements based on the editing state
+      const editSpan = button.querySelector('span:first-child');
+      const stopEditSpan = button.querySelector('span:last-child');
+      console.log('tu');
+      if (isEditing) {
+        // Hide edit span and show stop edit span
+        console.log('tue');
+        editSpan.style.display = 'none';
+        form.querySelector('.required-info').style.display = 'block';
+        stopEditSpan.style.display = 'inline';
+        buttons.forEach(button => {
+          button.style.display = 'inline-block';
+        });
+      } else {
+        // Show edit span and hide stop edit span
+        console.log('tus');
+        editSpan.style.display = 'inline';
+        stopEditSpan.style.display = 'none';
+        form.querySelector('.required-info').style.display = 'none';
+        buttons.forEach(button => {
+          button.style.display = 'none';
+        });
+        form.reset(); // Reset the form when ending editing
+      }
     }
-}
+  }
 
 
   // Function to show add forms or sections
@@ -217,7 +210,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const isVisible = targetSection.style.display === 'block';
       targetSection.style.display = isVisible ? 'none' : 'block';
 
-      // Toggle the visibility of span elements based on the section's visibility
       const addSpan = button.querySelector('span:first-child');
       const stopAddingSpan = button.querySelector('span:last-child');
 
@@ -263,50 +255,48 @@ function handleTypeRadio() {
   const student2 = document.getElementById('stud2');
   const instruktor2 = document.getElementById('inst2');
 
-if(student)
-{
+  if (student) {
     favTypeRadios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === '0' && radio.checked) {
-        student.style.display = 'flex';
-        instruktor.style.display = 'none';
-        
-        student.querySelector('select').disabled = false;
-         instruktor.querySelectorAll('select').forEach(select => select.disabled = true);// Disable the instruktor element
-    } else {
-        instruktor.style.display = 'flex';
-        student.style.display = 'none';
-        
-        instruktor.querySelector('select').disabled = false;
+      radio.addEventListener('change', () => {
+        if (radio.value === '0' && radio.checked) {
+          student.style.display = 'flex';
+          instruktor.style.display = 'none';
 
-        student.querySelectorAll('select').forEach(select => select.disabled = true);
-      
+          student.querySelector('select').disabled = false;
+          instruktor.querySelectorAll('select').forEach(select => select.disabled = true);// Disable the instruktor element
+        } else {
+          instruktor.style.display = 'flex';
+          student.style.display = 'none';
+
+          instruktor.querySelector('select').disabled = false;
+
+          student.querySelectorAll('select').forEach(select => select.disabled = true);
+
           // Disable the student element
-    }
+        }
+      });
     });
-  });
-}
-if(student2)
-{
-  favTypeRadios2.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === '0' && radio.checked) {
-        student2.style.display = 'flex';
-        instruktor2.style.display = 'none';
-        
-        student2.querySelector('select').disabled = false;
-         instruktor2.querySelectorAll('select').forEach(select => select.disabled = true);
-    } else {
-        instruktor2.style.display = 'flex';
-        student2.style.display = 'none';
-        
-        instruktor2.querySelector('select').disabled = false;
-    student2.querySelectorAll('select').forEach(select => select.disabled = true);   // Disable the student element
-    }
+  }
+  if (student2) {
+    favTypeRadios2.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.value === '0' && radio.checked) {
+          student2.style.display = 'flex';
+          instruktor2.style.display = 'none';
+
+          student2.querySelector('select').disabled = false;
+          instruktor2.querySelectorAll('select').forEach(select => select.disabled = true);
+        } else {
+          instruktor2.style.display = 'flex';
+          student2.style.display = 'none';
+
+          instruktor2.querySelector('select').disabled = false;
+          student2.querySelectorAll('select').forEach(select => select.disabled = true);   // Disable the student element
+        }
+      });
     });
-  });
-}
-  
+  }
+
 }
 handleTypeRadio();
 
@@ -320,11 +310,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Attach the reset event listener to the form
   form.addEventListener('reset', function () {
-   // setTimeout(() => {
-      applyVisibilityRulesBasedOnStudentData(radioMappings, studentData);
-   // }, 1000); // Increase delay to 100 milliseconds
+    // setTimeout(() => {
+    applyVisibilityRulesBasedOnStudentData(radioMappings, studentData);
+    // }, 1000); // Increase delay to 100 milliseconds
   });
-  
+
 
   function setupRadioControls() {
     const radioMappings = [
@@ -333,20 +323,20 @@ document.addEventListener('DOMContentLoaded', function () {
         mappings: [
           {
             value: 'student',
-            elementsToShow: ['ucm','ucmka' ,'inam'],
-            elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
+            elementsToShow: ['ucm', 'ucmka', 'inam'],
+            elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny', 'nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
-            elementsToEnable: ['ucmka' ,'inam'],
+            elementsToEnable: ['ucmka', 'inam'],
             elementsToDisable: [],
             radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
           },
           {
             value: 'nestudent',
             elementsToShow: [],
-            elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny', 'ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
+            elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny', 'nu', 'ny', 'ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: [],
-            elementsToDisable: ['nu', 'ny','ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
+            elementsToDisable: ['nu', 'ny', 'ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
             radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
           }
         ]
@@ -356,8 +346,8 @@ document.addEventListener('DOMContentLoaded', function () {
         mappings: [
           {
             value: 'ucm',
-            elementsToShow: ['ucmkari', 'ucmkari2','option3', 'option4', 'option5', 'option6'],
-            elementsToHide: ['ina', 'iny','nu', 'ny'],
+            elementsToShow: ['ucmkari', 'ucmkari2', 'option3', 'option4', 'option5', 'option6'],
+            elementsToHide: ['ina', 'iny', 'nu', 'ny'],
             elementsToReset: ['nu', 'ny'],
             elementsToEnable: ['option3', 'option4', 'option5', 'option6'],
             elementsToDisable: ['nu'],
@@ -366,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
           {
             value: 'ina',
             elementsToShow: ['ina', 'nu'],
-            elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny','option3', 'option4', 'option5', 'option6'],
+            elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny', 'option3', 'option4', 'option5', 'option6'],
             elementsToReset: ['ny'],
             elementsToEnable: ['nu'],
             elementsToDisable: ['option3', 'option4', 'option5', 'option6'],// Add this line to enable 'nu' when 'ina' is selected
@@ -428,20 +418,20 @@ const radioMappings = [
     mappings: [
       {
         value: 'student',
-        elementsToShow: ['ucm','ucmka' ,'inam'],
-        elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny'],
+        elementsToShow: ['ucm', 'ucmka', 'inam'],
+        elementsToHide: ['ucmkari', 'ucmkari2', 'ina', 'iny', 'nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
-        elementsToEnable: ['ucmka','inam'],
+        elementsToEnable: ['ucmka', 'inam'],
         elementsToDisable: [],
         radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
       },
       {
         value: 'nestudent',
         elementsToShow: [],
-        elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny','nu', 'ny','ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
+        elementsToHide: ['ucm', 'ucmkari', 'ucmkari2', 'ina', 'iny', 'nu', 'ny', 'ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
         elementsToReset: ['nu', 'ny'],
         elementsToEnable: [],
-        elementsToDisable: ['nu', 'ny','ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
+        elementsToDisable: ['nu', 'ny', 'ucmka', 'inam', 'option3', 'option4', 'option5', 'option6'],
         radiosToUncheck: ['ucmka', 'inam', 'option3', 'option4', 'option5', 'option6']
       }
     ]
@@ -451,8 +441,8 @@ const radioMappings = [
     mappings: [
       {
         value: 'ucm',
-        elementsToShow: ['ucmkari', 'ucmkari2','option3', 'option4', 'option5', 'option6'],
-        elementsToHide: ['ina', 'iny','nu', 'ny'],
+        elementsToShow: ['ucmkari', 'ucmkari2', 'option3', 'option4', 'option5', 'option6'],
+        elementsToHide: ['ina', 'iny', 'nu', 'ny'],
         elementsToReset: ['nu', 'ny'],
         elementsToEnable: ['option3', 'option4', 'option5', 'option6'],
         elementsToDisable: ['nu'],
@@ -461,7 +451,7 @@ const radioMappings = [
       {
         value: 'ina',
         elementsToShow: ['ina', 'nu'],
-        elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny','option3', 'option4', 'option5', 'option6'],
+        elementsToHide: ['ucmkari', 'ucmkari2', 'iny', 'ny', 'option3', 'option4', 'option5', 'option6'],
         elementsToReset: ['ny'],
         elementsToEnable: ['nu'],
         elementsToDisable: ['option3', 'option4', 'option5', 'option6'],// Add this line to enable 'nu' when 'ina' is selected
@@ -502,13 +492,13 @@ function applyVisibilityRulesBasedOnStudentData(radioMappings, studentData) {
       console.log(mapping.name);
       const mappingToApply = mapping.mappings.find(m => m.value === value);
       if (mappingToApply) {
-        applyVisibilityRules(mapping, value,studentData);
+        applyVisibilityRules(mapping, value, studentData);
       }
     }
   });
 }
 
-function applyVisibilityRules(mapping, value,studentData) {
+function applyVisibilityRules(mapping, value, studentData) {
   console.log('Applying visibility rules for:', mapping.name, 'with value:', value);
   console.log(studentData);
   const selectedMapping = mapping.mappings.find(m => m.value === value);
@@ -540,27 +530,24 @@ function applyVisibilityRules(mapping, value,studentData) {
     }
   });
 
-   selectedMapping.elementsToEnable.forEach(id => {
+  selectedMapping.elementsToEnable.forEach(id => {
     const elem = document.getElementById(id);
     const resetbutton = document.getElementById('resetbutton');
-    if (elem){ 
-      if(resetbutton.style.display == 'none')
-      {
+    if (elem) {
+      if (resetbutton.style.display == 'none') {
         elem.disabled = false;
       }
-      
-      if(id == 'nu')
-      {
-        elem.value = studentData['skola_r']; 
+
+      if (id == 'nu') {
+        elem.value = studentData['skola_r'];
       }
-      if(id =='ny')
-      {
-        elem.value = studentData['program_r']; 
+      if (id == 'ny') {
+        elem.value = studentData['program_r'];
       }
-      
+
     }
   });
-  
+
   // selectedMapping.elementsToHave.forEach(id => {
   //   const elem = document.getElementById(id);
   //   if (elem && id == 'ina') {
@@ -578,12 +565,12 @@ function applyVisibilityRules(mapping, value,studentData) {
   // });
   console.log('3');
   // Enable elements
- 
+
   console.log('4');
   // Disable elements
   selectedMapping.elementsToDisable.forEach(id => {
     const elem = document.getElementById(id);
-    if (elem) {elem.disabled = true; }
+    if (elem) { elem.disabled = true; }
   });
   console.log('5');
   // Uncheck radios
@@ -626,22 +613,20 @@ function applyVisibilityRules(mapping, value,studentData) {
 // Call the function to handle checkbox selection
 //   handleStatusCheckbox();
 
-function jq_ChainCombo(el) {
+function dynamicSelects_jq(el) {
   var selected = $(el).find(':selected').data('id');
   var next_combo = $(el).data('nextcombo');
 
-  // Check if the next_combo element exists and has options stored
   if (!$(next_combo).length || !$(next_combo).data('store')) {
     if ($(next_combo).length && !$(next_combo).data('store')) {
       $(next_combo).data('store', $(next_combo).find('option'));
     } else {
-      return; // Exit if the next_combo does not exist or has no data-store
+      return;
     }
   }
 
   var options2 = $(next_combo).data('store');
-  
-  // Check if options2 actually has data to filter
+
   if (options2 && options2.length > 0) {
     $(next_combo).empty().append(
       options2.filter(function () {
@@ -650,31 +635,27 @@ function jq_ChainCombo(el) {
     );
     $(next_combo).prop('disabled', false);
   } else {
-    $(next_combo).prop('disabled', true); // Disable if no options match
+    $(next_combo).prop('disabled', true);
   }
 
-  // Handle default value
   var defaultValue = $(next_combo).data('default');
   if (defaultValue) {
     $(next_combo).val(defaultValue);
   }
 
-  // Recursive chaining
   if ($(next_combo).data('nextcombo')) {
-    jq_ChainCombo(next_combo);
+    dynamicSelects_jq(next_combo);
   }
 }
 
-// jQuery plugin to apply jq_ChainCombo to all selects with a data-nextcombo on them
-jQuery.fn.chainCombo = function () {
+jQuery.fn.dynamicSelect = function () {
   $(document).on('change', '[data-nextcombo]', function () {
-    jq_ChainCombo(this);
+    dynamicSelects_jq(this);
   });
 };
 
-// Initialize the plugin
-$(function() {
-  $.fn.chainCombo();
+$(function () {
+  $.fn.dynamicSelect();
 });
 
 
@@ -688,8 +669,8 @@ $(function() {
 //   $('#coursetype_id').val(defaultOption2);
 //   $('#coursetype_id').prop('disabled', true);
 
-//   // Spustite funkciu jq_ChainCombo na prvom selecte, ak chcete, aby sa reťazové selecty aktualizovali
-//   // jq_ChainCombo($('#academy'));
+//   // Spustite funkciu dynamicSelects_jq na prvom selecte, ak chcete, aby sa reťazové selecty aktualizovali
+//   // dynamicSelects_jq($('#academy'));
 // });
 
 function debounce(fn, delay) {
@@ -724,90 +705,88 @@ function searchStudents() {
     searchResults.innerHTML = '';
     let students = response.data;
     // Assuming 'students' is an array of student objects and 'searchResults' is the tbody element of your table
-students.forEach(student => {
-  let option = document.createElement('tr');
-  option.className = "bg-white hover:bg-gray-50";
+    students.forEach(student => {
+      let option = document.createElement('tr');
+      option.className = "bg-white hover:bg-gray-50";
 
-  // Name cell
-  let nameCell = document.createElement('td');
-  nameCell.className = 'px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900';
-  nameCell.textContent = student.name;
-  option.appendChild(nameCell);
+      // Name cell
+      let nameCell = document.createElement('td');
+      nameCell.className = 'px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900';
+      nameCell.textContent = student.name;
+      option.appendChild(nameCell);
 
-  // Lastname cell
-  let lastnameCell = document.createElement('td');
-  lastnameCell.className = 'px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900';
-  lastnameCell.textContent = student.lastname;
-  option.appendChild(lastnameCell);
+      // Lastname cell
+      let lastnameCell = document.createElement('td');
+      lastnameCell.className = 'px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900';
+      lastnameCell.textContent = student.lastname;
+      option.appendChild(lastnameCell);
 
-  // Email cell
-  let emailCell = document.createElement('td');
-  emailCell.className = 'text-sm px-6 py-3 whitespace-nowrap text-gray-500';
-  emailCell.textContent = student.email;
-  option.appendChild(emailCell);
+      // Email cell
+      let emailCell = document.createElement('td');
+      emailCell.className = 'text-sm px-6 py-3 whitespace-nowrap text-gray-500';
+      emailCell.textContent = student.email;
+      option.appendChild(emailCell);
 
-  // More Info cell
-  let moreInfoIndicatorCell = document.createElement('td');
-    moreInfoIndicatorCell.className = 'text-sm px-6 py-3 whitespace-nowrap text-gray-500 cursor-pointer more-info-column';
-    moreInfoIndicatorCell.textContent = "Viac info...";
-    moreInfoIndicatorCell.setAttribute('data-info-visible', 'false');
-    option.appendChild(moreInfoIndicatorCell);
+      // More Info cell
+      let moreInfoIndicatorCell = document.createElement('td');
+      moreInfoIndicatorCell.className = 'text-sm px-6 py-3 whitespace-nowrap text-gray-500 cursor-pointer more-info-column';
+      moreInfoIndicatorCell.textContent = "Viac info...";
+      moreInfoIndicatorCell.setAttribute('data-info-visible', 'false');
+      option.appendChild(moreInfoIndicatorCell);
 
-  // Append the first row to the table body
-  searchResults.appendChild(option);
+      // Append the first row to the table body
+      searchResults.appendChild(option);
 
-  // Additional info row for detailed information
-  let subOption = document.createElement('tr');
-  subOption.className = "bg-white hidden"; // Start hidden
-  let additionalInfoCell = document.createElement('td');
-  additionalInfoCell.className = 'text-xs px-4 py-2 text-gray-500';
-  additionalInfoCell.setAttribute('colspan', '4');
-  additionalInfoCell.innerHTML = `Additional Emails: ${student.sekemail}, Status: ${student.status}, School: ${student.skola}, Study: ${student.studium}, Program: ${student.program}`;
-  subOption.appendChild(additionalInfoCell);
+      // Additional info row for detailed information
+      let subOption = document.createElement('tr');
+      subOption.className = "bg-white hidden"; // Start hidden
+      let additionalInfoCell = document.createElement('td');
+      additionalInfoCell.className = 'text-xs px-4 py-2 text-gray-500';
+      additionalInfoCell.setAttribute('colspan', '4');
+      additionalInfoCell.innerHTML = `Additional Emails: ${student.sekemail}, Status: ${student.status}, School: ${student.skola}, Study: ${student.studium}, Program: ${student.program}`;
+      subOption.appendChild(additionalInfoCell);
 
-  // Append the second row to the table body
-  searchResults.appendChild(subOption);
+      // Append the second row to the table body
+      searchResults.appendChild(subOption);
 
-  // Event Listener for toggling additional information
-  moreInfoIndicatorCell.addEventListener('click', function() {
-    let isInfoVisible = this.getAttribute('data-info-visible') === 'true';
-    this.textContent = isInfoVisible ? "Viac info..." : "Menej info...";
-    subOption.style.display = isInfoVisible ? 'none' : 'table-row'; // Use 'table-row' instead of empty string for display
-    this.setAttribute('data-info-visible', String(!isInfoVisible));
-});
+      // Event Listener for toggling additional information
+      moreInfoIndicatorCell.addEventListener('click', function () {
+        let isInfoVisible = this.getAttribute('data-info-visible') === 'true';
+        this.textContent = isInfoVisible ? "Viac info..." : "Menej info...";
+        subOption.style.display = isInfoVisible ? 'none' : 'table-row'; // Use 'table-row' instead of empty string for display
+        this.setAttribute('data-info-visible', String(!isInfoVisible));
+      });
 
-  // Click event for the whole row, excluding the More/Less info cell
-  option.addEventListener('click', function(event) {
-      if (event.target !== moreInfoIndicatorCell) {
-        if(document.querySelector('input[name="student_id"]'))
-        {
-           document.querySelector('input[name="student_id"]').value = student.id;
-        }
-       
+      // Click event for the whole row, excluding the More/Less info cell
+      option.addEventListener('click', function (event) {
+        if (event.target !== moreInfoIndicatorCell) {
+          if (document.querySelector('input[name="student_id"]')) {
+            document.querySelector('input[name="student_id"]').value = student.id;
+          }
+
           document.querySelector('input[name="name"]').value = student.name;
           document.querySelector('input[name="lastname"]').value = student.lastname;
           document.querySelector('input[name="email"]').value = student.email;
           // Clear the table or perform any other required actions
           searchResults.innerHTML = '';
-      }
-  });
-});
+        }
+      });
+    });
 
-  
-  
-  
-  
+
+
+
+
 
   }).catch(error => {
-    
+
   });
 }
 
-if(document.querySelector('input[name="name"]') && document.querySelector('input[name="lastname"]') &&  document.querySelector('input[name="email"]'))
-{
+if (document.querySelector('input[name="name"]') && document.querySelector('input[name="lastname"]') && document.querySelector('input[name="email"]')) {
   document.querySelector('input[name="name"]').addEventListener('input', debounce(searchStudents, 100));
   document.querySelector('input[name="lastname"]').addEventListener('input', debounce(searchStudents, 100));
-document.querySelector('input[name="email"]').addEventListener('input', debounce(searchStudents, 100));
+  document.querySelector('input[name="email"]').addEventListener('input', debounce(searchStudents, 100));
 }
 
 
@@ -826,26 +805,26 @@ function addSelectsPair() {
 
   const academySelect = document.createElement('select');
   academySelect.name = 'academy_id[]';
-  academySelect.classList.add('academy-select', 'mt-1', 'flex-1', 'block', 'w-full','rounded-md', 'border-gray-300', 'shadow-sm', 'focus:border-indigo-300', 'focus:ring','focus:ring-indigo-200','focus:ring-opacity-50','disabled:bg-gray-100' ,'bg-white','text-sm','leading-5.6'); // Tailwind classes for the select
+  academySelect.classList.add('academy-select', 'mt-1', 'flex-1', 'block', 'w-full', 'rounded-md', 'border-gray-300', 'shadow-sm', 'focus:border-indigo-300', 'focus:ring', 'focus:ring-indigo-200', 'focus:ring-opacity-50', 'disabled:bg-gray-100', 'bg-white', 'text-sm', 'leading-5.6'); // Tailwind classes for the select
   academySelect.dataset.pairId = pairsCount;
 
 
 
   const firstAcademySelect = selectsContainer.querySelector('.academy-select');
   if (firstAcademySelect) {
-      academySelect.innerHTML = firstAcademySelect.innerHTML;
-      academySelect.value = "";
+    academySelect.innerHTML = firstAcademySelect.innerHTML;
+    academySelect.value = "";
   }
 
   const coursetypeSelect = document.createElement('select');
   coursetypeSelect.name = 'coursetypes_id[]';
-  coursetypeSelect.classList.add('coursetype-select',  'mt-1', 'flex-1', 'block', 'w-full','rounded-md', 'border-gray-300', 'shadow-sm', 'focus:border-indigo-300', 'focus:ring','focus:ring-indigo-200','focus:ring-opacity-50','disabled:bg-gray-100' ,'bg-white','text-sm','leading-5.6'); // Tailwind classes for the select
+  coursetypeSelect.classList.add('coursetype-select', 'mt-1', 'flex-1', 'block', 'w-full', 'rounded-md', 'border-gray-300', 'shadow-sm', 'focus:border-indigo-300', 'focus:ring', 'focus:ring-indigo-200', 'focus:ring-opacity-50', 'disabled:bg-gray-100', 'bg-white', 'text-sm', 'leading-5.6'); // Tailwind classes for the select
   coursetypeSelect.dataset.pairId = pairsCount;
 
-  
+
 
   const removeBtn = document.createElement('button');
-  removeBtn.classList.add('remove-selects-btn',  'ml-2',  'py-2', 'px-4', 'hover:bg-red-700', 'p-2', 'border' ,'border-transparent','shadow-sm','text-sm', 'font-medium', 'rounded-md' ,'text-white', 'bg-red-600' ,'hover:bg-red-700', 'focus:outline-none' ,'focus:ring-2', 'focus:ring-offset-2', 'focus:ring-red-200'); // Tailwind classes for button
+  removeBtn.classList.add('remove-selects-btn', 'ml-2', 'py-2', 'px-4', 'hover:bg-red-700', 'p-2', 'border', 'border-transparent', 'shadow-sm', 'text-sm', 'font-medium', 'rounded-md', 'text-white', 'bg-red-600', 'hover:bg-red-700', 'focus:outline-none', 'focus:ring-2', 'focus:ring-offset-2', 'focus:ring-red-200'); // Tailwind classes for button
   removeBtn.setAttribute('type', 'button');
   removeBtn.textContent = 'X';
   removeBtn.setAttribute('data-pair-id', pairsCount);
@@ -867,25 +846,23 @@ function removeSelectPair(event) {
   const selectPair = document.querySelector(`.selects-pair[data-pair-id="${pairId}"]`);
   selectPair.remove();
 }
-if(
+if (
   addSelectsBtn
-)
-{
+) {
   addSelectsBtn.addEventListener('click', addSelectsPair);
 }
 
-if(selectsContainer)
-{
+if (selectsContainer) {
   selectsContainer.addEventListener('change', event => {
-  const target = event.target;
-  if (target.classList.contains('academy-select')) {
-    const coursetypeSelect = target.parentNode.querySelector('.coursetype-select');
-    if (coursetypeSelect) {
-      const academyId = target.value;
-      // Repopulate coursetype options based on selected academy
+    const target = event.target;
+    if (target.classList.contains('academy-select')) {
+      const coursetypeSelect = target.parentNode.querySelector('.coursetype-select');
+      if (coursetypeSelect) {
+        const academyId = target.value;
+        // Repopulate coursetype options based on selected academy
+      }
     }
-  }
-});
+  });
 }
 
 
@@ -978,8 +955,8 @@ if(selectsContainer)
 
 $(document).ready(function () {
   // Nastaviť default hodnoty pre selecty
-  
- 
+
+
   const academySelects = document.querySelectorAll('.academy-select');
   academySelects.forEach(function (select) {
     select.value = '';
@@ -993,8 +970,7 @@ $(document).ready(function () {
   academies.forEach(function (academySelect) {
     const pairId = academySelect.getAttribute('data-pair-id');
     const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
-    if(coursetypeSelect.disabled == true)
-    {
+    if (coursetypeSelect.disabled == true) {
       coursetypeSelect.disabled = false;
     }
     const coursetypeOptions = coursetypeSelect.querySelectorAll("option");
@@ -1014,18 +990,17 @@ $(document).ready(function () {
   // Vypočítať zodpovedajúce typy kurzov pre default hodnoty
 
 });
-if(document.querySelector("#coursetype"))
-{
+if (document.querySelector("#coursetype")) {
 
 
   const coursetype = document.querySelector("#coursetype");
   const coursetypeOptions = coursetype.querySelectorAll("option");
-  
+
   $('#selects-container').on('change', '.academy-select', function (event) {
     const pairId = event.target.getAttribute('data-pair-id');
     const academySelect = document.querySelector(`.academy-select[data-pair-id="${pairId}"]`);
     const coursetypeSelect = document.querySelector(`.coursetype-select[data-pair-id="${pairId}"]`);
-  
+
     // Function to set new values to the coursetype select
     const setValue = function (newValue, targetSelect) {
       targetSelect.innerHTML = '';  // Clear the current options
@@ -1035,9 +1010,9 @@ if(document.querySelector("#coursetype"))
         }
       });
     };
-  
+
     setValue(academySelect.value, coursetypeSelect);  // Set the value for the current pair's coursetype select
-  
+
     // Iterate over all academy selects to adjust other coursetype selects if needed
     document.querySelectorAll('.academy-select').forEach(otherAcademySelect => {
       const otherPairId = otherAcademySelect.getAttribute('data-pair-id');

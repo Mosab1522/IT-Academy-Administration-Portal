@@ -39,6 +39,7 @@ $type = "- študentský";
 
             </li>
             @admin
+         
             <li
                 class="flex-1 {{ session('success_cc') || session('success_dd') || request()->has('pridat') ? '' : 'hidden' }}">
                 <button

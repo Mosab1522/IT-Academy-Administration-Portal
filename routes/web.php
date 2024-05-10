@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
+
 Route::get('admin/email', [DashboardController::class, 'email'])->name('admin.dashboard.email');
 Route::post('admin/email', [DashboardController::class, 'send'])->name('admin.dashboard.send');
 

@@ -28,7 +28,7 @@ class NewStudent extends Notification
     public function via(object $notifiable): array
     {
         //return ['mail', 'database'];
-       return ['database'];
+        return ['database'];    
     }
 
     /**
@@ -37,7 +37,7 @@ class NewStudent extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $data = $this->data;
-        return (new MailMessage)->subject('Nová registrácia študenta - kurz ' . $data['coursename'])->markdown('mail.newstudent',['coursename' => $data['coursename'], 'coursetype' =>$data['coursetype'], 'academyname' => $data['academyname'] , 'name' => $data['name'], 'lastname' => $data['lastname'], 'email' => $data['email'] , 'date' => $data['date'] , 'minimum' => $data['minimum']] );
+        return (new MailMessage)->subject('Nová registrácia študenta - kurz ' . $data['coursename'])->markdown('mail.newstudent', ['coursename' => $data['coursename'], 'coursetype' => $data['coursetype'], 'academyname' => $data['academyname'], 'name' => $data['name'], 'lastname' => $data['lastname'], 'email' => $data['email'], 'date' => $data['date'], 'minimum' => $data['minimum']]);
     }
 
     public function toDatabase($notifiable)
@@ -46,12 +46,12 @@ class NewStudent extends Notification
             'coursetype_id' => $this->data['id'],
             'application_id' => $this->data['application_id'],
             'student_id' => $this->data['student_id'],
-            'message' => 'Do Vášho kurzu ' . $this->data['coursename'] . ' - ' . 
-            ($this->data['coursetype'] == 0 ? 'študentský' : 'inštruktorský') . 
-            ' sa prihlásil nový študent.',
+            'message' => 'Do Vášho kurzu ' . $this->data['coursename'] . ' - ' .
+                ($this->data['coursetype'] == 0 ? 'študentský' : 'inštruktorský') .
+                ' sa prihlásil nový študent.',
             'minimum' => $this->data['minimum'],
             'admin' => false
-           
+
         ];
     }
 

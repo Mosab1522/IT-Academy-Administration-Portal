@@ -143,7 +143,7 @@ class InstructorController extends Controller
         }else{
             $attributes['photo'] ='photos/basic.jpg';
         }
-        
+
 
         $instructor = Instructor::create([
             'name' => $attributes['name'],
@@ -251,7 +251,7 @@ class InstructorController extends Controller
     {
         // $instructor->coursetypes()->detach();
 
-        // Teraz môžete vymazať inštruktora samotného.
+    
         $instructor->delete();
 
         return back()->with('success_d', 'Úspešne vymazané');

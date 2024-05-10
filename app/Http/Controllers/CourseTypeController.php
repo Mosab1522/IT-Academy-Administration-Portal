@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Gate;
 
 class CourseTypeController extends Controller
 {
-    public function index(Request $request)
+public function index(Request $request)
     {
         if(Gate::denies('admin')){
         $authInstructorId = auth()->user()->user_id;
