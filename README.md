@@ -2,12 +2,16 @@
 #### This repository contains the IT Academy Administration Portal, an all-in-one solution for managing various aspects of academy operations. The portal provides tools also for scheduling and managing classes, sending email notifications, handling calendar events, and ensuring secure login and user authentication. 
 
 ## Login
-![photo](./ucm/1.png?raw=true)
-## Home
-![photo](./ucm/2.png?raw=true)
-## Dark mode
-![photo](./ucm/3.png?raw=true)
-## Register
-![photo](./ucm/4.png?raw=true)
+![photo](./academyscreen/login.png?raw=true)
+## Applications
+![photo](./academyscreen/dashboard.png?raw=true)
+## Calendar
+![photo](./academyscreen/calendar.png?raw=true)
+## Classes
+![photo](./academyscreen/classes.png?raw=true)
+## Emails/Notifications
+![photo](./academyscreen/emailnotifications.png?raw=true)
+## Show
+![photo](./academyscreen/show.png?raw=true)
 
-Created by KNX and Mosab1522 and Matii20
+Created Mosab1522
