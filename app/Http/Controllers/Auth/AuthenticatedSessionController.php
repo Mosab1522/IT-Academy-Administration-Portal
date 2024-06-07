@@ -39,9 +39,8 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         if (Gate::denies('admin')) {
-            $user = \App\Models\Instructor::find(auth()->user()->user_id); 
+            $user = \App\Models\Instructor::find(auth()->user()->user_id);
             if ($user) {
-                // Only mark as read if 'notifications_accessed' is set in the session
                 if ($request->session()->pull('notifications_accessed', false)) {
                     $user->unreadNotifications->markAsRead();
                 }
@@ -51,21 +50,15 @@ class AuthenticatedSessionController extends Controller
                 $instructors = \App\Models\Instructor::all();
 
                 foreach ($instructors as $i) {
-                    // Check if there are any unread notifications
                     if ($i->notifications->count() > 0) {
-                        // Loop through each unread notification
                         foreach ($i->notifications as $notification) {
-                            // Retrieve and modify the notification data
-                            if($notification->data['admin'] == false)
-                            {
+                            if ($notification->data['admin'] == false) {
                                 $data = $notification->data;
-                            $data['admin'] = true;  // Set the 'admin' field to true
+                                $data['admin'] = true;
 
-                            // Update the notification data and save
-                            $notification->data = $data;
-                            $notification->save();
+                                $notification->data = $data;
+                                $notification->save();
                             }
-                            
                         }
                     }
                 }

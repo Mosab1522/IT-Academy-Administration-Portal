@@ -22,7 +22,7 @@ return new class extends Migration
         });
         DB::table('users')->insert([
             'nickname' => 'adminuser',
-            'password' => '$argon2id$v=19$m=2048,t=4,p=3$WFR5Nk9MTWNJTWtnSEszZg$P+tsg9QBWTpBNeb2NGcMOdPnGkql8TuDs6OkZbcTIBE',
+            'password' => '$argon2id$v=19$m=2048,t=4,p=3$LnlXcVdqSkxyVVdBTFJKdA$pa04wRUIyDVS1Vk4eT6sHffvcnBTE0IbBWqo0YWr/28',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

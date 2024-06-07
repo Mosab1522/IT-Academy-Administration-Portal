@@ -11,7 +11,7 @@ class Instructor extends Model
     use HasFactory;
     use Notifiable;
     
-    protected $guarded = [ ];
+    protected $guarded = [];
 
     public function login()
     {

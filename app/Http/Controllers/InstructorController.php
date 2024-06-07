@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseType;
 use App\Models\Instructor;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,28 +22,26 @@ class InstructorController extends Controller
             $searchTerm = '%' . $request->input('search') . '%';
             $instructors->where(function ($query) use ($searchTerm) {
                 $query->where('instructors.name', 'like', $searchTerm)
-                      ->orWhere('instructors.lastname', 'like', $searchTerm)
-                      ->orWhere('instructors.email', 'like', $searchTerm);
+                    ->orWhere('instructors.lastname', 'like', $searchTerm)
+                    ->orWhere('instructors.email', 'like', $searchTerm);
             });
         }
-        
+
         if ($request->filled('academy_id')) {
             $academyId = $request->input('academy_id');
             $coursetypeId = $request->input('coursetype_id', null);
-        
+
             $instructors->whereHas('coursetypes', function ($query) use ($academyId, $coursetypeId) {
                 $query->whereHas('academy', function ($subQuery) use ($academyId) {
                     $subQuery->where('academies.id', '=', $academyId); // Explicitly reference academies.id
                 });
-        
+
                 if (!is_null($coursetypeId)) {
                     $query->where('course_types.id', '=', $coursetypeId); // Explicitly reference course_types.id
                 }
             });
         }
-        
 
-        // zoradenie
         if ($request->filled('orderBy')) {
             $orderBy = $request->input('orderBy');
             $orderDirection = $request->input('orderDirection');
@@ -54,10 +50,7 @@ class InstructorController extends Controller
             $instructors->orderBy('created_at', 'desc');
         }
 
-
         $instructors = $instructors->get();
-
-        // dd($instructors);
 
         return view('admin.instructors-index', [
             'instructors' => $instructors
@@ -65,11 +58,10 @@ class InstructorController extends Controller
     }
     public function show(Instructor $instructor)
     {
-        if(auth()->user()->user_id != $instructor->id && Gate::denies('admin')) 
-        {
+        if (auth()->user()->user_id != $instructor->id && Gate::denies('admin')) {
             abort(Response::HTTP_FORBIDDEN);
         }
-        
+
         return view('admin.instructors-show', ['instructor' => $instructor]);
     }
 
@@ -80,14 +72,12 @@ class InstructorController extends Controller
 
     public function store()
     {
-        
-        if(request()->cemail && request()->cemail!= '')
-        {
-         request()->merge(['email'  => request()->cemail]);
+
+        if (request()->cemail && request()->cemail != '') {
+            request()->merge(['email'  => request()->cemail]);
         }
-        if(request()->csekemail && request()->csekemail!= '')
-        {
-         request()->merge(['sekemail'  => request()->csekemail]);
+        if (request()->csekemail && request()->csekemail != '') {
+            request()->merge(['sekemail'  => request()->csekemail]);
         }
 
         $attributes = request()->validate(
@@ -95,11 +85,11 @@ class InstructorController extends Controller
                 'name' => ['required', 'max:255'],
                 'lastname' => ['required', 'max:255'],
                 'photo' => ['image'],
-                'email' => ['required', 'email','different:sekemail', 'max:255', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
+                'email' => ['required', 'email', 'different:sekemail', 'max:255', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
                 'sekemail' => ['email', 'nullable', 'different:email', Rule::unique('instructors', 'email'), Rule::unique('instructors', 'sekemail')],
                 'telephone' => [
                     'nullable',
-                    'regex:/^\+421\s?9\d{2}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/', // Rule::unique('instructors', 'telephone')
+                    'regex:/^\+421\s?9\d{2}\s?\d{3}\s?\d{3}$|^09\d{2}\s?\d{3}\s?\d{3}$/',
                 ],
                 'ulicacislo' => ['nullable', 'required_with:mestoobec,psc', 'min:3', 'max:255'],
                 'mestoobec' => ['nullable', 'required_with:ulicacislo,psc', 'min:1', 'max:255'],
@@ -107,16 +97,16 @@ class InstructorController extends Controller
 
                 'coursetypes_id' => ['array',],
                 'coursetypes_id.*' => 'nullable|distinct|exists:course_types,id'
-            ],$this->messages()
-        );  
-        
+            ],
+            $this->messages()
+        );
+
         if (empty($attributes['telephone'])) {
             $attributes['telephone'] = NULL;
-            
         } else {
-            
+
             $attributes['telephone'] = $this->normalizePhoneNumber(request()->telephone);
-            
+
             $rule = array('telephone' => [Rule::unique('instructors', 'telephone')]);
             $validation = Validator($attributes, $rule);
 
@@ -125,25 +115,12 @@ class InstructorController extends Controller
             }
         }
 
-
-
-
-        //  dd($attributes);
-
-
-        // if($attributes['email'] == $attributes['sekemail'])
-        // {
-        //     throw ValidationException::withMessages(['email' => 'Zadali ste totožné emaily.']);
-        // }
-
-        $attributes['photo']??=null;
-        //  dd($attributes);
+        $attributes['photo'] ??= null;
         if ($attributes['photo']) {
             $attributes['photo'] = request()->file('photo')->store('photos');
-        }else{
-            $attributes['photo'] ='photos/basic.jpg';
+        } else {
+            $attributes['photo'] = 'photos/basic.jpg';
         }
-
 
         $instructor = Instructor::create([
             'name' => $attributes['name'],
@@ -167,35 +144,34 @@ class InstructorController extends Controller
 
         session(['instructor_id' => $instructor['id']]);
 
-        
-        return redirect('/admin/login/'.$instructor['id'])->with('success_c', 'Úspešne vytvorené');
+        return redirect('/admin/login/' . $instructor['id'])->with('success_c', 'Úspešne vytvorené');
     }
 
     public function update(Instructor $instructor)
-    {  
-        if(auth()->user()->user_id != $instructor->id && Gate::denies('admin')) 
-        {
+    {
+        if (auth()->user()->user_id != $instructor->id && Gate::denies('admin')) {
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        if(request()->photo)
-        {
-            $attributes = request()->validateWithBag('Photo',
+        if (request()->photo) {
+            $attributes = request()->validateWithBag(
+                'Photo',
                 [
-                     'photo' => ['image']
-                ],$this->messages()
-                );
-                $attributes['photo'] = request()->file('photo')->store('photos');
-                $instructor->update($attributes);
-                return back()->with('success_u', 'Úspešne aktualizované');
+                    'photo' => ['image']
+                ],
+                $this->messages()
+            );
+            $attributes['photo'] = request()->file('photo')->store('photos');
+            $instructor->update($attributes);
+            return back()->with('success_u', 'Úspešne aktualizované');
         }
 
-        
-        $attributes = request()->validateWithBag('updateInstructor',
+        $attributes = request()->validateWithBag(
+            'updateInstructor',
             [
                 'name' => ['required', 'max:255'],
                 'lastname' => ['required', 'max:255'],
-                
+
                 'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email')->ignore($instructor), Rule::unique('instructors', 'sekemail')->ignore($instructor)],
                 'sekemail' => ['nullable', 'email', 'different:email', Rule::unique('instructors', 'email')->ignore($instructor), Rule::unique('instructors', 'sekemail')->ignore($instructor)],
                 'telephone' => [
@@ -205,10 +181,11 @@ class InstructorController extends Controller
                 'ulicacislo' => ['nullable', 'required_with:mestoobec,psc', 'min:3', 'max:255'],
                 'mestoobec' => ['nullable', 'required_with:ulicacislo,psc', 'min:1', 'max:255'],
                 'psc' => ['nullable', 'required_with:mestoobec,ulicacislo', 'min:6', 'max:6'],
-            ],$this->messages()
+            ],
+            $this->messages()
         );
-        
-       
+
+
         if (empty($attributes['telephone'])) {
             $attributes['telephone'] = NULL;
         } else {
@@ -222,100 +199,75 @@ class InstructorController extends Controller
             }
         }
 
-       //($attributes['thumbnail'] ?? false) uplne rovnake
-            $attributes['photo'] = $instructor['photo'];
-        
+        $attributes['photo'] = $instructor['photo'];
 
         $instructor->update($attributes);
 
-        if (Str::endsWith(url()->previous(), '?pridat'))
-        {
+        if (Str::endsWith(url()->previous(), '?pridat')) {
             $trimmedUrl = substr(url()->previous(), 0, -7);
             return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
         }
-        if (Str::endsWith(url()->previous(), '?vytvorit'))
-        {
+        if (Str::endsWith(url()->previous(), '?vytvorit')) {
             $trimmedUrl = substr(url()->previous(), 0, -9);
             return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
         }
-        if (Str::endsWith(url()->previous(), '?zmenit'))
-        {
+        if (Str::endsWith(url()->previous(), '?zmenit')) {
             $trimmedUrl = substr(url()->previous(), 0, -7);
             return redirect($trimmedUrl)->with('success_u', 'Úspešne aktualizované');
         }
-       
+
         return back()->with('success_u', 'Úspešne aktualizované');
     }
 
     public function destroy(Instructor $instructor)
     {
-        // $instructor->coursetypes()->detach();
 
-    
         $instructor->delete();
 
         return back()->with('success_d', 'Úspešne vymazané');
     }
 
     protected function normalizePhoneNumber($phoneNumber)
-{
-    // Remove spaces
-    $normalizedNumber = str_replace(' ', '', $phoneNumber);
+    {
 
-    // If the number starts with "0", replace it with the country code "+421"
-    if (strpos($normalizedNumber, '0') === 0) {
-        $normalizedNumber = '+421' . substr($normalizedNumber, 1);
+        $normalizedNumber = str_replace(' ', '', $phoneNumber);
+
+        if (strpos($normalizedNumber, '0') === 0) {
+            $normalizedNumber = '+421' . substr($normalizedNumber, 1);
+        }
+
+        return $normalizedNumber;
     }
-    
-    return $normalizedNumber;
-}
 
-// public function lessonsForInstructor(Request $request, Instructor $instructor)
-// {
-//     $lessons = $instructor->lessons()->get();
-    
-//     $formattedLessons = $lessons->map(function ($lesson) {
-//         $startTime = Carbon::parse($lesson->lesson_date);
-//         $endTime = $startTime->copy()->addMinutes($lesson->duration);
-//         return [
-//             'title' => $lesson->title,
-//             'start' => $startTime->format('Y-m-d H:i:s'),
-//             'end' => $endTime->toDateTimeString(),
-//         ];
-//     });
-
-//     return response()->json($formattedLessons);
-// }
-protected function messages()
-{
-    return [
-    'name.required' => 'Meno je povinné.',
-    'name.max' => 'Meno môže mať maximálne 255 znakov.',
-    'lastname.required' => 'Priezvisko je povinné.',
-    'lastname.max' => 'Priezvisko môže mať maximálne 255 znakov.',
-    'photo.image' => 'Súbor musí byť obrázok.',
-    'email.required' => 'Pole e-mail je povinné.',
-    'email.email' => 'E-mail musí byť platná e-mailová adresa.',
-    'email.different' => 'E-mail musí byť odlišný od sekundárneho e-mailu.',
-    'email.max' => 'E-mail môže mať maximálne 255 znakov.',
-    'email.unique' => 'Tento e-mail už je zaregistrovaný.',
-    'sekemail.email' => 'Sekundárny e-mail musí byť platná e-mailová adresa.',
-    'sekemail.different' => 'Sekundárny e-mail musí byť odlišný od hlavného e-mailu.',
-    'sekemail.unique' => 'Tento sekundárny e-mail už je zaregistrovaný.',
-    'telephone.regex' => 'Telefónne číslo musí byť v správnom formáte.',
-    'ulicacislo.required_with' => 'Ulica a číslo sú povinné, ak je zadané mesto alebo PSČ.',
-    'ulicacislo.min' => 'Ulica a číslo musia obsahovať aspoň 3 znaky.',
-    'ulicacislo.max' => 'Ulica a číslo môžu obsahovať najviac 255 znakov.',
-    'mestoobec.required_with' => 'Mesto je povinné, ak je zadaná ulica alebo PSČ.',
-    'mestoobec.min' => 'Mesto musí obsahovať aspoň 1 znak.',
-    'mestoobec.max' => 'Mesto môže obsahovať najviac 255 znakov.',
-    'psc.required_with' => 'PSČ je povinné, ak je zadaná ulica alebo mesto.',
-    'psc.min' => 'PSČ musí obsahovať medzeru - 6 znakov .',
-    'psc.max' => 'PSČ môže obsahovať medzeru - 6 znakov.',
-    'coursetypes_id.array' => 'Pole typov kurzov musí byť pole.',
-    'coursetypes_id.*.distinct' => 'Typy kurzov musia byť jedinečné.',
-    'coursetypes_id.*.exists' => 'Vybraný typ kurzu neexistuje.',
-    ];
-}
-
+    protected function messages()
+    {
+        return [
+            'name.required' => 'Meno je povinné.',
+            'name.max' => 'Meno môže mať maximálne 255 znakov.',
+            'lastname.required' => 'Priezvisko je povinné.',
+            'lastname.max' => 'Priezvisko môže mať maximálne 255 znakov.',
+            'photo.image' => 'Súbor musí byť obrázok.',
+            'email.required' => 'Pole e-mail je povinné.',
+            'email.email' => 'E-mail musí byť platná e-mailová adresa.',
+            'email.different' => 'E-mail musí byť odlišný od sekundárneho e-mailu.',
+            'email.max' => 'E-mail môže mať maximálne 255 znakov.',
+            'email.unique' => 'Tento e-mail už je zaregistrovaný.',
+            'sekemail.email' => 'Sekundárny e-mail musí byť platná e-mailová adresa.',
+            'sekemail.different' => 'Sekundárny e-mail musí byť odlišný od hlavného e-mailu.',
+            'sekemail.unique' => 'Tento sekundárny e-mail už je zaregistrovaný.',
+            'telephone.regex' => 'Telefónne číslo musí byť v správnom formáte.',
+            'ulicacislo.required_with' => 'Ulica a číslo sú povinné, ak je zadané mesto alebo PSČ.',
+            'ulicacislo.min' => 'Ulica a číslo musia obsahovať aspoň 3 znaky.',
+            'ulicacislo.max' => 'Ulica a číslo môžu obsahovať najviac 255 znakov.',
+            'mestoobec.required_with' => 'Mesto je povinné, ak je zadaná ulica alebo PSČ.',
+            'mestoobec.min' => 'Mesto musí obsahovať aspoň 1 znak.',
+            'mestoobec.max' => 'Mesto môže obsahovať najviac 255 znakov.',
+            'psc.required_with' => 'PSČ je povinné, ak je zadaná ulica alebo mesto.',
+            'psc.min' => 'PSČ musí obsahovať medzeru - 6 znakov .',
+            'psc.max' => 'PSČ môže obsahovať medzeru - 6 znakov.',
+            'coursetypes_id.array' => 'Pole typov kurzov musí byť pole.',
+            'coursetypes_id.*.distinct' => 'Typy kurzov musia byť jedinečné.',
+            'coursetypes_id.*.exists' => 'Vybraný typ kurzu neexistuje.',
+        ];
+    }
 }

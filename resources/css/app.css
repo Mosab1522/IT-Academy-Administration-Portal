@@ -1,47 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Add this inside a <style> tag in your HTML document head or in your external stylesheet */
+
 .material-icons-custom {
-  font-size: 2.25rem !important; /* default size */
+    font-size: 2.25rem !important;
 }
 
-@media (min-width: 640px) { /* Tailwind's 'sm' breakpoint */
-  .material-icons-custom {
-    font-size: 2.25rem !important; /* larger size on sm devices */
-  }
+@media (min-width: 640px) {
+    .material-icons-custom {
+        font-size: 2.25rem !important;
+    }
 }
 
-@media (min-width: 768px) { /* Tailwind's 'md' breakpoint */
-  .material-icons-custom {
-    font-size: 2.25rem !important; /* even larger size on md devices */
-  }
+@media (min-width: 768px) {
+    .material-icons-custom {
+        font-size: 2.25rem !important;
+    }
 }
 
-@media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
-  .material-icons-custom {
-    font-size: 1.25rem !important; /* back to default size on lg devices */
-  }
+@media (min-width: 1024px) {
+    .material-icons-custom {
+        font-size: 1.25rem !important;
+    }
 }
 
 .material-icons-header {
-  font-size: 2.25rem !important; /* default size */
+    font-size: 2.25rem !important;
 }
 
 
-@media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
-  .material-icons-header {
-    font-size: 2.00rem !important; /* back to default size on lg devices */
-  }
+@media (min-width: 1024px) {
+    .material-icons-header {
+        font-size: 2.00rem !important;
+    }
 }
 
-
-
-
-.selects-pair{
+.selects-pair {
     margin-top: 0.5em;
 }
-.coursetype-select{
+
+.coursetype-select {
     margin-left: 0.5em;
 }
 
@@ -55,292 +53,241 @@
 
 @layer components {
     .edit-button {
-      @apply w-full flex items-center justify-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-xl shadow-sm;
+        @apply w-full flex items-center justify-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-xl shadow-sm;
     }
-  }
-  
+}
+
 @layer components {
     .add-button {
-      @apply w-full flex items-center justify-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-xl shadow-sm;
+        @apply w-full flex items-center justify-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-xl shadow-sm;
     }
-  }
+}
 
-  @layer components {
+@layer components {
     .section-button {
-      @apply w-full text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200  focus:ring-opacity-50 shadow-sm;
+        @apply w-full text-center py-2 text-sm font-medium transition-colors duration-200 ease-in-out text-gray-700 bg-white hover:bg-gray-100 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm;
     }
-  }
+}
 
-  @layer components {
+@layer components {
     .add-section {
-      @apply p-6 ring-2 ring-indigo-200 ring-opacity-50 border-indigo-300 shadow-sm rounded-md;
+        @apply p-6 ring-2 ring-indigo-200 ring-opacity-50 border-indigo-300 shadow-sm rounded-md;
     }
-  }
-  @layer components{
-    .add-item-button{
-      @apply  md:w-auto w-full sm:w-auto mt-6 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-200;
-    }
-  }
+}
 
-  /* Overall calendar styling */
-/* General Calendar Styles */
+@layer components {
+    .add-item-button {
+        @apply md:w-auto w-full sm:w-auto mt-6 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-200;
+    }
+}
+
 #calendar {
-  font-family: 'Inter var', sans-serif;
-  margin-top: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
+    font-family: 'Inter var', sans-serif;
+    margin-top: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* Calendar Header */
 .fc-header-toolbar {
-  background-color: #f9fafb;
-  color: #1f2937;
-  padding: 0.75rem 1rem;
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+    background-color: #f9fafb;
+    color: #1f2937;
+    padding: 0.75rem 1rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
 }
 
-/* Header Buttons */
 .fc .fc-button-primary {
-  background-color: #fff;
-  color: #4b5563;
-  border: none;
-  border-radius: 0.375rem;
-  padding: 0.5rem 1rem;
-  margin-right: 0.5rem;
-  box-shadow: none;
-  font-weight: 600;
+    background-color: #fff;
+    color: #4b5563;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    box-shadow: none;
+    font-weight: 600;
 }
 
 .fc-listWeek-view .fc-event:hover {
-  background-color: rgb(67, 56, 202) !important; /* Adjust the color as needed */
-   /* Shows a pointer cursor to indicate it's clickable */
+    background-color: rgb(67, 56, 202) !important;
 }
 
-
 .fc .fc-button-primary:not(:disabled):hover {
-  background-color: #182032;
+    background-color: #182032;
 
 }
 
 .fc .fc-button-primary:disabled {
-  background-color: #e5e7eb;
-  color: #9ca3af;
+    background-color: #e5e7eb;
+    color: #9ca3af;
 }
 
 .fc .fc-button-active {
-  background-color: #e5e7eb;
-  color: #111827;
+    background-color: #e5e7eb;
+    color: #111827;
 }
 
-/* Calendar Body */
 .fc-theme-standard .fc-scrollgrid {
-  border: none;
+    border: none;
 }
 
-.fc-theme-standard td, 
+.fc-theme-standard td,
 .fc-theme-standard th {
-  border-color: #e5e7eb;
+    border-color: #e5e7eb;
 }
 
-/* Weekday Headers */
 .fc .fc-col-header-cell-cushion {
-  color: #374151;
-  font-weight: 600;
+    color: #374151;
+    font-weight: 600;
 }
 
-/* Calendar Events */
 .fc-event {
-  background-color: rgb(67 56 202);
-  color: #fff;
-  border: none;
-  border-radius: 0.375rem;
-  font-weight: 600;
+    background-color: rgb(67 56 202);
+    color: #fff;
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 600;
 }
 
 .fc .fc-list-event:hover td {
-  background-color: rgb(67 56 202) !important;
+    background-color: rgb(67 56 202) !important;
 }
 
 .fc-theme-standard .fc-day-today {
-  background-color: rgb(199 210 254)!important; /* Light blue background with higher specificity */
-  color: rgb(79 70 229) !important; /* Darker blue text color with higher specificity */
-  font-weight: bold;
+    background-color: rgb(199 210 254) !important;
+    color: rgb(79 70 229) !important;
+    font-weight: bold;
 }
 
-/* Tooltip */
 .fc-tooltip {
-  background-color: #111827;
-  color: #fff;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
+    background-color: #111827;
+    color: #fff;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
 }
 
-/* Event Colors */
-.fc-event, .fc-event-dot {
-  background-color: #93c5fd;
+.fc-event,
+.fc-event-dot {
+    background-color: #93c5fd;
 }
 
-
-/* Calendar Responsiveness */
 @media (max-width: 640px) {
-  .fc-header-toolbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .fc-toolbar-chunk {
-    display: flex;
-    margin-bottom: 0.5rem;
-  }
-}
-.fc-list-event:hover{
-  background-color: rgb(67 56 202)!important;
+    .fc-header-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .fc-toolbar-chunk {
+        display: flex;
+        margin-bottom: 0.5rem;
+    }
 }
 
-.fc-event:hover{
-  background-color: rgb(67 56 202)!important;
-}
-.fc-event-main{
-  background-color: rgb(79 70 229);
+.fc-list-event:hover {
+    background-color: rgb(67 56 202) !important;
 }
 
-.fc-event-main:hover{
-  background-color: rgb(67 56 202)!important;
+.fc-event:hover {
+    background-color: rgb(67 56 202) !important;
 }
 
-/* Adjust this to fit your color scheme */
-.fc-event, .fc-event-dot {
-  background-color: rgb(79 70 229) ;
+.fc-event-main {
+    background-color: rgb(79 70 229);
 }
 
-/* For matched table row hover effect */
+.fc-event-main:hover {
+    background-color: rgb(67 56 202) !important;
+}
+
+.fc-event,
+.fc-event-dot {
+    background-color: rgb(79 70 229);
+}
+
 .fc-theme-standard .fc-daygrid-day:hover {
-  background-color: #f9fafb;
+    background-color: #f9fafb;
 }
 
- /* Base container layout with Grid */
-/* Base styles for the sidebar */
-
-/* Adjust sidebar styles to ensure it doesn't transform on large screens */
-/* Always show scrollbar on larger screens */
-/* Always show scrollbar on larger screens */
-/* Styling the scrollbar for Webkit browsers like Chrome, Safari, and newer versions of Edge */
-/* Add this inside your main CSS file */
-/* Custom scrollbar styling for when visible */
-/* Always apply custom scrollbar styling on larger screens */
-/* Custom scrollbar styles */
-/* Style the scrollbar itself (width, background) */
-
-
-/* General scrollbar styling */
-/* Custom scrollbar styles */
-/* Custom Scrollbar Styles */
-/* Style the scrollbar itself (width, background) */
-/* Style the scrollbar */
-/* General styling for the scrollbar */
-/* General styling for the scrollbar */
-/* General styling for the scrollbar */
-/* General styling for the scrollbar */
-/* General styling for the scrollbar */
-/* General styling for the scrollbar */
-/* General styling for the scrollbar */
-/* General styling for the scrollbar */
-/* Basic styling for the scrollbar */
-/* Basic styling for both vertical and horizontal scrollbars */
 .main-content::-webkit-scrollbar,
 .overflow-x-auto::-webkit-scrollbar,
 .overflow-y-auto::-webkit-scrollbar {
-  width: 4px;  /* Default narrow width suitable for mobile */
-  height: 4px;  /* For horizontal scrollbar */
-  background: transparent;  /* Transparent background */
+    width: 4px;
+    height: 4px;
+    background: transparent;
 }
 
-/* Styling for the track */
 .main-content::-webkit-scrollbar-track,
 .overflow-x-auto::-webkit-scrollbar-track,
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f3f3f3;  /* Light gray track */
+    background: #f3f3f3;
 }
 
-/* Styling for the thumb */
 .main-content::-webkit-scrollbar-thumb,
 .overflow-x-auto::-webkit-scrollbar-thumb,
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background-color: #4B5563; /* Dark gray thumb */
-  border-radius: 3px;  /* Rounded corners on the thumb */
+    background-color: #4B5563;
+    border-radius: 3px;
 }
 
-/* Hide scrollbar buttons/arrows */
 .main-content::-webkit-scrollbar-button,
 .overflow-x-auto::-webkit-scrollbar-button,
 .overflow-y-auto::-webkit-scrollbar-button,
 .main-content.scrolling::-webkit-scrollbar-button,
 .overflow-x-auto.scrolling::-webkit-scrollbar-button,
 .overflow-y-auto.scrolling::-webkit-scrollbar-button {
-  display: none; /* Hide scrollbar buttons/arrows */
+    display: none;
 }
 
-/* Responsive scrollbar width */
 @media (min-width: 768px) {
-  .main-content::-webkit-scrollbar,
-  .overflow-x-auto::-webkit-scrollbar,
-  .overflow-y-auto::-webkit-scrollbar {
-    width: 8px;  /* Wider scrollbar for larger screens */
-    height: 4px;  /* For horizontal scrollbar */
-  }
+
+    .main-content::-webkit-scrollbar,
+    .overflow-x-auto::-webkit-scrollbar,
+    .overflow-y-auto::-webkit-scrollbar {
+        width: 8px;
+        height: 4px;
+    }
 }
 
-/* Hide the scrollbar on smaller screens by default */
 .main-content.scrolling::-webkit-scrollbar,
 .overflow-x-auto.scrolling::-webkit-scrollbar,
 .overflow-y-auto.scrolling::-webkit-scrollbar {
-  width: 4px;  /* Visible when scrolling */
-  height: 4px;  /* For horizontal scrollbar */
+    width: 4px;
 }
 
 .main-content.scrolling,
 .overflow-x-auto.scrolling,
 .overflow-y-auto.scrolling {
-  scrollbar-width: thin;  /* Show thin scrollbar in Firefox when scrolling */
-  scrollbar-color: #4B5563 #f3f3f3;  /* Custom colors for the scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #4B5563 #f3f3f3;
 }
 
 .fixedSizeTextarea {
- /* Fixed height */
-  resize: none;  /* Disable resizing */
-  /* Ensures a scrollbar if text exceeds the area */
+    resize: none;
 }
 
 #calendarModal {
-  display: none; /* Hidden by default */
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 1050;
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
 }
 
 #calendarModal .modal-content {
-  position: relative;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 90%;
-  max-height: 90%;
-  overflow: hidden; /* Adjust as needed */
-  display: flex;
-  flex-direction: column;
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 #calendarModal #calendar {
-  flex-grow: 1; /* Allows the calendar to fill the space */
-  overflow-y: auto; /* Makes calendar scrollable if content overflows */
-  padding: 0px;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 0px;
 }
-
-
-
-/* Show scrollbar only when user is scrolling on smaller screens */

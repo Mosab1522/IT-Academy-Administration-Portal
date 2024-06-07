@@ -3,16 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\LessonMail;
-use App\Models\Application;
 use App\Models\CourseClass;
 use App\Models\Lesson;
-use App\Models\CourseType;
 use App\Models\Instructor;
-use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
@@ -22,23 +18,21 @@ class LessonController extends Controller
 {
     public function index(Request $request)
     {
-        if(Gate::denies('admin')){
+        if (Gate::denies('admin')) {
             $authInstructorId = auth()->user()->user_id;
             $lessons = Lesson::with(['class', 'instructor'])
-            ->whereHas('class', function($query) {
-                $query->where('ended', false);
-            })->whereHas('instructor', function ($query) use ($authInstructorId) {
-                $query->where('id', $authInstructorId);
-            });
-        }else{
-             $lessons = Lesson::with(['class', 'instructor'])
-        ->whereHas('class', function($query) {
-            $query->where('ended', false);
-        });
+                ->whereHas('class', function ($query) {
+                    $query->where('ended', false);
+                })->whereHas('instructor', function ($query) use ($authInstructorId) {
+                    $query->where('id', $authInstructorId);
+                });
+        } else {
+            $lessons = Lesson::with(['class', 'instructor'])
+                ->whereHas('class', function ($query) {
+                    $query->where('ended', false);
+                });
         }
-       
 
-        // Apply a generic search across multiple related models
         if ($request->filled('search')) {
             $search = '%' . $request->input('search') . '%';
             $lessons->where(function ($query) use ($search) {
@@ -52,12 +46,10 @@ class LessonController extends Controller
             });
         }
 
-        // Filter by class_id if provided
         if ($request->filled('class_id')) {
             $lessons->where('class_id', $request->input('class_id'));
         }
 
-        // zoradenie
         if ($request->filled('orderBy')) {
             $orderBy = $request->input('orderBy');
             $orderDirection = $request->input('orderDirection');
@@ -75,8 +67,7 @@ class LessonController extends Controller
 
     public function show(Lesson $lesson)
     {
-        if(auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) 
-        {
+        if (auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) {
             abort(Response::HTTP_FORBIDDEN);
         }
         return view('admin.lessons-show', ['lesson' => $lesson]);
@@ -89,9 +80,8 @@ class LessonController extends Controller
 
     public function store()
     {
-        if(request()->cemail && request()->cemail!= '')
-        {
-         request()->merge(['email'  => request()->cemail]);
+        if (request()->cemail && request()->cemail != '') {
+            request()->merge(['email'  => request()->cemail]);
         }
         $attributes = request()->validate([
 
@@ -105,97 +95,61 @@ class LessonController extends Controller
             'online' => 'nullable|url',
         ], $this->messages());
 
-        if(Gate::denies('admin')) 
-        {
-        $class=CourseClass::find($attributes['class_id']);
-        if(auth()->user()->user_id != $class->instructor_id) 
-        {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        if (Gate::denies('admin')) {
+            $class = CourseClass::find($attributes['class_id']);
+            if (auth()->user()->user_id != $class->instructor_id) {
+                abort(Response::HTTP_FORBIDDEN);
+            }
         }
 
         list($hours, $minutes) = explode(':', $attributes['duration']);
 
-        // Convert hours to minutes and add to minutes
         $totalMinutes = ($hours * 60) + $minutes;
 
         $attributes['duration'] = $totalMinutes;
 
         $attributes['instructor_id'] = CourseClass::find($attributes['class_id'])->instructor->id;
 
-
-
-
-
         $lesson = Lesson::create([
-             'title' => $attributes['title'],
-        'class_id' => $attributes['class_id'],
-        'lesson_date' => $attributes['lesson_date'],
-        'duration' => $attributes['duration'],
-        'instructor_id' => $attributes['instructor_id']
-       ]);
+            'title' => $attributes['title'],
+            'class_id' => $attributes['class_id'],
+            'lesson_date' => $attributes['lesson_date'],
+            'duration' => $attributes['duration'],
+            'instructor_id' => $attributes['instructor_id']
+        ]);
 
         if (isset($attributes['email'])) {
             if ($attributes['email'] == 'on') {
                 $instructor = Instructor::firstWhere('id', $attributes['instructor_id']);
                 $class = CourseClass::firstWhere('id', $attributes['class_id']);
-                $emailData = ['classname' => $class->name, 'date' => $lesson->lesson_date, 'coursename' => $class->coursetype->name, 'title' => $lesson->title, 'time' => $lesson->duration , 'instructor_name' => $instructor->name , 'instructor_lastname' => $instructor->lastname ];
+                $emailData = ['classname' => $class->name, 'date' => $lesson->lesson_date, 'coursename' => $class->coursetype->name, 'title' => $lesson->title, 'time' => $lesson->duration, 'instructor_name' => $instructor->name, 'instructor_lastname' => $instructor->lastname];
                 if (isset($attributes['lessonType'])) {
                     $emailData['lessonType'] = $attributes['lessonType'];
                     if ($attributes['lessonType'] == '1') {
-                        if(isset($attributes['online'])){
+                        if (isset($attributes['online'])) {
                             $emailData['where'] = $attributes['online'];
-                        }else{
+                        } else {
                             $emailData['where'] = false;
                         }
-                        
                     }
                     if ($attributes['lessonType'] == '2') {
-                        if(isset($attributes['onsite'])){
+                        if (isset($attributes['onsite'])) {
                             $emailData['where'] = $attributes['onsite'];
-                        }
-                        else{
+                        } else {
                             $emailData['where'] = false;
                         }
                     }
-                }else{
+                } else {
                     $emailData['lessonType'] = false;
                 }
 
-
-                
                 foreach ($class->students as $student) {
                     $emailData['name'] = $student->name;
                     $emailData['lastname'] = $student->lastname;
-                    //Mail::to($student->email)->send(new LessonMail($emailData));
+                    Mail::to($student->email)->send(new LessonMail($emailData));
                 }
             }
         }
-
-        // if (isset($attributes['students'])) {
-        //     $applications = CourseType::find($attributes['coursetype_id'])->applications;
-
-        //     foreach ($applications as $application) {
-        //         // Assuming Application model has a 'student' relationship defined
-        //         $student = $application->student;
-
-        //         // Check if the student is not already in the class
-        //         if (!$class->students->contains($student->id)) {
-        //             // Attach the student to the class
-        //             $class->students()->attach($student->id, ['application_id' => $application->id]);
-        //             // Optionally, you might want to mark the application as processed or remove it
-        //         }
-        //         $application->delete();
-        //     }
-        // }
-
-        // $instructors = CourseType::find($attributes['coursetype_id'])->instructors;
-        // if ($instructors) {
-        //     foreach ($instructors as $instructor) {
-        //         $class->instructors()->save($instructor);
-        //     }
-        // }
-
 
         if (Str::endsWith(url()->previous(), '?pridat')) {
             $trimmedUrl = substr(url()->previous(), 0, -7);
@@ -207,23 +161,9 @@ class LessonController extends Controller
 
     public function update(Lesson $lesson)
     {
-        if(auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) 
-        {
+        if (auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) {
             abort(Response::HTTP_FORBIDDEN);
         }
-        // $academy = Academy::with(['class', 'applications'])
-        // ->where('id', '=', request()->academy_id)->first();
-
-        // if ($academy == null) {
-        //     dd(request()->all());
-        // };
-
-        // request()->merge(['academy_id'  => $academy['id']]); 
-
-        //    if(request()->cname)
-        //    {
-        //     request()->merge(['name'  => request()->cname]);
-        //    }
 
         $attributes = request()->validateWithBag('updateLesson', [
             'title' => ['required', 'max:255'],
@@ -235,7 +175,6 @@ class LessonController extends Controller
 
         list($hours, $minutes) = explode(':', $attributes['duration']);
 
-        // Convert hours to minutes and add to minutes
         $totalMinutes = ($hours * 60) + $minutes;
 
         $attributes['duration'] = $totalMinutes;
@@ -256,8 +195,7 @@ class LessonController extends Controller
 
     public function destroy(Lesson $lesson)
     {
-        if(auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) 
-        {
+        if (auth()->user()->user_id != $lesson->instructor_id && Gate::denies('admin')) {
             abort(Response::HTTP_FORBIDDEN);
         }
 
@@ -274,19 +212,16 @@ class LessonController extends Controller
 
     public function all(Request $request)
     {
-        if(Gate::denies('admin'))
-        {
-            if(isset($request->instructor_id))
-            {
-                if($request->instructor_id != auth()->user()->user_id)
-                {
+        if (Gate::denies('admin')) {
+            if (isset($request->instructor_id)) {
+                if ($request->instructor_id != auth()->user()->user_id) {
                     abort(Response::HTTP_FORBIDDEN);
                 }
-            }else{
+            } else {
                 abort(Response::HTTP_FORBIDDEN);
             }
         }
-        
+
         $lessons = Lesson::query()
             ->with(['instructor', 'class.coursetype.academy', 'class.students'])
             ->when($request->academy_id, function ($query, $academyId) {
@@ -311,12 +246,11 @@ class LessonController extends Controller
             })
             ->when($request->student_id, function ($query, $studentId) {
                 $query->whereHas('class.students', function ($q) use ($studentId) {
-                    $q->where('students.id', $studentId); // Make sure you reference the student id correctly
+                    $q->where('students.id', $studentId);
                 });
             })
-            ->get(); // Assuming each lesson has an 'instructor' relationship
+            ->get();
 
-        // Transform lessons into the required format for your calendar or application front-end.
         $formattedLessons = $lessons->map(function ($lesson) {
             $startTime = Carbon::parse($lesson->lesson_date);
             $endTime = $startTime->copy()->addMinutes($lesson->duration);

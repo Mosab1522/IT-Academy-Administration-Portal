@@ -11,46 +11,36 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
-        $students = Student::with('applications','classes');
+        $students = Student::with('applications', 'classes');
 
-        // Combine search conditions into a single logical group
         if ($request->filled('search')) {
             $search = '%' . $request->input('search') . '%';
             $students->where(function ($query) use ($search) {
                 $query->where('name', 'like', $search)
-                      ->orWhere('lastname', 'like', $search)
-                      ->orWhere('email', 'like', $search);
+                    ->orWhere('lastname', 'like', $search)
+                    ->orWhere('email', 'like', $search);
             });
         }
 
-        // dd($request->input('search'));
-        // spracovanie filtrov
-
-        // zoradenie
-        if ($request->filled('orderBy') ) {
-            if($request->orderBy == 'applications_count')
-            {
-            $students->withCount('applications')  // Add a count of applications to each student
-            ->orderBy('applications_count', $request->input('orderDirection'));}
-            else{
-            $orderBy = $request->input('orderBy');
-            $orderDirection = $request->input('orderDirection');
-            $students->orderBy($orderBy, $orderDirection);
-            
-         } 
-        }
-         else {
-            
+        if ($request->filled('orderBy')) {
+            if ($request->orderBy == 'applications_count') {
+                $students->withCount('applications')
+                    ->orderBy('applications_count', $request->input('orderDirection'));
+            } else {
+                $orderBy = $request->input('orderBy');
+                $orderDirection = $request->input('orderDirection');
+                $students->orderBy($orderBy, $orderDirection);
+            }
+        } else {
             $students->orderBy('created_at', 'desc');
         }
 
-        $students = $students->paginate(10); 
+        $students = $students->paginate(10);
 
         return view('admin.students-index', [
             'students' => $students
         ]);
     }
-
 
     public function show(Student $student)
     {
@@ -64,12 +54,11 @@ class StudentController extends Controller
 
     public function store()
     {
-        // dd($_REQUEST);
         $attributes = request()->validate([
             'name' => ['required', 'max:255'],
             'lastname' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'different:sekemail' , 'max:255',Rule::unique('students', 'email'), Rule::unique('students', 'sekemail')],
-            'sekemail' => ['nullable','different:email' , 'email', 'max:255',Rule::unique('students', 'email'), Rule::unique('students', 'sekemail')],
+            'email' => ['required', 'email', 'different:sekemail', 'max:255', Rule::unique('students', 'email'), Rule::unique('students', 'sekemail')],
+            'sekemail' => ['nullable', 'different:email', 'email', 'max:255', Rule::unique('students', 'email'), Rule::unique('students', 'sekemail')],
             'status' => ['required', 'min:7', 'max:9'],
             'skola' => ['nullable', 'min:3', 'max:3', 'required_if:status,student'],
             'ina' => ['max:255', 'required_if:skola,ina',],
@@ -79,7 +68,7 @@ class StudentController extends Controller
             'ulicacislo' => ['required', 'min:3', 'max:255'],
             'mestoobec' => ['required', 'min:1', 'max:255'],
             'psc' => ['required', 'min:6', 'max:6'],
-        ],$this->messages());
+        ], $this->messages());
         if ($attributes['status'] == "nestudent") {
             $student = Student::create([
                 'name' => $attributes['name'],
@@ -132,21 +121,16 @@ class StudentController extends Controller
                 'psc' => $attributes['psc']
             ]);
         }
-        // dd($student);
 
-        // session(['student_id' => $student['id']]);
-
-        // return redirect('/admin/applications/create')->with('student_id', $student['id']);
         return redirect('/admin/applications/create?student_id=' . urlencode($student['id']))->with('success_c', 'Úspešne vytvorené');
     }
     public function update(Student $student)
     {
-        //  dd(request()->all());
         $attributes = request()->validate([
             'name' => ['required', 'max:255'],
             'lastname' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'different:sekemail' , 'max:255',Rule::unique('students', 'email')->ignore($student), Rule::unique('students', 'sekemail')->ignore($student)],
-            'sekemail' => ['nullable','different:email' , 'email', 'max:255',Rule::unique('students', 'email')->ignore($student), Rule::unique('students', 'sekemail')->ignore($student)],
+            'email' => ['required', 'email', 'different:sekemail', 'max:255', Rule::unique('students', 'email')->ignore($student), Rule::unique('students', 'sekemail')->ignore($student)],
+            'sekemail' => ['nullable', 'different:email', 'email', 'max:255', Rule::unique('students', 'email')->ignore($student), Rule::unique('students', 'sekemail')->ignore($student)],
             'status' => ['required', 'min:7', 'max:9'],
             'skola' => ['nullable', 'min:3', 'max:3', 'required_if:status,student'],
             'ina' => ['max:255', 'required_if:skola,ina',],
@@ -156,12 +140,7 @@ class StudentController extends Controller
             'ulicacislo' => ['required', 'min:3', 'max:255'],
             'mestoobec' => ['required', 'min:1', 'max:255'],
             'psc' => ['required', 'min:6', 'max:6'],
-            //   'unique:applications,email,NULL,id,email,' . request()->email . ',academy_id,' . request()->academy_id . ',coursetype_id,' . request()->coursetype_id,
-            // 'academy_id' => ['required', 'integer', Rule::exists('academies', 'id')],
-            // 'coursetype_id' => ['required', 'integer', Rule::exists('course_types', 'id')],
-            // 'days' => ['required', 'integer'],
-            // 'time' => ['required', 'integer'],
-        ],$this->messages());
+        ], $this->messages());
         if ($attributes['status'] == "nestudent") {
             if ($student['status'] == 'student') {
                 $student->update([
@@ -228,7 +207,6 @@ class StudentController extends Controller
             ]);
         }
 
-        //$student->update($attributes);
         $student->touch();
 
         if (Str::endsWith(url()->previous(), '?pridat')) {
@@ -259,10 +237,6 @@ class StudentController extends Controller
                     ->orWhere('sekemail', 'like', '%' . $email . '%');
             })
             ->get();
-
-        // Debugging
-        // dd($students); // This will help you see the retrieved students
-
 
         return response()->json($students);
     }
@@ -306,7 +280,7 @@ class StudentController extends Controller
             'psc.required' => 'PSČ je povinné.',
             'psc.min' => 'PSČ musí mať minimálne :min znakov.',
             'psc.max' => 'PSČ môže mať maximálne :max znakov.',
-        
+
         ];
     }
 }
