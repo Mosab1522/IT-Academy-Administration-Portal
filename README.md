@@ -14,4 +14,4 @@
 ## Show
 ![photo](./academyscreen/show.png?raw=true)
 
-Created Mosab1522
+Created by Mosab1522
